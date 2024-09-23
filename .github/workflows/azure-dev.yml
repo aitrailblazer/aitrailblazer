@@ -65,5 +65,5 @@ jobs:
 
       - name: Deploy Application
         run: |
-        cd aitrailblazer.AppHost
-        azd deploy --no-prompt
+          cd aitrailblazer.AppHost
+          azd deploy --no-prompt
