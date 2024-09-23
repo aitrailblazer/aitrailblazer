@@ -11,20 +11,20 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("24e40f1a-0b70-4d48-b81b-d03726374e90")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("/usr/local/share/dotnet/packs/Aspire.Hosting.Orchestration.osx-arm64/8.0.2/tools/" +
-    "dcp"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("/usr/local/share/dotnet/packs/Aspire.Hosting.Orchestration.osx-arm64/8.0.2/tools/" +
-    "ext/"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("/usr/local/share/dotnet/packs/Aspire.Hosting.Orchestration.osx-arm64/8.0.2/tools/" +
-    "ext/bin/"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
+    "64/8.2.0/tools/dcp"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
+    "64/8.2.0/tools/ext/"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
+    "64/8.2.0/tools/ext/bin/"))]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailbl" +
     "azer.AppHost"))]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("/usr/local/share/dotnet/packs/Aspire.Dashboard.Sdk.osx-arm64/8.0.2/tools/Aspire.D" +
-    "ashboard.dll"))]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("/Users/constantinevassilev02/.nuget/packages/aspire.dashboard.sdk.osx-arm64/8.2.0" +
+    "/tools/Aspire.Dashboard.dll"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3f30aa707c46f3bcb491463e8b2d5b589ab144e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ef1e0ac5a9716b50dbadcb7d63b9a0074b72883")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
