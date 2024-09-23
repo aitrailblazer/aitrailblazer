@@ -72,10 +72,10 @@ jobs:
         #   AZD_INITIAL_ENVIRONMENT_CONFIG: ${{ secrets.AZD_INITIAL_ENVIRONMENT_CONFIG }}
 
       # Required when provisioning and deploying are defined in separate jobs.
-      - name: Refresh azd env (pulls latest infrastructure provision)
-        run: azd env refresh
-        env:
-            AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+      #- name: Refresh azd env (pulls latest infrastructure provision)
+      # run: azd env refresh
+      # env:
+      #   AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
 
       - name: Deploy Application
         run: |
@@ -86,6 +86,7 @@ jobs:
             AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
             AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
             AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+            AZURE_LOCATION: eastus2
             AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
             AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
             AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
