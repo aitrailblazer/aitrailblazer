@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "AaWc2H268DqhJq2nG/mgabfje0rZE/RJ8bCBmSKM/Qc=",
+  "Hash": "QkugrOAJPdf8zTqVKYgRBEad0D2YbtSo9LyV5jJ5K1Q=",
   "Source": "aitrailblazer.Web",
   "BasePath": "_content/aitrailblazer.Web",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "aitrailblazer.Web/wwwroot",
       "Source": "aitrailblazer.Web",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "Pattern": "**"
     }
@@ -731,10 +731,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Slider/FluentSlider.razor.js.gz",
       "AssetKind": "All",
@@ -752,10 +752,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Slider/FluentSlider.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map.gz",
       "AssetKind": "All",
@@ -773,10 +773,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/DesignSystemProvider/FluentDesignTheme.razor.js.gz",
       "AssetKind": "All",
@@ -794,10 +794,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/NavMenu/FluentNavMenu.razor.js.gz",
       "AssetKind": "All",
@@ -815,10 +815,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Splitter/FluentMultiSplitter.razor.js.gz",
       "AssetKind": "All",
@@ -836,10 +836,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Slider/FluentSliderLabel.razor.js.gz",
       "AssetKind": "All",
@@ -857,10 +857,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "css/feature#[.{fingerprint=8yvvvz2klv}]?.css.gz",
       "AssetKind": "All",
@@ -868,20 +868,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "fimc9kn24z",
       "Integrity": "CZoksa2Tq8PotEJzhGyivscnb61ZzEZJ9zIQx1oJCgw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Grid/FluentGrid.razor.js.gz",
       "AssetKind": "All",
@@ -899,10 +899,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Grid/FluentGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "css/reboot.css.gz",
       "AssetKind": "All",
@@ -920,10 +920,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/css/reboot.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/FluentAutocomplete.razor.js.gz",
       "AssetKind": "All",
@@ -941,10 +941,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/List/FluentAutocomplete.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Divider/FluentDivider.razor.js.gz",
       "AssetKind": "All",
@@ -962,10 +962,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Divider/FluentDivider.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Button/FluentButton.razor.js.gz",
       "AssetKind": "All",
@@ -983,10 +983,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Button/FluentButton.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Anchor/FluentAnchor.razor.js.gz",
       "AssetKind": "All",
@@ -1004,10 +1004,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Anchor/FluentAnchor.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Checkbox/FluentCheckbox.razor.js.gz",
       "AssetKind": "All",
@@ -1025,10 +1025,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css.gz",
       "AssetKind": "All",
@@ -1046,10 +1046,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "app-fluent#[.{fingerprint=z1brke9wl4}]?.css.gz",
       "AssetKind": "All",
@@ -1057,20 +1057,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "g17o3nv7jl",
       "Integrity": "XHdvmRWG/ubCYgP3GCLT7WVT21bhUydu39BiMIosSOc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/ListComponentBase.razor.js.gz",
       "AssetKind": "All",
@@ -1088,10 +1088,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/List/ListComponentBase.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint=6gzpyzhau4}]?.css.gz",
       "AssetKind": "All",
@@ -1099,20 +1099,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "lbop5kbrb1",
       "Integrity": "Yaw8rWWup+Y+NHU4NDo0WqwYa155ecS6t+Oop+/HNUc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/SortableList/FluentSortableList.razor.js.gz",
       "AssetKind": "All",
@@ -1130,10 +1130,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/SortableList/FluentSortableList.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "aitrailblazer.Web.modules.json.gz",
       "AssetKind": "Build",
@@ -1141,20 +1141,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "nr48ey1bwy",
       "Integrity": "IzD6cIpmVD56YnkUPsnxIH/tRKRjn1AP50pI9f0dMsU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/InputFile/FluentInputFile.razor.js.gz",
       "AssetKind": "All",
@@ -1172,10 +1172,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/InputFile/FluentInputFile.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "favicon#[.{fingerprint=day43kxwv0}]?.ico.gz",
       "AssetKind": "All",
@@ -1183,20 +1183,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "jgs4pyr3mv",
       "Integrity": "E1qhoK24brwsDCigBztfUpxK1HtLESaOnDWOTMtTm/8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Label/FluentInputLabel.razor.js.gz",
       "AssetKind": "All",
@@ -1214,10 +1214,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Label/FluentInputLabel.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Tooltip/FluentTooltip.razor.js.gz",
       "AssetKind": "All",
@@ -1235,10 +1235,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Tooltip/FluentTooltip.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/PullToRefresh/FluentPullToRefresh.razor.js.gz",
       "AssetKind": "All",
@@ -1256,10 +1256,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "app#[.{fingerprint=kwazt7t2v0}]?.css.gz",
       "AssetKind": "All",
@@ -1267,20 +1267,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "bmkifezvr1",
       "Integrity": "HXDl6GF4Gl2K/AjyQC8cC/6fmVhOSOy93EJsdZqGazw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/DataGrid/FluentDataGrid.razor.js.gz",
       "AssetKind": "All",
@@ -1298,10 +1298,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js.gz",
       "AssetKind": "All",
@@ -1319,10 +1319,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "js/initializersLoader.webview.js.gz",
       "AssetKind": "All",
@@ -1340,10 +1340,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/js/initializersLoader.webview.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt.gz",
       "AssetKind": "All",
@@ -1361,10 +1361,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "aitrailblazer.Web#[.{fingerprint=y3etz6p0s2}]?.styles.css.gz",
       "AssetKind": "All",
@@ -1372,20 +1372,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "7r9tayypti",
       "Integrity": "Xbe3Nr7yF/K2Jj/jQYnt6rh8kwvRxooABnQi/zecOPI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Overflow/FluentOverflow.razor.js.gz",
       "AssetKind": "All",
@@ -1403,10 +1403,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Overflow/FluentOverflow.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/HorizontalScroll/FluentHorizontalScroll.razor.js.gz",
       "AssetKind": "All",
@@ -1424,10 +1424,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Menu/FluentMenu.razor.js.gz",
       "AssetKind": "All",
@@ -1445,10 +1445,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Menu/FluentMenu.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "js/loading-theme.js.gz",
       "AssetKind": "All",
@@ -1466,10 +1466,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/js/loading-theme.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/TextField/FluentTextField.razor.js.gz",
       "AssetKind": "All",
@@ -1487,10 +1487,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/TextField/FluentTextField.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Tabs/FluentTab.razor.js.gz",
       "AssetKind": "All",
@@ -1508,10 +1508,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Tabs/FluentTab.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/FluentCombobox.razor.js.gz",
       "AssetKind": "All",
@@ -1529,10 +1529,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/List/FluentCombobox.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/AnchoredRegion/FluentAnchoredRegion.razor.js.gz",
       "AssetKind": "All",
@@ -1550,10 +1550,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Search/FluentSearch.razor.js.gz",
       "AssetKind": "All",
@@ -1571,10 +1571,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/Search/FluentSearch.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/KeyCode/FluentKeyCode.razor.js.gz",
       "AssetKind": "All",
@@ -1592,10 +1592,10 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.9.1/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint=8inm30yfxf}]?.map.gz",
       "AssetKind": "All",
@@ -1603,20 +1603,20 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "dh17d4gbe8",
       "Integrity": "v39nGTn8DWXNzTQVhbWw8016XZQ3vrzF2viNaNpcxl4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "aitrailblazer.Web.modules.json",
       "AssetKind": "Build",
@@ -1634,10 +1634,10 @@
       "OriginalItemSpec": "obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "aitrailblazer.Web#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -1652,13 +1652,13 @@
       "Integrity": "rldSKcyzWXoH+7nDLGUUAzzgT1bX9gZr5AaqGaQ23qc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "app-fluent#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -1676,10 +1676,10 @@
       "OriginalItemSpec": "wwwroot/app-fluent.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "app#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -1697,10 +1697,10 @@
       "OriginalItemSpec": "wwwroot/app.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -1718,10 +1718,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1739,10 +1739,10 @@
       "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "css/feature#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -1760,10 +1760,10 @@
       "OriginalItemSpec": "wwwroot/css/feature.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "favicon#[.{fingerprint}]?.ico",
       "AssetKind": "All",
@@ -1781,10 +1781,10 @@
       "OriginalItemSpec": "wwwroot/favicon.ico"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "favicon#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -1802,10 +1802,10 @@
       "OriginalItemSpec": "wwwroot/favicon.png"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "img/logoSmall#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -1823,10 +1823,10 @@
       "OriginalItemSpec": "wwwroot/img/logoSmall.png"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
       "BasePath": "_content/aitrailblazer.Web",
       "RelativePath": "img/logox32#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -1884,7 +1884,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Anchor/FluentAnchor.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -1939,7 +1939,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Anchor/FluentAnchor.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2021,7 +2021,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2076,7 +2076,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/AnchoredRegion/FluentAnchoredRegion.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/twd6d0wh4o-60czas7noz.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2158,7 +2158,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Button/FluentButton.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2213,7 +2213,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Button/FluentButton.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/akzl5bxou0-p6kf5zqzit.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2295,7 +2295,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Checkbox/FluentCheckbox.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2350,7 +2350,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Checkbox/FluentCheckbox.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/cq4bmj8gmb-zjzit57lox.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2432,7 +2432,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DataGrid/FluentDataGrid.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2487,7 +2487,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DataGrid/FluentDataGrid.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/klh9ieqob8-egx9kclacg.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2569,7 +2569,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2624,7 +2624,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DesignSystemProvider/FluentDesignTheme.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4jvn6qpxj5-botrf5pb00.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2706,7 +2706,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Divider/FluentDivider.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2761,7 +2761,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Divider/FluentDivider.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/7g337ulk4n-iy34mpf72d.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2843,7 +2843,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Grid/FluentGrid.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -2898,7 +2898,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Grid/FluentGrid.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6mwvvlkmgj-hi1gwvth64.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2980,7 +2980,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3035,7 +3035,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/HorizontalScroll/FluentHorizontalScroll.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pfc9to5k3q-5pcucyxosc.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3117,7 +3117,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/InputFile/FluentInputFile.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3172,7 +3172,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/InputFile/FluentInputFile.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/h0qxm5u0yy-0i77194r8h.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3254,7 +3254,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/KeyCode/FluentKeyCode.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3309,7 +3309,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/KeyCode/FluentKeyCode.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/win2gt64sq-c1boksilep.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3391,7 +3391,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Label/FluentInputLabel.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3446,7 +3446,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Label/FluentInputLabel.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ijuf810ucb-xp2f0e0rh3.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3528,7 +3528,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentAutocomplete.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3583,7 +3583,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentAutocomplete.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6o9gthdpke-psptt994gq.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3665,7 +3665,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentCombobox.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3720,7 +3720,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentCombobox.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/tb98bamshq-g9dxtzlran.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3802,7 +3802,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/ListComponentBase.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3857,7 +3857,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/ListComponentBase.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ffdjjohsnc-mmp1yy7un5.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3939,7 +3939,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Menu/FluentMenu.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -3994,7 +3994,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Menu/FluentMenu.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/pn46o4hdgm-5wrroj4j54.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4076,7 +4076,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/NavMenu/FluentNavMenu.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4131,7 +4131,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/NavMenu/FluentNavMenu.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/4sjayj892b-9fmja7pljs.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4213,7 +4213,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overflow/FluentOverflow.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4268,7 +4268,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overflow/FluentOverflow.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/mm8wr5jb95-bqks71ra3s.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4350,7 +4350,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/PullToRefresh/FluentPullToRefresh.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4405,7 +4405,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/PullToRefresh/FluentPullToRefresh.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/jq2jihf5fr-awzanx0pu8.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4487,7 +4487,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Search/FluentSearch.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4542,7 +4542,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Search/FluentSearch.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/uslingtyva-2reow8m5s0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4624,7 +4624,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSlider.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4679,7 +4679,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSlider.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/2b4v2q74ar-0b0bj86z40.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4761,7 +4761,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSliderLabel.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4816,7 +4816,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSliderLabel.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5eye7ha8pe-e5lgg05xwp.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4898,7 +4898,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/SortableList/FluentSortableList.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -4953,7 +4953,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/SortableList/FluentSortableList.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/fiqznfocyn-z9fluaz81s.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5035,7 +5035,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Splitter/FluentMultiSplitter.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5090,7 +5090,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Splitter/FluentMultiSplitter.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5dcvuemm5a-fvlrhho6fq.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5172,7 +5172,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tabs/FluentTab.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5227,7 +5227,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tabs/FluentTab.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5309,7 +5309,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/TextField/FluentTextField.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5364,7 +5364,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/TextField/FluentTextField.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/sbcuig79xm-uxxx5b63uj.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5446,7 +5446,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tooltip/FluentTooltip.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5501,7 +5501,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tooltip/FluentTooltip.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/is0nail857-b0dyrub9as.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5583,7 +5583,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5638,7 +5638,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/6nn42apl8y-6nvs5i8nnd.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5720,7 +5720,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/initializersLoader.webview.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5775,7 +5775,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/initializersLoader.webview.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m1yjzwotev-f8c5bd5212.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5857,7 +5857,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -5912,7 +5912,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5994,7 +5994,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6049,7 +6049,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ctztv6q6p6-eaoju04wfe.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6131,7 +6131,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6186,7 +6186,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/kwrall9b0s-88d01utims.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6268,7 +6268,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6323,7 +6323,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/m3ffqup1h6-kz8gc8cxma.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6405,7 +6405,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6460,7 +6460,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/3emkb5z5ma-ghl0tewv0j.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6505,7 +6505,7 @@
     },
     {
       "Route": "aitrailblazer.Web.modules.json",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6560,7 +6560,7 @@
     },
     {
       "Route": "aitrailblazer.Web.modules.json",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/jsmodules/jsmodules.build.manifest.json",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6597,7 +6597,7 @@
     },
     {
       "Route": "aitrailblazer.Web.modules.json.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/ft81kryp7n-o32v8r49vv.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6642,7 +6642,7 @@
     },
     {
       "Route": "aitrailblazer.Web.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6701,7 +6701,7 @@
     },
     {
       "Route": "aitrailblazer.Web.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6742,7 +6742,7 @@
     },
     {
       "Route": "aitrailblazer.Web.styles.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6787,7 +6787,7 @@
     },
     {
       "Route": "aitrailblazer.Web.y3etz6p0s2.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -6854,7 +6854,7 @@
     },
     {
       "Route": "aitrailblazer.Web.y3etz6p0s2.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/scopedcss/bundle/aitrailblazer.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6903,7 +6903,7 @@
     },
     {
       "Route": "aitrailblazer.Web.y3etz6p0s2.styles.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/miv2iv0y6j-y3etz6p0s2.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6956,7 +6956,7 @@
     },
     {
       "Route": "app-fluent.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7011,7 +7011,7 @@
     },
     {
       "Route": "app-fluent.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7048,7 +7048,7 @@
     },
     {
       "Route": "app-fluent.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7093,7 +7093,7 @@
     },
     {
       "Route": "app-fluent.z1brke9wl4.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7156,7 +7156,7 @@
     },
     {
       "Route": "app-fluent.z1brke9wl4.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7201,7 +7201,7 @@
     },
     {
       "Route": "app-fluent.z1brke9wl4.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/d4pk31d3nk-z1brke9wl4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7254,7 +7254,7 @@
     },
     {
       "Route": "app.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7309,7 +7309,7 @@
     },
     {
       "Route": "app.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7346,7 +7346,7 @@
     },
     {
       "Route": "app.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7391,7 +7391,7 @@
     },
     {
       "Route": "app.kwazt7t2v0.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7454,7 +7454,7 @@
     },
     {
       "Route": "app.kwazt7t2v0.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7499,7 +7499,7 @@
     },
     {
       "Route": "app.kwazt7t2v0.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/k58yp5g8qo-kwazt7t2v0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7552,7 +7552,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7615,7 +7615,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7660,7 +7660,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7713,7 +7713,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7768,7 +7768,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7805,7 +7805,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -7868,7 +7868,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7913,7 +7913,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7966,7 +7966,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/finnfctfv7-6gzpyzhau4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8011,7 +8011,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -8066,7 +8066,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8103,7 +8103,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.map.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/zh0cr9be45-8inm30yfxf.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8148,7 +8148,7 @@
     },
     {
       "Route": "css/feature.8yvvvz2klv.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -8211,7 +8211,7 @@
     },
     {
       "Route": "css/feature.8yvvvz2klv.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8256,7 +8256,7 @@
     },
     {
       "Route": "css/feature.8yvvvz2klv.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8309,7 +8309,7 @@
     },
     {
       "Route": "css/feature.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -8364,7 +8364,7 @@
     },
     {
       "Route": "css/feature.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8401,7 +8401,7 @@
     },
     {
       "Route": "css/feature.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/5xd115tzb2-8yvvvz2klv.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8446,7 +8446,7 @@
     },
     {
       "Route": "favicon.02wxv13jsk.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8491,7 +8491,7 @@
     },
     {
       "Route": "favicon.day43kxwv0.ico",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -8554,7 +8554,7 @@
     },
     {
       "Route": "favicon.day43kxwv0.ico",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8599,7 +8599,7 @@
     },
     {
       "Route": "favicon.day43kxwv0.ico.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8652,7 +8652,7 @@
     },
     {
       "Route": "favicon.ico",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -8707,7 +8707,7 @@
     },
     {
       "Route": "favicon.ico",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8744,7 +8744,7 @@
     },
     {
       "Route": "favicon.ico.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Release/net9.0/linux-x64/compressed/igo9zcivk8-day43kxwv0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8789,7 +8789,7 @@
     },
     {
       "Route": "favicon.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8826,7 +8826,7 @@
     },
     {
       "Route": "img/logoSmall.e6ergj6cgn.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8871,7 +8871,7 @@
     },
     {
       "Route": "img/logoSmall.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8908,7 +8908,7 @@
     },
     {
       "Route": "img/logox32.02wxv13jsk.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -8953,7 +8953,7 @@
     },
     {
       "Route": "img/logox32.png",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
       "Selectors": [],
       "ResponseHeaders": [
         {

@@ -1,39 +1,39 @@
 {
   "Files": [
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app-fluent.css",
       "PackagePath": "staticwebassets/app-fluent.css"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
       "PackagePath": "staticwebassets/app.css"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
       "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "PackagePath": "staticwebassets/css/feature.css"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
       "PackagePath": "staticwebassets/img/logoSmall.png"
     },
     {
-      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logox32.png",
       "PackagePath": "staticwebassets/img/logox32.png"
     },
     {

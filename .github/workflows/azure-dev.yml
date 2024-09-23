@@ -116,6 +116,7 @@ jobs:
       - name: Deploy Application
         run: |
           cd aitrailblazer.AppHost
+          azd config set alpha.aca.persistDomains on
           azd deploy --no-prompt
         env:
             AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
