@@ -1,0 +1,858 @@
+/* Define root-level CSS variables for theme colors and gradients */
+:root {
+  --fluent-accent-color: #D783FF; /* Example accent color (blue) */
+  --accent-color: #D783FF; 
+  --accent-fill-rest: #d783ff; /* Example accent color */
+  --neutral-fill-rest: #f3f3f3; /* Example neutral color */
+
+  --color-vivid-purple: #c471ed;
+  --color-striking-red: #f64f59;
+  --color-bright-blue: #12c2e9;
+  --gradient-vibrant: linear-gradient(
+    to right,
+    #6a11cb,
+    #7291f4
+  ); /* Adjusted for a more subtle gradient */
+
+  --gradient-SoftSunrise: linear-gradient(135deg, #ffe5b4, #fadadd);
+  --gradient-MintBreeze: linear-gradient(135deg, #e3fdf5, #e6e9f0);
+  --gradient-PastelDreams: linear-gradient(135deg, #ffd1dc, #a1ffce);
+  --gradient-GoldenHour: linear-gradient(135deg, #fff9b0, #ffd6d6);
+  --gradient-LavenderMist: linear-gradient(135deg, #ede7f6, #ffffff);
+  --gradient-AquaSplash: linear-gradient(135deg, #dfffff, #ffffff);
+  --gradient-PeachWhisper: linear-gradient(135deg, #ffe5d9, #ffffff);
+
+  --gradient-AITrailblazer: linear-gradient(135deg, #62a9cc, #82c4d9);
+  --gradient-AIBrandWizard: linear-gradient(135deg, #ffae8f, #ffd27a);
+  --gradient-AIStrategiX: linear-gradient(135deg, #9ba9f1, #b9aede);
+  --gradient-AICompetitorsIntel: linear-gradient(135deg, #6ecdcf, #8ddadf);
+  --gradient-AIMessageOptimizer: linear-gradient(135deg, #d8a19b, #a8889b);
+  --gradient-AINamePro: linear-gradient(135deg, #fd8ca0, #91a7ff);
+  --gradient-AILogoPro: linear-gradient(135deg, #5f727d, #748a97);
+  --gradient-PicturAIzeImg: linear-gradient(135deg, #ffd48b, #ffab64);
+  --gradient-PicturAIze: linear-gradient(135deg, #e4a1f7, #f8c0aa, #9cdaf9);
+  --gradient-VisionAIre: linear-gradient(135deg, #80e0ff, #9ab8e5);
+  --gradient-AIBrandAssets: linear-gradient(135deg, #f7d6e0, #fabac0);
+  --gradient-AIEmailWizard: linear-gradient(135deg, #fcff9e, #c67700);
+  --gradient-AIKeyNotesWizard: linear-gradient(135deg, #a2cfff, #d6e6f2);
+  --gradient-AINotesWizard: linear-gradient(135deg, #ffc75f, #f9f871);
+  --gradient-AIBrandWizardTags: linear-gradient(
+    135deg,
+    #0077b6,
+    #9b5de5,
+    #f15bb5
+  );
+  --gradient-AIBrandWizardMarketingMessage: linear-gradient(
+    135deg,
+    #88c9f2,
+    #a1dafb
+  );
+  --gradient-AIContactExtractor: linear-gradient(135deg, #4fd3c4, #67e6d5);
+  --gradient-AiTaskWizard: linear-gradient(135deg, #7aaffa, #92cbfa);
+  --gradient-AIWebAnalytiX: linear-gradient(135deg, #69d2e7, #a1d6e2);
+  --gradient-PicturAIzeDiagram: linear-gradient(135deg, #fcb6b6, #fed2a6);
+  --gradient-AIInSightOut: linear-gradient(135deg, #4b0082, #00ffff);
+
+  /* Define additional base spacing variables */
+  --padding-base: 30px;
+  --margin-base: 40px;
+  --border-radius-base: 15px;
+  --box-shadow-base: 0 12px 24px rgba(0, 0, 0, 0.2);
+  --box-shadow-hover: 0 15px 30px rgba(0, 0, 0, 0.4);
+  --transition-base: 0.3s ease;
+}
+body, html, .container, .fixed-top-nav, .chat-pane-container {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.session-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  position: relative;
+  width: 100%;
+}
+
+.session-name {
+  flex-grow: 1;
+  padding-right: 10px;
+}
+
+.session-buttons {
+  display: none;
+  gap: 5px;
+  position: absolute;
+  right: 5px;
+}
+
+.session-option:hover .session-buttons {
+  display: inline-flex;
+}
+.fixed-top-nav {
+  position: fixed;
+  top: 120px;
+  width: 220px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+
+.fixed-appbar-top-nav {
+  position: fixed; top: 0; height: 100%;
+  z-index: 2000; /* Ensure it is above other content */
+
+}
+
+.fixed-top-right-nav {
+  position: fixed;
+  top: 60px; /* Adjust this value to your needs */
+  right: 250px; /* Align it to the right */
+  width: 20px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+.fixed-top2-right-nav {
+  position: fixed;
+  top: 270px; /* Adjust this value to your needs */
+  right: 250px; /* Align it to the right */
+  width: 20px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+.fixed-top3-right-nav {
+  position: fixed;
+  top: 480px; /* Adjust this value to your needs */
+  right: 250px; /* Align it to the right */
+  width: 20px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+
+.fixed-top4-right-nav {
+  position: fixed;
+  top: 660px; /* Adjust this value to your needs */
+  right: 250px; /* Align it to the right */
+  width: 20px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+
+.fixed-top5-right-nav {
+  position: fixed;
+  top: 600px; /* Adjust this value to your needs */
+  right: 300px; /* Align it to the right */
+  width: 20px;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Background color to make sure it stands out */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+}
+
+.zero-padding {
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+}
+.fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it is above other content */
+  background-color: white; /* Add background to ensure text is visible */
+}
+.content-below-header {
+  margin-top: 64px; /* Adjust this value based on your header's height */
+}
+.chat-pane-container {
+  margin-top: 60px; /* Adjust this value based on the height of your fixed top menu */
+  margin-left: 240px; /* Adjust this value to account for the width of the .fixed-top-nav plus some spacing */
+  flex-grow: 1; /* Take up the remaining space */
+  padding: 10px;
+}
+.container {
+  display: flex;
+  align-items: flex-start; /* Align items at the top */
+  padding: 0; /* Ensure there is no padding */
+  margin: 0; /* Ensure there is no margin */
+}
+
+fluent-card {
+    --card-width: 320px;
+    --card-height: 320px;
+    padding: 20px;
+    margin: 12px;
+    width: var(--card-width);
+    height: var(--card-height);
+}
+/* app.css */
+.fluent-card-hero-size {
+  --card-width: 820px; 
+  --card-height: 220px;
+  padding: 20px;
+  margin: 20px;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+.fluent-card-user-details-min-size {
+  --card-width: 820px; 
+  --card-height: 160px;
+  padding: 20px;
+  margin: 20px;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+.fluent-card-user-details-size {
+  --card-width: 820px; 
+  --card-height: 640px;
+  padding: 20px;
+  margin: 20px;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+.fluent-card-split-size {
+  --card-width: 840px; 
+  --card-height: 460px;
+  padding: 2px;
+  margin: 2px;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+.panel-splitter-split-size {
+  --card-width: 820px; 
+  --card-height: 640px;
+  padding: 0px;
+  margin: 0px;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+/* Media query for smaller screens */
+@media (max-width: 820px) {
+  .fluent-card-hero-size {
+    --card-width: 100%; /* Make width 100% of the viewport width */
+  }
+}
+fluent-header {
+  background-color: var(--accent-color);
+}
+fluent-horizontal-scroll {
+  max-width: 820px;
+  margin: 20px
+}
+.accordion-heading {
+  display: flex;
+  align-items: left;
+  font-size: 1.0em;
+}
+
+.fluent-accordion-item {
+  background: #f3f4f6;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.fluent-accordion-item[expanded] {
+  background: #eae6fa;
+
+}
+
+.accordion-heading .fluent-icon {
+  margin-right: 10px;
+}
+
+.accordion-content {
+  padding: 15px;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+.top-tabs-font-size {
+  --type-ramp-base-font-size: 18px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.thread-font-size {
+  --type-ramp-base-font-size: 16px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.tree-font-size {
+  --type-ramp-base-font-size: 14px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-bigger-font-size {
+  --type-ramp-base-font-size: 22px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-big-font-size {
+  --type-ramp-base-font-size: 20px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-text-font-size {
+  --type-ramp-base-font-size: 16px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-splitter-font-size {
+  --type-ramp-base-font-size: 16px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.title-combobox-font-size {
+  --type-ramp-base-font-size: 12px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.title-wizard-font-size {
+  --type-ramp-base-font-size: 12px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.scrollable-splitter-content {
+  /* max-height: 300px;  Set the desired max height */
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid var(--accent-fill-rest);
+}
+
+.move-left-5 {
+  position: relative;
+  left: -20px;
+}
+.zero-padding-margin {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.content-normal-font-size {
+  --type-ramp-base-font-size: 14px;
+  --density: -20;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-small-font-size {
+  --type-ramp-base-font-size: 12px;
+  --density: -20;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+
+
+.content-smaller-font-size {
+  --type-ramp-base-font-size: 14px;
+  --density: -20;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.content-font-size {
+  --type-ramp-base-font-size: 18px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.menu-font-size {
+  --type-ramp-base-font-size: 12px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.tree-font-size {
+  --type-ramp-base-font-size: 14px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.menu-small-font-size {
+  --type-ramp-base-font-size: 8px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.status-font-size {
+  --type-ramp-base-font-size: 14px;
+  --density: 1;
+  padding: calc(var(--base-spacing-unit) * var(--density));
+  margin: calc(var(--base-spacing-unit) * var(--density));
+  line-height: calc(1.5 * var(--density));
+}
+.nice-green-badge {
+  background-color: #e6f4ea; /* Light Green Background */
+  color: #023102; /* Dark Green Text */
+  font-size: 18px;
+}
+.badge-font-size {
+  --type-ramp-base-font-size: 18px;
+  --density: 3;
+}
+.wrap-text-badge {
+  display: block; /* Ensure it behaves like a block element */
+  white-space: normal; /* Allows text to wrap */
+  word-break: break-word; /* Ensures words are broken properly at the end of the line */
+  line-height: 1.4; /* Provides more space between lines for readability */
+  max-width: 150px; /* Adjust this based on your layout needs */
+  text-align: center; /* Optional: Centers text in the badge for aesthetics */
+}
+
+.input-font-size {
+  --type-ramp-base-font-size: 18px;
+  --density: 1;
+}
+.selected-item {
+  background-color: #0078d4; /* Fluent UI blue */
+  color: white;
+}
+
+.active-session {
+  border: 2px solid var(--accent-fill-rest); /* Example for active session */
+}
+
+.inactive-session {
+  border: 2px solid var(--neutral-fill-rest); /* Example for inactive session */
+}
+.highlight {
+  border: 2px solid #0078D4; /* Example highlight color */
+  box-shadow: 0 0 10px #0078D4;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.selected-card {
+  border: 3px solid #0078D4; /* Example highlight color */
+  background-color: #e0f7ff; /* Light blue background */
+  box-shadow: 0 0 15px #0078D4;
+  transform: scale(1.02); /* Slightly increase size */
+  transition: all 0.3s ease;
+}
+/* CSS classes applying gradients to feature titles */
+.AITrailblazer-feature-title {
+  background: var(--gradient-AITrailblazer);
+}
+
+.AIBrandWizard-feature-title {
+  background: var(--gradient-AIBrandWizard);
+}
+
+.AIStrategiX-feature-title {
+  background: var(--gradient-AIStrategiX);
+}
+
+.AICompetitorsIntel-feature-title {
+  background: var(--gradient-AICompetitorsIntel);
+}
+
+.AIMessageOptimizer-feature-title {
+  background: var(--gradient-AIMessageOptimizer);
+}
+
+.AINamePro-feature-title {
+  background: var(--gradient-AINamePro);
+}
+
+.AILogoPro-feature-title {
+  background: var(--gradient-AILogoPro);
+}
+
+.PicturAIzeImg-feature-title {
+  background: var(--gradient-PicturAIzeImg);
+}
+
+.PicturAIze-feature-title {
+  background: var(--gradient-PicturAIze);
+}
+
+.VisionAIre-feature-title {
+  background: var(--gradient-VisionAIre);
+}
+
+.AIBrandAssets-feature-title {
+  background: var(--gradient-AIBrandAssets);
+}
+
+.AIWebAnalytiX-feature-title {
+  background: var(--gradient-AIWebAnalytiX);
+}
+
+.AIEmailWizard-feature-title {
+  background: var(--gradient-AIEmailWizard);
+}
+
+.AIBrandAssets-feature-title {
+  background: var(--gradient-AIBrandAssets);
+}
+
+.aiwebsiteanalysiswizard-feature-title {
+  background: var(--gradient-aiwebsiteanalysiswizard);
+}
+
+/* For 'AIBrandAssets' in lowercase as clarified */
+.AIBrandAssets-feature-title {
+  background: var(--gradient-AIBrandAssets);
+}
+.AIKeyNotesWizard-feature-title {
+  background: var(--gradient-AIKeyNotesWizard);
+}
+
+.AINotesWizard-feature-title {
+  background: var(--gradient-AINotesWizard);
+}
+
+.AIBrandWizardTags-feature-title {
+  background: var(--gradient-AIBrandWizardTags);
+}
+
+.AIBrandWizardMarketingMessage-feature-title {
+  background: var(--gradient-AIBrandWizardMarketingMessage);
+}
+
+.AIContactExtractor-feature-title {
+  background: var(--gradient-AIContactExtractor);
+}
+
+.AiTaskWizard-feature-title {
+  background: var(--gradient-AiTaskWizard);
+}
+
+.AIInSightOut-feature-title {
+  background: var(--gradient-AIInSightOut);
+}
+
+/* Enhanced scrollable feature section */
+.special-feature-group {
+  max-height: 400px; /* Adjust based on your requirement */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 20px;
+  margin: 40px auto;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow-base);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+.special-feature {
+  /* max-height: 400px;  Adjust based on your requirement */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 20px;
+  margin: 40px auto;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow-base);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Simplified styling for additional description panels */
+.additional-description-panel {
+  background: var(--gradient-vibrant);
+  color: #fff;
+  padding: var(--padding-base);
+  margin: var(--margin-base) auto;
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow-base);
+  max-width: 800px;
+  text-align: center;
+  transition: box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+/* Enhanced hover effect */
+.additional-description-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.additional-description-panel p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Enhancements for feature titles with gradient backgrounds */
+.feature-title {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; /* Makes the text color transparent to show the gradient */
+  font-weight: bold;
+}
+.center-container {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text and inline elements */
+}
+
+.left-aligned-content {
+  display: inline-block; /* Allows block-level elements to respect text-align */
+  text-align: left; /* Reset text alignment for content */
+  max-width: 800px; /* Or your preferred content width */
+}
+
+.highlight-button {
+  /*  background-color: var(--accent-fill-rest, #0078d4); Fallback color is #0078d4 */
+  color: var(
+    --accent-fill-rest,
+    white
+  ); /* Using accent color for text, with white as fallback */
+
+  border-color: var(
+    --accent-darker,
+    #005a9e
+  ); /* Assuming there's a darker accent variable, with fallback */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s,
+    box-shadow 0.3s;
+}
+.img-thumbnail {
+  display: inline-block;
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 4px; /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 128px; /* Width is always 128 pixels */
+  /* Height is automatically adjusted */
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the items for aesthetics */
+  gap: 20px; /* Adjust this value based on desired spacing between button and card */
+}
+.settings-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the items for aesthetics */
+  gap: 20px; /* Adjust this value based on desired spacing between button and card */
+  /* overflow-y: auto; Allows scrolling within the card if content exceeds max height */
+}
+.settings-card {
+  width: 820px; /* Adjust width as necessary */
+  padding: 5px;
+  flex-direction: column;
+  align-items: center; /* Centers the content horizontally */
+  box-sizing: border-box;
+  position: fixed; /* Keeps the element in a fixed position */
+  top: 100px; /* Adjust based on the button's height and desired gap */
+  left: 50%; /* Centers the element horizontally */
+  transform: translateX(-50%); /* Corrects the horizontal position */
+  max-height: 700px; /* Adjust max height as necessary */
+  overflow-y: auto; /* Allows scrolling within the card if content exceeds max height */
+  border: 1px dotted var(--accent-fill-rest);
+  z-index: 1000; /* Ensures the settings card is on top. Adjust as necessary. */
+  background-color: #f2f2f2; /* Light grey background for visibility */
+}
+
+.feature-card {
+  width: 800px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 400px;
+  overflow-y: scroll; /* Changed from auto to scroll to force a scrollbar */
+  border: 1px dotted var(--accent-fill-rest);
+}
+
+.feature-text {
+  overflow-y: auto; /* Allows scrolling within the card if content exceeds max height */
+  border: 1px dotted var(--accent-fill-rest);
+}
+
+.response-card {
+  width: 800px; /* Adjust width as necessary */
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the content horizontally */
+  box-sizing: border-box;
+  position: fixed; /* Keeps the element in a fixed position */
+  top: 100px; /* Adjust based on the button's height and desired gap */
+  left: 50%; /* Centers the element horizontally */
+  transform: translateX(-50%); /* Corrects the horizontal position */
+  max-height: 400px; /* Adjust max height as necessary */
+  overflow-y: auto; /* Allows scrolling within the card if content exceeds max height */
+  border: 1px dotted var(--accent-fill-rest);
+}
+
+/* Ensuring images within feature cards are responsive */
+.feature-image {
+  display: block; /* Changes the image to a block-level element */
+  max-width: 100%;  /* Ensures image does not overflow its container */
+  /*  height: auto; Maintains aspect ratio */
+  margin: 0 auto; /* Centers the image horizontally within its container */
+}
+
+/* Improving the accessibility and readability of feature content */
+.feature-content {
+  flex-grow: 1;
+  padding: 10px; /* Adds padding for better text readability */
+}
+
+/* Base Styling for Logo, Title, and Description */
+.feature-logo {
+  /* max-width: 100px;
+  display: block;*/
+  margin: 60 auto 20px;
+  padding: 6px;
+}
+
+/* Simplified feature container layout */
+.feature-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .special-feature {
+    /* Adjustments for smaller screens */
+    padding: 10px;
+    margin: 20px auto;
+  }
+}
+
+/* Additional responsive adjustments for feature cards */
+@media (max-width: 768px) {
+  .feature-card {
+    width: 100%; /* Adjusts card width to be responsive */
+    padding: 10px; /* Smaller padding on smaller screens */
+  }
+}
+
+.feature-description {
+  text-align: justify;
+}
+
+/* Optimized hover effects for interactivity */
+.additional-description-panel:hover,
+.modern-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Custom styles for the toolbar */
+.custom-toolbar {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-toolbar .progress-top {
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.custom-toolbar .custom-checkbox {
+  margin-right: 20px;
+}
+
+.custom-toolbar .custom-radio-group {
+  display: flex;
+  align-items: center;
+}
+
+.custom-toolbar .custom-radio {
+  margin-right: 10px;
+  flex-grow: 1;
+}
+
+.fluent-checkbox {
+  --checkbox-checked-indicator-color: green;
+  --checkbox-unchecked-indicator-color: brown;
+}
+
+.fluent-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fluent-radio:checked {
+  --radio-checked-color: #0078d4;
+}
+
+/* customStyles.css */
+.fluent-slider {
+  width: 100%; /* Ensure the slider takes the full width */
+  --slider-thumb-color: #0078d4; /* Custom thumb color */
+  --slider-track-color: #edebe9; /* Custom track color */
+  --slider-active-track-color: #0078d4; /* Custom active track color */
+}
+
+.fluent-slider-label {
+  color: #0078d4; /* Custom label color for better visibility */
+}
+
+/* Additional styles for the label and container for better alignment and spacing */
+.slider-container {
+  padding: 35px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 50px;
+
+  width: 100%;
+  background: var(--gradient-MintBreeze);
+}
+
+.slider-container-short {
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.slider-label {
+  margin-left: 8px;
+  display: block;
+  margin-bottom: 5px;
+  color: #323130; /* Fluent UI neutral primary color for text */
+  font-size: 15px; /* Adjust the size as needed */
+  font-weight: bold; /* Optional: makes the text bold */
+}

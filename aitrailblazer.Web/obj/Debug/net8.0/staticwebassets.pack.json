@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/aitrailblazer.Web.bundle.scp.css",
+      "PackagePath": "staticwebassets/aitrailblazer.Web.27o3ik00t8.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.aitrailblazer.Web.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.aitrailblazer.Web.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.aitrailblazer.Web.props",
+      "PackagePath": "build\\aitrailblazer.Web.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.aitrailblazer.Web.props",
+      "PackagePath": "buildMultiTargeting\\aitrailblazer.Web.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.aitrailblazer.Web.props",
+      "PackagePath": "buildTransitive\\aitrailblazer.Web.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

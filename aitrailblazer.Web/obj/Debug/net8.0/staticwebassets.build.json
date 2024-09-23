@@ -1,0 +1,640 @@
+{
+  "Version": 1,
+  "Hash": "gEwq5hDobaMxp0r9ytfVgm7vvKbc56OK6snHXjxkxMM=",
+  "Source": "aitrailblazer.Web",
+  "BasePath": "_content/aitrailblazer.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "aitrailblazer.Web/wwwroot",
+      "Source": "aitrailblazer.Web",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/bundle/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "aitrailblazer.Web#[.{fingerprint}]?.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "Fingerprint": "27o3ik00t8",
+      "Integrity": "wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/bundle/aitrailblazer.Web.styles.css"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/aitrailblazer.Web.bundle.scp.css",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "aitrailblazer.Web#[.{fingerprint}]!.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "27o3ik00t8",
+      "Integrity": "wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/aitrailblazer.Web.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "app#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "uu9ibsb3xc",
+      "Integrity": "Zk1CR5JIowRSPn7RJa/GR6V2tv8fIShwmJY4ktNQQcQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/app.css"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6gzpyzhau4",
+      "Integrity": "SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8inm30yfxf",
+      "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "favicon#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ifv42okdf2",
+      "Integrity": "4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/favicon.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "aitrailblazer.Web.27o3ik00t8.bundle.scp.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/aitrailblazer.Web.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5602"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:33:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "27o3ik00t8"
+        },
+        {
+          "Name": "label",
+          "Value": "aitrailblazer.Web.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY="
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.27o3ik00t8.styles.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5602"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:33:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "27o3ik00t8"
+        },
+        {
+          "Name": "label",
+          "Value": "aitrailblazer.Web.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY="
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.bundle.scp.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/projectbundle/aitrailblazer.Web.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5602"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:33:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY="
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.styles.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/obj/Debug/net8.0/scopedcss/bundle/aitrailblazer.Web.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5602"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:33:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wkAu5gUAIEnJE8jBLR8F3Z6uSPfYH8jCRkzWYefrOcY="
+        }
+      ]
+    },
+    {
+      "Route": "app.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2077"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zk1CR5JIowRSPn7RJa/GR6V2tv8fIShwmJY4ktNQQcQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Zk1CR5JIowRSPn7RJa/GR6V2tv8fIShwmJY4ktNQQcQ="
+        }
+      ]
+    },
+    {
+      "Route": "app.uu9ibsb3xc.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2077"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zk1CR5JIowRSPn7RJa/GR6V2tv8fIShwmJY4ktNQQcQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "uu9ibsb3xc"
+        },
+        {
+          "Name": "label",
+          "Value": "app.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Zk1CR5JIowRSPn7RJa/GR6V2tv8fIShwmJY4ktNQQcQ="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "162726"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6gzpyzhau4"
+        },
+        {
+          "Name": "label",
+          "Value": "bootstrap/bootstrap.min.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "162726"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449111"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8inm30yfxf"
+        },
+        {
+          "Name": "label",
+          "Value": "bootstrap/bootstrap.min.css.map"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css.map",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/bootstrap/bootstrap.min.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449111"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.ifv42okdf2.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1148"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ifv42okdf2"
+        },
+        {
+          "Name": "label",
+          "Value": "favicon.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/dotnet9dev/aitrailblazer/aitrailblazer.Web/wwwroot/favicon.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1148"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 13 Jul 2024 16:32:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
+        }
+      ]
+    }
+  ]
+}

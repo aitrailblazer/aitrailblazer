@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "HBSdliBJdPfEblNu/82ZE2DfNHxu5Z1BZQ0zmneiyUE=",
+  "Source": "aitrailblazer.ApiService",
+  "BasePath": "_content/aitrailblazer.ApiService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
