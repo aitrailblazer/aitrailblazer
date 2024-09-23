@@ -80,7 +80,7 @@ jobs:
       - name: Deploy Application
         run: |
           cd aitrailblazer.AppHost
-          azd deploy --no-prompt
+          azd deploy --verbose --no-prompt
         env:
             AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
             AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
