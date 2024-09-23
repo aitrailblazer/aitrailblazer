@@ -5,5 +5,5 @@ var apiService = builder.AddProject<Projects.aitrailblazer_ApiService>("apiservi
 builder.AddProject<Projects.aitrailblazer_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(apiService);
-
+//
 builder.Build().Run();
