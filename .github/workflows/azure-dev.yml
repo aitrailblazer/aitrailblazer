@@ -73,9 +73,9 @@ jobs:
 
       # Required when provisioning and deploying are defined in separate jobs.
       - name: Refresh azd env (pulls latest infrastructure provision)
-       run: azd env refresh
-       env:
-         AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+        run: azd env refresh
+        env:
+            AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
 
       - name: Deploy Application
         run: |
