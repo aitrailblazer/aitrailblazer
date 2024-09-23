@@ -106,11 +106,6 @@
           },
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
         }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
-        }
       }
     },
     "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/aitrailblazer.Web.csproj": {
@@ -213,12 +208,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[9.0.0-preview.6.24327.7, 9.0.0-preview.6.24327.7]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -228,11 +217,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
         }
       }
     }

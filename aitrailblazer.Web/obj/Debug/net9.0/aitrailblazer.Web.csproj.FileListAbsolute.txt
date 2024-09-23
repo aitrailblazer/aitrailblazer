@@ -271,11 +271,8 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/kwrall9b0s-88d01utims.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/m3ffqup1h6-kz8gc8cxma.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/3emkb5z5ma-ghl0tewv0j.gz
-/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/d4pk31d3nk-z1brke9wl4.gz
-/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/k58yp5g8qo-kwazt7t2v0.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/finnfctfv7-6gzpyzhau4.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/zh0cr9be45-8inm30yfxf.gz
-/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-8yvvvz2klv.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/igo9zcivk8-day43kxwv0.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/ft81kryp7n-o32v8r49vv.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/ctztv6q6p6-eaoju04wfe.gz
@@ -295,3 +292,6 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/aitrailblazer.Web.pdb
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/aitrailblazer.Web.genruntimeconfig.cache
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/ref/aitrailblazer.Web.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/d4pk31d3nk-7vptaeul5u.gz
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/k58yp5g8qo-5041uivmj5.gz
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-unuuwckvy5.gz

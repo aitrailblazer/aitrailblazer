@@ -29,6 +29,258 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBizIntelCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBizIntelCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBizIntelLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBizIntelLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBrandAssistantCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBrandAssistantCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBrandAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBrandAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBrandwizardCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBrandwizardCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBrandwizardLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIBrandwizardLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIClearNoteCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIClearNoteCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIClearNoteCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIClearNoteCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIClearNoteLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIClearNoteLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AICommerceAssistantCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AICommerceAssistantCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AICommerceAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AICommerceAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIContactExtractorCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIContactExtractorCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIContactExtractorLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIContactExtractorLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIContentAssistantCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIContentAssistantCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIContentAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIContentAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIDiagramCodexCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIDiagramCodexCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIDiagramCodexLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIDiagramCodexLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIEmailWizardCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIEmailWizardCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIEmailWizardLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIEmailWizardLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIKeyPointsWizardCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIKeyPointsWizardCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIKeyPointsWizardLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIKeyPointsWizardLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AILightRayArtCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AILightRayArtCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AILightRayArtLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AILightRayArtLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AILogoProCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AILogoProCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AILogoProLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AILogoProLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIMarketIntelBackgroundpng.png",
+      "PackagePath": "staticwebassets/img/copilots/AIMarketIntelBackgroundpng.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIMessageOptimizerBackgroundpng.png",
+      "PackagePath": "staticwebassets/img/copilots/AIMessageOptimizerBackgroundpng.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIMessageOptimizerCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIMessageOptimizerCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIMessageOptimizerLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIMessageOptimizerLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AINameProCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AINameProCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AINameProLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AINameProLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIPressReleaseAssistant.png",
+      "PackagePath": "staticwebassets/img/copilots/AIPressReleaseAssistant.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIPressReleaseAssistantCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIPressReleaseAssistantCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIPressReleaseAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIPressReleaseAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIStrategiQAssistantCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIStrategiQAssistantCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIStrategiQAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIStrategiQAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIStrategiXBackground.png",
+      "PackagePath": "staticwebassets/img/copilots/AIStrategiXBackground.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIStrategiXCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIStrategiXCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIStrategiXLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIStrategiXLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AITaskWizardCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AITaskWizardCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AITaskWizardLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AITaskWizardLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AITrailblazerBackground.png",
+      "PackagePath": "staticwebassets/img/copilots/AITrailblazerBackground.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AITrailblazerCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AITrailblazerCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AITrailblazerLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AITrailblazerLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIWritingAssistantCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AIWritingAssistantCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIWritingAssistantCard.png",
+      "PackagePath": "staticwebassets/img/copilots/AIWritingAssistantCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIWritingAssistantLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AIWritingAssistantLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AiInSightOutCard.jpg",
+      "PackagePath": "staticwebassets/img/copilots/AiInSightOutCard.jpg"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AiInSightOutLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/AiInSightOutLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeBackground.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeBackground.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeCard.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeDiagramsCard.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeDiagramsCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeDiagramsLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeDiagramsLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeImgBackground.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeImgBackground.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeImgCard.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeImgCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeImgLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeImgLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/PicturAIzeLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/PicturAIzeLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/StrategiXLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/StrategiXLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/StrategyXLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/StrategyXLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/VisionAIreBackground.png",
+      "PackagePath": "staticwebassets/img/copilots/VisionAIreBackground.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/VisionAIreCard.png",
+      "PackagePath": "staticwebassets/img/copilots/VisionAIreCard.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/VisionAIreLogo.png",
+      "PackagePath": "staticwebassets/img/copilots/VisionAIreLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/icon-512.png",
+      "PackagePath": "staticwebassets/img/icon-512.png"
+    },
+    {
       "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/logoSmall.png",
       "PackagePath": "staticwebassets/img/logoSmall.png"
     },

@@ -106,11 +106,6 @@
           },
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
         }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
-        }
       }
     }
   }
