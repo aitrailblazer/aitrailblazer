@@ -79,6 +79,7 @@ jobs:
 
       - name: Deploy Application
         run: |
+          echo "AZURE_LOCATION: $AZURE_LOCATION"
           cd aitrailblazer.AppHost
           azd deploy --no-prompt
         env:
