@@ -7,3 +7,4 @@ builder.AddProject<Projects.aitrailblazer_Web>("webfrontend")
     .WithReference(apiService);
 //
 builder.Build().Run();
+//
