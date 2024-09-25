@@ -9,20 +9,25 @@
   <ItemGroup>
 
     <ProjectReference Include="..\aitrailblazer.ServiceDefaults\aitrailblazer.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\AITGraph.Sdk\AITGraph.Sdk.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Core" Version="1.43.0" />
-    <PackageReference Include="Azure.Identity" Version="1.12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Identity.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.64.1" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Identity.Web.TokenAcquisition" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.6" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.0" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.20.0" />
+    <PackageReference Include="Microsoft.Identity.Web.GraphServiceClientBeta" Version="2.20.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.20.0" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.9.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.9.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>

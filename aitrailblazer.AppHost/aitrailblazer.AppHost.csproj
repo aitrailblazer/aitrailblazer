@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-
     <ProjectReference Include="..\aitrailblazer.ApiService\aitrailblazer.ApiService.csproj" />
     <ProjectReference Include="..\aitrailblazer.Web\aitrailblazer.Web.csproj" />
   </ItemGroup>

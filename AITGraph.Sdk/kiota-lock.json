@@ -1,0 +1,39 @@
+{
+  "descriptionHash": "2F90AA5DD444E3B70597E1E28821359B13CBB4D0E5FF866E1FC6442929FAD2B3A81CC05CDA6D1B3DA886797C97C91F7BBFFA66D01F6CF42B9B8D7FF3ADB051B0",
+  "descriptionLocation": "OpenApi/Graph.json",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.11.1",
+  "clientClassName": "AITGraphApiClient",
+  "clientNamespaceName": "AITGraph.Sdk",
+  "language": "CSharp",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": true,
+  "includeAdditionalData": true,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Form.FormSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Multipart.MultipartSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Text.TextParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Form.FormParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain;q=0.9",
+    "application/x-www-form-urlencoded;q=0.2",
+    "multipart/form-data;q=0.1"
+  ],
+  "includePatterns": [
+    "/me/messages",
+    "/me/mailFolders",
+    "/me/photo",
+    "/me/profile",
+    "/me/profile/account",
+    "/me/calendar/events"
+  ],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}

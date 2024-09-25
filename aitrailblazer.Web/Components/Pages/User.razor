@@ -1,0 +1,188 @@
+@page "/profile"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Identity.Web
+@using AITGraph.Sdk.Models
+@using AITrailBlazer.Web.Services;
+
+@using GraphMessage = AITGraph.Sdk.Models.Message
+@using Microsoft.Extensions.Logging
+@inject ILogger<User> Logger
+@inject AITGraphService GraphService
+@inject NavigationManager NavigationManager
+
+<h1>User Profile</h1>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+else if (user != null)
+{
+    <div class="user-profile">
+        <h2>@(user.Names?.FirstOrDefault()?.DisplayName ?? "N/A")</h2>
+        <p>Email: @(user.Emails?.FirstOrDefault()?.Address ?? "N/A")</p>
+        <p>ID: @user.Id</p>
+
+        @if (accountInfo != null)
+        {
+            <h3>Account Information</h3>
+            <p>Age Group: @(accountInfo.AgeGroup ?? "N/A")</p>
+            <p>Country Code: @(accountInfo.CountryCode ?? "N/A")</p>
+            <p>User Principal Name: @(accountInfo.UserPrincipalName ?? "N/A")</p>
+            <p>Allowed Audiences: @(accountInfo.AllowedAudiences?.ToString() ?? "N/A")</p>
+            <p>Created: @(accountInfo.CreatedDateTime?.ToLocalTime().ToString("g") ?? "N/A")</p>
+            <p>Last Modified: @(accountInfo.LastModifiedDateTime?.ToLocalTime().ToString("g") ?? "N/A")</p>
+            <p>Account ID: @(accountInfo.Id ?? "N/A")</p>
+        }
+
+        @if (user.Skills != null && user.Skills.Any())
+        {
+            <h3>Skills</h3>
+            <ul>
+                @foreach (var skill in user.Skills)
+                {
+                    <li>@skill.DisplayName</li>
+                }
+            </ul>
+        }
+
+        @if (user.EducationalActivities != null && user.EducationalActivities.Any())
+        {
+            <h3>Education</h3>
+            <ul>
+                @foreach (var education in user.EducationalActivities)
+                {
+                    <li>@education.Institution - @education.Program</li>
+                }
+            </ul>
+        }
+    </div>
+
+    <h3>Recent Messages</h3>
+    @if (userMessages != null && userMessages.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>From</th>
+                    <th>Received</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var message in userMessages)
+                {
+                    <tr>
+                        <td>@message.Subject</td>
+                        <td>@message.From?.EmailAddress?.Name</td>
+                        <td>@message.ReceivedDateTime?.ToLocalTime().ToString("g")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No messages found.</p>
+    }
+
+    <h3>Upcoming Calendar Events</h3>
+    @if (calendarEvents != null && calendarEvents.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Organizer</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var evt in calendarEvents)
+                {
+                    <tr>
+                        <td>@evt.Subject</td>
+                        <td>@evt.Organizer?.EmailAddress?.Name</td>
+                        <td>@(ParseAndFormatDateTime(evt.Start?.DateTime))</td>
+                        <td>@(ParseAndFormatDateTime(evt.End?.DateTime))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No upcoming events found.</p>
+    }
+}
+
+@code {
+    private Profile user;
+    private UserAccountInformation accountInfo;
+    private List<GraphMessage> userMessages = new List<GraphMessage>();
+    private List<Event> calendarEvents = new List<Event>();
+    private bool isLoading = true;
+    private string error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserDataAsync();
+    }
+
+    private async Task LoadUserDataAsync()
+    {
+        isLoading = true;
+        error = null;
+
+        try
+        {
+            Logger.LogInformation("Attempting to load user data");
+            user = await GraphService.GetCurrentUserProfileAsync();
+            accountInfo = await GraphService.GetUserAccountInformationAsync();
+            userMessages = await GraphService.GetRecentMessagesAsync();
+            calendarEvents = await GraphService.GetCalendarEventsAsync(5); // Get the next 5 events
+            Logger.LogInformation("User data loaded successfully");
+        }
+        catch (AuthenticationRequiredException)
+        {
+            Logger.LogWarning("Authentication required, redirecting to login");
+            RedirectToLogin();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error loading user data: {ex.Message}";
+            Logger.LogError(ex, "Error loading user data");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void RedirectToLogin()
+    {
+        var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
+    }
+
+    private string ParseAndFormatDateTime(string dateTimeString)
+    {
+        if (string.IsNullOrEmpty(dateTimeString))
+            return "N/A";
+
+        if (DateTime.TryParse(dateTimeString, out DateTime dateTime))
+        {
+            return dateTime.ToLocalTime().ToString("g");
+        }
+
+        return dateTimeString; // Return the original string if parsing fails
+    }
+}

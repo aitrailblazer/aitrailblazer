@@ -13,7 +13,7 @@
     <SourceRoot Include="/Users/constantinevassilev02/.nuget/packages/" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.fluentui.aspnetcore.components/4.9.1/buildTransitive/Microsoft.FluentUI.AspNetCore.Components.props" Condition="Exists('$(NuGetPackageRoot)microsoft.fluentui.aspnetcore.components/4.9.1/buildTransitive/Microsoft.FluentUI.AspNetCore.Components.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.fluentui.aspnetcore.components/4.10.0/buildTransitive/Microsoft.FluentUI.AspNetCore.Components.props" Condition="Exists('$(NuGetPackageRoot)microsoft.fluentui.aspnetcore.components/4.10.0/buildTransitive/Microsoft.FluentUI.AspNetCore.Components.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.extensions.telemetry.abstractions/8.7.0/buildTransitive/net6.0/Microsoft.Extensions.Telemetry.Abstractions.props" Condition="Exists('$(NuGetPackageRoot)microsoft.extensions.telemetry.abstractions/8.7.0/buildTransitive/net6.0/Microsoft.Extensions.Telemetry.Abstractions.props')" />
   </ImportGroup>
 </Project>
