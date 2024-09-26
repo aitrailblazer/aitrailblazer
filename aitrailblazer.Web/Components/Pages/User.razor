@@ -26,6 +26,19 @@ else if (error != null)
 else if (user != null)
 {
     <div class="user-profile">
+        <!-- Display the user's profile photo -->
+        @if (userPhotoBase64 != null)
+        {
+            <img src="data:image/jpeg;base64,@userPhotoBase64" alt="User Photo"
+                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-right: 20px;" />
+        }
+        else
+        {
+            <div style="width: 100px; height: 100px; background-color: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                <span style="font-size: 50px; color: white;">👤</span>
+            </div>
+        }
+
         <h2>@(user.Names?.FirstOrDefault()?.DisplayName ?? "N/A")</h2>
         <p>Email: @(user.Emails?.FirstOrDefault()?.Address ?? "N/A")</p>
         <p>ID: @user.Id</p>
@@ -129,8 +142,13 @@ else if (user != null)
     private UserAccountInformation accountInfo;
     private List<GraphMessage> userMessages = new List<GraphMessage>();
     private List<Event> calendarEvents = new List<Event>();
+
+    private List<DriveItem> recentFiles = new List<DriveItem>();
     private bool isLoading = true;
     private string error;
+
+    // Variable to hold the Base64-encoded photo
+    private string userPhotoBase64;
 
     protected override async Task OnInitializedAsync()
     {
@@ -149,6 +167,21 @@ else if (user != null)
             accountInfo = await GraphService.GetUserAccountInformationAsync();
             userMessages = await GraphService.GetRecentMessagesAsync();
             calendarEvents = await GraphService.GetCalendarEventsAsync(5); // Get the next 5 events
+            //recentFiles = await GraphService.GetRecentFilesAsync(10); // Get 10 recent files
+
+            // Fetch the user's profile photo
+            var photoStream = await GraphService.GetUserPhotoAsync();
+            if (photoStream != null)
+            {
+                // Convert the photo stream to a Base64 string
+                using (var memoryStream = new MemoryStream())
+                {
+                    await photoStream.CopyToAsync(memoryStream);
+                    var photoBytes = memoryStream.ToArray();
+                    userPhotoBase64 = Convert.ToBase64String(photoBytes);
+                }
+            }
+
             Logger.LogInformation("User data loaded successfully");
         }
         catch (AuthenticationRequiredException)

@@ -1,0 +1,692 @@
+I've modified the `UserDetails.razor` component as requested. Here's the updated version:
+
+```razor
+@using AITGraph.Sdk.Models
+@using System.Text.Json
+@using Newtonsoft.Json
+@using System.Text.RegularExpressions
+@inject Microsoft.Extensions.Logging.ILogger<UserDetails> Logger
+@inject NavigationManager Navigation
+@inject AITGraphService GraphService
+@inject IJSRuntime JSRuntime
+@using Markdig
+@using SmartComponents
+@using System.ComponentModel.DataAnnotations
+@inject AITGraphService GraphService
+@using AITrailBlazer.Web.Services;
+@using GraphMessage = AITGraph.Sdk.Models.Message
+
+
+<FluentCard MinimalStyle="true" Width="1280px" Hight="100%" Style="border: 2px solid var(--accent-fill-rest); padding: 20px;" Class="fluent-card-user-details-size">
+    <div style="display: flex; align-items: center;">
+        @if (UserPhotoBase64 != null)
+        {
+            <img src="data:image/jpeg;base64,@UserPhotoBase64" alt="User Photo"
+                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-right: 20px;" />
+        }
+        else
+        {
+            <div style="width: 100px; height: 100px; background-color: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                <span style="font-size: 50px; color: white;">👤</span>
+            </div>
+        }
+
+        <div>
+            <h2>Welcome, @User.GivenName @User.Surname!</h2>
+            <p>@User.Mail</p>
+            <p style="color: gray;">We are glad to have you here.</p>
+        </div>
+    </div>
+@if (UserMessages != null && DriveItems != null){
+    <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange">
+        <FluentTab Id="Emails-tab-1">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.Mail())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Mail
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Your Emails in Outlook
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Access and manage your Outlook emails directly from this tab.
+                </FluentLabel>
+                @if (UserMessages != null && UserMessages.Any())
+                {
+                    <div style="max-height: 640px; overflow-y: auto;">
+                        <FluentDataGrid Items="@UserMessages.AsQueryable()" ShowHover="true" TGridItem="Message">
+                            <SelectColumn TGridItem="Message" 
+                            SelectMode="DataGridSelectMode.Multiple"
+                            SelectedItemsChanged="OnSelectedEmailsChanged" />
+                            <PropertyColumn Property="@(m => m.Sender != null && m.Sender.EmailAddress != null ? m.Sender.EmailAddress.Name : "Unknown")"
+                                            Title="Sender" Sortable="true" />
+                            <PropertyColumn Property="@(m => m.Subject ?? "No Subject")" Title="Subject" Sortable="true" />
+                            <PropertyColumn Property="@(m => m.ReceivedDateTime.HasValue ? m.ReceivedDateTime.Value.ToLocalTime().ToString("g") : "N/A")"
+                                            Title="Received" Sortable="true" />
+                        </FluentDataGrid>
+                    </div>
+                }
+                else
+                {
+                    <p>No emails available</p>
+                }
+
+                @if (SelectedEmails.Any())
+                {
+                    var selectedEmail = SelectedEmails.First();
+                    <FluentDialog Id="emailContentDialog" Visible="true" OnDismiss="@CloseEmailDialog"
+                                  Style="width: 80vw; max-height: 80vh; overflow: auto;">
+                        <div style="max-height: 70vh; overflow-y: auto;">
+                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                          Loading="@loadingOutput1"
+                                          OnClick="@(() => CopyContentOutput1(GetPlainText(selectedEmail)))" />
+                             <FluentButton IconEnd="@(new Icons.Regular.Size20.BookDatabase())" Title="Vectorize"
+                                          Loading="@loadingOutput2"
+                                          OnClick="@(() => OpenConfirmationForChatSave("id",GetPlainText(selectedEmail))
+                                          )" />                          
+                            <h3>@selectedEmail.Subject</h3>
+                            <p><strong>From:</strong> @selectedEmail.Sender.EmailAddress.Name</p>
+                            <p><strong>To:</strong> @(selectedEmail.ToRecipients != null ? string.Join(", ", selectedEmail.ToRecipients.Select(r => r.EmailAddress.Name)) : "No recipients")</p>
+                            <p><strong>Received:</strong> @selectedEmail.ReceivedDateTime?.ToLocalTime().ToString("g")</p>
+                            <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
+                                 @if (selectedEmail.Body != null && !string.IsNullOrEmpty(selectedEmail.Body.Content))
+                                {
+                                    @if (selectedEmail.Body.ContentType == BodyType.Html)
+                                    {
+                                        @((MarkupString)ReplaceCIDsWithDataURIs(selectedEmail.Body.Content, selectedEmail.Attachments))
+                                    }
+                                    else
+                                    {
+                                        @GetPlainText(selectedEmail)
+                                    }
+                                }
+                                else
+                                {
+                                    <em>No content available</em>
+                                }
+                            </pre>
+                        </div>
+                        <FluentButton Appearance="Appearance.Accent" OnClick="@CloseEmailDialog">Close</FluentButton>
+                    </FluentDialog>
+                }
+            </Content>
+        </FluentTab>
+        <FluentTab Id="Contacts-tab-1">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.ContactCard())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Personal Contacts
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Easily Manage Your Contacts in One Place
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Stay organized and in control with our powerful contact management tool. Whether you're on the go or at your desk, your contacts are always within reach.
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Seamlessly sync, view, and manage personal and professional contacts, making it easy to connect, schedule meetings, and collaborate all in one place.
+                </FluentLabel>
+                <div class="mt-4">
+                    <FluentButton Appearance="Appearance.Stealth" OnClick="CreateNewContact" class="text-white">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Add())" Slot="start" />
+                        New Contact
+                    </FluentButton>
+                </div>                
+                @if (Contacts != null && Contacts.Any())
+                {
+                    <div style="max-height: 640px; overflow-y: auto;">
+                        <FluentDataGrid Items="@Contacts.AsQueryable()" ShowHover="true" TGridItem="Contact">
+                            <SelectColumn TGridItem="Contact" SelectMode="DataGridSelectMode.Single"
+                                        SelectedItemsChanged="OnSelectedContactChanged" />
+                            <PropertyColumn Property="@(c => c.DisplayName ?? "No Name")" Title="Name" Sortable="true" />
+                            <PropertyColumn Property="@(c => GetContactEmail(c))" Title="Email" Sortable="true" />
+                            <PropertyColumn Property="@(c => c.MobilePhone ?? "No Phone")" Title="Mobile Phone" Sortable="true" />
+                            <PropertyColumn Property="@(c => GetBusinessAddress(c))" Title="Business Address" Sortable="true" Class="multiline-text" />            
+                        </FluentDataGrid>
+                    </div>
+                }
+                else
+                {
+                    <p>No contacts available</p>
+                }
+
+                @if (isContactDetailsDialogVisible == true && SelectedContact != null)
+                {
+                    <FluentDialog @bind-Visible="isContactDetailsDialogVisible">
+                        <FluentCard MinimalStyle="true" Width="640px" Height="100%" Style="border: 1px solid var(--accent-fill-rest); padding: 0px; margin-right: 0px;" Class="fluent-card-summary-details">
+                            <FluentHeader>Contact Details</FluentHeader>
+                            <EditForm Model="@SelectedContact" OnValidSubmit="SaveContactAsync">
+                                <DataAnnotationsValidator />
+                                <ValidationSummary class="mb-4 text-red-600" />
+                                <form class="default-form rounded-lg bg-white p-8 shadow-xl mb-12">
+                                    <div class="grid gap-8 md:grid-cols-2">
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"> 
+                                            <div>
+                                                <label for="FirstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                                <InputText id="FirstName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.GivenName"></InputText>
+                                            </div>
+                                            <div>
+                                                <label for="LastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                                <InputText id="LastName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.Surname"></InputText>
+                                                <ValidationMessage For="@(() => SelectedContact.Surname)" />
+                                            </div>
+                                        </FluentStack>
+
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"> 
+                                            <div>
+                                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                                <InputText id="phone" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.MobilePhone"></InputText>
+                                                <ValidationMessage For="@(() => SelectedContact.MobilePhone)" />
+                                            </div>
+                                            <div>
+                                                <label for="jobTitle" class="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
+                                                <InputText id="jobTitle" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.JobTitle"></InputText>
+                                                <ValidationMessage For="@(() => SelectedContact.JobTitle)" />
+                                            </div>
+                                        </FluentStack>
+
+                                        <div>
+                                            <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                                            <InputText id="company" 
+                                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" 
+                                                @bind-Value="@SelectedContact.CompanyName"
+                                                @onfocus="() => SanitizeCompanyNameOnFocus()">
+                                            </InputText>
+                                            <ValidationMessage For="@(() => SelectedContact.CompanyName)" />
+                                        </div>
+
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"> 
+                                            <div>
+                                                <label for="businessStreet" class="block text-sm font-medium text-gray-700 mb-2">Street</label>
+                                                <InputText id="businessStreet" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.BusinessAddress.Street"></InputText>
+                                            </div>
+                                            <div>
+                                                <label for="businessCity" class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                                                <InputText id="businessCity" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.BusinessAddress.City"></InputText>
+                                            </div>
+                                        </FluentStack>
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"> 
+                                            <div>
+                                                <label for="businessState" class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                                                <InputText id="businessState" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.BusinessAddress.State"></InputText>
+                                            </div>
+                                            <div>
+                                                <label for="businessPostalCode" class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                                                <InputText id="businessPostalCode" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.BusinessAddress.PostalCode"></InputText>
+                                            </div>
+                                            <div>
+                                                <label for="businessCountry" class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                                                <InputText id="businessCountry" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@SelectedContact.BusinessAddress.CountryOrRegion"></InputText>
+                                            </div>
+                                        </FluentStack>
+                                    </div>
+                                    <div class="flex gap-4 mt-10 justify-end items-center">
+                                        <FluentIcon Value="@(new Icons.Regular.Size20.Sparkle())" Slot="start" />
+                                        <SmartPasteButton IconStart="@(new Icons.Regular.Size20.DocumentSave())" />
+                                    </div>    
+                                </form>
+                            </EditForm>
+                            <FluentDialogActions class="mt-6">
+                                <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Dismiss())" OnClick="CloseContactDialog" class="text-gray-500 hover:text-gray-700">Cancel</FluentButton>
+                                <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Save())" OnClick="SaveContactAsync" class="text-gray-500 hover:text-gray-700"
+                                Disabled="@(!IsAtLeastOneFieldFilled())">Save</FluentButton>
+                            </FluentDialogActions>
+                        </FluentCard>
+                    </FluentDialog>
+                }
+            </Content>
+        </FluentTab>
+        <FluentTab Id="Teams-tab-1">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.People())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Microsoft Teams
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Teamwork Platform and Messaging
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Microsoft Teams is the ultimate digital hub for team collaboration, offering a chat-based workspace where teams can share files, notes, calendars, and plans.
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    With seamless integration across Microsoft 365, Teams allows you to stay connected, organized, and productive in a unified workspace.
+                </FluentLabel>
+            </Content>
+        </FluentTab>
+        <FluentTab Id="OneDrive-tab-2">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.Cloud())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Files
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Your OneDrive Files
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Access and manage your OneDrive files directly from this tab.
+                </FluentLabel>
+                @if (DriveItems != null && DriveItems.Any())
+                {
+                    <div style="max-height: 640px; overflow-y: auto;">
+                        <FluentDataGrid Items="@DriveItems.AsQueryable()" ResizableColumns="true" Pagination="@Pagination"
+                                        GridTemplateColumns="2fr 1fr 1fr" Style="height: 405px; overflow:auto;">
+                            <PropertyColumn Property="@(d => d.Name ?? "Unknown")" Title="Name" Sortable="true" />
+                            <PropertyColumn Property="@(d => d.Folder != null ? "Folder" : "File")" Title="Type" Sortable="true" />
+                            <PropertyColumn Property="@(d => d.LastModifiedDateTime.HasValue ? d.LastModifiedDateTime.Value.ToLocalTime().ToString("g") : "N/A")"
+                                            Title="Last Modified" Sortable="true" />
+                        </FluentDataGrid>
+                    </div>
+                }
+                else
+                {
+                    <p>No drive items available</p>
+                }
+            </Content>
+        </FluentTab>
+        <FluentTab Id="OneNote-tab-3">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.Book())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Notes
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Your OneNote Files
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Plan and organize ideas and information. Access and manage your OneNote files directly from this tab.
+                </FluentLabel>
+            </Content>
+        </FluentTab>
+        <FluentTab Id="Calendar-tab-4">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Calendar
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Your Outlook Calendar
+                </FluentLabel>
+
+                @if (CalendarEvents != null && CalendarEvents.Any())
+                    {
+                        <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange">
+                            <FluentTab Id="Calendar-tab-4">
+                                <Header>
+                                    <FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" />
+                                    <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                                                Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                                        Calendar
+                                    </FluentLabel>
+                                </Header>
+                                <Content>
+                                    <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                                                Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                                        Your Outlook Calendar
+                                    </FluentLabel>
+                                    <div style="max-height: 640px; overflow-y: auto;">
+                                        <FluentDataGrid Items="@CalendarEvents.AsQueryable()" ShowHover="true" TGridItem="Event"
+                                                        >
+                                            <SelectColumn TGridItem="Event" 
+                                            SelectedItemsChanged="OnSelectedEventChanged" 
+                                            SelectMode="DataGridSelectMode.Single"/>
+                                            <PropertyColumn Property="@(e => e.Subject ?? "No Subject")" Title="Event" Sortable="true" />
+                                            <PropertyColumn Property="@(e => FormatStartDateTime(e))" Title="Start" Sortable="true" />
+                                            <PropertyColumn Property="@(e => FormatEndDateTime(e))" Title="End" Sortable="true" />
+                                        </FluentDataGrid>
+                                    </div>
+      
+
+                                </Content>
+                            </FluentTab>
+                        </FluentTabs>
+                    }
+                    @if (isEventDetailsDialogVisible && selectedEvent != null)
+                    {
+                        <FluentDialog Visible="true" OnDismiss="CloseEventDetailsDialog" Style="width: 50vw;">
+                            <h3>@selectedEvent.Subject</h3>
+                            <p><strong>Start:</strong> @(FormatStartDateTime(selectedEvent))</p>
+                            <p><strong>End:</strong> @(FormatEndDateTime(selectedEvent))</p>
+                            <p><strong>Location:</strong> @selectedEvent.Location?.DisplayName ?? "N/A"</p>
+                            <p><strong>Organizer:</strong> @selectedEvent.Organizer?.EmailAddress?.Name ?? "N/A"</p>
+                            <p><strong>Description:</strong></p>
+                            <div style="white-space: normal; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd;">
+                                @((MarkupString)(selectedEvent.Body?.Content ?? "No description available"))
+                            </div>
+                            <FluentButton OnClick="CloseEventDetailsDialog" Appearance="Appearance.Accent">Close</FluentButton>
+                        </FluentDialog>
+                    }
+            </Content>
+        </FluentTab>
+        <FluentTab Id="Todo-tab-1">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.TasksApp())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Tasks
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    To Do Tasks
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Microsoft To Do helps you manage your personal tasks across work and life, integrating seamlessly with Outlook, Teams, Planner, and Cortana.
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    This single destination allows you to stay on top of your tasks and manage them across all Microsoft 365 services.
+                </FluentLabel>
+            </Content>
+        </FluentTab>
+        <FluentTab Id="Excel-tab-1">
+            <Header>
+                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentBulletList())" />
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Excel Workbooks and Charts
+                </FluentLabel>
+            </Header>
+            <Content>
+                <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Work with Excel Spreadsheets
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Microsoft Excel allows you to perform complex calculations, track data, and analyze trends with powerful spreadsheets.
+                </FluentLabel>
+                <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral" 
+                            Style="color: rgb(2, 32, 49);" class="align-vertical-center">
+                    Visualize your data with charts and graphs, and generate professional reports to help with decision-making and data analysis.
+                </FluentLabel>
+            </Content>
+        </FluentTab>
+    </FluentTabs>
+}
+</FluentCard>
+
+@code {
+    [Parameter] public string? UserId { get; set; }
+    [Parameter] public string? UserPhotoBase64 { get; set; }
+    [Parameter] public User? User { get; set; }
+    [Parameter] public IEnumerable<GraphMessage>? UserMessages { get; set; }
+    [Parameter] public IEnumerable<DriveItem>? DriveItems { get; set; }
+    [Parameter] public string DisplayName { get; set; } = string.Empty;
+    [Parameter] public string CurrentUserIdentityID { get; set; } = string.Empty;
+    [Parameter] public string FeatureNameProject { get; set; } = string.Empty;
+    [Parameter] public string FeatureName { get; set; } = string.Empty;
+    [Parameter] public string FeatureName1 { get; set; } = string.Empty;
+    [Parameter] public string FeatureName2 { get; set; } = string.Empty;
+    [Parameter] public string FeatureName3 { get; set; } = string.Empty;
+    [Parameter] public PaginationState Pagination { get; set; } = new PaginationState { ItemsPerPage = 10 };
+    [Parameter] public IEnumerable<Contact>? Contacts { get; set; }
+    [Parameter] public IEnumerable<Event>? CalendarEvents { get; set; }
+    
+    private List<Contact> SelectedContacts { get; set; } = new List<Contact>();
+    private Contact SelectedContact { get; set; }
+
+    private bool IsAtLeastOneFieldFilled()
+    {
+        return !string.IsNullOrWhiteSpace(SelectedContact.DisplayName) ||
+               !string.IsNullOrWhiteSpace(SelectedContact.MobilePhone) ||
+               !string.IsNullOrWhiteSpace(SelectedContact.JobTitle) ||
+               !string.IsNullOrWhiteSpace(SelectedContact.CompanyName) ||
+               !string.IsNullOrWhiteSpace(SelectedContact.PersonalNotes) ||
+               (SelectedContact.BusinessAddress != null && (
+                   !string.IsNullOrWhiteSpace(SelectedContact.BusinessAddress.Street) ||
+                   !string.IsNullOrWhiteSpace(SelectedContact.BusinessAddress.City) ||
+                   !string.IsNullOrWhiteSpace(SelectedContact.BusinessAddress.State) ||
+                   !string.IsNullOrWhiteSpace(SelectedContact.BusinessAddress.PostalCode) ||
+                   !string.IsNullOrWhiteSpace(SelectedContact.BusinessAddress.CountryOrRegion)
+               ));
+    }
+
+    private bool isContactDetailsDialogVisible = false;
+    private string contactEmail = string.Empty;
+
+    private List<GraphMessage> SelectedEmails { get; set; } = new List<GraphMessage>();
+
+    private bool _savePopUpOpen = false;
+    private bool _isContentSave = false; 
+    private string _content = string.Empty;
+
+    private string _popUpText = string.Empty;
+
+    private bool loadingOutput1 = false;
+    private bool loadingOutput2 = false;
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+
+    private void OnSelectedEmailsChanged(IEnumerable<GraphMessage> selectedEmails)
+    {
+        SelectedEmails = selectedEmails.ToList();
+        StateHasChanged();
+    }
+
+    private void CloseEmailDialog()
+    {
+        SelectedEmails.Clear();
+    }
+
+    private string ReplaceCIDsWithDataURIs(string htmlContent, IEnumerable<Attachment>? attachments)
+    {
+        if (attachments == null) return htmlContent;
+
+        foreach (var attachment in attachments)
+        {
+            if (attachment is FileAttachment fileAttachment && !string.IsNullOrEmpty(fileAttachment.ContentId))
+            {
+                var cid = fileAttachment.ContentId;
+                var base64Data = Convert.ToBase64String(fileAttachment.ContentBytes);
+                var dataUri = $"data:{fileAttachment.ContentType};base64,{base64Data}";
+
+                htmlContent = Regex.Replace(htmlContent, $"cid:{Regex.Escape(cid)}", dataUri, RegexOptions.IgnoreCase);
+            }
+        }
+
+        return htmlContent;
+    }
+
+    string? activeid = "Emails-tab-1";
+    FluentTab? changedto;
+
+    private void HandleOnTabChange(FluentTab tab)
+    {
+        changedto = tab;
+    }
+
+    private async Task CopyContentOutput1(string contentToCopy)
+    {
+        loadingOutput1 = true;
+        StateHasChanged();
+        
+        string cleanedContent = StripHtmlTags(contentToCopy);
+
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", cleanedContent);
+
+        await Task.Delay(2000);
+
+        loadingOutput1 = false;
+        StateHasChanged();
+    }
+
+    private string StripHtmlTags(string input)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(input, "<.*?>", string.Empty)
+            .Replace("&nbsp;", " ")
+            .Trim();
+    }
+
+    private string GetPlainText(GraphMessage email)
+    {
+        string plainText = $"Subject: {email.Subject}\nFrom: {email.Sender.EmailAddress.Name}\nTo: {string.Join(", ", email.ToRecipients.Select(r => r.EmailAddress.Name))}\nReceived: {email.ReceivedDateTime?.ToLocalTime().ToString("g")}\n\n";
+
+        plainText += email.Body?.Content ?? "No content available";
+
+        return plainText;
+    }
+    
+    private void OpenConfirmationForChatSave(string id, string content)
+    {
+        Console.WriteLine($"OpenConfirmationForChatSave: id: {id}");
+
+        _savePopUpOpen = true;
+        _isContentSave = true;
+        _content = content;
+        _popUpText = "Do you want to save and vectorize this email?";
+        StateHasChanged();
+    }
+
+    private void OnSelectedContactChanged(IEnumerable<Contact> selectedContacts)
+    {
+        var selectedContact = selectedContacts.FirstOrDefault();
+        if (selectedContact != null)
+        {
+            SelectedContact = selectedContact;
+            isContactDetailsDialogVisible = true;
+            StateHasChanged();
+        }
+    }
+
+    private async Task SaveContactAsync()
+    {
+        try
+        {
+            if (SelectedContact != null)
+            {
+                await GraphService.UpdateContactAsync(SelectedContact.Id, SelectedContact);
+                await LoadContactsAsync();
+                isContactDetailsDialogVisible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating contact: {ex.Message}");
+        }
+    }
+
+    private async Task LoadContactsAsync()
+    {
+        Contacts = await GraphService.GetContactsAsync();
+    }
+
+    private string GetContactEmail(Contact contact)
+    {
+        return contact.EmailAddresses?.FirstOrDefault()?.Address ?? "No Email";
+    }
+
+    private void CloseContactDialog()
+    {
+        isContactDetailsDialogVisible = false;
+        StateHasChanged();
+    }
+  
+    private string GetBusinessAddress(Contact contact)
+    {
+        if (contact.BusinessAddress != null)
+        {
+            return $"{contact.BusinessAddress.Street}, {contact.BusinessAddress.City}, {contact.BusinessAddress.State}, {contact.BusinessAddress.CountryOrRegion}, {contact.BusinessAddress.PostalCode}";
+        }
+        return "No Address";
+    }
+
+    private void SanitizeCompanyNameOnFocus()
+    {
+        SelectedContact.CompanyName = SanitizeText(SelectedContact.CompanyName);
+    }
+ 
+    private string SanitizeText(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        var sanitizedText = new string(text.Where(c => !char.IsControl(c)).ToArray());
+        sanitizedText = sanitizedText.Replace("END_RESPONSE", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+        return sanitizedText.Trim();
+    }
+
+    private void CreateNewContact()
+    {
+        SelectedContact = new Contact()
+        {
+            BusinessAddress = new PhysicalAddress()
+        };
+        isContactDetailsDialogVisible = true;
+    }
+
+    private string FormatStartDateTime(Event evt)
+    {
+        if (DateTime.TryParse(evt.Start?.DateTime, out var startDateTime))
+        {
+            return startDateTime.ToLocalTime().ToString("g");
+        }
+        return "N/A";
+    }
+
+    private string FormatEndDateTime(Event evt)
+    {
+        if (DateTime.TryParse(evt.End?.DateTime, out var endDateTime))
+        {
+            return endDateTime.ToLocalTime().ToString("g");
+        }
+        return "N/A";
+    }
+
+    private Event? selectedEvent;
+    private bool isEventDetailsDialogVisible = false;
+
+    private void OnEventSelected(Event evt)
+    {
+        selectedEvent = evt;
+        isEventDetailsDialogVisible = true;
+        StateHasChanged();
+    }
+
+    private void CloseEventDetailsDialog()
+    {
+        isEventDetailsDialogVisible = false;
+    }
+
+    private void OnSelectedEventChanged(IEnumerable<Event> selectedEvents)
+    {
+        var evt = selectedEvents.FirstOrDefault();
+        if (evt != null)
+        {
+            OnEventSelected(evt);
+        }
+    }
+}

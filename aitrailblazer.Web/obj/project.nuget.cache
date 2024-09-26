@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "indooRTQ4MM=",
+  "dgSpecHash": "Z6Gj2u4Z5Bo=",
   "success": true,
   "projectFilePath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/aitrailblazer.Web.csproj",
   "expectedPackageFiles": [
+    "/Users/constantinevassilev02/.nuget/packages/azure.ai.openai/1.0.0-beta.11/azure.ai.openai.1.0.0-beta.11.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.core/1.40.0/azure.core.1.40.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.security.keyvault.certificates/4.6.0/azure.security.keyvault.certificates.4.6.0.nupkg.sha512",
@@ -12,6 +13,7 @@
     "/Users/constantinevassilev02/.nuget/packages/grpc.core.api/2.52.0/grpc.core.api.2.52.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/grpc.net.client/2.52.0/grpc.net.client.2.52.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/grpc.net.common/2.52.0/grpc.net.common.2.52.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/markdig/0.37.0/markdig.0.37.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.0/microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.aspnetcore.authentication.openidconnect/8.0.6/microsoft.aspnetcore.authentication.openidconnect.8.0.6.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.aspnetcore.authorization/9.0.0-preview.7.24406.2/microsoft.aspnetcore.authorization.9.0.0-preview.7.24406.2.nupkg.sha512",
@@ -105,6 +107,10 @@
     "/Users/constantinevassilev02/.nuget/packages/polly.core/8.4.1/polly.core.8.4.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/polly.extensions/8.4.1/polly.extensions.8.4.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/polly.ratelimiting/8.4.1/polly.ratelimiting.8.4.1.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/smartcomponents.aspnetcore/0.1.0-preview10148/smartcomponents.aspnetcore.0.1.0-preview10148.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/smartcomponents.aspnetcore.components/0.1.0-preview10148/smartcomponents.aspnetcore.components.0.1.0-preview10148.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/smartcomponents.inference/0.1.0-preview10148/smartcomponents.inference.0.1.0-preview10148.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/smartcomponents.inference.openai/0.1.0-preview10148/smartcomponents.inference.openai.0.1.0-preview10148.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/std.uritemplate/1.0.3/std.uritemplate.1.0.3.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.clientmodel/1.0.0/system.clientmodel.1.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
@@ -127,8 +133,8 @@
     "/Users/constantinevassilev02/.nuget/packages/system.security.cryptography.xml/8.0.0/system.security.cryptography.xml.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.security.principal/4.3.0/system.security.principal.4.3.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.text.encoding/4.3.0/system.text.encoding.4.3.0.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/system.text.encodings.web/4.7.2/system.text.encodings.web.4.7.2.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/system.text.json/4.7.2/system.text.json.4.7.2.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.text.json/8.0.1/system.text.json.8.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512"
@@ -140,6 +146,16 @@
       "warningLevel": 1,
       "message": "Package 'System.Formats.Asn1' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-447r-wph3-92pm",
       "libraryId": "System.Formats.Asn1",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Text.Json' 8.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "libraryId": "System.Text.Json",
       "targetGraphs": [
         "net9.0"
       ]

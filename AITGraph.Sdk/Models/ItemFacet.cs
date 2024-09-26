@@ -67,6 +67,7 @@ namespace AITGraph.Sdk.Models {
                 "#microsoft.graph.personCertification" => new PersonCertification(),
                 "#microsoft.graph.personInterest" => new PersonInterest(),
                 "#microsoft.graph.personName" => new PersonName(),
+                "#microsoft.graph.personResponsibility" => new PersonResponsibility(),
                 "#microsoft.graph.personWebsite" => new PersonWebsite(),
                 "#microsoft.graph.projectParticipation" => new ProjectParticipation(),
                 "#microsoft.graph.skillProficiency" => new SkillProficiency(),

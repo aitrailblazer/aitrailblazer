@@ -5217,75 +5217,8 @@
       ]
     },
     {
-      "Route": "aitrailblazer.Web.huqmbby6m9.styles.css",
-      "AssetFile": "aitrailblazer.Web.styles.css.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.009259259259"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "107"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU=\""
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
-        },
-        {
-          "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\""
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "huqmbby6m9"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8="
-        },
-        {
-          "Name": "label",
-          "Value": "aitrailblazer.Web.styles.css"
-        }
-      ]
-    },
-    {
-      "Route": "aitrailblazer.Web.huqmbby6m9.styles.css",
-      "AssetFile": "aitrailblazer.Web.styles.css",
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5294,11 +5227,11 @@
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Length",
-          "Value": "129"
+          "Value": "1893"
         },
         {
           "Name": "Content-Type",
@@ -5306,93 +5239,28 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8=\""
+          "Value": "\"VEhEXjJAKuT6w5PzXGSGCBkmLRufc9dgXv2IAaTRsSk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
-        },
-        {
-          "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "Thu, 04 Apr 2024 18:37:10 GMT"
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "huqmbby6m9"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8="
-        },
-        {
-          "Name": "label",
-          "Value": "aitrailblazer.Web.styles.css"
+          "Value": "sha256-VEhEXjJAKuT6w5PzXGSGCBkmLRufc9dgXv2IAaTRsSk="
         }
       ]
     },
     {
-      "Route": "aitrailblazer.Web.huqmbby6m9.styles.css.gz",
-      "AssetFile": "aitrailblazer.Web.styles.css.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "107"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "huqmbby6m9"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU="
-        },
-        {
-          "Name": "label",
-          "Value": "aitrailblazer.Web.styles.css.gz"
-        }
-      ]
-    },
-    {
-      "Route": "aitrailblazer.Web.modules.json",
-      "AssetFile": "aitrailblazer.Web.modules.json.gz",
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.010869565217"
+          "Quality": "0.001414427157"
         }
       ],
       "ResponseHeaders": [
@@ -5410,23 +5278,23 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "91"
+          "Value": "706"
         },
         {
           "Name": "Content-Type",
-          "Value": "application/json"
+          "Value": "text/css"
         },
         {
           "Name": "ETag",
-          "Value": "\"IzD6cIpmVD56YnkUPsnxIH/tRKRjn1AP50pI9f0dMsU=\""
+          "Value": "\"nD2MtzN6U5PKbdbfUUS3yoqtO0WEaEOxWfszmkxb7m0=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"ZPCZ4eLQZsYMQnHHzyLO02cs96GXqoCPqH3JX6bUluY=\""
+          "Value": "W/\"VEhEXjJAKuT6w5PzXGSGCBkmLRufc9dgXv2IAaTRsSk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 13 Jul 2024 17:05:40 GMT"
+          "Value": "Thu, 04 Apr 2024 18:37:10 GMT"
         },
         {
           "Name": "Vary",
@@ -5436,7 +5304,244 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZPCZ4eLQZsYMQnHHzyLO02cs96GXqoCPqH3JX6bUluY="
+          "Value": "sha256-VEhEXjJAKuT6w5PzXGSGCBkmLRufc9dgXv2IAaTRsSk="
+        }
+      ]
+    },
+    {
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css.gz",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "706"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nD2MtzN6U5PKbdbfUUS3yoqtO0WEaEOxWfszmkxb7m0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 04 Apr 2024 18:37:10 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-nD2MtzN6U5PKbdbfUUS3yoqtO0WEaEOxWfszmkxb7m0="
+        }
+      ]
+    },
+    {
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22188"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sxCZsSeDTiMOv3T10qaoj7rLD4tLcr7wfPjUF7Hizf4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 04 Apr 2024 18:37:08 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-sxCZsSeDTiMOv3T10qaoj7rLD4tLcr7wfPjUF7Hizf4="
+        }
+      ]
+    },
+    {
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000148104265"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6751"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"thcCIihFwtpiE2RLyn8uK9HCBUxqX9GAnMwa3DkqY7s=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"sxCZsSeDTiMOv3T10qaoj7rLD4tLcr7wfPjUF7Hizf4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 04 Apr 2024 18:37:08 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-sxCZsSeDTiMOv3T10qaoj7rLD4tLcr7wfPjUF7Hizf4="
+        }
+      ]
+    },
+    {
+      "Route": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js.gz",
+      "AssetFile": "_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.lib.module.js.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6751"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"thcCIihFwtpiE2RLyn8uK9HCBUxqX9GAnMwa3DkqY7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 04 Apr 2024 18:37:08 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-thcCIihFwtpiE2RLyn8uK9HCBUxqX9GAnMwa3DkqY7s="
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.modules.json",
+      "AssetFile": "aitrailblazer.Web.modules.json.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.009174311927"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "108"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"37kxHQnEYUrcBZ0W/ZMJEJ0kjDcnJ9+ZxOYaNYYqzVQ=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"vKFDhFqibU8KN6VsYZ4cemdMqXJLmegbNCShk8FyXQU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-vKFDhFqibU8KN6VsYZ4cemdMqXJLmegbNCShk8FyXQU="
         }
       ]
     },
@@ -5455,7 +5560,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "112"
+          "Value": "216"
         },
         {
           "Name": "Content-Type",
@@ -5463,17 +5568,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZPCZ4eLQZsYMQnHHzyLO02cs96GXqoCPqH3JX6bUluY=\""
+          "Value": "\"vKFDhFqibU8KN6VsYZ4cemdMqXJLmegbNCShk8FyXQU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 13 Jul 2024 17:05:40 GMT"
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZPCZ4eLQZsYMQnHHzyLO02cs96GXqoCPqH3JX6bUluY="
+          "Value": "sha256-vKFDhFqibU8KN6VsYZ4cemdMqXJLmegbNCShk8FyXQU="
         }
       ]
     },
@@ -5496,7 +5601,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "91"
+          "Value": "108"
         },
         {
           "Name": "Content-Type",
@@ -5504,11 +5609,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"IzD6cIpmVD56YnkUPsnxIH/tRKRjn1AP50pI9f0dMsU=\""
+          "Value": "\"37kxHQnEYUrcBZ0W/ZMJEJ0kjDcnJ9+ZxOYaNYYqzVQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 13 Jul 2024 17:05:40 GMT"
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
         },
         {
           "Name": "Vary",
@@ -5518,7 +5623,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-IzD6cIpmVD56YnkUPsnxIH/tRKRjn1AP50pI9f0dMsU="
+          "Value": "sha256-37kxHQnEYUrcBZ0W/ZMJEJ0kjDcnJ9+ZxOYaNYYqzVQ="
         }
       ]
     },
@@ -5529,7 +5634,7 @@
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.009259259259"
+          "Quality": "0.008000000000"
         }
       ],
       "ResponseHeaders": [
@@ -5547,7 +5652,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "107"
+          "Value": "124"
         },
         {
           "Name": "Content-Type",
@@ -5555,19 +5660,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU=\""
+          "Value": "\"CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8=\""
+          "Value": "W/\"1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\", <_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         },
         {
           "Name": "Vary",
@@ -5577,7 +5682,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8="
+          "Value": "sha256-1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c="
         }
       ]
     },
@@ -5596,7 +5701,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "129"
+          "Value": "240"
         },
         {
           "Name": "Content-Type",
@@ -5604,21 +5709,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8=\""
+          "Value": "\"1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\", <_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-lzdxqIo8v0izFLmra/ABtjCjh7LK16lzsCHMI3RKNY8="
+          "Value": "sha256-1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c="
         }
       ]
     },
@@ -5641,7 +5746,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "107"
+          "Value": "124"
         },
         {
           "Name": "Content-Type",
@@ -5649,11 +5754,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU=\""
+          "Value": "\"CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 25 Sep 2024 16:45:19 GMT"
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
         },
         {
           "Name": "Vary",
@@ -5663,7 +5768,176 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-SpF+TvDEIdf13i/3fmh3WCphWzPlwMja5T6JhJu4YHU="
+          "Value": "sha256-CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY="
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.tjanwsp36n.styles.css",
+      "AssetFile": "aitrailblazer.Web.styles.css.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.008000000000"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
+        },
+        {
+          "Name": "Link",
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\", <_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tjanwsp36n"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c="
+        },
+        {
+          "Name": "label",
+          "Value": "aitrailblazer.Web.styles.css"
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.tjanwsp36n.styles.css",
+      "AssetFile": "aitrailblazer.Web.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "240"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
+        },
+        {
+          "Name": "Link",
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bwfmfibeoq.bundle.scp.css>; rel=\"preload\"; as=\"style\", <_content/SmartComponents.AspNetCore.Components/SmartComponents.AspNetCore.Components.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tjanwsp36n"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-1wp8O/6pW7+P4C/jOvQdF4YUYw7SznR++v+ftFLP6/c="
+        },
+        {
+          "Name": "label",
+          "Value": "aitrailblazer.Web.styles.css"
+        }
+      ]
+    },
+    {
+      "Route": "aitrailblazer.Web.tjanwsp36n.styles.css.gz",
+      "AssetFile": "aitrailblazer.Web.styles.css.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "124"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Sep 2024 23:33:36 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tjanwsp36n"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CUa4rdF9TbNV9+olk17/g5JocT5ynOWKvYKZEi8oCBY="
+        },
+        {
+          "Name": "label",
+          "Value": "aitrailblazer.Web.styles.css.gz"
         }
       ]
     },

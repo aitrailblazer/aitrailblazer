@@ -9,6 +9,7 @@
       "aitrailblazer.Web/1.0.0": {
         "dependencies": {
           "AITGraph.Sdk": "1.0.0",
+          "Markdig": "0.37.0",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "8.0.6",
           "Microsoft.FluentUI.AspNetCore.Components": "4.10.0",
           "Microsoft.FluentUI.AspNetCore.Components.Icons": "4.10.0",
@@ -23,10 +24,24 @@
           "Microsoft.Kiota.Serialization.Multipart": "1.9.8",
           "Microsoft.Kiota.Serialization.Text": "1.9.8",
           "Newtonsoft.Json": "13.0.3",
+          "SmartComponents.AspNetCore": "0.1.0-preview10148",
+          "SmartComponents.Inference.OpenAI": "0.1.0-preview10148",
           "aitrailblazer.ServiceDefaults": "1.0.0"
         },
         "runtime": {
           "aitrailblazer.Web.dll": {}
+        }
+      },
+      "Azure.AI.OpenAI/1.0.0-beta.11": {
+        "dependencies": {
+          "Azure.Core": "1.40.0",
+          "System.Text.Json": "8.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.23.60703"
+          }
         }
       },
       "Azure.Core/1.40.0": {
@@ -36,8 +51,8 @@
           "System.Diagnostics.DiagnosticSource": "9.0.0-preview.7.24405.7",
           "System.Memory.Data": "1.0.2",
           "System.Numerics.Vectors": "4.5.0",
-          "System.Text.Encodings.Web": "4.7.2",
-          "System.Text.Json": "4.7.2",
+          "System.Text.Encodings.Web": "8.0.0",
+          "System.Text.Json": "8.0.1",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -54,7 +69,7 @@
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
           "System.Memory": "4.5.4",
           "System.Security.Cryptography.ProtectedData": "4.7.0",
-          "System.Text.Json": "4.7.2",
+          "System.Text.Json": "8.0.1",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -68,7 +83,7 @@
         "dependencies": {
           "Azure.Core": "1.40.0",
           "System.Memory": "4.5.4",
-          "System.Text.Json": "4.7.2",
+          "System.Text.Json": "8.0.1",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -82,7 +97,7 @@
         "dependencies": {
           "Azure.Core": "1.40.0",
           "System.Memory": "4.5.4",
-          "System.Text.Json": "4.7.2",
+          "System.Text.Json": "8.0.1",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -131,6 +146,14 @@
           "lib/net7.0/Grpc.Net.Common.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.52.0.0"
+          }
+        }
+      },
+      "Markdig/0.37.0": {
+        "runtime": {
+          "lib/net8.0/Markdig.dll": {
+            "assemblyVersion": "0.37.0.0",
+            "fileVersion": "0.37.0.0"
           }
         }
       },
@@ -714,7 +737,7 @@
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0-preview.7.24405.7",
           "Microsoft.Identity.Client": "4.61.3",
           "Microsoft.IdentityModel.JsonWebTokens": "7.6.0",
-          "System.Text.Encodings.Web": "4.7.2"
+          "System.Text.Encodings.Web": "8.0.0"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Identity.Web.Certificateless.dll": {
@@ -1134,6 +1157,55 @@
           }
         }
       },
+      "SmartComponents.AspNetCore/0.1.0-preview10148": {
+        "dependencies": {
+          "SmartComponents.AspNetCore.Components": "0.1.0-preview10148",
+          "SmartComponents.Inference": "0.1.0-preview10148"
+        },
+        "runtime": {
+          "lib/net8.0/SmartComponents.AspNetCore.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      },
+      "SmartComponents.AspNetCore.Components/0.1.0-preview10148": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.0-preview.7.24406.2"
+        },
+        "runtime": {
+          "lib/net8.0/SmartComponents.AspNetCore.Components.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      },
+      "SmartComponents.Inference/0.1.0-preview10148": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-preview.7.24405.7",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-preview.7.24405.7",
+          "System.Text.Json": "8.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SmartComponents.Inference.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      },
+      "SmartComponents.Inference.OpenAI/0.1.0-preview10148": {
+        "dependencies": {
+          "Azure.AI.OpenAI": "1.0.0-beta.11",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0-preview.7.24405.7",
+          "SmartComponents.Inference": "0.1.0-preview10148"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SmartComponents.Inference.OpenAI.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      },
       "Std.UriTemplate/1.0.3": {
         "runtime": {
           "lib/net5.0/Std.UriTemplate.dll": {
@@ -1145,7 +1217,7 @@
       "System.ClientModel/1.0.0": {
         "dependencies": {
           "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "4.7.2"
+          "System.Text.Json": "8.0.1"
         },
         "runtime": {
           "lib/net6.0/System.ClientModel.dll": {
@@ -1201,8 +1273,8 @@
       "System.Memory/4.5.4": {},
       "System.Memory.Data/1.0.2": {
         "dependencies": {
-          "System.Text.Encodings.Web": "4.7.2",
-          "System.Text.Json": "4.7.2"
+          "System.Text.Encodings.Web": "8.0.0",
+          "System.Text.Json": "8.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/System.Memory.Data.dll": {
@@ -1299,8 +1371,12 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Text.Encodings.Web/4.7.2": {},
-      "System.Text.Json/4.7.2": {},
+      "System.Text.Encodings.Web/8.0.0": {},
+      "System.Text.Json/8.0.1": {
+        "dependencies": {
+          "System.Text.Encodings.Web": "8.0.0"
+        }
+      },
       "System.Threading.RateLimiting/8.0.0": {},
       "System.Threading.Tasks/4.3.0": {
         "dependencies": {
@@ -1354,6 +1430,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Azure.AI.OpenAI/1.0.0-beta.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+fLMUlASJt8OM3/Ec5G7zEj7RSP7CPI7dXnbxbO3bXs7+FJ8dsXlrLgFYhktOJXKC1oxmDrkQoZXspzaN++3iQ==",
+      "path": "azure.ai.openai/1.0.0-beta.11",
+      "hashPath": "azure.ai.openai.1.0.0-beta.11.nupkg.sha512"
     },
     "Azure.Core/1.40.0": {
       "type": "package",
@@ -1410,6 +1493,13 @@
       "sha512": "sha512-di9qzpdx525IxumZdYmu6sG2y/gXJyYeZ1ruFUzB9BJ1nj4kU1/dTAioNCMt1VLRvNVDqh8S8B1oBdKhHJ4xRg==",
       "path": "grpc.net.common/2.52.0",
       "hashPath": "grpc.net.common.2.52.0.nupkg.sha512"
+    },
+    "Markdig/0.37.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-biiu4MTPFjW55qw6v5Aphtj0MjDLJ14x8ndZwkJUHIeqvaSGKeqhLY7S7Vu/S3k7/c9KwhhnaCDP9hdFNUhcNA==",
+      "path": "markdig/0.37.0",
+      "hashPath": "markdig.0.37.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0": {
       "type": "package",
@@ -2062,6 +2152,34 @@
       "path": "polly.ratelimiting/8.4.1",
       "hashPath": "polly.ratelimiting.8.4.1.nupkg.sha512"
     },
+    "SmartComponents.AspNetCore/0.1.0-preview10148": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SaC88BngGrZibD90+gwCVAQhp82QcSUehydMQN3N0SaMRdNJv0PoIwipO2E0aBC5iktBzEXoL5mUfEXE/zxgZA==",
+      "path": "smartcomponents.aspnetcore/0.1.0-preview10148",
+      "hashPath": "smartcomponents.aspnetcore.0.1.0-preview10148.nupkg.sha512"
+    },
+    "SmartComponents.AspNetCore.Components/0.1.0-preview10148": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-l0/Sd9J3xFImq9JFwZpJeU+uApbQbdFkcG1+BW/6S/Y4HSwJ+z3juFRvHazszi3QBBSNBoFpT+WygmBEepcdqw==",
+      "path": "smartcomponents.aspnetcore.components/0.1.0-preview10148",
+      "hashPath": "smartcomponents.aspnetcore.components.0.1.0-preview10148.nupkg.sha512"
+    },
+    "SmartComponents.Inference/0.1.0-preview10148": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+EtrgOUS0oMZas1AqC+VDMvEyrk0bpNUGBkj/YYBX6Vu5fyi0R8ncS7G/watYKHnmYcdVMRttVvbVsNcYizU0Q==",
+      "path": "smartcomponents.inference/0.1.0-preview10148",
+      "hashPath": "smartcomponents.inference.0.1.0-preview10148.nupkg.sha512"
+    },
+    "SmartComponents.Inference.OpenAI/0.1.0-preview10148": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fKxAkT0ZnSFMnJdmstFu3lUeqfesCm8G0xggn5jnfPgCMMYUod/M1ev9Vky7juLOuVQ0fPx+M5Y9P6wpBp3dYA==",
+      "path": "smartcomponents.inference.openai/0.1.0-preview10148",
+      "hashPath": "smartcomponents.inference.openai.0.1.0-preview10148.nupkg.sha512"
+    },
     "Std.UriTemplate/1.0.3": {
       "type": "package",
       "serviceable": true,
@@ -2216,19 +2334,19 @@
       "path": "system.text.encoding/4.3.0",
       "hashPath": "system.text.encoding.4.3.0.nupkg.sha512"
     },
-    "System.Text.Encodings.Web/4.7.2": {
+    "System.Text.Encodings.Web/8.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-iTUgB/WtrZ1sWZs84F2hwyQhiRH6QNjQv2DkwrH+WP6RoFga2Q1m3f9/Q7FG8cck8AdHitQkmkXSY8qylcDmuA==",
-      "path": "system.text.encodings.web/4.7.2",
-      "hashPath": "system.text.encodings.web.4.7.2.nupkg.sha512"
+      "sha512": "sha512-yev/k9GHAEGx2Rg3/tU6MQh4HGBXJs70y7j1LaM1i/ER9po+6nnQ6RRqTJn1E7Xu0fbIFK80Nh5EoODxrbxwBQ==",
+      "path": "system.text.encodings.web/8.0.0",
+      "hashPath": "system.text.encodings.web.8.0.0.nupkg.sha512"
     },
-    "System.Text.Json/4.7.2": {
+    "System.Text.Json/8.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-TcMd95wcrubm9nHvJEQs70rC0H/8omiSGGpU4FQ/ZA1URIqD4pjmFJh2Mfv1yH1eHgJDWTi2hMDXwTET+zOOyg==",
-      "path": "system.text.json/4.7.2",
-      "hashPath": "system.text.json.4.7.2.nupkg.sha512"
+      "sha512": "sha512-7AWk2za1hSEJBppe/Lg+uDcam2TrDqwIKa9XcPssSwyjC2xa39EKEGul3CO5RWNF+hMuZG4zlBDrvhBdDTg4lg==",
+      "path": "system.text.json/8.0.1",
+      "hashPath": "system.text.json.8.0.1.nupkg.sha512"
     },
     "System.Threading.RateLimiting/8.0.0": {
       "type": "package",

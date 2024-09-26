@@ -1,3 +1,4 @@
+// AITGraphService.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,19 @@ namespace AITrailBlazer.Web.Services
         private readonly ITokenAcquisition _tokenAcquisition;
         private AITGraphApiClient _graphClient;
         private readonly string[] _graphScopes;
+        private HttpClientRequestAdapter _requestAdapter;
 
         // Default scopes
-        private static readonly string[] DefaultScopes = new[] { "User.Read", "Mail.Read", "Calendars.Read" };
-
+        private static readonly string[] DefaultScopes = new[]
+           {
+            "User.Read",
+            "Mail.Read",
+            "Calendars.Read",
+            "Files.Read",           // For reading files
+            "Files.ReadWrite",      // For reading and writing files
+            "Files.Read.All",       // For reading all files the user can access
+            "Files.ReadWrite.All"   // For reading and writing all files the user can access
+        };
         public AITGraphService(
             MicrosoftIdentityConsentAndConditionalAccessHandler consentHandler,
             ILogger<AITGraphService> logger,
@@ -41,9 +51,9 @@ namespace AITrailBlazer.Web.Services
             _consentHandler = consentHandler ?? throw new ArgumentNullException(nameof(consentHandler));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _tokenAcquisition = tokenAcquisition ?? throw new ArgumentNullException(nameof(tokenAcquisition));
-            
+
             _graphScopes = (graphScopes != null && graphScopes.Length > 0) ? graphScopes : DefaultScopes;
-            
+
             _logger.LogInformation($"AITGraphService initialized with scopes: {string.Join(", ", _graphScopes)}");
         }
 
@@ -54,9 +64,10 @@ namespace AITrailBlazer.Web.Services
                 if (_graphClient == null)
                 {
                     var authProvider = new TokenAcquisitionAuthenticationProvider(_tokenAcquisition, _graphScopes, _logger);
-                    var requestAdapter = new HttpClientRequestAdapter(authProvider);
+                    // Assigning to _requestAdapter field
+                    _requestAdapter = new HttpClientRequestAdapter(authProvider);
 
-                    _graphClient = new AITGraphApiClient(requestAdapter);
+                    _graphClient = new AITGraphApiClient(_requestAdapter);
                 }
                 return _graphClient;
             }
@@ -69,7 +80,7 @@ namespace AITrailBlazer.Web.Services
                 _logger.LogInformation("Attempting to fetch user profile");
                 var profile = await GraphClient.Me.Profile.GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.Expand = new[] { 
+                    requestConfiguration.QueryParameters.Expand = new[] {
                         "names",
                         "emails",
                         "skills",
@@ -116,7 +127,7 @@ namespace AITrailBlazer.Web.Services
                 _logger.LogInformation("Attempting to fetch user account information");
                 var accountInfo = await GraphClient.Me.Profile.Account.GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.Select = new[] { 
+                    requestConfiguration.QueryParameters.Select = new[] {
                         "ageGroup",
                         "countryCode",
                         "preferredLanguageTag",
@@ -168,6 +179,76 @@ namespace AITrailBlazer.Web.Services
             }
         }
 
+        public async Task<Stream> GetUserPhotoAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Attempting to fetch user profile photo");
+
+                // Ensure _requestAdapter is initialized
+                if (_requestAdapter == null)
+                {
+                    // Initialize GraphClient to ensure _requestAdapter is set
+                    var client = GraphClient;
+                }
+
+                var requestUrl = $"{_requestAdapter.BaseUrl}/me/photo/$value";
+
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.GET,
+                    UrlTemplate = requestUrl,
+                    PathParameters = new Dictionary<string, object>()
+                };
+
+                requestInfo.Headers.Add("Accept", "image/*");
+
+                var responseStream = await _requestAdapter.SendPrimitiveAsync<Stream>(
+                    requestInfo,
+                    errorMapping: null,
+                    cancellationToken: CancellationToken.None
+                );
+
+                if (responseStream != null)
+                {
+                    _logger.LogInformation("User profile photo fetched successfully");
+                    return responseStream;
+                }
+                else
+                {
+                    _logger.LogWarning("User profile photo not found");
+                    return null;
+                }
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
+                throw new AuthenticationRequiredException("Authentication is required.");
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while fetching user profile photo.");
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred.");
+                throw new AuthenticationRequiredException("Unauthorized access.");
+            }
+            catch (ApiException ex) when (ex.Message.Contains("Continuous access evaluation resulted in claims challenge"))
+            {
+                _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
+                string claimChallenge = ex.ResponseHeaders["WWW-Authenticate"].FirstOrDefault();
+                _consentHandler.ChallengeUser(_graphScopes, claimChallenge);
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching user profile photo.");
+                throw;
+            }
+        }
+
         public async Task<List<Event>> GetCalendarEventsAsync(int count = 10)
         {
             try
@@ -177,7 +258,7 @@ namespace AITrailBlazer.Web.Services
                 {
                     requestConfiguration.QueryParameters.Top = count;
                     requestConfiguration.QueryParameters.Orderby = new[] { "start/dateTime" };
-                    requestConfiguration.QueryParameters.Select = new[] { 
+                    requestConfiguration.QueryParameters.Select = new[] {
                         "subject",
                         "organizer",
                         "start",
@@ -226,7 +307,7 @@ namespace AITrailBlazer.Web.Services
                 {
                     requestConfiguration.QueryParameters.Top = count;
                     requestConfiguration.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
-                    requestConfiguration.QueryParameters.Select = new[] { 
+                    requestConfiguration.QueryParameters.Select = new[] {
                         "subject",
                         "from",
                         "receivedDateTime"
@@ -242,6 +323,59 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
+        
+               public async Task<DriveItem> GetFileByIdAsync(string fileId)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to fetch file with ID: {fileId}");
+                var drive = await GraphClient.Me.Drive.GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Expand = new[] { $"items(${fileId})" };
+                    requestConfiguration.QueryParameters.Select = new[] { $"items(${fileId})" };
+                });
+
+                var file = drive?.Items?.FirstOrDefault(item => item.Id == fileId);
+
+                if (file == null)
+                {
+                    throw new FileNotFoundException($"File with ID {fileId} not found.");
+                }
+
+                _logger.LogInformation($"Successfully fetched file: {file.Name}");
+                return file;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while fetching file with ID: {fileId}");
+                throw;
+            }
+        }
+
+        public async Task<Stream> DownloadFileContentAsync(string fileId)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to download content for file with ID: {fileId}");
+                var file = await GetFileByIdAsync(fileId);
+
+                if (file.Content == null)
+                {
+                    throw new InvalidOperationException($"Content for file with ID {fileId} is not available.");
+                }
+
+                var contentStream = new MemoryStream(file.Content);
+
+                _logger.LogInformation($"Successfully downloaded content for file with ID: {fileId}");
+                return contentStream;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while downloading content for file with ID: {fileId}");
+                throw;
+            }
+        }
+
     }
 
     public class TokenAcquisitionAuthenticationProvider : IAuthenticationProvider
