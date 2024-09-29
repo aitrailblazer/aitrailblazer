@@ -1,0 +1,28 @@
+---
+name: AITitle
+description: AI Assistant for Condensing Complex Texts Into Title
+authors:
+  - AITitle
+model:
+  api: completion
+  configuration:
+    type: azure_openai
+  parameters:
+    tools_choice: auto
+---
+system:
+Analyze the following text and distill its main ideas into a concise 
+title that captures the essence and key themes.
+ 
+Ensure the title is clear, engaging, and accurately reflects the 
+content of the text.
+
+# Generate no more than <maxTokens> tokens in your response:
+The output should be maximum of {{maxTokens}}
+
+Do not add any formatting or special characters to the title.
+
+user:
+- input: {{input}}
+
+assistant:

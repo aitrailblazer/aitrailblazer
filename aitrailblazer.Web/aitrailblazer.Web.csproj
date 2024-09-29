@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);SKEXP0110;SKEXP0001;SKEXP0040;SKEXP0050;SKEXP0053;SKEXP0043</NoWarn>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,9 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.22.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.66" />
     <PackageReference Include="Markdig" Version="0.37.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.6" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.0" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.1" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.20.0" />
     <PackageReference Include="Microsoft.Identity.Web.GraphServiceClientBeta" Version="2.20.0" />
@@ -28,9 +32,25 @@
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.9.8" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.9.8" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.9.8" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.21.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" Version="1.21.1-beta" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi.Extensions" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.21.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Prompty" Version="1.21.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Yaml" Version="1.21.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="SmartComponents.AspNetCore" Version="0.1.0-preview10148" />
     <PackageReference Include="SmartComponents.Inference.OpenAI" Version="0.1.0-preview10148" />
   </ItemGroup>
-
+  <!-- Ensure the Plugins folder is included in the build output -->
+  <ItemGroup>
+    <Content Include="Plugins\**\*" Exclude="Plugins\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

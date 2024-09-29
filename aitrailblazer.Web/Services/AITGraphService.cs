@@ -211,7 +211,7 @@ namespace AITrailBlazer.Web.Services
 
                 if (responseStream != null)
                 {
-                    _logger.LogInformation("User profile photo fetched successfully");
+                    _logger.LogInformation($"User profile photo fetched successfully,{requestUrl}");
                     return responseStream;
                 }
                 else
@@ -297,7 +297,37 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
+        public async Task<List<Event>> GetCalendarViewAsync(DateTime startDateTime, DateTime endDateTime, int maxEvents = 100)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to fetch calendar events from {startDateTime} to {endDateTime}");
+                
+                var eventsResponse = await GraphClient.Me.Calendar.CalendarView.GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.StartDateTime = startDateTime.ToString("o");
+                    requestConfiguration.QueryParameters.EndDateTime = endDateTime.ToString("o");
+                    requestConfiguration.QueryParameters.Top = maxEvents;
+                    requestConfiguration.QueryParameters.Orderby = new[] { "start/dateTime" };
+                    requestConfiguration.QueryParameters.Select = new[] {
+                        "subject",
+                        "organizer",
+                        "start",
+                        "end",
+                        "location",
+                        "body"
+                    };
+                });
 
+                _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
+                return eventsResponse.Value?.ToList() ?? new List<Event>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching calendar events.");
+                throw;
+            }
+        }
         public async Task<List<Message>> GetRecentMessagesAsync(int count = 10)
         {
             try
@@ -310,7 +340,9 @@ namespace AITrailBlazer.Web.Services
                     requestConfiguration.QueryParameters.Select = new[] {
                         "subject",
                         "from",
-                        "receivedDateTime"
+                        "receivedDateTime",
+                        "body",           // Added to fetch the body content
+                        "toRecipients"    // Added to fetch the recipients
                     };
                 });
 
@@ -323,6 +355,7 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
+
         
                public async Task<DriveItem> GetFileByIdAsync(string fileId)
         {

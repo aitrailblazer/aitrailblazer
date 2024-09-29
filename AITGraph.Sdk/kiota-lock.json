@@ -1,5 +1,5 @@
 {
-  "descriptionHash": "FDB82A479FFA26F6EFC3A67B7C390E4CEBB9B16B965E7AF20F3DF8BD6E487F80B1C53D29E32E9C20A7460B42965E1E9CA6250F7F6186D15A87598026BB568FF5",
+  "descriptionHash": "B500F9D0E0812A7BFE910FFCD8E1B2700BCFA8D25E49BF091E71895B26FF538C518ABE34C3D6123AE0629C4896394F66D43A8AF9D83BDDBDBB4936E1477FFFE0",
   "descriptionLocation": "OpenApi/Graph.json",
   "lockFileVersion": "1.0.0",
   "kiotaVersion": "1.11.1",
@@ -33,7 +33,8 @@
     "/me/photo",
     "/me/profile",
     "/me/profile/account",
-    "/me/calendar/events"
+    "/me/calendar/events",
+    "/me/calendar/calendarView"
   ],
   "excludePatterns": [],
   "disabledValidationRules": []

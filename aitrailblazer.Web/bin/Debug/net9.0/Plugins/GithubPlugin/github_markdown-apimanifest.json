@@ -1,0 +1,20 @@
+{
+    "applicationName": "SemanticKernel",
+    "publisher": {
+      "name": "Support",
+      "contactEmail": "publisher-email@example.com"
+    },
+    "apiDependencies": {
+      "github_markdown": {
+        "apiDescriptionUrl": "https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/github.com/api.github.com/1.1.4/openapi.json",
+        "apiDeploymentBaseUrl": "https://api.github.com/",
+        "requests": [
+          {
+            "method": "POST",
+            "uriTemplate": "markdown"
+          }
+        ],
+        "extensions": {}
+      }
+    }
+  }

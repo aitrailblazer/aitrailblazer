@@ -1,0 +1,82 @@
+---
+name: GetIntent
+description: AI Writing Tool designed to cater to a wide range of fields and purposes
+authors:
+  - GetIntent
+model:
+  api: completion
+  configuration:
+    type: azure_openai
+  parameters:
+    tools_choice: auto
+inputs:
+  input: dummy
+sample:
+  input: Create /help
+  output: HelpASAPCommand
+---
+
+system:
+
+# instructions
+Identify the user's intent. Return one of the following values:
+
+HelpASAP - If the user wants to get help about ASAP Platform.
+WorkingWithASAP - If the user wants to work with ASAP Platform.
+Ask - ask questions
+Correct - identifying and correcting grammatical errors.
+Improve - Elevate the text by enhancing its readability.
+Content - Start from a blank slate and craft entirely new content.
+Help - help with ASAP.
+
+Unknown - If the user's intent matches none of the above
+
+Examples:
+input:Help help with ASAP
+HelpASAP
+
+input:Help help with AIWritingAssistant
+HelpAIWritingAssistant
+
+input:Ask  
+WorkingWithASAP
+
+input:Correct  
+WorkingWithASAP
+
+input:Improve 
+WorkingWithASAP
+
+input:Content 
+WorkingWithASAP
+
+input:Ask  /help
+HelpASAPCommand
+
+input:Correct /help
+HelpASAPCommand
+
+input:Improve /help
+HelpASAPCommand
+
+input:Content  /help
+HelpASAPCommand
+
+
+input:Ask/Write  /search
+ASAPCommandMemorySearch
+
+input:Correct /search
+ASAPCommandMemorySearch
+
+input:Improve  /search
+ASAPCommandMemorySearch
+
+input:Content /search
+ASAPCommandMemorySearch
+
+user:
+- input: {{input}}
+
+assistant:
+

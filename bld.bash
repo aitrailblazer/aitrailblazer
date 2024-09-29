@@ -21,11 +21,12 @@ kiota generate -l CSharp \
     --class-name AITGraphApiClient \
     --include-path "/me/messages" \
     --include-path "/me/mailFolders" \
-     --include-path "/me/drive" \
+    --include-path "/me/drive" \
     --include-path "/me/photo" \
     --include-path "/me/profile" \
     --include-path "/me/profile/account" \
     --include-path "/me/calendar/events" \
+    --include-path "/me/calendar/calendarView"  \
     --exclude-backward-compatible \
     --openapi ./AITGraph.Sdk/OpenApi/Graph.json
 
