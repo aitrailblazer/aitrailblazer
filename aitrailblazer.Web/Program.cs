@@ -155,7 +155,7 @@ var parametersAzureService = new ParametersAzureService
 
     StorageConnectionString = storageConnectionString,
     StorageContainerName = storageContainerName,
-    GITHUB_TOKEN = GITHUB_TOKEN,
+    GITHUB_TOKEN = GTB_TOKEN,
 
     //GOOGLE_APPLICATION_CREDENTIALS_STR = GOOGLE_APPLICATION_CREDENTIALS_STR,
     //GOOGLE_API_ENDPOINT = GOOGLE_API_ENDPOINT,
