@@ -13140,6 +13140,304 @@
           "Value": "sha256-eMyadBl6IpDMvj1c5PmGjoRAJ3w8lRQ0pT3td3Y18zw="
         }
       ]
+    },
+    {
+      "Route": "js/timezone.js",
+      "AssetFile": "js/timezone.js.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005464480874"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.js",
+      "AssetFile": "js/timezone.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "330"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.js.gz",
+      "AssetFile": "js/timezone.js.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js",
+      "AssetFile": "js/timezone.js.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005464480874"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js",
+      "AssetFile": "js/timezone.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "330"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js"
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js.gz",
+      "AssetFile": "js/timezone.js.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0="
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js.gz"
+        }
+      ]
     }
   ]
 }

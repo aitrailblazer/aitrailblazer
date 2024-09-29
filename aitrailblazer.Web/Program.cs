@@ -235,6 +235,12 @@ builder.Services.AddScoped<ReadingLevelService>();
 builder.Services.AddScoped<RelationSettingsService>();
 builder.Services.AddScoped<TokenLabelService>();
 
+// Register Services
+builder.Services.AddScoped<TimeZoneService>();
+builder.Services.AddScoped<UserTimeZoneService>();
+builder.Services.AddScoped<TimeFunctions>();
+builder.Services.AddScoped<KernelSetup>();
+
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 

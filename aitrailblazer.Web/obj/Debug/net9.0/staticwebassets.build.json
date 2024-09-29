@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "G9sEbJLX7oITgaTb/P4snZ8CvOlXlk1DcbMiBN4eIyM=",
+  "Hash": "jPhDsxnQWnRbOW3KDz7+dvM7jL1JtD3fWMtmR+rBeCk=",
   "Source": "aitrailblazer.Web",
   "BasePath": "_content/aitrailblazer.Web",
   "Mode": "Default",
@@ -1023,6 +1023,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.1/staticwebassets/Components/List/FluentAutocomplete.razor.js"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "js/timezone#[.{fingerprint=vpnooftw05}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/js/timezone.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "kpwsjrnsth",
+      "Integrity": "mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/js/timezone.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/7g337ulk4n-iy34mpf72d.gz",
@@ -3291,6 +3312,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/img/logox32.png"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/js/timezone.js",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "js/timezone#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vpnooftw05",
+      "Integrity": "ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/timezone.js"
     }
   ],
   "Endpoints": [
@@ -16431,6 +16473,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-eMyadBl6IpDMvj1c5PmGjoRAJ3w8lRQ0pT3td3Y18zw="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.js",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005464480874"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.js",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/js/timezone.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "330"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.js.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.005464480874"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/js/timezone.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "330"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ExJJJR37hZNH8w7NvXNfCAsaizMZNaLPYCsG+WyrFKU="
+        }
+      ]
+    },
+    {
+      "Route": "js/timezone.vpnooftw05.js.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "182"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Sep 2024 06:20:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vpnooftw05"
+        },
+        {
+          "Name": "label",
+          "Value": "js/timezone.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mEOF8sOEksVexMiBFBlQGkZUgxs88iWYs/18O8njAs0="
         }
       ]
     }

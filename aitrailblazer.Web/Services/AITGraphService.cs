@@ -14,13 +14,10 @@ using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
-
+using System.Text.Json;
+using System.IO; // For StreamReader
 namespace AITrailBlazer.Web.Services
 {
-    public class AuthenticationRequiredException : Exception
-    {
-        public AuthenticationRequiredException(string message) : base(message) { }
-    }
 
     public class AITGraphService
     {
@@ -119,67 +116,7 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
-
-        public async Task<UserAccountInformation?> GetUserAccountInformationAsync()
-        {
-            try
-            {
-                _logger.LogInformation("Attempting to fetch user account information");
-                var accountInfo = await GraphClient.Me.Profile.Account.GetAsync(requestConfiguration =>
-                {
-                    requestConfiguration.QueryParameters.Select = new[] {
-                        "ageGroup",
-                        "countryCode",
-                        "preferredLanguageTag",
-                        "userPrincipalName",
-                        "allowedAudiences",
-                        "createdDateTime",
-                        "lastModifiedDateTime",
-                        "id"
-                    };
-                });
-
-                if (accountInfo?.Value != null && accountInfo.Value.Count > 0)
-                {
-                    _logger.LogInformation("User account information fetched successfully");
-                    return accountInfo.Value[0];
-                }
-                else
-                {
-                    _logger.LogWarning("No user account information found");
-                    return null;
-                }
-            }
-            catch (MsalUiRequiredException ex)
-            {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
-                throw new AuthenticationRequiredException("Authentication is required.");
-            }
-            catch (MicrosoftIdentityWebChallengeUserException ex)
-            {
-                _logger.LogError(ex, "User challenge occurred while fetching user account information.");
-                throw new AuthenticationRequiredException("Authentication challenge is required.");
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                _logger.LogError(ex, "Unauthorized access exception occurred.");
-                throw new AuthenticationRequiredException("Unauthorized access.");
-            }
-            catch (ApiException ex) when (ex.Message.Contains("Continuous access evaluation resulted in claims challenge"))
-            {
-                _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
-                string claimChallenge = ex.ResponseHeaders["WWW-Authenticate"].FirstOrDefault();
-                _consentHandler.ChallengeUser(_graphScopes, claimChallenge);
-                throw new AuthenticationRequiredException("Authentication challenge is required.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching user account information.");
-                throw;
-            }
-        }
-
-        public async Task<Stream> GetUserPhotoAsync()
+       public async Task<Stream> GetUserPhotoAsync()
         {
             try
             {
@@ -249,25 +186,35 @@ namespace AITrailBlazer.Web.Services
             }
         }
 
-        public async Task<List<Event>> GetCalendarEventsAsync(int count = 10)
+        public async Task<UserAccountInformation?> GetUserAccountInformationAsync()
         {
             try
             {
-                _logger.LogInformation($"Attempting to fetch {count} calendar events");
-                var eventsResponse = await GraphClient.Me.Calendar.Events.GetAsync(requestConfiguration =>
+                _logger.LogInformation("Attempting to fetch user account information");
+                var accountInfo = await GraphClient.Me.Profile.Account.GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.Top = count;
-                    requestConfiguration.QueryParameters.Orderby = new[] { "start/dateTime" };
                     requestConfiguration.QueryParameters.Select = new[] {
-                        "subject",
-                        "organizer",
-                        "start",
-                        "end"
+                        "ageGroup",
+                        "countryCode",
+                        "preferredLanguageTag",
+                        "userPrincipalName",
+                        "allowedAudiences",
+                        "createdDateTime",
+                        "lastModifiedDateTime",
+                        "id"
                     };
                 });
 
-                _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
-                return eventsResponse.Value?.ToList() ?? new List<Event>();
+                if (accountInfo?.Value != null && accountInfo.Value.Count > 0)
+                {
+                    _logger.LogInformation("User account information fetched successfully");
+                    return accountInfo.Value[0];
+                }
+                else
+                {
+                    _logger.LogWarning("No user account information found");
+                    return null;
+                }
             }
             catch (MsalUiRequiredException ex)
             {
@@ -276,7 +223,7 @@ namespace AITrailBlazer.Web.Services
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
+                _logger.LogError(ex, "User challenge occurred while fetching user account information.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
@@ -293,16 +240,76 @@ namespace AITrailBlazer.Web.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching calendar events.");
+                _logger.LogError(ex, "An error occurred while fetching user account information.");
                 throw;
             }
         }
+
+        public async Task<CalendarEventsResult> GetCalendarEventsAsync(int count = 10)
+        {
+            var result = new CalendarEventsResult();
+
+            try
+            {
+                _logger.LogInformation($"Attempting to fetch {count} calendar events");
+
+                var eventsResponse = await _graphClient.Me.Calendar.Events.GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Top = count;
+                    requestConfiguration.QueryParameters.Orderby = new[] { "start/dateTime" };
+                    requestConfiguration.QueryParameters.Select = new[] {
+                        "subject",
+                        "organizer",
+                        "start",
+                        "end"
+                    };
+                });
+
+                _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
+                result.Events = eventsResponse.Value?.ToList() ?? new List<Event>();
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogError(ex, "API Exception occurred while fetching calendar events.");
+                _logger.LogError($"Error Message: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError($"Inner Exception: {ex.InnerException.Message}");
+                }
+
+                // Optionally, set an error message in the result
+                result.ErrorMessage = $"An error occurred while fetching calendar events: {ex.Message}";
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
+                result.ErrorMessage = "Authentication is required.";
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
+                result.ErrorMessage = "Authentication challenge is required.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred.");
+                result.ErrorMessage = "Unauthorized access.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while fetching calendar events.");
+                result.ErrorMessage = "An unexpected error occurred.";
+            }
+
+            return result;
+        }
+
         public async Task<List<Event>> GetCalendarViewAsync(DateTime startDateTime, DateTime endDateTime, int maxEvents = 100)
         {
             try
             {
                 _logger.LogInformation($"Attempting to fetch calendar events from {startDateTime} to {endDateTime}");
-                
+
                 var eventsResponse = await GraphClient.Me.Calendar.CalendarView.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.StartDateTime = startDateTime.ToString("o");
@@ -356,8 +363,8 @@ namespace AITrailBlazer.Web.Services
             }
         }
 
-        
-               public async Task<DriveItem> GetFileByIdAsync(string fileId)
+
+        public async Task<DriveItem> GetFileByIdAsync(string fileId)
         {
             try
             {
@@ -451,4 +458,28 @@ namespace AITrailBlazer.Web.Services
             }
         }
     }
+    public class AuthenticationRequiredException : Exception
+    {
+        public AuthenticationRequiredException(string message) : base(message) { }
+        public AuthenticationRequiredException(string message, Exception innerException) : base(message, innerException) { }
+    }
+    public class ODataError
+    {
+        public ODataErrorDetail Error { get; set; }
+    }
+
+    public class ODataErrorDetail
+    {
+        public string Message { get; set; }
+        public string Code { get; set; }
+        public string InnerError { get; set; }
+    }
+
+    // Define a result class to encapsulate events and error messages
+    public class CalendarEventsResult
+    {
+        public List<Event> Events { get; set; } = new List<Event>();
+        public string ErrorMessage { get; set; }
+    }
+
 }

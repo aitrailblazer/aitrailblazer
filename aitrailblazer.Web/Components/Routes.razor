@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject TimeZoneService TimeZoneService
 <StatefulReconnection />
 
 <CascadingAuthenticationState>
@@ -31,14 +32,18 @@
 </CascadingAuthenticationState>
 
 @code {
-    public class RedirectToLogin : ComponentBase
+    protected override async Task OnInitializedAsync()
     {
-        [Inject] private NavigationManager NavigationManager { get; set; }
-
-        protected override void OnInitialized()
+        try
         {
-            var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
-            NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
+            var userTimeZone = await TimeZoneService.GetTimeZoneAsync();
+            Console.WriteLine($"User's Time Zone: {userTimeZone}");
+            // Additional logic based on user's time zone can be added here
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error retrieving time zone: {ex.Message}");
+            // Handle the error gracefully, possibly defaulting to UTC
         }
     }
 }
