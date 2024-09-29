@@ -1,8 +1,8 @@
+name: Azure DevOps Deployment
+
 on:
   workflow_dispatch:
   push:
-    # Run when commits are pushed to mainline branch (main or master)
-    # Set this to the mainline branch you are using
     branches:
       - main
 
@@ -29,6 +29,29 @@ jobs:
       MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
       REGISTRY_PASSWORD: ${{ secrets.WEBFRONTEND_REGISTRY_PASSWORD }}
       REGISTRY_USERNAME: ${{ secrets.WEBFRONTEND_REGISTRY_USERNAME }}
+      AZUREAD__CALLBACKPATH: ${{ secrets.AZUREAD__CALLBACKPATH }}
+      AZUREAD__CLIENTID: ${{ secrets.AZUREAD__CLIENTID }}
+      AZUREAD__CLIENTSECRET: ${{ secrets.AZUREAD__CLIENTSECRET }}
+      AZUREAD__DOMAIN: ${{ secrets.AZUREAD__DOMAIN }}
+      AZUREAD__INSTANCE: ${{ secrets.AZUREAD__INSTANCE }}
+      AZUREAD__TENANTID: ${{ secrets.AZUREAD__TENANTID }}
+      AZUREOPENAIENDPOINT03: ${{ secrets.AZUREOPENAIENDPOINT03 }}
+      AZUREOPENAIKEY03: ${{ secrets.AZUREOPENAIKEY03 }}
+      AZUREOPENAIMODELNAME02: ${{ secrets.AZUREOPENAIMODELNAME02 }}
+      AZUREOPENAIMODELNAME03: ${{ secrets.AZUREOPENAIMODELNAME03 }}
+      BING_API_KEY: ${{ secrets.BING_API_KEY }}
+      CLIENTID: ${{ secrets.CLIENTID }}
+      CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
+      DOWNSTREAMAPI__BASEURL: ${{ secrets.DOWNSTREAMAPI__BASEURL }}
+      DOWNSTREAMAPI__SCOPES: ${{ secrets.DOWNSTREAMAPI__SCOPES }}
+      GTB_TOKEN: ${{ secrets.GTB_TOKEN }}
+      SMARTCOMPONENTS__APIKEY: ${{ secrets.SMARTCOMPONENTS__APIKEY }}
+      SMARTCOMPONENTS__DEPLOYMENTNAME: ${{ secrets.SMARTCOMPONENTS__DEPLOYMENTNAME }}
+      SMARTCOMPONENTS__ENDPOINT: ${{ secrets.SMARTCOMPONENTS__ENDPOINT }}
+      STORAGECONNECTIONSTRING: ${{ secrets.STORAGECONNECTIONSTRING }}
+      STORAGECONTAINERNAME: ${{ secrets.STORAGECONTAINERNAME }}
+      TENANTID: ${{ secrets.TENANTID }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,17 +88,14 @@ jobs:
             --tenant-id "$($info.tenantId)"
         shell: pwsh
 
-      #- name: Provision Infrastructure
-      #  run: azd provision --no-prompt
-        # Required when 
-        # env:
-        #   AZD_INITIAL_ENVIRONMENT_CONFIG: ${{ secrets.AZD_INITIAL_ENVIRONMENT_CONFIG }}
+      # Optional steps
+      # - name: Provision Infrastructure
+      #   run: azd provision --no-prompt
+      #   env:
+      #     AZD_INITIAL_ENVIRONMENT_CONFIG: ${{ secrets.AZD_INITIAL_ENVIRONMENT_CONFIG }}
 
-      # Required when provisioning and deploying are defined in separate jobs.
-      #- name: Refresh azd env (pulls latest infrastructure provision)
-      # run: azd env refresh
-      # env:
-      #   AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+      # - name: Refresh azd env
+      #   run: azd env refresh
 
       - name: Create azd environment
         run: |
@@ -99,10 +119,18 @@ jobs:
           azd env set AZURE_LOG_ANALYTICS_WORKSPACE_NAME $AZURE_LOG_ANALYTICS_WORKSPACE_NAME
           azd env set MANAGED_IDENTITY_CLIENT_ID $MANAGED_IDENTITY_CLIENT_ID
           azd env set MANAGED_IDENTITY_NAME $MANAGED_IDENTITY_NAME
-          # Add other variables as needed
+
+      - name: Deploy Application
+        run: |
+          cd aitrailblazer.AppHost
+          azd config set alpha.aca.persistDomains on
+          azd deploy --no-prompt
         env:
-          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+          AZURE_LOCATION: eastus2
           AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
           AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
           AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
@@ -111,27 +139,6 @@ jobs:
           AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
           MANAGED_IDENTITY_CLIENT_ID: ${{ secrets.MANAGED_IDENTITY_CLIENT_ID }}
           MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
-
-
-      - name: Deploy Application
-        run: |
-          cd aitrailblazer.AppHost
-          azd config set alpha.aca.persistDomains on
-          azd deploy --no-prompt
-        env:
-            AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-            AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-            AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
-            AZURE_LOCATION: eastus2
-            AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
-            AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
-            AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
-            AZURE_CONTAINER_REGISTRY_ENDPOINT: ${{ secrets.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
-            AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID: ${{ secrets.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
-            AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
-            MANAGED_IDENTITY_CLIENT_ID: ${{ secrets.MANAGED_IDENTITY_CLIENT_ID }}
-            MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
-            REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-            REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-            DOTNET_ROOT: /usr/share/dotnet
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          DOTNET_ROOT: /usr/share/dotnet
