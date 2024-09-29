@@ -1,35 +1,137 @@
-#!/usr/bin/env bash
+on:
+  workflow_dispatch:
+  push:
+    # Run when commits are pushed to mainline branch (main or master)
+    # Set this to the mainline branch you are using
+    branches:
+      - main
 
-#rm -rf src
+permissions:
+  id-token: write
+  contents: read
 
-###
-# kiota search graph
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.WEBFRONTEND_AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.WEBFRONTEND_AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.WEBFRONTEND_AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+      AZURE_LOCATION: eastus2
+      AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
+      AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+      AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+      AZURE_CONTAINER_REGISTRY_ENDPOINT: ${{ secrets.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+      AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID: ${{ secrets.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+      AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
+      MANAGED_IDENTITY_CLIENT_ID: ${{ secrets.MANAGED_IDENTITY_CLIENT_ID }}
+      MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
+      REGISTRY_PASSWORD: ${{ secrets.WEBFRONTEND_REGISTRY_PASSWORD }}
+      REGISTRY_USERNAME: ${{ secrets.WEBFRONTEND_REGISTRY_USERNAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-# kiota search apisguru::microsoft.com:graph-beta
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
 
-# kiota show -k apisguru::microsoft.com:graph-beta > graph-beta.log
+      - name: Install azd
+        uses: Azure/setup-azd@v1.0.0
 
-# kiota download apisguru::microsoft.com:graph-beta \
-#    --output ./src/AITGraph.Sdk/OpenApi/Graph.json
+      - name: Install .NET Aspire workload
+        run: dotnet workload install aspire
+
+      - name: Log in with Azure (Federated Credentials)
+        if: ${{ env.AZURE_CLIENT_ID != '' }}
+        run: |
+          azd auth login `
+            --client-id "$Env:AZURE_CLIENT_ID" `
+            --federated-credential-provider "github" `
+            --tenant-id "$Env:AZURE_TENANT_ID"
+        shell: pwsh
+
+      - name: Log in with Azure (Client Credentials)
+        if: ${{ env.AZURE_CREDENTIALS != '' }}
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+          Write-Host "::add-mask::$($info.clientSecret)"
+
+          azd auth login `
+            --client-id "$($info.clientId)" `
+            --client-secret "$($info.clientSecret)" `
+            --tenant-id "$($info.tenantId)"
+        shell: pwsh
+
+      #- name: Provision Infrastructure
+      #  run: azd provision --no-prompt
+        # Required when 
+        # env:
+        #   AZD_INITIAL_ENVIRONMENT_CONFIG: ${{ secrets.AZD_INITIAL_ENVIRONMENT_CONFIG }}
+
+      # Required when provisioning and deploying are defined in separate jobs.
+      #- name: Refresh azd env (pulls latest infrastructure provision)
+      # run: azd env refresh
+      # env:
+      #   AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+
+      - name: Create azd environment
+        run: |
+          cd aitrailblazer.AppHost
+          azd env new $AZURE_ENV_NAME --subscription $AZURE_SUBSCRIPTION_ID --location $AZURE_LOCATION --no-prompt
+        env:
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_LOCATION: eastus2
+
+      - name: Set variables in azd environment
+        run: |
+          cd aitrailblazer.AppHost
+          azd env set AZURE_LOCATION $AZURE_LOCATION
+          azd env set AZURE_SUBSCRIPTION_ID $AZURE_SUBSCRIPTION_ID
+          azd env set AZURE_CONTAINER_APPS_ENVIRONMENT_NAME $AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
+          azd env set AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN $AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
+          azd env set AZURE_CONTAINER_APPS_ENVIRONMENT_ID $AZURE_CONTAINER_APPS_ENVIRONMENT_ID
+          azd env set AZURE_CONTAINER_REGISTRY_ENDPOINT $AZURE_CONTAINER_REGISTRY_ENDPOINT
+          azd env set AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID $AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID
+          azd env set AZURE_LOG_ANALYTICS_WORKSPACE_NAME $AZURE_LOG_ANALYTICS_WORKSPACE_NAME
+          azd env set MANAGED_IDENTITY_CLIENT_ID $MANAGED_IDENTITY_CLIENT_ID
+          azd env set MANAGED_IDENTITY_NAME $MANAGED_IDENTITY_NAME
+          # Add other variables as needed
+        env:
+          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
+          AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+          AZURE_CONTAINER_REGISTRY_ENDPOINT: ${{ secrets.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+          AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID: ${{ secrets.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+          AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
+          MANAGED_IDENTITY_CLIENT_ID: ${{ secrets.MANAGED_IDENTITY_CLIENT_ID }}
+          MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
 
 
-#  generate the client SDK for the Bing News Search API
-kiota generate -l CSharp \
-    --log-level trace \
-    --output ./AITGraph.Sdk \
-    --namespace-name AITGraph.Sdk \
-    --class-name AITGraphApiClient \
-    --include-path "/me/messages" \
-    --include-path "/me/mailFolders" \
-    --include-path "/me/drive" \
-    --include-path "/me/photo" \
-    --include-path "/me/profile" \
-    --include-path "/me/profile/account" \
-    --include-path "/me/calendar/events" \
-    --include-path "/me/calendar/calendarView"  \
-    --exclude-backward-compatible \
-    --openapi ./AITGraph.Sdk/OpenApi/Graph.json
-
-###
-
-# dotnet add ./src/App reference ./src/NewsSearch.Sdk/
+      - name: Deploy Application
+        run: |
+          cd aitrailblazer.AppHost
+          azd config set alpha.aca.persistDomains on
+          azd deploy --no-prompt
+        env:
+            AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+            AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+            AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+            AZURE_LOCATION: eastus2
+            AZURE_CONTAINER_APPS_ENVIRONMENT_NAME: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME }}
+            AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+            AZURE_CONTAINER_APPS_ENVIRONMENT_ID: ${{ secrets.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+            AZURE_CONTAINER_REGISTRY_ENDPOINT: ${{ secrets.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+            AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID: ${{ secrets.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+            AZURE_LOG_ANALYTICS_WORKSPACE_NAME: ${{ secrets.AZURE_LOG_ANALYTICS_WORKSPACE_NAME }}
+            MANAGED_IDENTITY_CLIENT_ID: ${{ secrets.MANAGED_IDENTITY_CLIENT_ID }}
+            MANAGED_IDENTITY_NAME: ${{ secrets.MANAGED_IDENTITY_NAME }}
+            REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+            REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+            DOTNET_ROOT: /usr/share/dotnet

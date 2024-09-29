@@ -30,7 +30,7 @@ var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? string.Empty;
 string storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString") ?? string.Empty;
 string storageContainerName = Environment.GetEnvironmentVariable("StorageContainerName") ?? string.Empty;
 
-string GITHUB_TOKEN = Environment.GetEnvironmentVariable("GITHUB_TOKEN") ?? string.Empty;
+string GTB_TOKEN = Environment.GetEnvironmentVariable("GTB_TOKEN") ?? string.Empty;
 
 // gpt-4
 string azureOpenAIModelName01 = Environment.GetEnvironmentVariable("AzureOpenAIModelName01") ?? string.Empty;

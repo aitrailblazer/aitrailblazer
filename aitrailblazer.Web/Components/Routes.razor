@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @inject TimeZoneService TimeZoneService
+
 <StatefulReconnection />
 
 <CascadingAuthenticationState>
@@ -32,18 +33,28 @@
 </CascadingAuthenticationState>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    private bool _timeZoneFetched = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        try
+        if (firstRender && !_timeZoneFetched)
         {
-            var userTimeZone = await TimeZoneService.GetTimeZoneAsync();
-            Console.WriteLine($"User's Time Zone: {userTimeZone}");
-            // Additional logic based on user's time zone can be added here
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Error retrieving time zone: {ex.Message}");
-            // Handle the error gracefully, possibly defaulting to UTC
+            _timeZoneFetched = true;
+            try
+            {
+                var userTimeZone = await TimeZoneService.GetTimeZoneAsync();
+                Console.WriteLine($"User's Time Zone: {userTimeZone}");
+                // Additional logic based on user's time zone can be added here
+
+                // If the time zone affects the UI, consider invoking StateHasChanged()
+                // to refresh the component's state
+                // StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error retrieving time zone: {ex.Message}");
+                // Handle the error gracefully, possibly defaulting to UTC
+            }
         }
     }
 }
