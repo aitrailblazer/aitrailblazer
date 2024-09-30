@@ -5,6 +5,9 @@ To effectively utilize the comprehensive set of date and time functions integrat
 ---
 
 Get my time zone
+What is the current time?
+What is tomorrow's date?
+Select all dates that are business days this week from tomorrow.
 
 ## 1. Current Time and Date Retrieval
 
