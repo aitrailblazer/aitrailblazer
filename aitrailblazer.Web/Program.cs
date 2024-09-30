@@ -25,6 +25,7 @@ using aitrailblazer.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Key Vault Configuration
+
 var keyVaultUrl = "https://AITAzureKeyVault.vault.azure.net/";
 var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
 
