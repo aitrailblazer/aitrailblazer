@@ -130,10 +130,43 @@ else if (user != null)
                     {
                         <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
 
-<FluentDataGrid Items="@emailsWithComputedProperties.AsQueryable()" TGridItem="EmailViewModel">
-    <PropertyColumn Property="@(e => e.SenderName)" Title="Sender" Sortable="true" Width="200px" />
-    <PropertyColumn Property="@(e => e.Subject)" Title="Subject" Sortable="true" Width="300px" />
-    <PropertyColumn Property="@(e => e.ReceivedDateTimeFormatted)" Title="Received" Sortable="true" Width="150px" />
+<FluentDataGrid 
+Items="@emailsWithComputedProperties.AsQueryable()" 
+TGridItem="EmailViewModel"
+ShowHover="true" 
+TGridItem="EmailViewModel"
+SelectionMode="DataGridSelectionMode.Single" 
+SelectedItemsChanged="OnSelectedEmailChanged"
+GenerateHeader="GenerateHeaderOption.Sticky">
+    <PropertyColumn 
+    Property="@(e => e.SenderName)" 
+    Title="Sender" Sortable="true" 
+    Width="200px" />
+
+    <PropertyColumn 
+    Property="@(e => e.Subject)" 
+    Title="Subject" 
+    Sortable="true" 
+    Width="300px" />
+
+    <PropertyColumn 
+    Property="@(e => e.ReceivedDateTimeFormatted)" 
+    Title="Received" 
+    Sortable="true" 
+    Width="150px" />
+                                <!-- Actions Column -->
+                                <TemplateColumn 
+                                    Title="Actions" 
+                                    Width="100px">
+                                    <ChildContent Context="emailViewModel">
+                                        <FluentButton 
+                                            OnClick="@(() => OpenEmailDialog(emailViewModel))" 
+                                            Appearance="Appearance.Accent" 
+                                            Size="Size.Small">
+                                            View
+                                        </FluentButton>
+                                    </ChildContent>
+                                </TemplateColumn>
 </FluentDataGrid>
                         </div>
 
