@@ -1280,10 +1280,10 @@
           }
         }
       },
-      "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.0": {
+      "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.FluentUI.AspNetCore.Components": "4.9.3"
+          "Microsoft.FluentUI.AspNetCore.Components": "4.10.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.Icons.dll": {
@@ -4779,10 +4779,10 @@
         "microsoft.fluentui.aspnetcore.components.emoji.nuspec"
       ]
     },
-    "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.0": {
-      "sha512": "ER0RpgiFBVjRfkM56wmLrb/qr/Toi7rx3nyGoqu0LZHuYSAV5cKGPpDOFg/SkgPYBLW0YOEm3F5g817KJu/PxQ==",
+    "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.1": {
+      "sha512": "8GkdgjKBch0XVLjnJh191IKOXVDiBdGrbn/Ye3DwTZY3jN8mgm0KXNFMAlx8Dqeu0OLcybpbkzRme05ztPl7cA==",
       "type": "package",
-      "path": "microsoft.fluentui.aspnetcore.components.icons/4.10.0",
+      "path": "microsoft.fluentui.aspnetcore.components.icons/4.10.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4790,7 +4790,7 @@
         "icon.png",
         "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.Icons.dll",
         "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.Icons.xml",
-        "microsoft.fluentui.aspnetcore.components.icons.4.10.0.nupkg.sha512",
+        "microsoft.fluentui.aspnetcore.components.icons.4.10.1.nupkg.sha512",
         "microsoft.fluentui.aspnetcore.components.icons.nuspec"
       ]
     },
@@ -7812,7 +7812,7 @@
       "Markdig >= 0.37.0",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 8.0.6",
       "Microsoft.FluentUI.AspNetCore.Components >= 4.10.1",
-      "Microsoft.FluentUI.AspNetCore.Components.Icons >= 4.10.0",
+      "Microsoft.FluentUI.AspNetCore.Components.Icons >= 4.10.1",
       "Microsoft.Identity.Web >= 2.20.0",
       "Microsoft.Identity.Web.GraphServiceClientBeta >= 2.20.0",
       "Microsoft.Identity.Web.UI >= 2.20.0",
@@ -7912,7 +7912,7 @@
           },
           "Microsoft.FluentUI.AspNetCore.Components.Icons": {
             "target": "Package",
-            "version": "[4.10.0, )"
+            "version": "[4.10.1, )"
           },
           "Microsoft.Identity.Web": {
             "target": "Package",

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NBF+6ThEvIk=",
+  "dgSpecHash": "efgK53wNigo=",
   "success": true,
   "projectFilePath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/aitrailblazer.Web.csproj",
   "expectedPackageFiles": [
@@ -75,7 +75,7 @@
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.telemetry.abstractions/8.7.0/microsoft.extensions.telemetry.abstractions.8.7.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.1/microsoft.fluentui.aspnetcore.components.4.10.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components.emoji/4.6.0/microsoft.fluentui.aspnetcore.components.emoji.4.6.0.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components.icons/4.10.0/microsoft.fluentui.aspnetcore.components.icons.4.10.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components.icons/4.10.1/microsoft.fluentui.aspnetcore.components.icons.4.10.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.graph/5.40.0/microsoft.graph.5.40.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.graph.beta/5.56.0-preview/microsoft.graph.beta.5.56.0-preview.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.graph.core/3.1.6/microsoft.graph.core.3.1.6.nupkg.sha512",

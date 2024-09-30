@@ -125,30 +125,10 @@ else if (user != null)
                     <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
                         Access and manage your Outlook emails directly from this tab.
                     </FluentLabel>
-@if (emailsWithComputedProperties != null)
-{
-    <p>Number of Emails: @emailsWithComputedProperties.Count</p>
-    @if (emailsWithComputedProperties.Any())
-    {
-        <ul>
-            @foreach (var email in emailsWithComputedProperties)
-            {
-                <li><strong>Sender:</strong> @email.SenderName | <strong>Subject:</strong> @email.Subject</li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No emails available.</p>
-    }
-}
-else
-{
-    <p>Emails are not loaded.</p>
-}
+
                     @if (emailsWithComputedProperties != null && emailsWithComputedProperties.Any())
                     {
-                        <div style="max-height: 640px; overflow-y: auto;">
+                        <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
                             <FluentDataGrid 
                                 AutoFit="true"
                                 Items="@emailsWithComputedProperties.AsQueryable()" 
@@ -156,7 +136,8 @@ else
                                 TGridItem="EmailViewModel"
                                 SelectionMode="DataGridSelectionMode.Single" 
                                 SelectedItemsChanged="OnSelectedEmailChanged"
-                                Style="width: 820px;">
+                                GenerateHeader="GenerateHeaderOption.Sticky" 
+                                Style="width: 820px; color: black; background-color: white;">
                                 
                                 <!-- Select Column with Fixed Width -->
                                 <SelectColumn 
@@ -262,13 +243,14 @@ else
 
                     @if (calendarEventsWithComputedProperties != null && calendarEventsWithComputedProperties.Any())
                     {
-                        <div style="max-height: 640px; overflow-y: auto;">
+                        <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
                             <FluentDataGrid 
                                 Items="@calendarEventsWithComputedProperties.AsQueryable()" 
                                 ShowHover="true" 
                                 TGridItem="EventViewModel"
                                 SelectionMode="DataGridSelectionMode.Single" 
                                 SelectedItemsChanged="OnSelectedEventChanged"
+                                GenerateHeader="GenerateHeaderOption.Sticky" 
                                 Style="width: 820px;">
                                 
                                 <!-- Select Column with Fixed Width -->
@@ -414,10 +396,10 @@ else
         {
             user = await GraphService.GetCurrentUserProfileAsync();
             accountInfo = await GraphService.GetUserAccountInformationAsync();
-            userMessages = await GraphService.GetRecentMessagesAsync(10);
+            userMessages = await GraphService.GetRecentMessagesAsync(20);
 
             // Fetch calendar events
-            calendarEventsResult = await GraphService.GetCalendarEventsAsync(10); // Get the next 10 events
+            calendarEventsResult = await GraphService.GetCalendarEventsAsync(20); // Get the next 10 events
 
             if (calendarEventsResult.Events != null && calendarEventsResult.Events.Any())
             {
