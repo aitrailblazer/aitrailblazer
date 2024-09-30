@@ -125,7 +125,27 @@ else if (user != null)
                     <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
                         Access and manage your Outlook emails directly from this tab.
                     </FluentLabel>
-
+@if (emailsWithComputedProperties != null)
+{
+    <p>Number of Emails: @emailsWithComputedProperties.Count</p>
+    @if (emailsWithComputedProperties.Any())
+    {
+        <ul>
+            @foreach (var email in emailsWithComputedProperties)
+            {
+                <li><strong>Sender:</strong> @email.SenderName | <strong>Subject:</strong> @email.Subject</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No emails available.</p>
+    }
+}
+else
+{
+    <p>Emails are not loaded.</p>
+}
                     @if (emailsWithComputedProperties != null && emailsWithComputedProperties.Any())
                     {
                         <div style="max-height: 640px; overflow-y: auto;">
