@@ -130,84 +130,30 @@ else if (user != null)
                     {
                         <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
 
-<FluentDataGrid 
-Items="@emailsWithComputedProperties.AsQueryable()" 
-TGridItem="EmailViewModel"
-ShowHover="true" 
-TGridItem="EmailViewModel"
-SelectionMode="DataGridSelectionMode.Single" 
-SelectedItemsChanged="OnSelectedEmailChanged"
-GenerateHeader="GenerateHeaderOption.Sticky">
-    <PropertyColumn 
-    Property="@(e => e.SenderName)" 
-    Title="Sender" Sortable="true" 
-    Width="200px" />
-
-    <PropertyColumn 
-    Property="@(e => e.Subject)" 
-    Title="Subject" 
-    Sortable="true" 
-    Width="300px" />
-
-    <PropertyColumn 
-    Property="@(e => e.ReceivedDateTimeFormatted)" 
-    Title="Received" 
-    Sortable="true" 
-    Width="150px" />
-                                <!-- Actions Column -->
-                                <TemplateColumn 
-                                    Title="Actions" 
-                                    Width="100px">
-                                    <ChildContent Context="emailViewModel">
-                                        <FluentButton 
-                                            OnClick="@(() => OpenEmailDialog(emailViewModel))" 
-                                            Appearance="Appearance.Accent" 
-                                            Size="Size.Small">
-                                            View
-                                        </FluentButton>
-                                    </ChildContent>
-                                </TemplateColumn>
-</FluentDataGrid>
-                        </div>
-
-                        <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
                             <FluentDataGrid 
-                                AutoFit="true"
-                                Items="@emailsWithComputedProperties.AsQueryable()" 
-                                ShowHover="true" 
-                                TGridItem="EmailViewModel"
-                                SelectionMode="DataGridSelectionMode.Single" 
-                                SelectedItemsChanged="OnSelectedEmailChanged"
-                                GenerateHeader="GenerateHeaderOption.Sticky" 
-                                Style="width: 820px; color: black; background-color: white;">
-                                
-                                <!-- Select Column with Fixed Width -->
-                                <SelectColumn 
-                                    TGridItem="EmailViewModel" 
-                                    SelectMode="DataGridSelectMode.Single" 
-                                    Width="150px" />
-                                
-                                <!-- Sender Name Column -->
+                            Items="@emailsWithComputedProperties.AsQueryable()" 
+                            TGridItem="EmailViewModel"
+                            ShowHover="true" 
+                            TGridItem="EmailViewModel"
+                            SelectionMode="DataGridSelectionMode.Single" 
+                            SelectedItemsChanged="OnSelectedEmailChanged"
+                            GenerateHeader="GenerateHeaderOption.Sticky">
                                 <PropertyColumn 
-                                    Property="@(e => e.SenderName)"
-                                    Title="Sender" 
-                                    Sortable="true" 
-                                    Width="200px" />
-                                
-                                <!-- Subject Column -->
+                                Property="@(e => e.SenderName)" 
+                                Title="Sender" Sortable="true" 
+                                Width="200px" />
+
                                 <PropertyColumn 
-                                    Property="@(e => e.Subject)"
-                                    Title="Subject" 
-                                    Sortable="true" 
-                                    Width="300px" />
-                                
-                                <!-- Received Date Column -->
+                                Property="@(e => e.Subject)" 
+                                Title="Subject" 
+                                Sortable="true" 
+                                Width="300px" />
+
                                 <PropertyColumn 
-                                    Property="@(e => e.ReceivedDateTimeFormatted)"
-                                    Title="Received" 
-                                    Sortable="true" 
-                                    Width="150px" />
-                                
+                                Property="@(e => e.ReceivedDateTimeFormatted)" 
+                                Title="Received" 
+                                Sortable="true" 
+                                Width="150px" />
                                 <!-- Actions Column -->
                                 <TemplateColumn 
                                     Title="Actions" 
@@ -221,10 +167,10 @@ GenerateHeader="GenerateHeaderOption.Sticky">
                                         </FluentButton>
                                     </ChildContent>
                                 </TemplateColumn>
-                                
                             </FluentDataGrid>
                         </div>
-                    }
+
+                     }
                     else
                     {
                         <p>No emails available</p>
