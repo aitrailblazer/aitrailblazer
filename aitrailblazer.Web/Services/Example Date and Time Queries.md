@@ -4,6 +4,8 @@ To effectively utilize the comprehensive set of date and time functions integrat
 
 ---
 
+Get my time zone
+
 ## 1. Current Time and Date Retrieval
 
 ### a. Get Current Time

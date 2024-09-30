@@ -5,7 +5,6 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Extensions.Options;
 using Microsoft.FluentUI.AspNetCore.Components;
-
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
@@ -19,48 +18,57 @@ using aitrailblazer.net.Models;
 using aitrailblazer.Web;
 using aitrailblazer.Web.Components;
 using AITrailBlazer.Web.Services;
-
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.JSInterop;
+using aitrailblazer.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
-var authority = "";//Environment.GetEnvironmentVariable("authority") ?? string.Empty;
 
-var clientId = Environment.GetEnvironmentVariable("ClientId") ?? string.Empty;
-var clientSecret = Environment.GetEnvironmentVariable("ClientSecret") ?? string.Empty;
-var tenantId = Environment.GetEnvironmentVariable("tenantId") ?? string.Empty;
+// Add Key Vault Configuration
+var keyVaultUrl = "https://AITAzureKeyVault.vault.azure.net/";
+var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
 
-string storageConnectionString = Environment.GetEnvironmentVariable("StorageConnectionString") ?? string.Empty;
-string storageContainerName = Environment.GetEnvironmentVariable("StorageContainerName") ?? string.Empty;
+// Fetch secrets from Key Vault
+builder.Configuration["AzureAd:Instance"] = secretClient.GetSecret("AzureAd-Instance").Value.Value;
+builder.Configuration["AzureAd:Domain"] = secretClient.GetSecret("AzureAd-Domain").Value.Value;
+builder.Configuration["AzureAd:TenantId"] = secretClient.GetSecret("AzureAd-TenantId").Value.Value;
+builder.Configuration["AzureAd:ClientId"] = secretClient.GetSecret("AzureAd-ClientId").Value.Value;
+builder.Configuration["AzureAd:ClientSecret"] = secretClient.GetSecret("AzureAd-ClientSecret").Value.Value;
+builder.Configuration["AzureAd:CallbackPath"] = secretClient.GetSecret("AzureAd-CallbackPath").Value.Value;
+builder.Configuration["AzureAd:SignedOutCallbackPath"] = secretClient.GetSecret("AzureAd-SignedOutCallbackPath").Value.Value;
 
-string GTB_TOKEN = Environment.GetEnvironmentVariable("GTB_TOKEN") ?? string.Empty;
+var authority = "";
+var clientId = builder.Configuration["AzureAd:ClientId"];
+var clientSecret = builder.Configuration["AzureAd:ClientSecret"];
+var tenantId = builder.Configuration["AzureAd:TenantId"];
 
-// gpt-4
-string azureOpenAIModelName01 = Environment.GetEnvironmentVariable("AzureOpenAIModelName01") ?? string.Empty;
+string storageConnectionString = secretClient.GetSecret("StorageConnectionString").Value.Value;
+string storageContainerName = secretClient.GetSecret("StorageContainerName").Value.Value;
+string GTB_TOKEN = secretClient.GetSecret("GTB-TOKEN").Value.Value;
 
-// gpt-4o-mini string modelId = "gpt-4o-mini";
-string azureOpenAIModelName02 = Environment.GetEnvironmentVariable("AzureOpenAIModelName02") ?? string.Empty;
+// Fetch other secrets as needed
+string azureOpenAIModelName01 = secretClient.GetSecret("AzureOpenAIModelName01").Value.Value;
+string azureOpenAIModelName02 = secretClient.GetSecret("AzureOpenAIModelName02").Value.Value;
+string azureOpenAIModelName03 = secretClient.GetSecret("AzureOpenAIModelName03").Value.Value;
+string azureOpenAIEndpoint03 = secretClient.GetSecret("AzureOpenAIEndpoint03").Value.Value;
+string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value;
+string bingSearchKey = secretClient.GetSecret("BING-API-KEY").Value.Value;
 
-// gpt-4o string modelId = "gpt-4o";
-string azureOpenAIModelName03 = Environment.GetEnvironmentVariable("AzureOpenAIModelName03") ?? string.Empty;
+// Fetch other configuration values from Key Vault or use Environment Variables as fallback
+string azureOpenAIMaxCompletionTokens = secretClient.GetSecret("MaxCompletionTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
+string azureEmbeddingsModelName03 = secretClient.GetSecret("AzureEmbeddingsModelName03").Value.Value ?? Environment.GetEnvironmentVariable("AzureEmbeddingsModelName03") ?? string.Empty;
+string maxConversationTokens = secretClient.GetSecret("MaxConversationTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxConversationTokens") ?? string.Empty;
+string maxEmbeddingTokens = secretClient.GetSecret("MaxEmbeddingTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxEmbeddingTokens") ?? string.Empty;
+string azureOpenAIDALLEEndpoint01 = secretClient.GetSecret("AzureOpenAIDALLEEndpoint01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEEndpoint01") ?? string.Empty;
+string azureOpenAIDALLEKey01 = secretClient.GetSecret("AzureOpenAIDALLEKey01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEKey01") ?? string.Empty;
+string azureOpenAIDALLEModelName01 = secretClient.GetSecret("AzureOpenAIDALLEModelName01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEModelName01") ?? string.Empty;
 
-string azureOpenAIEndpoint03 = Environment.GetEnvironmentVariable("AzureOpenAIEndpoint03") ?? string.Empty;
-string azureOpenAIKey03 = Environment.GetEnvironmentVariable("AzureOpenAIKey03") ?? string.Empty;
-
-string azureOpenAIMaxCompletionTokens = Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
-string azureEmbeddingsModelName03 = Environment.GetEnvironmentVariable("AzureEmbeddingsModelName03") ?? string.Empty;
-string maxConversationTokens = Environment.GetEnvironmentVariable("MaxConversationTokens") ?? string.Empty;
-string maxEmbeddingTokens = Environment.GetEnvironmentVariable("MaxEmbeddingTokens") ?? string.Empty;
-string azureOpenAIDALLEEndpoint01 = Environment.GetEnvironmentVariable("AzureOpenAIDALLEEndpoint01") ?? string.Empty;
-string azureOpenAIDALLEKey01 = Environment.GetEnvironmentVariable("AzureOpenAIDALLEKey01") ?? string.Empty;
-string azureOpenAIDALLEModelName01 = Environment.GetEnvironmentVariable("AzureOpenAIDALLEModelName01") ?? string.Empty;
-string bingSearchKey = Environment.GetEnvironmentVariable("BingSearchKey") ?? string.Empty;
-
-// 1. Retrieve required permissions from appsettings
-var graphScopes = builder.Configuration.GetSection("DownstreamApi:Scopes").Get<string[]>();
-
-if (graphScopes == null || graphScopes.Length == 0)
-{
-    Console.WriteLine("Warning: Graph scopes are not configured properly in appsettings.json. Using default scopes.");
-    graphScopes = new[] { "User.Read", "Mail.Read" };
-}
+// 1. Retrieve required permissions from Key Vault or fallback to configuration
+var graphScopesString = secretClient.GetSecret("DownstreamApi-Scopes").Value.Value ?? builder.Configuration.GetSection("DownstreamApi:Scopes").Value;
+var graphScopes = graphScopesString?.Split(' ') ?? new[] { "User.Read", "Mail.Read" };
+// Fetch DownstreamApi configuration from Key Vault
+string downstreamApiBaseUrl = secretClient.GetSecret("DownstreamApi-BaseUrl").Value.Value;
+string downstreamApiScopes = secretClient.GetSecret("DownstreamApi-Scopes").Value.Value;
 
 // 2. Add support for OpenId authentication
 builder.Services.AddAuthentication(options =>
@@ -70,7 +78,14 @@ builder.Services.AddAuthentication(options =>
 })
 .AddMicrosoftIdentityWebApp(microsoftIdentityOptions =>
 {
-    builder.Configuration.Bind("AzureAd", microsoftIdentityOptions);
+    microsoftIdentityOptions.Instance = builder.Configuration["AzureAd:Instance"];
+    microsoftIdentityOptions.Domain = builder.Configuration["AzureAd:Domain"];
+    microsoftIdentityOptions.TenantId = builder.Configuration["AzureAd:TenantId"];
+    microsoftIdentityOptions.ClientId = builder.Configuration["AzureAd:ClientId"];
+    microsoftIdentityOptions.ClientSecret = builder.Configuration["AzureAd:ClientSecret"];
+    microsoftIdentityOptions.CallbackPath = builder.Configuration["AzureAd:CallbackPath"];
+    microsoftIdentityOptions.SignedOutCallbackPath = builder.Configuration["AzureAd:SignedOutCallbackPath"];
+
     microsoftIdentityOptions.Events = new OpenIdConnectEvents
     {
         OnRedirectToIdentityProvider = context =>
@@ -109,8 +124,11 @@ builder.Services.AddAuthentication(options =>
     };
 }, cookieScheme: CookieAuthenticationDefaults.AuthenticationScheme)
 .EnableTokenAcquisitionToCallDownstreamApi(graphScopes)
-.AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
-.AddInMemoryTokenCaches();
+.AddMicrosoftGraph(options =>
+    {
+        options.BaseUrl = downstreamApiBaseUrl;
+        options.Scopes = graphScopes;
+    }).AddInMemoryTokenCaches();
 
 // 3. Require an authenticated user
 builder.Services.AddControllersWithViews(options =>
@@ -237,7 +255,6 @@ builder.Services.AddScoped<TokenLabelService>();
 
 // Register Services
 builder.Services.AddScoped<TimeZoneService>();
-builder.Services.AddScoped<UserTimeZoneService>();
 builder.Services.AddScoped<TimeFunctions>();
 builder.Services.AddScoped<KernelSetup>();
 

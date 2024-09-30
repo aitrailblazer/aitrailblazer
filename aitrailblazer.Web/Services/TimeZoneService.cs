@@ -1,27 +1,58 @@
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-public class TimeZoneService
+namespace aitrailblazer.Web.Services
 {
-    private readonly IJSRuntime _jsRuntime;
-
-    public TimeZoneService(IJSRuntime jsRuntime)
+    public class TimeZoneService
     {
-        _jsRuntime = jsRuntime;
-    }
+        private readonly IJSRuntime _jsRuntime;
+        private readonly ILogger<TimeZoneService> _logger;
+        private string _cachedTimeZone;
 
-    public async Task<string> GetTimeZoneAsync()
-    {
-        // Check if time zone is already stored
-        string storedTimeZone = await _jsRuntime.InvokeAsync<string>("timezoneHelper.getStoredTimeZone");
-        if (!string.IsNullOrEmpty(storedTimeZone))
+        public TimeZoneService(IJSRuntime jsRuntime, ILogger<TimeZoneService> logger)
         {
-            return storedTimeZone;
+            _jsRuntime = jsRuntime;
+            _logger = logger;
         }
 
-        // If not stored, get the time zone and store it
-        string timeZone = await _jsRuntime.InvokeAsync<string>("timezoneHelper.getTimeZone");
-        await _jsRuntime.InvokeVoidAsync("timezoneHelper.setTimeZone", timeZone);
-        return timeZone;
+        public async Task<string> GetTimeZoneAsync()
+        {
+            if (string.IsNullOrEmpty(_cachedTimeZone))
+            {
+                try
+                {
+                    _cachedTimeZone = await _jsRuntime.InvokeAsync<string>("timezoneHelper.getTimeZone");
+                    _logger.LogInformation($"Retrieved time zone: {_cachedTimeZone}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error retrieving time zone: {ex.Message}");
+                    _cachedTimeZone = "UTC"; // Default to UTC if there's an error
+                }
+            }
+            return _cachedTimeZone;
+        }
+
+        public async Task<DateTime> ConvertToUserTimeZoneAsync(DateTime dateTime)
+        {
+            try
+            {
+                string userTimeZoneId = await GetTimeZoneAsync();
+                _logger.LogInformation($"Converting time. User's time zone ID: {userTimeZoneId}");
+
+                TimeZoneInfo userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(userTimeZoneId);
+                DateTime userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime.ToUniversalTime(), userTimeZone);
+
+                _logger.LogInformation($"Time conversion result. Input (UTC): {dateTime.ToUniversalTime()}, Output (Local): {userLocalTime}, Time zone: {userTimeZone.DisplayName}");
+
+                return userLocalTime;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error converting time: {ex.Message}. Defaulting to UTC.");
+                return dateTime.ToUniversalTime();
+            }
+        }
     }
 }

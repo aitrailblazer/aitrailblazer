@@ -31,29 +31,3 @@ kiota generate -l CSharp \
     --openapi ./AITGraph.Sdk/OpenApi/Graph.json
 
 ###
-
-# dotnet add ./src/App reference ./src/NewsSearch.Sdk/
-
-
-gh secret set AzureAd__ClientId -b "123"
-gh secret set AzureAd__ClientSecret -b "123"  
-gh secret set AzureAd__Domain -b "123"  
-gh secret set AzureAd__TenantId -b "common"
-gh secret set AzureAd__Instance -b "123" 
-gh secret set AzureAd__CallbackPath -b "123"
-gh secret set DownstreamApi__Scopes -b "123"
-gh secret set DownstreamApi__BaseUrl -b "https://graph.microsoft.com/v1.0"
-gh secret set GTB_TOKEN -b "123"
-gh secret set SmartComponents__ApiKey -b "123"
-gh secret set SmartComponents__DeploymentName -b "123" 
-gh secret set SmartComponents__Endpoint -b "123"
-gh secret set BING_API_KEY -b "123"
-gh secret set AzureOpenAIKey03 -b "123"
-gh secret set AzureOpenAIModelName02 -b "123"
-gh secret set AzureOpenAIModelName03 -b "123"
-gh secret set AzureOpenAIEndpoint03 -b "123"
-gh secret set TenantId -b "common"
-gh secret set ClientId -b "123"
-gh secret set ClientSecret -b "123"
-gh secret set StorageConnectionString -b "123"
-gh secret set StorageContainerName -b "123"
