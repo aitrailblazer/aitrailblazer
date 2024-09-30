@@ -27,7 +27,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Key Vault Configuration
 
 var keyVaultUrl = "https://AITAzureKeyVault.vault.azure.net/";
-var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+{
+    ManagedIdentityClientId = "b86031a5-3a0e-4d84-ad1e-9f8f856e08bd"
+});
+var secretClient = new SecretClient(new Uri(keyVaultUrl), credential);
 
 // Fetch secrets from Key Vault
 builder.Configuration["AzureAd:Instance"] = secretClient.GetSecret("AzureAd-Instance").Value.Value;
