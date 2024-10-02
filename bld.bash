@@ -5,6 +5,8 @@
 ###
 # kiota search graph
 
+/search/microsoft.graph.query
+
 # kiota search apisguru::microsoft.com:graph-beta
 
 # kiota show -k apisguru::microsoft.com:graph-beta > graph-beta.log

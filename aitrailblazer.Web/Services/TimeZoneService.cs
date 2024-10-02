@@ -1,5 +1,6 @@
 using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace aitrailblazer.Web.Services
@@ -16,6 +17,7 @@ namespace aitrailblazer.Web.Services
             _logger = logger;
         }
 
+        // Existing Asynchronous Methods
         public async Task<string> GetTimeZoneAsync()
         {
             if (string.IsNullOrEmpty(_cachedTimeZone))
@@ -53,6 +55,19 @@ namespace aitrailblazer.Web.Services
                 _logger.LogError($"Error converting time: {ex.Message}. Defaulting to UTC.");
                 return dateTime.ToUniversalTime();
             }
+        }
+
+        // New Synchronous Methods
+        public string GetTimeZone()
+        {
+            // Synchronously wait for the asynchronous method to complete
+            return GetTimeZoneAsync().GetAwaiter().GetResult();
+        }
+
+        public DateTime ConvertToUserTimeZone(DateTime dateTime)
+        {
+            // Synchronously wait for the asynchronous method to complete
+            return ConvertToUserTimeZoneAsync(dateTime).GetAwaiter().GetResult();
         }
     }
 }

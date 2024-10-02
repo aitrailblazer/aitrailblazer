@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using aitrailblazer.net.Utilities;
 
 using Kernel = Microsoft.SemanticKernel.Kernel;
@@ -2091,12 +2091,26 @@ namespace aitrailblazer.net.Services
                 int seed = 356;
 
                 // Enable automatic function calling
-                var executionSettings = new OpenAIPromptExecutionSettings
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
                 {
                     Temperature = temperature,
                     TopP = topP,
                     MaxTokens = maxTokens,
+                    //FrequencyPenalty = 1.6,
+                    //PresencePenalty = 1.2,
+                    //TokenSelectionBiases = new Dictionary<int, int> { { 2, 3 } },
+                    StopSequences = new string[] { "\n\n" },
+                    //ChatSystemPrompt = "chat system prompt",
+                    //Logprobs = true,
+                    //TopLogprobs = 5,
                     Seed = seed,
+                    // Once this limit is reached, the tools will no longer be included in subsequent retries as part of the operation, e.g.
+                    // if this is 1, the first request will include the tools, but the subsequent response sending back the tool's result
+                    // will not include the tools for further use.
+                    //toolCallBehavior.MaximumUseAttempts
+                    //Gets how many requests are part of a single interaction should include this tool in the request.
+                    //toolCallBehavior.MaximumAutoInvokeAttempts
+                    //ToolCallBehavior.EnableKernelFunctions,
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 };
 
