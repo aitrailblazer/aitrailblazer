@@ -1,5 +1,5 @@
 {
-  "descriptionHash": "B500F9D0E0812A7BFE910FFCD8E1B2700BCFA8D25E49BF091E71895B26FF538C518ABE34C3D6123AE0629C4896394F66D43A8AF9D83BDDBDBB4936E1477FFFE0",
+  "descriptionHash": "8AD5F5B2D0351F2D7469D172D8F05B9B37C176A5E7A0666A9CC06B05CC232DFE1734F610DD251AD9CA8906369AD0BA39C0D3BB9B902785BA325D1BA303B562EA",
   "descriptionLocation": "OpenApi/Graph.json",
   "lockFileVersion": "1.0.0",
   "kiotaVersion": "1.11.1",
@@ -29,6 +29,7 @@
   "includePatterns": [
     "/me/messages",
     "/me/mailFolders",
+    "/me/contacts",
     "/me/drive",
     "/me/photo",
     "/me/profile",

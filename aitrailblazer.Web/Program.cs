@@ -8,6 +8,9 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
+using SmartComponents;
+using SmartComponents.Inference;
+using SmartComponents.StaticAssets.Inference;
 using AITGraph.Sdk;
 using AITGraph.Sdk.Me.Profile;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -206,6 +209,15 @@ var parametersAzureService = new ParametersAzureService
 };
 
 builder.Services.AddSingleton(parametersAzureService);
+
+builder.Services.AddSingleton<SmartPasteInference, MyFormSmartPasteInference>();
+
+// Register the SmartPasteInferenceFactory as Scoped
+//builder.Services.AddScoped<ISmartPasteInferenceFactory, SmartPasteInferenceFactory>();
+
+builder.Services.AddSmartComponents()
+    .WithInferenceBackend<MyCustomInferenceBackend>();
+
 
 // Configure the plugin path
 var pluginsPath = Path.Combine(builder.Environment.ContentRootPath, "Plugins");

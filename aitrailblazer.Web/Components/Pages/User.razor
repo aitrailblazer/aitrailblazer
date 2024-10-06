@@ -2,17 +2,20 @@
 @rendermode InteractiveServer
 
 @attribute [Authorize]
+@using SmartComponents
+@using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
 @using AITGraph.Sdk.Models
 @using AITrailBlazer.Web.Services
 @using aitrailblazer.net.Services
 @using aitrailblazer.net.Models
+
 @using Markdig
 @inject AITGraphService GraphService
 @inject NavigationManager NavigationManager
 @inject AzureOpenAIHandler azureOpenAIHandler
-
+@inject IJSRuntime JS
 @using GraphMessage = AITGraph.Sdk.Models.Message
 
 @using Microsoft.AspNetCore.Components.Web
@@ -76,7 +79,11 @@ else if (user != null)
                         Send
                     </FluentButton>
                 </FluentStack>
-
+                @if (isDeleting)
+                {
+                    <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                    <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                }
                 @if (Submitting)
                 {
                     <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
@@ -161,8 +168,10 @@ else if (user != null)
                                     <ChildContent Context="emailViewModel">
                                         <FluentButton 
                                             OnClick="@(() => OpenEmailDialog(emailViewModel))" 
-                                            Appearance="Appearance.Accent" 
-                                            Size="Size.Small">
+                                            Appearance="Appearance.Stealth" 
+                                            Size="Size.Small"
+                                            IconStart="@(new Icons.Regular.Size20.Eye())"
+                                            class="text-gray-500 hover:text-gray-700">
                                             View
                                         </FluentButton>
                                     </ChildContent>
@@ -275,8 +284,10 @@ else if (user != null)
                                     <ChildContent Context="eventViewModel">
                                         <FluentButton 
                                             OnClick="@(() => OpenEventDialog(eventViewModel))" 
-                                            Appearance="Appearance.Accent" 
-                                            Size="Size.Small">
+                                            Appearance="Appearance.Stealth" 
+                                            Size="Size.Small"
+                                            IconStart="@(new Icons.Regular.Size20.Eye())"
+                                            class="text-gray-500 hover:text-gray-700">
                                             View
                                         </FluentButton>
                                     </ChildContent>
@@ -324,7 +335,199 @@ else if (user != null)
 
                 </Content>
             </FluentTab>
+            <!-- Contacts Tab -->
+            <FluentTab Id="Contacts-tab">
+                <Header>
+                    <FluentIcon Value="@(new Icons.Regular.Size20.People())" />
+                    <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
+                        Contacts
+                    </FluentLabel>
+                </Header>
+                <Content>
+                    <FluentLabel Typo="Typography.H4" Appearance="Appearance.Stealth" Color="@Color.Neutral">
+                        Your Contacts
+                    </FluentLabel>
+                    <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
+                        Access and manage your contacts directly from this tab.
+                    </FluentLabel>
+                    <FluentButton 
+                        OnClick="OpenNewContactDialog" 
+                        Appearance="Appearance.Accent"
+                        IconStart="@(new Icons.Regular.Size20.PersonAdd())"
+                        Size="Size.Small">
+                        Add New Contact
+                    </FluentButton>
+                    @if (contactsWithComputedProperties != null && contactsWithComputedProperties.Any())
+                    {
+                        <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
+                            <FluentDataGrid 
+                                Items="@contactsWithComputedProperties.AsQueryable()" 
+                                ShowHover="true" 
+                                TGridItem="ContactViewModel"
+                                SelectionMode="DataGridSelectionMode.Single" 
+                                SelectedItemsChanged="OnSelectedContactChanged"
+                                GenerateHeader="GenerateHeaderOption.Sticky" 
+                                Style="width: 820px;">
+                                
+                                <!-- Contact Name Column -->
+                                <PropertyColumn 
+                                    Property="@(c => c.DisplayName)"
+                                    Title="Name" 
+                                    Sortable="true" 
+                                    Width="200px" />
+                                
+                                <!-- Email Address Column -->
+                                <PropertyColumn 
+                                    Property="@(c => c.EmailAddressesFormatted)"
+                                    Title="Email" 
+                                    Sortable="true" 
+                                    Width="250px" />
+                                
+                                <!-- Mobile Phone Column -->
+                                <PropertyColumn 
+                                    Property="@(c => c.MobilePhone)"
+                                    Title="Mobile Phone" 
+                                    Sortable="true" 
+                                    Width="150px" />
+                                
+                                <!-- Actions Column -->
+                                <TemplateColumn Title="Actions" Width="200px">
+                                    <ChildContent Context="contactViewModel">
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="5">
+                                            <FluentButton 
+                                                OnClick="() => OpenContactDialog(contactViewModel)" 
+                                                Appearance="Appearance.Stealth" 
+                                                Size="Size.Small"
+                                                IconStart="@(new Icons.Regular.Size20.Edit())"
+                                                class="text-gray-500 hover:text-gray-700">
+                                                Edit
+                                            </FluentButton>
+                                            <FluentButton 
+                                                OnClick="() => DeleteContactAsync(contactViewModel.Id)" 
+                                                Appearance="Appearance.Stealth" 
+                                                Size="Size.Small"
+                                                IconStart="@(new Icons.Regular.Size20.Delete())"
+                                                class="text-gray-500 hover:text-gray-700">
+                                                Delete
+                                            </FluentButton>
+                                        </FluentStack>
+                                    </ChildContent>
+                                </TemplateColumn>
+                                
+                            </FluentDataGrid>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No contacts available</p>
+                    }
 
+                    <!-- Contact Details Dialog -->
+                    @if (selectedContact != null && isContactDetailsDialogVisible)
+                    {
+                        <FluentDialog @bind-Visible="isContactDetailsDialogVisible">
+                            <FluentCard MinimalStyle="true" Width="640px" Height="100%" Style="border: 1px solid var(--accent-fill-rest); padding: 0px; margin-right: 0px;" Class="fluent-card-summary-details">
+                                <FluentHeader>@(string.IsNullOrEmpty(selectedContact.Id) ? "Add New Contact" : "Edit Contact")</FluentHeader>
+                                <EditForm Model="@selectedContact" OnValidSubmit="SaveContactAsync">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary class="mb-4 text-red-600" />
+                                    <form class="default-form rounded-lg bg-white p-8 shadow-xl mb-12">
+                                        <div class="grid gap-8 md:grid-cols-2">
+                                            <!-- Personal Information -->
+                                            <div class="col-span-2">
+                                                <h3 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                                                    <div>
+                                                        <label for="FirstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                                        <InputText id="FirstName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.GivenName"></InputText>
+                                                    </div>
+                                                    <div>
+                                                        <label for="LastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                                        <InputText id="LastName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.Surname"></InputText>
+                                                        <ValidationMessage For="@(() => selectedContact.Surname)" />
+                                                    </div>
+                                                </FluentStack>
+                                            </div>
+
+                                            <!-- Contact Information -->
+                                            <div class="col-span-2">
+                                                <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                                                    <div>
+                                                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                                        <InputText id="email" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.EmailAddress"></InputText>
+                                                        <ValidationMessage For="@(() => selectedContact.EmailAddress)" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                                        <InputText id="phone" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.MobilePhone"></InputText>
+                                                        <ValidationMessage For="@(() => selectedContact.MobilePhone)" />
+                                                    </div>
+                                                </FluentStack>
+                                            </div>
+
+                                            <!-- Professional Information -->
+                                            <div class="col-span-2">
+                                                <h3 class="text-lg font-medium text-gray-900 mb-4">Professional Information</h3>
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                                                    <div>
+                                                        <label for="jobTitle" class="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
+                                                        <InputText id="jobTitle" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.JobTitle"></InputText>
+                                                        <ValidationMessage For="@(() => selectedContact.JobTitle)" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                                                        <InputText id="company" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.CompanyName"></InputText>
+                                                        <ValidationMessage For="@(() => selectedContact.CompanyName)" />
+                                                    </div>
+                                                </FluentStack>
+                                            </div>
+
+                                            <!-- Business Address -->
+                                            <div class="col-span-2">
+                                                <h3 class="text-lg font-medium text-gray-900 mb-4">Business Address</h3>
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                                                    <div>
+                                                        <label for="businessStreet" class="block text-sm font-medium text-gray-700 mb-2">Street</label>
+                                                        <InputText id="businessStreet" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.BusinessAddress.Street"></InputText>
+                                                    </div>
+                                                    <div>
+                                                        <label for="businessCity" class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                                                        <InputText id="businessCity" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.BusinessAddress.City"></InputText>
+                                                    </div>
+                                                </FluentStack>
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                                                    <div>
+                                                        <label for="businessState" class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                                                        <InputText id="businessState" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.BusinessAddress.State"></InputText>
+                                                    </div>
+                                                    <div>
+                                                        <label for="businessPostalCode" class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                                                        <InputText id="businessPostalCode" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.BusinessAddress.PostalCode"></InputText>
+                                                    </div>
+                                                    <div>
+                                                        <label for="businessCountry" class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                                                        <InputText id="businessCountry" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" @bind-Value="@selectedContact.BusinessAddress.CountryOrRegion"></InputText>
+                                                    </div>
+                                                </FluentStack>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-4 mt-10 justify-end items-center">
+                                            <FluentIcon Value="@(new Icons.Regular.Size20.Sparkle())" Slot="start" />
+                                            <SmartPasteButton IconStart="@(new Icons.Regular.Size20.DocumentSave())" />
+                                        </div>    
+                                    </form>
+                                </EditForm>
+                                <FluentDialogActions class="mt-6">
+                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Dismiss())" OnClick="CloseContactDialog" class="text-gray-500 hover:text-gray-700">Cancel</FluentButton>
+                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Save())" OnClick="SaveContactAsync" class="text-gray-500 hover:text-gray-700"
+                                    Disabled="@(!IsAtLeastOneFieldFilled())">Save</FluentButton>
+                                </FluentDialogActions>
+                            </FluentCard>
+                        </FluentDialog>
+                    }
+                </Content>
+            </FluentTab>
             <!-- Additional Tabs can be added here -->
         </FluentTabs>
     </FluentCard>
@@ -348,6 +551,11 @@ else
     private CalendarEventsResult calendarEventsResult = new CalendarEventsResult();
     private List<EventViewModel> calendarEventsWithComputedProperties = new List<EventViewModel>();
     private List<EmailViewModel> emailsWithComputedProperties = new List<EmailViewModel>();
+    private List<ContactViewModel> contactsWithComputedProperties = new List<ContactViewModel>();
+    private ContactViewModel selectedContact;
+    private ContactViewModel originalContact = new ContactViewModel(new Contact());
+    private bool isContactDetailsDialogVisible = false;
+
     private bool isLoading = true;
     private string error;
     private string userPhotoBase64;
@@ -413,7 +621,11 @@ else
                     userPhotoBase64 = Convert.ToBase64String(photoBytes);
                 }
             }
+            // Fetch contacts
+            var contacts = await GraphService.GetUserContactsAsync(50);
+            contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
 
+ 
         }
         catch (AuthenticationRequiredException)
         {
@@ -607,10 +819,306 @@ else
     {
         selectedEvent = evtViewModel;
     }
-
-    // ViewModel for Emails
-    public class EmailViewModel
+// Open and Close methods for Contact Dialog
+    private void OpenContactDialog(ContactViewModel contactViewModel)
     {
+        selectedContact = contactViewModel;
+        isContactDetailsDialogVisible = true;
+    }
+    private void CloseContactDialog()
+    {
+        isContactDetailsDialogVisible = false;
+        selectedContact = null;
+    }
+
+@code {
+    private bool IsAtLeastOneFieldFilled()
+    {
+        return !string.IsNullOrWhiteSpace(selectedContact.GivenName) ||
+            !string.IsNullOrWhiteSpace(selectedContact.Surname) ||
+            !string.IsNullOrWhiteSpace(selectedContact.EmailAddress) ||
+            !string.IsNullOrWhiteSpace(selectedContact.MobilePhone) ||
+            !string.IsNullOrWhiteSpace(selectedContact.JobTitle) ||
+            !string.IsNullOrWhiteSpace(selectedContact.CompanyName) ||
+            (selectedContact.BusinessAddress != null &&
+            (!string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.Street) ||
+                !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.City) ||
+                !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.State) ||
+                !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.PostalCode) ||
+                !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.CountryOrRegion)));
+    }
+    public class ContactViewModel
+{
+    public string Id { get; set; }
+    public Contact OriginalContact { get; set; }
+    public string DisplayName { get; set; }
+    public string GivenName { get; set; }
+    public string Surname { get; set; }
+    public string EmailAddress { get; set; }
+    public string EmailAddressesFormatted { get; set; }
+    public string MobilePhone { get; set; }
+    public string BusinessPhonesFormatted { get; set; }
+    public string HomePhonesFormatted { get; set; }
+    public string CompanyName { get; set; }
+    public string JobTitle { get; set; }
+    public string OfficeLocation { get; set; }
+    public string ImAddressesFormatted { get; set; }
+    public string BirthdayFormatted { get; set; }
+    public string NickName { get; set; }
+    public string MiddleName { get; set; }
+    public string PersonalNotes { get; set; }
+    public string SpouseName { get; set; }
+    public string Department { get; set; }
+    public string Manager { get; set; }
+    public string AssistantName { get; set; }
+    public string YomiGivenName { get; set; }
+    public string YomiSurname { get; set; }
+    public string YomiCompanyName { get; set; }
+    public PhysicalAddress BusinessAddress { get; set; }
+    public string BusinessAddressFormatted { get; set; }
+    public string HomeAddressFormatted { get; set; }
+    public string OtherAddressFormatted { get; set; }
+    public string Profession { get; set; }
+    public string Title { get; set; }
+    public string ChildrenFormatted { get; set; }
+    public string Gender { get; set; }
+
+    public ContactViewModel(Contact contact = null)
+    {
+        OriginalContact = contact ?? new Contact();
+        Id = contact?.Id ?? "";
+        DisplayName = contact?.DisplayName ?? "New Contact";
+        GivenName = contact?.GivenName ?? "";
+        Surname = contact?.Surname ?? "";
+        EmailAddressesFormatted = contact?.EmailAddresses != null && contact.EmailAddresses.Any()
+            ? string.Join(", ", contact.EmailAddresses.Select(e => e.Address))
+            : "";
+        EmailAddress = contact?.EmailAddresses != null && contact.EmailAddresses.Any()
+                    ? contact.EmailAddresses.First().Address
+                    : "";
+        if (contact?.Phones != null && contact.Phones.Any())
+        {
+            MobilePhone = contact.Phones
+                .FirstOrDefault(phone => phone.Type == PhoneType.Mobile)?.Number ?? "";
+            BusinessPhonesFormatted = string.Join(", ", contact.Phones
+                .Where(phone => phone.Type == PhoneType.Business)
+                .Select(phone => phone.Number));
+            HomePhonesFormatted = string.Join(", ", contact.Phones
+                .Where(phone => phone.Type == PhoneType.Home)
+                .Select(phone => phone.Number));
+        }
+        else
+        {
+            MobilePhone = "";
+            BusinessPhonesFormatted = "";
+            HomePhonesFormatted = "";
+        }
+
+        CompanyName = contact?.CompanyName ?? "";
+        JobTitle = contact?.JobTitle ?? "";
+        OfficeLocation = contact?.OfficeLocation ?? "";
+        ImAddressesFormatted = contact?.ImAddresses != null && contact.ImAddresses.Any()
+            ? string.Join(", ", contact.ImAddresses)
+            : "";
+        BirthdayFormatted = contact?.Birthday.HasValue == true
+            ? contact.Birthday.Value.ToLocalTime().ToString("d")
+            : "";
+        NickName = contact?.NickName ?? "";
+        MiddleName = contact?.MiddleName ?? "";
+        PersonalNotes = contact?.PersonalNotes ?? "";
+        SpouseName = contact?.SpouseName ?? "";
+        Department = contact?.Department ?? "";
+        Manager = contact?.Manager ?? "";
+        AssistantName = contact?.AssistantName ?? "";
+        YomiGivenName = contact?.YomiGivenName ?? "";
+        YomiSurname = contact?.YomiSurname ?? "";
+        YomiCompanyName = contact?.YomiCompanyName ?? "";
+
+        if (contact?.PostalAddresses != null && contact.PostalAddresses.Any())
+        {
+            BusinessAddress = contact.PostalAddresses
+                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Business);
+            BusinessAddressFormatted = GetAddressFormatted(BusinessAddress);
+            HomeAddressFormatted = GetAddressFormatted(contact.PostalAddresses
+                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Home));
+            OtherAddressFormatted = GetAddressFormatted(contact.PostalAddresses
+                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Other));
+        }
+        else
+        {
+            BusinessAddress = new PhysicalAddress();
+            BusinessAddressFormatted = "";
+            HomeAddressFormatted = "";
+            OtherAddressFormatted = "";
+        }
+
+        Profession = contact?.Profession ?? "";
+        Title = contact?.Title ?? "";
+        ChildrenFormatted = contact?.Children != null && contact.Children.Any()
+            ? string.Join(", ", contact.Children)
+            : "";
+        Gender = contact?.Gender ?? "";
+    }
+    private string GetAddressFormatted(PhysicalAddress address)
+    {
+        if (address == null) return "N/A";
+
+        var components = new List<string>
+        {
+            address.Street, address.City, address.State, address.PostalCode, address.CountryOrRegion
+        }.Where(c => !string.IsNullOrWhiteSpace(c));
+
+        return components.Any() ? string.Join(", ", components) : "N/A";
+    }
+}
+
+private async Task SaveContactAsync()
+{
+    try
+    {
+        Contact contactToSave;
+        if (string.IsNullOrEmpty(selectedContact.Id))
+        {
+            // This is a new contact
+            contactToSave = new Contact
+            {
+                GivenName = selectedContact.GivenName,
+                Surname = selectedContact.Surname,
+                JobTitle = selectedContact.JobTitle,
+                CompanyName = selectedContact.CompanyName,
+                EmailAddresses = new List<TypedEmailAddress>
+                {
+                    new TypedEmailAddress
+                    {
+                        Address = selectedContact.EmailAddress,
+                        Type = EmailType.Other // You can change this to the appropriate type if needed
+                    }
+                },
+                Phones = new List<Phone>
+                {
+                    new Phone
+                    {
+                        Number = selectedContact.MobilePhone,
+                        Type = PhoneType.Mobile
+                    }
+                },
+                PostalAddresses = new List<PhysicalAddress>
+                {
+                    new PhysicalAddress
+                    {
+                        Street = selectedContact.BusinessAddress?.Street,
+                        City = selectedContact.BusinessAddress?.City,
+                        State = selectedContact.BusinessAddress?.State,
+                        PostalCode = selectedContact.BusinessAddress?.PostalCode,
+                        CountryOrRegion = selectedContact.BusinessAddress?.CountryOrRegion,
+                        Type = PhysicalAddressType.Business
+                    }
+                }
+            };
+
+            var newContact = await GraphService.AddContactAsync(contactToSave);
+            contactsWithComputedProperties.Add(new ContactViewModel(newContact));
+        }
+        else
+        {
+            // This is an existing contact
+            contactToSave = new Contact
+            {
+                Id = selectedContact.Id,
+                GivenName = selectedContact.GivenName,
+                Surname = selectedContact.Surname,
+                JobTitle = selectedContact.JobTitle,
+                CompanyName = selectedContact.CompanyName,
+                Phones = new List<Phone>
+                {
+                    new Phone
+                    {
+                        Number = selectedContact.MobilePhone,
+                        Type = PhoneType.Mobile
+                    }
+                },
+                PostalAddresses = new List<PhysicalAddress>
+                {
+                    new PhysicalAddress
+                    {
+                        Street = selectedContact.BusinessAddress?.Street,
+                        City = selectedContact.BusinessAddress?.City,
+                        State = selectedContact.BusinessAddress?.State,
+                        PostalCode = selectedContact.BusinessAddress?.PostalCode,
+                        CountryOrRegion = selectedContact.BusinessAddress?.CountryOrRegion,
+                        Type = PhysicalAddressType.Business
+                    }
+                }
+            };
+
+            var updatedContact = await GraphService.UpdateContactAsync(selectedContact.Id, contactToSave);
+            var index = contactsWithComputedProperties.FindIndex(c => c.Id == updatedContact.Id);
+            if (index != -1)
+            {
+                contactsWithComputedProperties[index] = new ContactViewModel(updatedContact);
+            }
+        }
+
+        CloseContactDialog();
+        StateHasChanged();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error saving contact: {ex.Message}");
+    }
+}
+private string GetAddressFormatted(AITGraph.Sdk.Models.PhysicalAddress address)
+        {
+            if (address == null) return "N/A";
+
+            var components = new List<string>
+            {
+                address.Street, address.City, address.State, address.PostalCode, address.CountryOrRegion
+            }.Where(c => !string.IsNullOrWhiteSpace(c));
+
+            return components.Any() ? string.Join(", ", components) : "N/A";
+        }
+    }
+
+private void OpenNewContactDialog()
+{
+    selectedContact = new ContactViewModel(new Contact());
+    isContactDetailsDialogVisible = true;
+    StateHasChanged(); // Ensure the UI updates
+}
+
+private bool isDeleting = false;
+
+
+private async Task DeleteContactAsync(string contactId)
+{
+    try
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this contact?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        isDeleting = true;
+        StateHasChanged();
+
+        await GraphService.DeleteContactAsync(contactId);
+        contactsWithComputedProperties.RemoveAll(c => c.Id == contactId);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error deleting contact: {ex.Message}");
+        await JS.InvokeVoidAsync("alert", $"Error deleting contact: {ex.Message}");
+    }
+    finally
+    {
+        isDeleting = false;
+        StateHasChanged();
+    }
+}
+public class EmailViewModel
+    { 
         public GraphMessage OriginalMessage { get; set; }
         public string SenderName { get; set; }
         public string Subject { get; set; }
@@ -688,7 +1196,8 @@ else
             // You can initialize other properties here as needed
         }
     }
-
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
+    
+
 }

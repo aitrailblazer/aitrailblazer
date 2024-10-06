@@ -8,10 +8,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using AITGraph.Sdk;
 using AITGraph.Sdk.Models;
+using AITGraph.Sdk.Models.ODataErrors;
+using AITGraph.Sdk.Models;
 using AITGraph.Sdk.Me;
+using AITGraph.Sdk.Me.Contacts;
 using AITGraph.Sdk.Me.Profile;
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
 using System.Text.Json;
@@ -37,7 +41,10 @@ namespace AITrailBlazer.Web.Services
             "Files.Read",           // For reading files
             "Files.ReadWrite",      // For reading and writing files
             "Files.Read.All",       // For reading all files the user can access
-            "Files.ReadWrite.All"   // For reading and writing all files the user can access
+            "Files.ReadWrite.All",   // For reading and writing all files the user can access
+            "Contacts.Read",
+            "Contacts.ReadWrite" // Added Contacts.ReadWrite scope for write operations
+  
         };
         public AITGraphService(
             MicrosoftIdentityConsentAndConditionalAccessHandler consentHandler,
@@ -244,7 +251,268 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
+        public async Task<List<Contact>> GetUserContactsAsync(int count = 10)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to fetch {count} contacts");
 
+                var contactsResponse = await GraphClient.Me.Contacts.GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Top = count;
+                    requestConfiguration.QueryParameters.Orderby = new[] { "displayName" };
+                    requestConfiguration.QueryParameters.Select = new[]
+                    {
+                        "id",
+                        "displayName",
+                        "givenName",
+                        "surname",
+                        "emailAddresses",
+                        "companyName",
+                        "jobTitle",
+                        "officeLocation",
+                        "imAddresses",
+                        "birthday",
+                        "nickName",
+                        "middleName",
+                        "personalNotes",
+                        "spouseName",
+                        "department",
+                        "assistantName",
+                        "yomiGivenName",
+                        "yomiSurname",
+                        "yomiCompanyName",
+                        "profession",
+                        "title",
+                        "children",
+                        "phones",
+                        "postalAddresses"
+                    };
+                });
+
+                _logger.LogInformation($"Successfully fetched {contactsResponse.Value?.Count ?? 0} contacts");
+                return contactsResponse.Value?.ToList() ?? new List<Contact>();
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching contacts.");
+                throw new AuthenticationRequiredException("Authentication is required.");
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while fetching contacts.");
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred while fetching contacts.");
+                throw new AuthenticationRequiredException("Unauthorized access.");
+            }
+            catch (ApiException ex)
+            {
+                // Check for claims challenge in the WWW-Authenticate header
+                if (ex.ResponseHeaders != null && ex.ResponseHeaders.TryGetValue("WWW-Authenticate", out var wwwAuthenticateValues))
+                {
+                    var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
+                    if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching contacts.");
+                        _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
+                        throw new AuthenticationRequiredException("Authentication challenge is required.");
+                    }
+                }
+
+                _logger.LogError(ex, "API Exception occurred while fetching contacts.");
+
+                // Log response headers if available
+                if (ex.ResponseHeaders != null)
+                {
+                    var headers = string.Join(", ", ex.ResponseHeaders.Select(h => $"{h.Key}: {string.Join("; ", h.Value)}"));
+                    _logger.LogError($"Response Headers: {headers}");
+                }
+
+                // Log inner exception if any
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception:");
+                }
+
+            // Log additional data if available
+            if (ex is Microsoft.Kiota.Abstractions.Serialization.IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
+            {
+                var additionalDataJson = System.Text.Json.JsonSerializer.Serialize(additionalDataHolder.AdditionalData);
+                _logger.LogError($"Additional Data: {additionalDataJson}");
+            }
+
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching contacts.");
+                throw;
+            }
+        }
+        public async Task<Contact> AddContactAsync(Contact newContact)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to add a new contact: {newContact.DisplayName}");
+
+                var contact = await GraphClient.Me.Contacts.PostAsync(newContact);
+
+                _logger.LogInformation($"Successfully added contact: {contact.Id}");
+                return contact;
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred while adding a contact.");
+                throw new AuthenticationRequiredException("Authentication is required.");
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while adding a contact.");
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred while adding a contact.");
+                throw new AuthenticationRequiredException("Unauthorized access.");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ResponseHeaders != null && ex.ResponseHeaders.TryGetValue("WWW-Authenticate", out var wwwAuthenticateValues))
+                {
+                    var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
+                    if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while adding a contact.");
+                        _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
+                        throw new AuthenticationRequiredException("Authentication challenge is required.");
+                    }
+                }
+
+                _logger.LogError(ex, "API Exception occurred while adding a contact.");
+                // Log additional details as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding a contact.");
+                throw;
+            }
+        }
+
+        public async Task DeleteContactAsync(string contactId)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to delete contact: {contactId}");
+
+                // Construct the request information
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = "{+baseurl}/me/contacts/{contact%2Did}",
+                    PathParameters = new Dictionary<string, object>
+                    {
+                        { "baseurl", _requestAdapter.BaseUrl },
+                        { "contact%2Did", contactId }
+                    }
+                };
+
+                // Send the delete request
+                await _requestAdapter.SendNoContentAsync(requestInfo);
+
+                _logger.LogInformation($"Successfully deleted contact: {contactId}");
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a contact.");
+                throw new AuthenticationRequiredException("Authentication is required.");
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while deleting a contact.");
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred while deleting a contact.");
+                throw new AuthenticationRequiredException("Unauthorized access.");
+            }
+            catch (ApiException ex)
+            {
+                if (ex.ResponseHeaders != null && ex.ResponseHeaders.TryGetValue("WWW-Authenticate", out var wwwAuthenticateValues))
+                {
+                    var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
+                    if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while deleting a contact.");
+                        _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
+                        throw new AuthenticationRequiredException("Authentication challenge is required.");
+                    }
+                }
+
+                _logger.LogError(ex, "API Exception occurred while deleting a contact.");
+                // Log additional details as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting a contact.");
+                throw;
+            }
+        }
+
+public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedContact)
+{
+    try
+    {
+        _logger.LogInformation($"Attempting to update contact: {contactId}");
+
+        var requestInfo = new RequestInformation
+        {
+            HttpMethod = Method.PATCH,
+            UrlTemplate = "{+baseurl}/me/contacts/{contact%2Did}",
+            PathParameters = new Dictionary<string, object>
+            {
+                { "baseurl", _requestAdapter.BaseUrl },
+                { "contact%2Did", contactId }
+            }
+        };
+
+        _logger.LogInformation($"UpdateContactAsync Request URL: {requestInfo.UrlTemplate}");
+
+        // Log the updated fields
+        var updatedFieldsJson = System.Text.Json.JsonSerializer.Serialize(updatedContact);
+        _logger.LogInformation($"UpdateContactAsync Request Body: {updatedFieldsJson}");
+
+        // Set the content of the request using the Contact object
+        requestInfo.SetContentFromParsable(_requestAdapter, "application/json", updatedContact);
+
+        var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
+        {
+            {"4XX", ODataError.CreateFromDiscriminatorValue},
+            {"5XX", ODataError.CreateFromDiscriminatorValue},
+        };
+
+        // Send the PATCH request to update the contact
+        var updatedContactResponse = await _requestAdapter.SendAsync<Contact>(
+            requestInfo,
+            Contact.CreateFromDiscriminatorValue,
+            errorMapping
+        );
+
+        _logger.LogInformation($"Successfully updated contact: {contactId}");
+        return updatedContactResponse;
+    }
+    catch (Exception ex)
+    {
+        // Error handling (keep your existing catch blocks)
+        _logger.LogError(ex, "An error occurred while updating a contact.");
+        throw;
+    }
+}
         public async Task<CalendarEventsResult> GetCalendarEventsAsync(int count = 10)
         {
             var result = new CalendarEventsResult();
@@ -463,17 +731,7 @@ namespace AITrailBlazer.Web.Services
         public AuthenticationRequiredException(string message) : base(message) { }
         public AuthenticationRequiredException(string message, Exception innerException) : base(message, innerException) { }
     }
-    public class ODataError
-    {
-        public ODataErrorDetail Error { get; set; }
-    }
 
-    public class ODataErrorDetail
-    {
-        public string Message { get; set; }
-        public string Code { get; set; }
-        public string InnerError { get; set; }
-    }
 
     // Define a result class to encapsulate events and error messages
     public class CalendarEventsResult
