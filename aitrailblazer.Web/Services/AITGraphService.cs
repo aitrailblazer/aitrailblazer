@@ -9,10 +9,10 @@ using Microsoft.Identity.Web;
 using AITGraph.Sdk;
 using AITGraph.Sdk.Models;
 using AITGraph.Sdk.Models.ODataErrors;
-using AITGraph.Sdk.Models;
 using AITGraph.Sdk.Me;
 using AITGraph.Sdk.Me.Contacts;
 using AITGraph.Sdk.Me.Profile;
+using AITGraph.Sdk.Me.Calendar.Events;
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Abstractions.Serialization;
@@ -31,6 +31,7 @@ namespace AITrailBlazer.Web.Services
         private AITGraphApiClient _graphClient;
         private readonly string[] _graphScopes;
         private HttpClientRequestAdapter _requestAdapter;
+        private EventsRequestBuilder _eventsRequestBuilder;
 
         // Default scopes
         private static readonly string[] DefaultScopes = new[]
@@ -72,6 +73,8 @@ namespace AITrailBlazer.Web.Services
                     _requestAdapter = new HttpClientRequestAdapter(authProvider);
 
                     _graphClient = new AITGraphApiClient(_requestAdapter);
+                    _eventsRequestBuilder = new EventsRequestBuilder(new Dictionary<string, object>(), _requestAdapter);
+
                 }
                 return _graphClient;
             }
@@ -123,7 +126,7 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
-       public async Task<Stream> GetUserPhotoAsync()
+        public async Task<Stream> GetUserPhotoAsync()
         {
             try
             {
@@ -337,12 +340,12 @@ namespace AITrailBlazer.Web.Services
                     _logger.LogError(ex.InnerException, "Inner Exception:");
                 }
 
-            // Log additional data if available
-            if (ex is Microsoft.Kiota.Abstractions.Serialization.IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
-            {
-                var additionalDataJson = System.Text.Json.JsonSerializer.Serialize(additionalDataHolder.AdditionalData);
-                _logger.LogError($"Additional Data: {additionalDataJson}");
-            }
+                // Log additional data if available
+                if (ex is Microsoft.Kiota.Abstractions.Serialization.IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
+                {
+                    var additionalDataJson = System.Text.Json.JsonSerializer.Serialize(additionalDataHolder.AdditionalData);
+                    _logger.LogError($"Additional Data: {additionalDataJson}");
+                }
 
                 throw;
             }
@@ -464,56 +467,56 @@ namespace AITrailBlazer.Web.Services
             }
         }
 
-public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedContact)
-{
-    try
-    {
-        _logger.LogInformation($"Attempting to update contact: {contactId}");
-
-        var requestInfo = new RequestInformation
+        public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedContact)
         {
-            HttpMethod = Method.PATCH,
-            UrlTemplate = "{+baseurl}/me/contacts/{contact%2Did}",
-            PathParameters = new Dictionary<string, object>
+            try
+            {
+                _logger.LogInformation($"Attempting to update contact: {contactId}");
+
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.PATCH,
+                    UrlTemplate = "{+baseurl}/me/contacts/{contact%2Did}",
+                    PathParameters = new Dictionary<string, object>
             {
                 { "baseurl", _requestAdapter.BaseUrl },
                 { "contact%2Did", contactId }
             }
-        };
+                };
 
-        _logger.LogInformation($"UpdateContactAsync Request URL: {requestInfo.UrlTemplate}");
+                _logger.LogInformation($"UpdateContactAsync Request URL: {requestInfo.UrlTemplate}");
 
-        // Log the updated fields
-        var updatedFieldsJson = System.Text.Json.JsonSerializer.Serialize(updatedContact);
-        _logger.LogInformation($"UpdateContactAsync Request Body: {updatedFieldsJson}");
+                // Log the updated fields
+                var updatedFieldsJson = System.Text.Json.JsonSerializer.Serialize(updatedContact);
+                _logger.LogInformation($"UpdateContactAsync Request Body: {updatedFieldsJson}");
 
-        // Set the content of the request using the Contact object
-        requestInfo.SetContentFromParsable(_requestAdapter, "application/json", updatedContact);
+                // Set the content of the request using the Contact object
+                requestInfo.SetContentFromParsable(_requestAdapter, "application/json", updatedContact);
 
-        var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
+                var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
         {
             {"4XX", ODataError.CreateFromDiscriminatorValue},
             {"5XX", ODataError.CreateFromDiscriminatorValue},
         };
 
-        // Send the PATCH request to update the contact
-        var updatedContactResponse = await _requestAdapter.SendAsync<Contact>(
-            requestInfo,
-            Contact.CreateFromDiscriminatorValue,
-            errorMapping
-        );
+                // Send the PATCH request to update the contact
+                var updatedContactResponse = await _requestAdapter.SendAsync<Contact>(
+                    requestInfo,
+                    Contact.CreateFromDiscriminatorValue,
+                    errorMapping
+                );
 
-        _logger.LogInformation($"Successfully updated contact: {contactId}");
-        return updatedContactResponse;
-    }
-    catch (Exception ex)
-    {
-        // Error handling (keep your existing catch blocks)
-        _logger.LogError(ex, "An error occurred while updating a contact.");
-        throw;
-    }
-}
-        public async Task<CalendarEventsResult> GetCalendarEventsAsync(int count = 10)
+                _logger.LogInformation($"Successfully updated contact: {contactId}");
+                return updatedContactResponse;
+            }
+            catch (Exception ex)
+            {
+                // Error handling (keep your existing catch blocks)
+                _logger.LogError(ex, "An error occurred while updating a contact.");
+                throw;
+            }
+        }
+        public async Task<CalendarEventsResult> GetCalendarEventsAsync(int count = 10, DateTime? startDate = null, DateTime? endDate = null)
         {
             var result = new CalendarEventsResult();
 
@@ -529,8 +532,20 @@ public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedC
                         "subject",
                         "organizer",
                         "start",
-                        "end"
+                        "end",
+                        "attendees",
+                        "body",
+                        "importance",
+                        "location",
+                        "location",
+
                     };
+
+                    if (startDate.HasValue && endDate.HasValue)
+                    {
+                        
+                        requestConfiguration.QueryParameters.Filter = $"start/dateTime ge '{startDate.Value:yyyy-MM-ddTHH:mm:ssZ}' and end/dateTime le '{endDate.Value:yyyy-MM-ddTHH:mm:ssZ}'";
+                    }
                 });
 
                 _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
@@ -545,7 +560,6 @@ public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedC
                     _logger.LogError($"Inner Exception: {ex.InnerException.Message}");
                 }
 
-                // Optionally, set an error message in the result
                 result.ErrorMessage = $"An error occurred while fetching calendar events: {ex.Message}";
             }
             catch (MsalUiRequiredException ex)
@@ -572,6 +586,129 @@ public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedC
             return result;
         }
 
+        /// <summary>
+        /// Creates a new calendar event for the user.
+        /// </summary>
+        /// <param name="newEvent">The Event object containing event details.</param>
+        /// <returns>A <see cref="CreateCalendarEventResult"/> containing the created event and any error messages.</returns>
+        public async Task<CreateCalendarEventResult> CreateCalendarEventAsync(Event newEvent)
+        {
+            var result = new CreateCalendarEventResult();
+
+            if (newEvent == null)
+            {
+                _logger.LogError("CreateCalendarEventAsync called with null newEvent.");
+                result.ErrorMessage = "Event details cannot be null.";
+                return result;
+            }
+
+            // Additional Validation: Ensure essential properties are set
+            var validationErrors = ValidateEvent(newEvent);
+            if (validationErrors.Count > 0)
+            {
+                _logger.LogError("Validation failed for CreateCalendarEventAsync: {Errors}", string.Join("; ", validationErrors));
+                result.ErrorMessage = $"Validation failed: {string.Join("; ", validationErrors)}";
+                return result;
+            }
+
+            try
+            {
+                _logger.LogInformation("Attempting to create a new calendar event: {Subject}", newEvent.Subject);
+
+                // Call the PostAsync method from EventsRequestBuilder
+                var createdEvent = await _eventsRequestBuilder.PostAsync(newEvent, null, default);
+
+                if (createdEvent != null)
+                {
+                    _logger.LogInformation("Successfully created calendar event with ID: {EventId}", createdEvent.Id);
+                    result.CreatedEvent = createdEvent;
+                }
+                else
+                {
+                    _logger.LogWarning("CreateCalendarEventAsync returned null.");
+                    result.ErrorMessage = "Failed to create the calendar event.";
+                }
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogError(ex, "API Exception occurred while creating calendar event: {Message}", ex.Message);
+                result.ErrorMessage = $"An error occurred while creating the calendar event: {ex.Message}";
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred while creating calendar event.");
+                result.ErrorMessage = "Authentication is required.";
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while creating calendar event.");
+                result.ErrorMessage = "Authentication challenge is required.";
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred while creating calendar event.");
+                result.ErrorMessage = "Unauthorized access.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while creating calendar event.");
+                result.ErrorMessage = "An unexpected error occurred.";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validates essential properties of the Event object.
+        /// </summary>
+        /// <param name="eventToValidate">The Event object to validate.</param>
+        /// <returns>A list of validation error messages.</returns>
+        private List<string> ValidateEvent(Event eventToValidate)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(eventToValidate.Subject))
+                errors.Add("Subject is required.");
+
+            if (eventToValidate.Start == null || string.IsNullOrWhiteSpace(eventToValidate.Start.DateTime))
+                errors.Add("Start date and time are required.");
+
+            if (eventToValidate.End == null || string.IsNullOrWhiteSpace(eventToValidate.End.DateTime))
+                errors.Add("End date and time are required.");
+
+            if (eventToValidate.Start != null && eventToValidate.End != null)
+            {
+                if (DateTime.TryParse(eventToValidate.Start.DateTime, out DateTime startTime) &&
+                    DateTime.TryParse(eventToValidate.End.DateTime, out DateTime endTime))
+                {
+                    if (endTime <= startTime)
+                        errors.Add("End time must be after start time.");
+                }
+                else
+                {
+                    errors.Add("Invalid date and time format.");
+                }
+            }
+
+            if (eventToValidate.Location == null || string.IsNullOrWhiteSpace(eventToValidate.Location.DisplayName))
+                errors.Add("Location is required.");
+
+            if (eventToValidate.Attendees == null || eventToValidate.Attendees.Count == 0)
+                errors.Add("At least one attendee is required.");
+
+            // Additional validations can be added here (e.g., Body content length)
+
+            return errors;
+        }
+
+        /// <summary>
+        /// Result class for CreateCalendarEventAsync method.
+        /// </summary>
+        public class CreateCalendarEventResult
+        {
+            public Event? CreatedEvent { get; set; }
+            public string? ErrorMessage { get; set; }
+        }
         public async Task<List<Event>> GetCalendarViewAsync(DateTime startDateTime, DateTime endDateTime, int maxEvents = 100)
         {
             try
@@ -603,6 +740,56 @@ public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedC
                 throw;
             }
         }
+        public async Task DeleteCalendarEventAsync(string eventId)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to delete calendar event with ID: {eventId}");
+
+                // Construct the request information
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = "{+baseurl}/me/events/{eventId}",
+                    PathParameters = new Dictionary<string, object>
+                    {
+                        { "baseurl", _requestAdapter.BaseUrl },
+                        { "eventId", eventId }
+                    }
+                };
+
+                // Send the delete request
+                await _requestAdapter.SendNoContentAsync(requestInfo);
+
+                _logger.LogInformation($"Successfully deleted calendar event with ID: {eventId}");
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a calendar event.");
+                throw new AuthenticationRequiredException("Authentication is required.");
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "User challenge occurred while deleting a calendar event.");
+                throw new AuthenticationRequiredException("Authentication challenge is required.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access exception occurred while deleting a calendar event.");
+                throw new AuthenticationRequiredException("Unauthorized access.");
+            }
+            catch (ApiException ex)
+            {
+                _logger.LogError(ex, "API Exception occurred while deleting calendar event.");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting a calendar event.");
+                throw;
+            }
+        }
+
         public async Task<List<Message>> GetRecentMessagesAsync(int count = 10)
         {
             try
@@ -630,8 +817,47 @@ public async Task<Contact> UpdateContactAsync(string contactId, Contact updatedC
                 throw;
             }
         }
+        public async Task<List<Message>> SearchMessagesAsync(string searchQuery, int count = 10)
+        {
+            try
+            {
+                _logger.LogInformation($"Attempting to search messages with query: {searchQuery}");
 
+                // Ensure the search query is properly formatted
+                string formattedQuery = $"\"{searchQuery.Replace("\"", "\\\"")}\"";
 
+                var messagesResponse = await GraphClient.Me.Messages.GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Search = formattedQuery;
+                    requestConfiguration.QueryParameters.Top = count;
+                    requestConfiguration.QueryParameters.Select = new[] {
+                        "subject",
+                        "from",
+                        "toRecipients",
+                        "ccRecipients",
+                        "bccRecipients",
+                        "receivedDateTime",
+                        "sentDateTime",
+                        "hasAttachments",
+                        "importance",
+                        "body"
+                    };
+                });
+
+                _logger.LogInformation($"Successfully fetched {messagesResponse?.Value?.Count ?? 0} messages matching the search query");
+                return messagesResponse?.Value?.ToList() ?? new List<Message>();
+            }
+            catch (AITGraph.Sdk.Models.ODataErrors.ODataError odataError)
+            {
+                _logger.LogError(odataError, $"OData error occurred while searching messages with query: {searchQuery}. Error: {odataError.Error?.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while searching messages with query: {searchQuery}");
+                throw;
+            }
+        }
         public async Task<DriveItem> GetFileByIdAsync(string fileId)
         {
             try

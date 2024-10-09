@@ -7,11 +7,13 @@ using System.Collections.Generic;
 public class KernelSetup
 {
     private readonly TimeFunctions _timeFunctions;
+    private readonly KQLFunctions _kqlFunctions;
     private readonly ILogger<KernelSetup> _logger;
 
-    public KernelSetup(TimeFunctions timeFunctions, ILogger<KernelSetup> logger)
+    public KernelSetup(TimeFunctions timeFunctions, KQLFunctions kqlFunctions,ILogger<KernelSetup> logger)
     {
         _timeFunctions = timeFunctions;
+        _kqlFunctions = kqlFunctions;
         _logger = logger;
     }
 
@@ -167,6 +169,147 @@ public class KernelSetup
                 });
 
         _logger.LogInformation("Kernel setup completed successfully.");
+        return kernel;
+    }
+/// <summary>
+    /// Sets up the KQL plugin by registering all available KQL functions.
+    /// </summary>
+    /// <param name="kernel">The Kernel instance to which the plugin will be added.</param>
+    /// <returns>The Kernel instance with the KQL plugin registered.</returns>
+    public Kernel SetupKQLPlugin(Kernel kernel)
+    {
+        kernel.Plugins.AddFromFunctions("kql_plugin",
+            new[]
+            {
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateBasicKQLQuery),
+                    functionName: "generate_basic_kql",
+                    description: "Generate a basic KQL query from a keyword."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, string>(_kqlFunctions.GenerateFieldSpecificKQLQuery),
+                    functionName: "generate_field_specific_kql",
+                    description: "Generate a KQL query for a specific field and value."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateAttachmentKQLQuery),
+                    functionName: "generate_attachment_kql",
+                    description: "Generate a KQL query for email attachments."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateBccKQLQuery),
+                    functionName: "generate_bcc_kql",
+                    description: "Generate a KQL query for BCC recipients."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateBodyKQLQuery),
+                    functionName: "generate_body_kql",
+                    description: "Generate a KQL query for email body content."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateCcKQLQuery),
+                    functionName: "generate_cc_kql",
+                    description: "Generate a KQL query for CC recipients."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateFromKQLQuery),
+                    functionName: "generate_from_kql",
+                    description: "Generate a KQL query for email sender."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<bool, string>(_kqlFunctions.GenerateHasAttachmentKQLQuery),
+                    functionName: "generate_has_attachment_kql",
+                    description: "Generate a KQL query to check for attachments."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateImportanceKQLQuery),
+                    functionName: "generate_importance_kql",
+                    description: "Generate a KQL query for email importance."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateKindKQLQuery),
+                    functionName: "generate_kind_kql",
+                    description: "Generate a KQL query for message kind."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateParticipantsKQLQuery),
+                    functionName: "generate_participants_kql",
+                    description: "Generate a KQL query for email participants."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<DateTime, string>(_kqlFunctions.GenerateReceivedKQLQuery),
+                    functionName: "generate_received_kql",
+                    description: "Generate a KQL query for received date."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateRecipientsKQLQuery),
+                    functionName: "generate_recipients_kql",
+                    description: "Generate a KQL query for email recipients."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<DateTime, string>(_kqlFunctions.GenerateSentKQLQuery),
+                    functionName: "generate_sent_kql",
+                    description: "Generate a KQL query for sent date."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<int, int, string>(_kqlFunctions.GenerateSizeKQLQuery),
+                    functionName: "generate_size_kql",
+                    description: "Generate a KQL query for email size range."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateSubjectKQLQuery),
+                    functionName: "generate_subject_kql",
+                    description: "Generate a KQL query for email subject."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateToKQLQuery),
+                    functionName: "generate_to_kql",
+                    description: "Generate a KQL query for email recipients in the 'To' field."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, string, string>(_kqlFunctions.CombineKQLQueries),
+                    functionName: "combine_kql_queries",
+                    description: "Combine two KQL queries with a specified operator (AND/OR)."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateKQLQueryFromNaturalLanguage),
+                    functionName: "generate_kql_from_natural_language",
+                    description: "Generate a KQL query from a natural language description."
+                ),
+                // New KQL Functions Added Below
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, int, bool, string>(_kqlFunctions.GenerateProximityKQLQuery),
+                    functionName: "generate_proximity_kql",
+                    description: "Generate a KQL query using proximity operators (NEAR/ONEAR). Parameters: term1, term2, distance, preserveOrder."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, string, string>(_kqlFunctions.GenerateRangeKQLQuery),
+                    functionName: "generate_range_kql",
+                    description: "Generate a KQL query for range-based searches. Parameters: property, start, end."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<IEnumerable<string>, string, string>(_kqlFunctions.GroupKQLQueries),
+                    functionName: "group_kql_queries",
+                    description: "Group multiple KQL queries using a specified Boolean operator (AND/OR). Parameters: queries, groupingOperator."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, string>(_kqlFunctions.GenerateSynonymKQLQuery),
+                    functionName: "generate_synonym_kql",
+                    description: "Generate a KQL query using the WORDS operator for synonyms. Parameters: term1, term2."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string>(_kqlFunctions.GenerateWildcardKQLQuery),
+                    functionName: "generate_wildcard_kql",
+                    description: "Generate a KQL query using the wildcard operator for prefix matching. Parameter: prefix."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, string, float, float, float, float, float, float, int, string>(_kqlFunctions.GenerateXRANKKQLQuery),
+                    functionName: "generate_xrank_kql",
+                    description: "Generate a KQL query using the XRANK operator to boost dynamic ranking. Parameters: matchExpression, rankExpression, cb, nb, rb, pb, avgb, stdb, n."
+                )
+            });
+
+        _logger.LogInformation("KQL plugin setup completed successfully.");
         return kernel;
     }
 }

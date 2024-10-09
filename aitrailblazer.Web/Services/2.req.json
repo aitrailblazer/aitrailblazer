@@ -1,0 +1,16 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "\nCurrent date: Tuesday, 08 October 2024\n\nEach response line matches the following format:\nFIELD identifier^^^value\n\nGive a response with the following lines only, with values inferred from USER_DATA:\n\nFIELD \nUSER_DATA: Subject: Meeting Request with John Doe\nFrom: Constantine <Constantine@aitrailblazer.com>\nTo: Constantine <Constantine@aitrailblazer.com>\nAttendees: Constantine <john@doe.com>, Constantine <Constantine@aitrailblazer.com>\nReceived: 10/8/2024 3:33 PM\n\nBody:\nHi Constantine, I would like to schedule a 30-minute meeting to discuss the Q3 Marketing Strategy.Are you available next Tuesday at 3:00 PM? Best regards, John Doe\n^^^value\nEND_RESPONSE\n\nDo not explain how the values were determined.\nFor fields without corresponding data in USER_DATA, use 'NO_DATA'."
+    },
+    {
+      "role": "user",
+      "content": "\nUSER_DATA: Subject: Meeting Request with John Doe\nFrom: Constantine <Constantine@aitrailblazer.com>\nTo: Constantine <Constantine@aitrailblazer.com>\nAttendees: Constantine <john@doe.com>, Constantine <Constantine@aitrailblazer.com>\nReceived: 10/8/2024 3:33 PM\n\nBody:\nHi Constantine, I would like to schedule a 30-minute meeting to discuss the Q3 Marketing Strategy.Are you available next Tuesday at 3:00 PM? Best regards, John Doe\n"
+    }
+  ],
+  "temperature": 0.4,
+  "top_p": 0.9,
+  "max_tokens": 2000,
+  "stop": ["END_RESPONSE"]
+}

@@ -1,5 +1,5 @@
 {
-  "descriptionHash": "8AD5F5B2D0351F2D7469D172D8F05B9B37C176A5E7A0666A9CC06B05CC232DFE1734F610DD251AD9CA8906369AD0BA39C0D3BB9B902785BA325D1BA303B562EA",
+  "descriptionHash": "",
   "descriptionLocation": "OpenApi/Graph.json",
   "lockFileVersion": "1.0.0",
   "kiotaVersion": "1.11.1",
@@ -27,6 +27,7 @@
     "multipart/form-data;q=0.1"
   ],
   "includePatterns": [
+    "me/outlook/microsoft.graph.supportedTimeZones()",
     "/me/messages",
     "/me/mailFolders",
     "/me/contacts",
@@ -34,6 +35,7 @@
     "/me/photo",
     "/me/profile",
     "/me/profile/account",
+    "/me/calendar",
     "/me/calendar/events",
     "/me/calendar/calendarView"
   ],

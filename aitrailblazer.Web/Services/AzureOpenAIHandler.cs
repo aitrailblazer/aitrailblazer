@@ -60,7 +60,7 @@ namespace aitrailblazer.net.Services
             KernelFunctionStrategies kernelFunctionStrategies,
             AgentConfigurationService agentConfigurationService,
             ILogger<AzureOpenAIHandler> logger,
-            KernelSetup kernelSetup) 
+            KernelSetup kernelSetup)
         {
             _parametersAzureService = parametersAzureService;
             _pluginService = pluginService;
@@ -111,13 +111,13 @@ namespace aitrailblazer.net.Services
                 .Replace("\n", string.Empty)  // Remove all newlines
                 .Replace("\r", string.Empty); // Handle Windows-style line endings
 
-                // Further clean whitespace
-                cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
+            // Further clean whitespace
+            cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
 
-                // Limit the cleaned string to 32 characters
-                string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
+            // Limit the cleaned string to 32 characters
+            string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
 
-                _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
+            _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
 
             // Modify writer and reviewer instructions based on dynamic inputs
             var writerInstructions = await AgentWithPromptyAsync(
@@ -171,10 +171,10 @@ namespace aitrailblazer.net.Services
 
             string requestFileName = $"Request-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
             await manager.UploadStringToBlobAsync(
-                currentUserIdentityID, 
+                currentUserIdentityID,
                 directory,
-                sessionDirectory, 
-                requestFileName, 
+                sessionDirectory,
+                requestFileName,
                 requestContent);
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
@@ -207,10 +207,10 @@ namespace aitrailblazer.net.Services
             // Upload the response content to blob storage
             string responseFileName = $"Response-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
             await manager.UploadStringToBlobAsync(
-                currentUserIdentityID, 
+                currentUserIdentityID,
                 directory,
-                sessionDirectory, 
-                responseFileName, 
+                sessionDirectory,
+                responseFileName,
                 response);
 
             _timer.Stop();
@@ -250,13 +250,13 @@ namespace aitrailblazer.net.Services
                 .Replace("\n", string.Empty)  // Remove all newlines
                 .Replace("\r", string.Empty); // Handle Windows-style line endings
 
-                // Further clean whitespace
-                cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
+            // Further clean whitespace
+            cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
 
-                // Limit the cleaned string to 32 characters
-                string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
+            // Limit the cleaned string to 32 characters
+            string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
 
-                _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
+            _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
 
             // Modify writer, editor, and reviewer instructions based on dynamic inputs
             var writerInstructions = await AgentWithPromptyAsync(
@@ -320,10 +320,10 @@ namespace aitrailblazer.net.Services
 
             string requestFileName = $"Request-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
             await manager.UploadStringToBlobAsync(
-                currentUserIdentityID, 
+                currentUserIdentityID,
                 directory,
-                sessionDirectory, 
-                requestFileName, 
+                sessionDirectory,
+                requestFileName,
                 requestContent);
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
@@ -364,10 +364,10 @@ namespace aitrailblazer.net.Services
             // Upload the response content to blob storage
             string responseFileName = $"Response-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
             await manager.UploadStringToBlobAsync(
-                currentUserIdentityID, 
+                currentUserIdentityID,
                 directory,
-                sessionDirectory, 
-                responseFileName, 
+                sessionDirectory,
+                responseFileName,
                 response);
 
             _timer.Stop();
@@ -456,13 +456,13 @@ namespace aitrailblazer.net.Services
                 .Replace(":", string.Empty)
                 .Replace(".", string.Empty)
                 .Replace("\n", string.Empty)
-                .Replace("\r", string.Empty); 
+                .Replace("\r", string.Empty);
 
-            string cleanedpanelInput = panelInput                
+            string cleanedpanelInput = panelInput
                 .Replace(":", string.Empty)
                 .Replace(".", string.Empty)
                 .Replace("\n", string.Empty)
-                .Replace("\r", string.Empty); 
+                .Replace("\r", string.Empty);
 
             // Generate or use existing session title
             string title = string.IsNullOrWhiteSpace(existingSessionTitle)
@@ -496,13 +496,13 @@ namespace aitrailblazer.net.Services
                 .Replace("\n", string.Empty)  // Remove all newlines
                 .Replace("\r", string.Empty); // Handle Windows-style line endings
 
-                // Further clean whitespace
-                cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
+            // Further clean whitespace
+            cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
 
-                // Limit the cleaned string to 32 characters
-                string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
+            // Limit the cleaned string to 32 characters
+            string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
 
-                _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
+            _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
 
             string sessionDirectory = isNewSession
                 ? $"ChatSession-{currentTime}-{title}"  // create a new session
@@ -1065,7 +1065,7 @@ namespace aitrailblazer.net.Services
                 _parametersAzureService.StorageContainerName);
             return manager;
         }
-  
+
         public async Task RunImportPluginFromApiManifestAsync(string modelId, int maxTokens)
         {
             // Initialize the kernel with modelId and maxTokens
@@ -1086,10 +1086,10 @@ namespace aitrailblazer.net.Services
 
                 // Import API manifest plugin
                 KernelPlugin plugin = await kernel.CreatePluginFromApiManifestAsync(
-                    pluginName,                                 
+                    pluginName,
                     pluginPath
                 ).ConfigureAwait(false);
-                
+
                 // Add the plugin to the kernel
                 kernel.Plugins.Add(plugin);
 
@@ -1124,28 +1124,28 @@ namespace aitrailblazer.net.Services
         }
 
 
-    /// <summary>
-    /// Example to show how to consume operation extensions and other metadata from an OpenAPI spec.
-    /// Try modifying the sample schema to simulate the other cases by
-    /// 1. Changing the value of x-openai-isConsequential to true and see how the function execution is skipped.
-    /// 2. Removing the x-openai-isConsequential property and see how the function execution is skipped.
-    /// </summary>
-    public async Task RunOpenAIPluginWithMetadataAsync()
-    {
-        //Kernel kernel = new();
-        // Build the kernel
-        string modelId = "gpt-4o-mini";
-        int maxTokens = 256;
-        IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-        //kernelBuilder.Plugins.AddFromType<TimeInformation>();
-        Kernel kernel = kernelBuilder.Build();
+        /// <summary>
+        /// Example to show how to consume operation extensions and other metadata from an OpenAPI spec.
+        /// Try modifying the sample schema to simulate the other cases by
+        /// 1. Changing the value of x-openai-isConsequential to true and see how the function execution is skipped.
+        /// 2. Removing the x-openai-isConsequential property and see how the function execution is skipped.
+        /// </summary>
+        public async Task RunOpenAIPluginWithMetadataAsync()
+        {
+            //Kernel kernel = new();
+            // Build the kernel
+            string modelId = "gpt-4o-mini";
+            int maxTokens = 256;
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+            Kernel kernel = kernelBuilder.Build();
 
-        // This HTTP client is optional. SK will fallback to a default internal one if omitted.
-        using HttpClient httpClient = new();
+            // This HTTP client is optional. SK will fallback to a default internal one if omitted.
+            using HttpClient httpClient = new();
 
-        // Create a sample OpenAPI schema that calls the github versions api, and has an operation extension property.
-        // The x-openai-isConsequential property is the operation extension property.
-        var schema = """
+            // Create a sample OpenAPI schema that calls the github versions api, and has an operation extension property.
+            // The x-openai-isConsequential property is the operation extension property.
+            var schema = """
             {
                 "openapi": "3.0.1",
                 "info": {
@@ -1168,64 +1168,64 @@ namespace aitrailblazer.net.Services
                 }
             }
             """;
-        var schemaStream = new MemoryStream();
-        WriteStringToStream(schemaStream, schema);
+            var schemaStream = new MemoryStream();
+            WriteStringToStream(schemaStream, schema);
 
-        // Import an Open API plugin from a stream.
-        var plugin = await kernel.CreatePluginFromOpenApiAsync(
-            "GithubVersionsApi", 
-            schemaStream, 
-            new OpenApiFunctionExecutionParameters(httpClient));
+            // Import an Open API plugin from a stream.
+            var plugin = await kernel.CreatePluginFromOpenApiAsync(
+                "GithubVersionsApi",
+                schemaStream,
+                new OpenApiFunctionExecutionParameters(httpClient));
 
-        // Get the function to be invoked and its metadata and extension properties.
-        var function = plugin["getVersions"];
-        function.Metadata.AdditionalProperties.TryGetValue("operation-extensions", out var extensionsObject);
-        var operationExtensions = extensionsObject as Dictionary<string, object?>;
+            // Get the function to be invoked and its metadata and extension properties.
+            var function = plugin["getVersions"];
+            function.Metadata.AdditionalProperties.TryGetValue("operation-extensions", out var extensionsObject);
+            var operationExtensions = extensionsObject as Dictionary<string, object?>;
 
-        // *******************************************************************************************************************************
-        // ******* Use case 1: Consume the x-openai-isConsequential extension value to determine if the function has consequences  *******
-        // ******* and only invoke the function if it is consequence free.                                                         *******
-        // *******************************************************************************************************************************
-        if (operationExtensions is null || !operationExtensions.TryGetValue("x-openai-isConsequential", out var isConsequential) || isConsequential is null)
-        {
-            _logger.LogInformation("We cannot determine if the function has consequences, since the isConsequential extension is not provided, so safer not to run it.");
-        }
-        else if ((isConsequential as bool?) == true)
-        {
-            _logger.LogInformation("This function may have unwanted consequences, so safer not to run it.");
-        }
-        else
-        {
-            // Invoke the function and output the result.
-            var functionResult = await kernel.InvokeAsync(function);
-            var result = functionResult.GetValue<RestApiOperationResponse>();
-            _logger.LogInformation($"Function execution result: {result?.Content}");
+            // *******************************************************************************************************************************
+            // ******* Use case 1: Consume the x-openai-isConsequential extension value to determine if the function has consequences  *******
+            // ******* and only invoke the function if it is consequence free.                                                         *******
+            // *******************************************************************************************************************************
+            if (operationExtensions is null || !operationExtensions.TryGetValue("x-openai-isConsequential", out var isConsequential) || isConsequential is null)
+            {
+                _logger.LogInformation("We cannot determine if the function has consequences, since the isConsequential extension is not provided, so safer not to run it.");
+            }
+            else if ((isConsequential as bool?) == true)
+            {
+                _logger.LogInformation("This function may have unwanted consequences, so safer not to run it.");
+            }
+            else
+            {
+                // Invoke the function and output the result.
+                var functionResult = await kernel.InvokeAsync(function);
+                var result = functionResult.GetValue<RestApiOperationResponse>();
+                _logger.LogInformation($"Function execution result: {result?.Content}");
+            }
+
+            // *******************************************************************************************************************************
+            // ******* Use case 2: Consume the http method type to determine if this is a read or write operation and only execute if  *******
+            // ******* it is a read operation.                                                                                         *******
+            // *******************************************************************************************************************************
+            if (function.Metadata.AdditionalProperties.TryGetValue("method", out var method) && method as string is "GET")
+            {
+                // Invoke the function and output the result.
+                var functionResult = await kernel.InvokeAsync(function);
+                var result = functionResult.GetValue<RestApiOperationResponse>();
+                _logger.LogInformation($"Function execution result: {result?.Content}");
+            }
+            else
+            {
+                _logger.LogInformation("This is a write operation, so safer not to run it.");
+            }
         }
 
-        // *******************************************************************************************************************************
-        // ******* Use case 2: Consume the http method type to determine if this is a read or write operation and only execute if  *******
-        // ******* it is a read operation.                                                                                         *******
-        // *******************************************************************************************************************************
-        if (function.Metadata.AdditionalProperties.TryGetValue("method", out var method) && method as string is "GET")
+        private static void WriteStringToStream(Stream stream, string input)
         {
-            // Invoke the function and output the result.
-            var functionResult = await kernel.InvokeAsync(function);
-            var result = functionResult.GetValue<RestApiOperationResponse>();
-            _logger.LogInformation($"Function execution result: {result?.Content}");
+            using var writer = new StreamWriter(stream, leaveOpen: true);
+            writer.Write(input);
+            writer.Flush();
+            stream.Position = 0;
         }
-        else
-        {
-            _logger.LogInformation("This is a write operation, so safer not to run it.");
-        }
-    }
-
-    private static void WriteStringToStream(Stream stream, string input)
-    {
-        using var writer = new StreamWriter(stream, leaveOpen: true);
-        writer.Write(input);
-        writer.Flush();
-        stream.Position = 0;
-    }
         // string pluginName="AITitle";
         public async Task<string> GetASAPQuick(
             string pluginName,
@@ -1252,7 +1252,7 @@ namespace aitrailblazer.net.Services
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 //kernelBuilder.Plugins.AddFromType<TimeInformation>();
                 Kernel kernel = kernelBuilder.Build();
-            
+
 
 
                 // Get the path to the prompty file
@@ -1909,7 +1909,7 @@ namespace aitrailblazer.net.Services
             }
 
         }
- 
+
         public string UpdateAgentTemplate(
          string promptyTemplate,
          string creativity,
@@ -2060,12 +2060,12 @@ namespace aitrailblazer.net.Services
             return date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday;
         }
 
-  
-        public async Task<string> GetASAPTest(
+
+        public async Task<string> GetASAPTime(
             string input)
         {
             int maxTokens = 1024;
-            _logger.LogInformation("GetASAPTest");
+            _logger.LogInformation("GetASAPTime");
 
             try
             {
@@ -2114,45 +2114,147 @@ namespace aitrailblazer.net.Services
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 };
 
-                var arguments = new KernelArguments(executionSettings)
-                {
-                    // Custom arguments can be added here
+
+                var arguments = new KernelArguments(executionSettings) 
+                { 
+                    //["Request"] = "Provide latest headlines" 
                 };
 
-                _logger.LogInformation("GetASAPTest kernel.InvokeAsync");
+                _logger.LogInformation("GetASAPTime kernel.InvokeAsync");
 
                 // Execute the kernel function
                 try
                 {
-                    var result = await kernel.InvokePromptAsync(input,arguments);
+                    var result = await kernel.InvokePromptAsync(input, arguments);
                     var response = result.GetValue<string>();
-                    
-                    _logger.LogInformation($"GetASAPTest response: {response}");
+
+                    _logger.LogInformation($"GetASAPTime response: {response}");
 
                     return response;
                 }
                 catch (ArgumentException ex)
                 {
-                    _logger.LogInformation($"GetASAPTest Argument error: {ex.Message}");
+                    _logger.LogInformation($"GetASAPTime Argument error: {ex.Message}");
                     return "An error occurred with the arguments. Please try again.";
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.LogInformation($"GetASAPTest Invalid operation: {ex.Message}");
+                    _logger.LogInformation($"GetASAPTime Invalid operation: {ex.Message}");
                     return "An invalid operation occurred during function execution. Please try again.";
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation($"GetASAPTest An unexpected error occurred: {ex.Message}");
+                    _logger.LogInformation($"GetASAPTime An unexpected error occurred: {ex.Message}");
                     return "An unexpected error occurred during execution. Please try again.";
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"GetASAPTest A critical error occurred");
+                _logger.LogError(ex, $"GetASAPTime A critical error occurred");
                 return "A critical error occurred. Please contact support.";
 
             }
+        }
+
+        /// <summary>
+        /// Generates a KQL query based on a natural language input using GPT-4 and the registered KQL functions.
+        /// </summary>
+        /// <param name="input">The natural language description for the email search.</param>
+        /// <returns>The generated KQL query string.</returns>
+        public async Task<string> GenerateKQLQuery(string input)
+        {
+            int maxTokens = 1024;
+            _logger.LogInformation("GenerateKQLQuery initiated.");
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    _logger.LogInformation("Input cannot be null or empty.");
+                    return "Invalid input.";
+                }
+
+                // Build the kernel
+                string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                Kernel kernel = kernelBuilder.Build();
+
+                // Setup the KQL plugin
+                kernel = _kernelSetup.SetupKQLPlugin(kernel);
+
+                double temperature = 0.1;
+                double topP = 0.1;
+                int seed = 356;
+
+                // Configure execution settings
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
+                {
+                    Temperature = temperature,
+                    TopP = topP,
+                    MaxTokens = maxTokens,
+                    StopSequences = new string[] { "\n\n" },
+                    Seed = seed,
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+                };
+
+                var arguments = new KernelArguments(executionSettings) 
+                { 
+                    ["Input"] = input 
+                };
+
+                // Define the prompt with explicit instructions and available KQL functions
+                string prompt = @"
+You are an assistant that generates Microsoft Graph API 
+Keyword Query Language (KQL) queries for searching emails 
+based on natural language descriptions. 
+
+Use the available KQL plugin functions to construct accurate 
+and efficient queries. Focus on email-specific properties 
+such as from, to, subject, body, attachments, importance, 
+received/sent dates, and other relevant properties. 
+Ensure the query is concise and directly usable with the 
+Microsoft Graph API `$search` parameter.
+
+Natural language description: {{$Input}}
+
+KQL Query:
+";
+
+                _logger.LogInformation("GenerateKQLQuery invoking kernel with prompt.");
+
+                // Execute the kernel function
+                try
+                {
+                    var result = await kernel.InvokePromptAsync(prompt, arguments);
+
+                    var response = result.ToString().Trim();
+
+                    _logger.LogInformation($"GenerateKQLQuery response: {response}");
+
+                    return response;
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError($"GenerateKQLQuery Argument error: {ex.Message}");
+                    return "An error occurred with the arguments. Please check your input and try again.";
+                }
+                catch (InvalidOperationException ex)
+                {
+                    _logger.LogError($"GenerateKQLQuery Invalid operation: {ex.Message}");
+                    return "An invalid operation occurred during function execution. Please try again.";
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"GenerateKQLQuery Unexpected error: {ex.Message}");
+                    return "An unexpected error occurred during execution. Please try again.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"GenerateKQLQuery A critical error occurred.");
+                return "A critical error occurred. Please contact support.";
+            }
+
         }
     }
 }

@@ -1,11 +1,16 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using SmartComponents.StaticAssets.Inference;
 
 namespace aitrailblazer.net.Services
@@ -64,7 +69,7 @@ namespace aitrailblazer.net.Services
             _logger.LogInformation("MyCustomInferenceBackend initialized successfully.");
         }
 
-        public async Task<string> GetChatResponseAsync(ChatParameters options)
+        public async Task<string> GetChatResponseAsync(SmartComponents.StaticAssets.Inference.ChatParameters options)
         {
             if (!_isInitialized)
             {
@@ -78,66 +83,231 @@ namespace aitrailblazer.net.Services
                 throw new ArgumentException("Messages cannot be null or empty.");
             }
 
-            _logger.LogInformation("Preparing chat request payload.");
-
-            var payload = new
+            var chatPayload = JsonSerializer.Serialize(new
             {
                 messages = options.Messages.Select(message => new
                 {
-                    role = message.Role switch
-                    {
-                        ChatMessageRole.System => "system",
-                        ChatMessageRole.User => "user",
-                        ChatMessageRole.Assistant => "assistant",
-                        _ => throw new InvalidOperationException($"Unknown chat message role: {message.Role}")
-                    },
+                    role = message.Role.ToString().ToLower(),
                     content = message.Text
                 }).ToArray(),
-                temperature = options.Temperature ?? 0.7,
-                top_p = options.TopP ?? 0.95,
-                max_tokens = options.MaxTokens ?? 800,
+                temperature = options.Temperature,
+                top_p = options.TopP,
+                max_tokens = options.MaxTokens,
+                frequency_penalty = options.FrequencyPenalty,
+                presence_penalty = options.PresencePenalty,
+                stop = options.StopSequences,
                 stream = false
-            };
+            });
+
+            _logger.LogInformation($"Chat request payload: {chatPayload}");
 
             try
             {
-                var jsonPayload = JsonConvert.SerializeObject(payload);
-                _logger.LogDebug("Request payload: {Payload}", jsonPayload);
-
-                _logger.LogInformation("Sending request to Azure OpenAI API.");
-                var response = await _httpClient.PostAsync(_endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+                var response = await _httpClient.PostAsync(_endpoint, new StringContent(chatPayload, Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogDebug("Received successful response: {Response}", responseContent);
+                    _logger.LogInformation($"Received successful chat response: {responseContent}");
 
-                    var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
-                    var result = responseData?.choices[0]?.message?.content?.ToString() ?? "No response received.";
+                    var responseData = JsonSerializer.Deserialize<JsonElement>(responseContent);
+                    var result = responseData.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "No response received.";
 
-                    _logger.LogInformation("Raw response from API: {RawResponse}", (string)result);
+                    // Modify the result to use current time
+                    result = AdjustEventTimes(result);
 
-                    // Remove END_RESPONSE from the result
-                    result = result.Replace("END_RESPONSE", "").Trim();
-
-                    _logger.LogInformation("Processed response (END_RESPONSE removed): {ProcessedResponse}", (string)result);
-
+                    _logger.LogInformation($"Processed chat response: {result}");
                     return result;
                 }
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogError("Request failed. Status: {StatusCode}, Reason: {ReasonPhrase}, Error: {ErrorContent}",
-                        response.StatusCode, response.ReasonPhrase, errorContent);
+                    _logger.LogError($"Chat request failed. Status: {response.StatusCode}, Reason: {response.ReasonPhrase}, Error: {errorContent}");
 
-                    throw new HttpRequestException($"Request failed with status: {response.StatusCode}, {response.ReasonPhrase}. Error: {errorContent}");
+                    throw new HttpRequestException($"Chat request failed with status: {response.StatusCode}, {response.ReasonPhrase}. Error: {errorContent}");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in GetChatResponseAsync");
+                _logger.LogError(ex, "Error handling chat request");
                 throw;
             }
+        }
+
+        private string AdjustEventTimes(string result)
+        {
+            DateTime startDateTime;
+            DateTime endDateTime = DateTime.MinValue; // Initialize with a default value
+
+            var lines = result.Split('\n').ToList();
+
+            // Remove the lines for start and end dates
+            lines.RemoveAll(line => line.StartsWith("FIELD EventStartDateFromReceived^^^") || 
+                                    line.StartsWith("FIELD EventEndDateFromReceived^^^"));
+
+            // Adjust the times
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].StartsWith("FIELD EventStartTimeFromReceived^^^"))
+                {
+                    // Parse the start time from the line
+                    var startTimeString = lines[i].Split("^^^")[1];
+                    if (DateTime.TryParseExact(startTimeString, "HH:mm", null, System.Globalization.DateTimeStyles.None, out startDateTime))
+                    {
+                        // Add 30 minutes to get the end time
+                        endDateTime = startDateTime.AddMinutes(30);
+                    }
+                }
+                else if (lines[i].StartsWith("FIELD EventEndTimeFromReceived^^^"))
+                {
+                    // Check if endDateTime was set from the previous parsing
+                    if (endDateTime != DateTime.MinValue)
+                    {
+                        // Update the line with the calculated end time
+                        lines[i] = $"FIELD EventEndTimeFromReceived^^^{endDateTime:HH:mm}";
+                    }
+                }
+            }
+
+            return string.Join('\n', lines);
+        }
+
+
+
+        private DateTime RoundToNext30MinuteInterval(DateTime dateTime)
+        {
+            var minutes = dateTime.Minute;
+            var adjustment = minutes % 30 == 0 ? 0 : 30 - (minutes % 30);
+            return dateTime.AddMinutes(adjustment).AddSeconds(-dateTime.Second);
+        }
+    }
+    public class SmartPasteInference
+    {
+        private static readonly JsonSerializerOptions jsonSerializerOptions
+            = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
+        public class SmartPasteRequestData
+        {
+            public FormField[]? FormFields { get; set; }
+            public string? ClipboardContents { get; set; }
+        }
+
+        public class FormField
+        {
+            public string? Identifier { get; set; }
+            public string? Description { get; set; }
+            public string?[]? AllowedValues { get; set; }
+            public string? Type { get; set; }
+        }
+
+        public readonly struct SmartPasteResponseData
+        {
+            public bool BadRequest { get; init; }
+            public string? Response { get; init; }
+        }
+
+        public Task<SmartPasteResponseData> GetFormCompletionsAsync(IInferenceBackend inferenceBackend, string dataJson)
+        {
+            var data = JsonSerializer.Deserialize<SmartPasteRequestData>(dataJson, jsonSerializerOptions)!;
+            if (data.FormFields is null || data.FormFields.Length == 0 || string.IsNullOrEmpty(data.ClipboardContents))
+            {
+                return Task.FromResult(new SmartPasteResponseData { BadRequest = true });
+            }
+
+            return GetFormCompletionsAsync(inferenceBackend, data);
+        }
+
+        public virtual SmartComponents.StaticAssets.Inference.ChatParameters BuildPrompt(SmartPasteRequestData data)
+        {
+            var systemMessage = @$"
+Current date: {DateTime.Today.ToString("D", CultureInfo.InvariantCulture)}
+
+Respond with a JSON object with ONLY the following keys. For each key, infer a value from USER_DATA:
+
+{ToFieldOutputExamples(data.FormFields!)}
+
+Do not explain how the values were determined.
+For fields without any corresponding information in USER_DATA, use the value null.";
+
+            var prompt = @$"
+USER_DATA: {data.ClipboardContents}
+";
+
+            return new SmartComponents.StaticAssets.Inference.ChatParameters
+            {
+                Messages = new List<ChatMessage>
+                {
+                    new ChatMessage(ChatMessageRole.System, systemMessage),
+                    new ChatMessage(ChatMessageRole.User, prompt),
+                },
+                Temperature = 0,
+                TopP = 0.1f,
+                MaxTokens = 2000,
+                FrequencyPenalty = 0.1f,
+                PresencePenalty = 0,
+            };
+        }
+
+        public virtual async Task<SmartPasteResponseData> GetFormCompletionsAsync(IInferenceBackend inferenceBackend, SmartPasteRequestData requestData)
+        {
+            var chatOptions = BuildPrompt(requestData);
+            var completionsResponse = await inferenceBackend.GetChatResponseAsync(chatOptions);
+            return new SmartPasteResponseData { Response = completionsResponse };
+        }
+
+        private static string ToFieldOutputExamples(FormField[] fields)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("{");
+
+            var firstField = true;
+            foreach (var field in fields)
+            {
+                if (firstField)
+                {
+                    firstField = false;
+                }
+                else
+                {
+                    sb.AppendLine(",");
+                }
+
+                sb.Append($"  \"{field.Identifier}\": /* ");
+
+                if (!string.IsNullOrEmpty(field.Description))
+                {
+                    sb.Append($"The {field.Description}");
+                }
+
+                if (field.AllowedValues is { Length: > 0 })
+                {
+                    sb.Append($" (multiple choice, with allowed values: ");
+                    var first = true;
+                    foreach (var value in field.AllowedValues)
+                    {
+                        if (first)
+                        {
+                            first = false;
+                        }
+                        else
+                        {
+                            sb.Append(",");
+                        }
+                        sb.Append($"\"{value}\"");
+                    }
+                    sb.Append(")");
+                }
+                else
+                {
+                    sb.Append($" of type {field.Type}");
+                }
+
+                sb.Append(" */");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("}");
+            return sb.ToString();
         }
     }
 }

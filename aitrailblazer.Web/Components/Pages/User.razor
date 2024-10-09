@@ -62,7 +62,7 @@ else if (user != null)
                         @bind-Value="@userQuery" 
                         @oninput="HandleInput" 
                         Placeholder="Enter your question here..."
-                        style="flex: 1; max-height: 80px; overflow-y: auto;" 
+                        style="flex: 1; max-height: 120px; overflow-y: auto;" 
                         Class="card-splitter alert alert-primary content-splitter-font-size"
                         Appearance="FluentInputAppearance.Filled" 
                         Autofocus="@Autofocus" 
@@ -74,7 +74,7 @@ else if (user != null)
                     <FluentButton 
                         IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" 
                         Class="FluentButton"
-                        @onclick="OnButtonClicked" 
+                        OnClick="@OnButtonASAPTimeClicked" 
                         >
                         Send
                     </FluentButton>
@@ -103,7 +103,7 @@ else if (user != null)
                                     IconStart="@(new Icons.Filled.Size24.Dismiss())" 
                                     Appearance="Appearance.Stealth" 
                                     Class="close-button"
-                                    @onclick="CloseResponse"
+                                    OnClick="@CloseResponse"
                                     aria-label="Close Response">
                                 </FluentButton>
                             </div>
@@ -132,7 +132,48 @@ else if (user != null)
                     <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
                         Access and manage your Outlook emails directly from this tab.
                     </FluentLabel>
+                    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+                        <FluentTextArea 
+                            Typo="Typography.Body" 
+                            Class="card-splitter alert alert-primary content-splitter-font-size"
+                            Appearance="FluentInputAppearance.Filled" 
+                            @bind-Value="@searchQuery" 
+                            Placeholder="Search emails..."
+                            Style="width: 1600px;"
+                            @oninput="OnSearchInputChanged" 
+                            Autofocus="@Autofocus" 
+                            Minlength="@MinLength"
+                            MaxLength="@MaxLength" 
+                            Rows="@Rows" />
+                        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
 
+                        @if (isSearch)
+                        {
+                            <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                            <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                        }
+                        <FluentButton 
+                            OnClick="@SearchEmails" 
+                            Appearance="Appearance.Accent"
+                            Disabled="@string.IsNullOrWhiteSpace(searchQuery)"
+                            IconStart="@(new Icons.Regular.Size20.Search())"
+                            aria-label="Search Emails">
+                            Search
+                        </FluentButton>
+
+                        @if (!string.IsNullOrWhiteSpace(searchQuery))
+                        {
+                            <FluentButton 
+                                OnClick="@ClearSearchAndReloadEmails" 
+                                Appearance="Appearance.Lightweight"
+                                IconStart="@(new Icons.Regular.Size20.Delete())"
+                                aria-label="Clear Search">
+                                Clear Search
+                            </FluentButton>
+                        }
+                        </FluentStack>
+
+                    </FluentStack>
                     @if (emailsWithComputedProperties != null && emailsWithComputedProperties.Any())
                     {
                         <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
@@ -190,6 +231,9 @@ else if (user != null)
                     {
                         <FluentDialog Id="emailContentDialog" Visible="true" OnDismiss="CloseEmailDialog" Style="width: 80vw; max-height: 420px; overflow: auto;">
                             <div style="max-height: 70vh; overflow-y: auto;">
+                            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => CopyEmailToClipboard())">
+                                Copy to Clipboard
+                            </FluentButton>
                                 <h3>@selectedEmail.Subject</h3>
                                 <p><strong>From:</strong> @selectedEmail.From?.EmailAddress?.Name</p>
                                 <p><strong>To:</strong> @(selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any()
@@ -199,13 +243,13 @@ else if (user != null)
                                 <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
                                     @if (!string.IsNullOrEmpty(selectedEmail.BodyContent))
                                     {
-                                        if (selectedEmail.BodyContentType == BodyType.Html)
+                                        @if (selectedEmail.BodyContentType == BodyType.Html)
                                         {
                                             @((MarkupString)selectedEmail.BodyContent)
                                         }
                                         else
                                         {
-                                            @GetPlainText(selectedEmail)
+                                            @selectedEmail.BodyContent
                                         }
                                     }
                                     else
@@ -214,11 +258,10 @@ else if (user != null)
                                     }
                                 </pre>
                             </div>
-                            <!-- Changed Appearance from Accent to Primary -->
-                            <FluentButton Appearance="Appearance.Accent" OnClick="CloseEmailDialog">Close</FluentButton>
+
+                            <FluentButton Appearance="Appearance.Accent" OnClick="@CloseEmailDialog">Close</FluentButton>
                         </FluentDialog>
                     }
-
                 </Content>
             </FluentTab>
 
@@ -237,7 +280,14 @@ else if (user != null)
                     <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
                         Access and manage your Outlook calendar directly from this tab.
                     </FluentLabel>
-
+                    <!-- Button to open the event creation dialog -->
+                    <FluentButton 
+                        OnClick="@OpenNewEventDialog" 
+                        Appearance="Appearance.Accent"
+                        IconStart="@(new Icons.Regular.Size20.AddCircle())"
+                        Size="Size.Small">
+                        Create New Event
+                    </FluentButton>
                     @if (calendarEventsWithComputedProperties != null && calendarEventsWithComputedProperties.Any())
                     {
                         <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
@@ -280,16 +330,28 @@ else if (user != null)
                                 <!-- Actions Column -->
                                 <TemplateColumn 
                                     Title="Actions" 
-                                    Width="100px">
+                                    Width="200px">
                                     <ChildContent Context="eventViewModel">
-                                        <FluentButton 
-                                            OnClick="@(() => OpenEventDialog(eventViewModel))" 
-                                            Appearance="Appearance.Stealth" 
-                                            Size="Size.Small"
-                                            IconStart="@(new Icons.Regular.Size20.Eye())"
-                                            class="text-gray-500 hover:text-gray-700">
-                                            View
-                                        </FluentButton>
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="5">
+
+                                            <FluentButton 
+                                                OnClick="@(() => OpenEventDialog(eventViewModel))" 
+                                                Appearance="Appearance.Stealth" 
+                                                Size="Size.Small"
+                                                IconStart="@(new Icons.Regular.Size20.Eye())"
+                                                class="text-gray-500 hover:text-gray-700">
+                                                View
+                                            </FluentButton>
+                                            <!-- Delete Event Button -->
+                                            <FluentButton 
+                                                OnClick="() => DeleteEventAsync(eventViewModel.Id)" 
+                                                Appearance="Appearance.Stealth" 
+                                                Size="Size.Small"
+                                                IconStart="@(new Icons.Regular.Size20.Delete())"
+                                                class="text-gray-500 hover:text-gray-700">
+                                                Delete
+                                            </FluentButton>
+                                        </FluentStack>
                                     </ChildContent>
                                 </TemplateColumn>
                                 
@@ -300,39 +362,216 @@ else if (user != null)
                     {
                         <p>No events available</p>
                     }
-
-                    <!-- Event Details Dialog -->
-                    @if (selectedEvent != null)
+                        <!-- Event Details Dialog -->
+@if (selectedEvent != null)
+{
+    <FluentDialog 
+        Visible="true" 
+        OnDismiss="CloseEventDetailsDialog" 
+        Class="dialog-container">
+        
+        <!-- Wrapper Div for Flex Layout -->
+        <div class="dialog-wrapper">
+            
+            <!-- Scrollable Content Area -->
+            <div class="dialog-content">
+                <h3>@selectedEvent.Subject</h3>
+                
+                <!-- Event Subject -->
+                <p><strong>Event Subject:</strong> @selectedEvent.Subject</p>
+                
+                <!-- Event Start Date/Time -->
+                <p><strong>Start Date:</strong> @selectedEvent.StartDateTimeFormatted.Split(' ')[0]</p>
+                <p><strong>Start Time:</strong> @selectedEvent.StartDateTimeFormatted.Split(' ')[1]</p>
+                
+                <!-- Event End Date/Time -->
+                <p><strong>End Date:</strong> @selectedEvent.EndDateTimeFormatted.Split(' ')[0]</p>
+                <p><strong>End Time:</strong> @selectedEvent.EndDateTimeFormatted.Split(' ')[1]</p>
+                
+                <!-- Event Location -->
+                <p><strong>Location:</strong> @(!string.IsNullOrWhiteSpace(selectedEvent.Location) ? selectedEvent.Location : "N/A")</p>
+                
+                <!-- Event Attendees -->
+                <p><strong>Attendees:</strong></p>
+                <ul>
+                    @if (selectedEvent.Attendees != null && selectedEvent.Attendees.Any() && selectedEvent.Attendees[0] != "No attendees")
                     {
-                        <FluentDialog 
-                            Visible="true" 
-                            OnDismiss="CloseEventDetailsDialog" 
-                            Class="dialog-container">
-                            
-                            <!-- Wrapper Div for Flex Layout -->
-                            <div class="dialog-wrapper">
-                                
-                                <!-- Scrollable Content Area -->
-                                <div class="dialog-content">
-                                    <h3>@selectedEvent.Subject</h3>
-                                    <p><strong>Start:</strong> @selectedEvent.StartDateTimeFormatted</p>
-                                    <p><strong>End:</strong> @selectedEvent.EndDateTimeFormatted</p>
-                                    <p><strong>Location:</strong> @selectedEvent.Location ?? "N/A"</p>
-                                    <p><strong>Organizer:</strong> @selectedEvent.OriginalEvent.Organizer?.EmailAddress?.Name ?? "N/A"</p>
-                                    <p><strong>Description:</strong></p>
-                                    <div style="white-space: normal; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd;">
-                                        @((MarkupString)(selectedEvent.OriginalEvent.Body?.Content ?? "No description available"))
-                                    </div>
-                                </div>
-                                
-                                <!-- Fixed Footer with Close Button -->
-                                <div class="dialog-footer">
-                                    <FluentButton OnClick="CloseEventDetailsDialog" Appearance="Appearance.Accent">Close</FluentButton>
-                                </div>
-                            </div>
-                        </FluentDialog>
+                        @foreach (var attendee in selectedEvent.Attendees)
+                        {
+                            <li>@attendee</li>
+                        }
                     }
+                    else
+                    {
+                        <li>No attendees</li>
+                    }
+                </ul>
 
+                <!-- Display Recurrence Pattern if available -->
+                <p><strong>Recurrence:</strong> 
+                    @if (selectedEvent.OriginalEvent.Recurrence != null)
+                    {
+                        @selectedEvent.OriginalEvent.Recurrence.Pattern.Type.ToString()
+                    }
+                    else
+                    {
+                        <span>None</span>
+                    }
+                </p>
+
+                <!-- Display Event Categories -->
+                <p><strong>Categories:</strong> 
+                    @if (selectedEvent.OriginalEvent.Categories != null && selectedEvent.OriginalEvent.Categories.Any())
+                    {
+                        @string.Join(", ", selectedEvent.OriginalEvent.Categories)
+                    }
+                    else
+                    {
+                        <span>No categories</span>
+                    }
+                </p>
+
+                <!-- Display Event Description -->
+                <p><strong>Description:</strong></p>
+                <div style="white-space: normal; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd;">
+                    @((MarkupString)(!string.IsNullOrWhiteSpace(selectedEvent.Description) ? selectedEvent.Description : "No description available"))
+                </div>
+            </div>
+            
+            <!-- Fixed Footer with Close Button -->
+            <div class="dialog-footer">
+            <FluentButton 
+                Appearance="Appearance.Stealth" 
+                IconStart="@(new Icons.Regular.Size20.Dismiss())" 
+                OnClick="@CloseEventDetailsDialog" 
+                class="text-gray-500 hover:text-gray-700">
+                Cancel
+            </FluentButton>
+            </div>
+        </div>
+    </FluentDialog>
+}
+
+                        <!-- Event Creation Dialog -->
+                        @if (isEventDialogVisible)
+                        {
+                            <FluentDialog Visible="true" OnDismiss="CloseNewEventDialog">
+                                <FluentCard MinimalStyle="true" Width="640px" Height="100%">
+                                    <FluentHeader>Create New Event</FluentHeader>
+                                    <EditForm Model="@newEvent">
+                                        <DataAnnotationsValidator />
+                                        <ValidationSummary class="mb-4 text-red-600" />
+                                        <form class="default-form rounded-lg bg-white p-8 shadow-xl mb-12">
+                                            <div class="grid gap-8">
+                                                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+
+                                                    <!-- Event Subject -->
+                                                    <div>
+                                                        <label for="EventSubject" class="block text-sm font-medium text-gray-700 mb-2">Event Subject</label>
+                                                        <InputText id="EventSubject" class="mt-1 block w-full rounded-lg" 
+                                                                @bind-Value="newEvent.Subject" 
+                                                                data-smartpaste-description="This is the title or subject of the event or meeting."
+                                                                style="width: 600px; max-width: 600px;" />
+                                                    </div>
+
+                                                    <!-- Event Start Date/Time -->
+                                                    <div>
+                                                        <label for="EventStartDateFromReceived" class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                                        <InputDate id="EventStartDateFromReceived" class="mt-1 block w-full rounded-lg" 
+                                                                @bind-Value="newEventStartDate"
+                                                                data-smartpaste-description="The start date of the event, in the format MM/DD/YYYY." />
+                                                        
+                                                        <label for="EventStartTimeFromReceived" class="block text-sm font-medium text-gray-700 mt-2">Start Time</label>
+                                                        <select id="EventStartTimeFromReceived" class="mt-1 block w-full rounded-lg" 
+                                                                @bind="selectedStartTime" 
+                                                                data-smartpaste-description="The time the event starts, in the format HH:mm (24-hour clock).">
+                                                            @foreach (var time in timeIntervals)
+                                                            {
+                                                                <option value="@time">@time</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Event End Date/Time -->
+                                                    <div>
+                                                        <label for="EventEndDateFromReceived" class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                                        <InputDate id="EventEndDateFromReceived" class="mt-1 block w-full rounded-lg" 
+                                                                @bind-Value="newEventEndDate" 
+                                                                data-smartpaste-description="The end date of the event, in the format MM/DD/YYYY." />
+                                                        
+                                                        <label for="EventEndTimeFromReceived" class="block text-sm font-medium text-gray-700 mt-2">End Time</label>
+                                                        <select id="EventEndTimeFromReceived" class="mt-1 block w-full rounded-lg" 
+                                                                @bind="selectedEndTime"
+                                                                data-smartpaste-description="The time the event ends, in the format HH:mm (24-hour clock).">
+                                                            @foreach (var time in timeIntervals)
+                                                            {
+                                                                <option value="@time">@time</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Event Location -->
+                                                    <div>
+                                                        <label for="EventLocation" class="block text-sm font-medium text-gray-700 mb-2">Event Location</label>
+                                                        <InputText id="EventLocation" class="mt-1 block w-full rounded-lg" 
+                                                                @bind-Value="newEvent.Location.DisplayName" 
+                                                                data-smartpaste-description="The location of the event, either physical or virtual, such as 'Conference Room A' or 'Microsoft Teams Meeting'."
+                                                                style="width: 1200px; max-width: 600px;" />
+                                                    </div>
+
+                                                    <!-- Event Attendees -->
+                                                    <div>
+                                                        <label for="EventAttendees" class="block text-sm font-medium text-gray-700 mb-2">Attendees (comma-separated emails)</label>
+                                                        <InputTextArea id="EventAttendees" class="mt-1 block w-full rounded-lg" 
+                                                                    @bind-Value="attendeesInput" 
+                                                                    data-smartpaste-description="A list of email addresses of people attending the event, separated by commas."
+                                                                    Rows="5" 
+                                                                    Placeholder="Enter attendee emails..." 
+                                                                    style="width: 1200px; max-width: 600px;" />
+                                                    </div>
+
+                                                    <!-- Event Description -->
+                                                    <div>
+                                                        <label for="EventDescriptionFromBody" class="block text-sm font-medium text-gray-700 mb-2">Event Description</label>
+                                                        <InputTextArea id="EventDescriptionFromBody" class="mt-1 block w-full rounded-lg" 
+                                                                    @bind-Value="newEventBody" 
+                                                                    data-smartpaste-description="A detailed description of the event or meeting, including the agenda or purpose."
+                                                                    Rows="5" 
+                                                                    Placeholder="Enter event description..." 
+                                                                    style="width: 600px; max-width: 600px;" />
+                                                    </div>
+                                                </FluentStack>
+                                            </div>
+
+                                            <!-- SmartPasteButton for Clipboard Parsing -->
+                                            <div class="flex gap-4 mt-10 justify-end items-center">
+                                                <FluentIcon Value="@(new Icons.Regular.Size20.Sparkle())" Slot="start" />
+                                                <SmartPasteButton IconStart="@(new Icons.Regular.Size20.DocumentSave())" />
+                                            </div>
+                                        </form>
+                                    </EditForm>
+
+                                    <FluentDialogActions class="mt-6">
+                                        <FluentButton 
+                                            Appearance="Appearance.Stealth" 
+                                            IconStart="@(new Icons.Regular.Size20.Dismiss())" 
+                                            OnClick="@CloseNewEventDialog" 
+                                            class="text-gray-500 hover:text-gray-700">
+                                            Cancel
+                                        </FluentButton>
+                                        <FluentButton 
+                                            Appearance="Appearance.Accent" 
+                                            IconStart="@(new Icons.Regular.Size20.Save())" 
+                                            OnClick="@SaveEventAsync" 
+                                            class="text-gray-500 hover:text-gray-700"
+                                            Disabled="!IsFormValid()">
+                                            Save
+                                        </FluentButton>
+                                    </FluentDialogActions>
+                                </FluentCard>
+                            </FluentDialog>
+
+                        }
                 </Content>
             </FluentTab>
             <!-- Contacts Tab -->
@@ -351,7 +590,7 @@ else if (user != null)
                         Access and manage your contacts directly from this tab.
                     </FluentLabel>
                     <FluentButton 
-                        OnClick="OpenNewContactDialog" 
+                        OnClick="@OpenNewContactDialog" 
                         Appearance="Appearance.Accent"
                         IconStart="@(new Icons.Regular.Size20.PersonAdd())"
                         Size="Size.Small">
@@ -519,9 +758,9 @@ else if (user != null)
                                     </form>
                                 </EditForm>
                                 <FluentDialogActions class="mt-6">
-                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Dismiss())" OnClick="CloseContactDialog" class="text-gray-500 hover:text-gray-700">Cancel</FluentButton>
-                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Save())" OnClick="SaveContactAsync" class="text-gray-500 hover:text-gray-700"
-                                    Disabled="@(!IsAtLeastOneFieldFilled())">Save</FluentButton>
+                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Dismiss())" OnClick="@CloseContactDialog" class="text-gray-500 hover:text-gray-700">Cancel</FluentButton>
+                                    <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.Save())" OnClick="@SaveContactAsync" class="text-gray-500 hover:text-gray-700"
+                                    Disabled="@(!IsAtLeastOneContactFieldFilled())">Save</FluentButton>
                                 </FluentDialogActions>
                             </FluentCard>
                         </FluentDialog>
@@ -594,8 +833,12 @@ else
             accountInfo = await GraphService.GetUserAccountInformationAsync();
             userMessages = await GraphService.GetRecentMessagesAsync(20);
 
+            var startOfWeek = DateTime.Now;
+            var endOfWeek = startOfWeek.AddDays(7);
+
+
             // Fetch calendar events
-            calendarEventsResult = await GraphService.GetCalendarEventsAsync(20); // Get the next 10 events
+            calendarEventsResult = await GraphService.GetCalendarEventsAsync(20, startOfWeek, endOfWeek); // Get the next 20 events
 
             if (calendarEventsResult.Events != null && calendarEventsResult.Events.Any())
             {
@@ -708,7 +951,7 @@ else
     }
 
     // Event handler for button click
-    private async Task OnButtonClicked()
+    private async Task OnButtonASAPTimeClicked()
     {
         if (string.IsNullOrWhiteSpace(userQuery))
         {
@@ -723,7 +966,7 @@ else
             error = null;
 
             // Call the Azure OpenAI handler with the user's query
-            response = await azureOpenAIHandler.GetASAPTest(userQuery);
+            response = await azureOpenAIHandler.GetASAPTime(userQuery);
             formattedResponse = Markdown.ToHtml(response);
             showResponse = true; // Show the response card when a new response is received
         }
@@ -788,14 +1031,68 @@ else
     {
         selectedEmail = null;
     }
+    private string searchQuery = "";
+    private bool isSearchButtonDisabled = true;
 
-    private string GetPlainText(EmailViewModel email)
+    private void OnSearchInputChanged(ChangeEventArgs e)
     {
-        // Implement your logic to extract plain text from the email body
-        // For simplicity, we'll return the content as-is
-        return email.BodyContent ?? "";
+        searchQuery = e.Value?.ToString() ?? "";
+        isSearchButtonDisabled = string.IsNullOrWhiteSpace(searchQuery);
+        StateHasChanged();
     }
 
+    private bool isSearch = false;
+
+    private async Task SearchEmails()
+    {
+        isSearch = true;
+        error = null;
+
+        try
+        {
+            // Generate KQL query from natural language input
+            string kqlQuery = await azureOpenAIHandler.GenerateKQLQuery(searchQuery);
+
+            var searchResults = await GraphService.SearchMessagesAsync(searchQuery, 20);
+            emailsWithComputedProperties = searchResults.Select(m => new EmailViewModel(m)).ToList();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error searching emails: {ex.Message}";
+        }
+        finally
+        {
+            isSearch = false;
+        }
+    }
+    private async Task ClearSearchAndReloadEmails()
+    {
+        // Clear the search query
+        searchQuery = "";
+
+        // Reset the email list
+        isSearch = true;
+        error = null;
+
+        try
+        {
+            // Reload the original email list
+            var messages = await GraphService.GetRecentMessagesAsync(20); // Adjust the count as needed
+            emailsWithComputedProperties = messages.Select(m => new EmailViewModel(m)).ToList();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error loading emails: {ex.Message}";
+        }
+        finally
+        {
+            isSearch = false;
+        }
+
+        // Ensure the UI updates
+        StateHasChanged();
+    }
+ 
     // Event Selection Handler
     private void OnSelectedEventChanged(IEnumerable<EventViewModel> selectedItems)
     {
@@ -819,6 +1116,31 @@ else
     {
         selectedEvent = evtViewModel;
     }
+    private async Task DeleteEventAsync(string eventId)
+    {
+        try
+        {
+            // Confirm the deletion with the user
+            var confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this event?");
+            if (!confirmed)
+            {
+                return;
+            }
+
+            // Call the GraphService to delete the event
+            await GraphService.DeleteCalendarEventAsync(eventId);
+
+            // Remove the event from the UI
+            calendarEventsWithComputedProperties.RemoveAll(e => e.OriginalEvent.Id == eventId);
+            StateHasChanged(); // Update the UI
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting event: {ex.Message}");
+            await JS.InvokeVoidAsync("alert", $"Error deleting event: {ex.Message}");
+        }
+    }
+
 // Open and Close methods for Contact Dialog
     private void OpenContactDialog(ContactViewModel contactViewModel)
     {
@@ -832,7 +1154,7 @@ else
     }
 
 @code {
-    private bool IsAtLeastOneFieldFilled()
+    private bool IsAtLeastOneContactFieldFilled()
     {
         return !string.IsNullOrWhiteSpace(selectedContact.GivenName) ||
             !string.IsNullOrWhiteSpace(selectedContact.Surname) ||
@@ -1118,86 +1440,395 @@ private async Task DeleteContactAsync(string contactId)
     }
 }
 public class EmailViewModel
-    { 
-        public GraphMessage OriginalMessage { get; set; }
-        public string SenderName { get; set; }
-        public string Subject { get; set; }
-        public string ReceivedDateTimeFormatted { get; set; }
+{ 
+    public GraphMessage OriginalMessage { get; set; }
+    public string SenderName { get; set; }
+    public string Subject { get; set; }
+    public string ReceivedDateTimeFormatted { get; set; }
 
-        // Added properties for Body Content and Content Type
-        public string BodyContent { get; set; }
-        public BodyType BodyContentType { get; set; }
+    // Properties for Body Content and Content Type
+    public string BodyContent { get; set; }
+    public BodyType BodyContentType { get; set; }
 
-        // Exposed properties from OriginalMessage
-        public Recipient From => OriginalMessage.From;
-        public List<Recipient> ToRecipients => OriginalMessage.ToRecipients;
-        public DateTimeOffset? ReceivedDateTime => OriginalMessage.ReceivedDateTime;
+    // Exposed properties from OriginalMessage
+    public Recipient From => OriginalMessage.From;
+    public List<Recipient> ToRecipients => OriginalMessage.ToRecipients;
+    public DateTimeOffset? ReceivedDateTime => OriginalMessage.ReceivedDateTime;
 
-        public EmailViewModel(GraphMessage message)
-        {
-            OriginalMessage = message;
-            SenderName = message.From?.EmailAddress?.Name ?? "Unknown";
-            Subject = message.Subject ?? "No Subject";
-            ReceivedDateTimeFormatted = message.ReceivedDateTime.HasValue
-                ? message.ReceivedDateTime.Value.ToLocalTime().ToString("g")
-                : "N/A";
+    // Event-Related Properties
+    public string EventTitle { get; set; } // Can be populated from email subject
+    public string EventDescription { get; set; } // Can be populated from email body
+    public DateTimeOffset? EventStartTime { get; set; } // Can use ReceivedDateTime or parsed from email content
+    public DateTimeOffset? EventEndTime { get; set; } // Start time + default duration
+    public List<string> EventAttendeesEmails { get; set; } // Extract attendees from the 'To' field
 
-            // Initialize BodyContent and BodyContentType
-            BodyContent = message.Body?.Content ?? "";
-            BodyContentType = message.Body?.ContentType ?? BodyType.Text;
-        }
-    }
-
-    // ViewModel for Events
-    public class EventViewModel
+    // Constructor to initialize the view model with email data
+    public EmailViewModel(GraphMessage message)
     {
-        public Event OriginalEvent { get; set; }
-        public string Subject { get; set; }
-        public string StartDateTimeFormatted { get; set; }
-        public string EndDateTimeFormatted { get; set; }
-        public string Location { get; set; }
+        OriginalMessage = message;
+        SenderName = message.From?.EmailAddress?.Name ?? "Unknown";
+        Subject = message.Subject ?? "No Subject";
+        ReceivedDateTimeFormatted = message.ReceivedDateTime.HasValue
+            ? message.ReceivedDateTime.Value.ToLocalTime().ToString("g")
+            : "N/A";
 
-        // Parsed DateTimeOffset properties
-        public DateTimeOffset? StartDateTime { get; set; }
-        public DateTimeOffset? EndDateTime { get; set; }
+        // Initialize BodyContent and BodyContentType
+        BodyContent = message.Body?.Content ?? "";
+        BodyContentType = message.Body?.ContentType ?? BodyType.Text;
 
-        public EventViewModel(Event evt)
-        {
-            OriginalEvent = evt;
-            Subject = evt.Subject ?? "No Subject";
-
-            // Attempt to parse Start.DateTime
-            if (DateTimeOffset.TryParse(evt.Start?.DateTime, out var startDt))
-            {
-                StartDateTime = startDt;
-                StartDateTimeFormatted = startDt.ToLocalTime().ToString("g");
-            }
-            else
-            {
-                StartDateTime = null;
-                StartDateTimeFormatted = "N/A";
-            }
-
-            // Attempt to parse End.DateTime
-            if (DateTimeOffset.TryParse(evt.End?.DateTime, out var endDt))
-            {
-                EndDateTime = endDt;
-                EndDateTimeFormatted = endDt.ToLocalTime().ToString("g");
-            }
-            else
-            {
-                EndDateTime = null;
-                EndDateTimeFormatted = "N/A";
-            }
-
-            // Add location information
-            Location = evt.Location?.DisplayName ?? "No location";
-
-            // You can initialize other properties here as needed
-        }
+        // Initialize event-related fields
+        EventTitle = message.Subject ?? "New Event";
+        EventDescription = message.Body?.Content ?? "";
+        EventStartTime = message.ReceivedDateTime; // Use the email's received time as the event start time by default
+        EventEndTime = EventStartTime?.AddMinutes(30); // Default event duration is 30 minutes
+        EventAttendeesEmails = message.ToRecipients?.Select(r => r.EmailAddress?.Address).ToList() ?? new List<string>();
     }
+}
+
+
+
+// ViewModel for Events
+public class EventViewModel
+{
+    public Event OriginalEvent { get; set; }
+    public string Id => OriginalEvent?.Id; // Expose the Id of the original event
+    public string Subject { get; set; }
+    public string StartDateTimeFormatted { get; set; }
+    public string EndDateTimeFormatted { get; set; }
+    public string Location { get; set; }
+
+    // Parsed DateTimeOffset properties
+    public DateTimeOffset? StartDateTime { get; set; }
+    public DateTimeOffset? EndDateTime { get; set; }
+
+    // New properties for attendees and description
+    public List<string> Attendees { get; set; }
+    public string Description { get; set; }
+
+    public EventViewModel(Event evt)
+    {
+        OriginalEvent = evt;
+        Subject = evt.Subject ?? "No Subject";
+
+        // Attempt to parse Start.DateTime
+        if (DateTimeOffset.TryParse(evt.Start?.DateTime, out var startDt))
+        {
+            StartDateTime = startDt;
+            StartDateTimeFormatted = startDt.ToLocalTime().ToString("g");
+        }
+        else
+        {
+            StartDateTime = null;
+            StartDateTimeFormatted = "N/A";
+        }
+
+        // Attempt to parse End.DateTime
+        if (DateTimeOffset.TryParse(evt.End?.DateTime, out var endDt))
+        {
+            EndDateTime = endDt;
+            EndDateTimeFormatted = endDt.ToLocalTime().ToString("g");
+        }
+        else
+        {
+            EndDateTime = null;
+            EndDateTimeFormatted = "N/A";
+        }
+
+        // Add location information
+        Location = evt.Location?.DisplayName ?? "No location";
+
+        // Initialize attendees list
+        Attendees = evt.Attendees?.Select(a => 
+            a.EmailAddress?.Name ?? a.EmailAddress?.Address ?? "Unknown Attendee")
+            .ToList() ?? new List<string> { "No attendees" };
+
+        // Set description
+        Description = evt.Body?.Content ?? "No description available";
+    }
+}
+
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
     
+
+}
+
+@code {
+
+    private bool IsFormValid()
+    {
+        // Check that Subject, StartDate, and EndDate are not empty, and are valid.
+        bool hasValidBasicFields = !string.IsNullOrWhiteSpace(newEvent.Subject) 
+                                && newEventStartDate.HasValue 
+                                && newEventEndDate.HasValue;
+
+        // Check that Location is not empty.
+        bool hasValidLocation = !string.IsNullOrWhiteSpace(newEvent.Location?.DisplayName);
+
+        // Check that there is at least one attendee entered.
+        bool hasValidAttendees = !string.IsNullOrWhiteSpace(attendeesInput) 
+                                && attendeesInput.Split(',').Any(email => !string.IsNullOrWhiteSpace(email.Trim()));
+
+        // Ensure all fields are valid.
+        return hasValidBasicFields && hasValidLocation && hasValidAttendees;
+    }
+
+
+    private DateTime? newEventStartDate { get; set; } = DateTime.Now;
+    private string newEventStartTime { get; set; } = DateTime.Now.ToString("HH:mm");
+
+    private DateTime? newEventEndDate { get; set; } = DateTime.Now.AddMinutes(30);
+    private string newEventEndTime { get; set; } = DateTime.Now.AddMinutes(30).ToString("HH:mm");
+
+    // Model for creating new event
+    private Event newEvent = new Event
+    {
+        Start = new DateTimeTimeZone(),
+        End = new DateTimeTimeZone(),
+    };
+    
+    private bool isEventDialogVisible = false;
+    
+    // Open event creation dialog
+    private void OpenNewEventDialog()
+    {
+        // Set current time as start and round it to the next 30-minute interval
+        var startDateTime = RoundToNext30MinuteInterval(DateTime.Now); 
+        var endDateTime = startDateTime.AddMinutes(30); // End time 30 minutes later
+
+        // Initialize the time intervals for the dropdown
+        timeIntervals = GenerateTimeIntervals();
+
+        // Find the closest intervals that match the start and end times
+        selectedStartTime = timeIntervals.FirstOrDefault(t => t == startDateTime.ToString("HH:mm"));
+        selectedEndTime = timeIntervals.FirstOrDefault(t => t == endDateTime.ToString("HH:mm"));
+
+        // Initialize a new event with proper Start, End, Location, and Attendees values
+        newEvent = new Event
+        {
+            Subject = "", // Set an initial empty subject to prevent null errors
+            Start = new DateTimeTimeZone
+            {
+                DateTime = startDateTime.ToString("yyyy-MM-ddTHH:mm:ss"), // Local start date and time
+                TimeZone = TimeZoneInfo.Local.Id // Use the local time zone
+            },
+            End = new DateTimeTimeZone
+            {
+                DateTime = endDateTime.ToString("yyyy-MM-ddTHH:mm:ss"), // Local end date and time (30 mins later)
+                TimeZone = TimeZoneInfo.Local.Id // Use the local time zone
+            },
+            Location = new Location
+            {
+                DisplayName = "Microsoft Teams Meeting" // Set an initial empty location
+            },
+            // Set the event description
+            Body = new ItemBody
+            {
+                Content = ""
+            },
+            Attendees = new List<Attendee>() // Initialize with an empty attendees list
+        };
+
+        attendeesInput = ""; // Clear attendees input
+        isEventDialogVisible = true;
+    }
+    private string clipboardContent = "";
+
+    private async Task PasteClipboardContentIntoVariable()
+    {
+        // Call the JavaScript function to get clipboard content
+        clipboardContent = await JS.InvokeAsync<string>("getClipboardText");
+
+        // You can now use clipboardContent in your logic
+        Console.WriteLine("Clipboard content: " + clipboardContent);
+    }
+    private DateTime RoundToNext30MinuteInterval(DateTime dateTime)
+    {
+        // Round the current time to the next 30-minute interval
+        var minutes = dateTime.Minute;
+        var adjustment = minutes % 30 == 0 ? 0 : 30 - (minutes % 30);
+        return dateTime.AddMinutes(adjustment).AddSeconds(-dateTime.Second); // Remove seconds to clean time
+    }
+
+
+    private List<string> timeIntervals;
+    private string selectedStartTime { get; set; }
+    private string selectedEndTime { get; set; }
+
+    private List<string> GenerateTimeIntervals()
+    {
+        var intervals = new List<string>();
+        var start = new TimeSpan(0, 0, 0);  // 00:00
+        var end = new TimeSpan(23, 59, 0);  // 23:59
+        var increment = TimeSpan.FromMinutes(30);  // 30-minute intervals
+
+        for (var time = start; time <= end; time = time.Add(increment))
+        {
+            intervals.Add(time.ToString(@"hh\:mm"));
+        }
+
+        return intervals;
+    }
+    // Close event creation dialog
+    private void CloseNewEventDialog()
+    {
+        isEventDialogVisible = false;
+    }
+
+    private string newEventBody { get; set; } = ""; // Store the body content
+    private string attendeesInput { get; set; } = string.Empty; // Holds attendee emails input
+
+private async Task SaveEventAsync()
+{
+    try
+    {
+        // Set the event subject
+        newEvent.Subject = string.IsNullOrWhiteSpace(newEvent.Subject) ? "No Subject" : newEvent.Subject;
+
+        // Combine date and time for Start
+        if (newEventStartDate.HasValue && !string.IsNullOrWhiteSpace(selectedStartTime))
+        {
+            newEvent.Start.DateTime = $"{newEventStartDate.Value:yyyy-MM-dd}T{selectedStartTime}";
+            newEvent.Start.TimeZone = TimeZoneInfo.Local.Id;
+        }
+
+        // Combine date and time for End
+        if (newEventEndDate.HasValue && !string.IsNullOrWhiteSpace(selectedEndTime))
+        {
+            newEvent.End.DateTime = $"{newEventEndDate.Value:yyyy-MM-dd}T{selectedEndTime}";
+            newEvent.End.TimeZone = TimeZoneInfo.Local.Id;
+        }
+
+        // Set the location
+        newEvent.Location = new Location
+        {
+            DisplayName = !string.IsNullOrWhiteSpace(newEvent.Location?.DisplayName) 
+                ? newEvent.Location.DisplayName 
+                : "No location"
+        };
+
+        // Process attendees input
+        if (!string.IsNullOrWhiteSpace(attendeesInput))
+        {
+            var attendeesEmails = attendeesInput.Split(',')
+                                                .Select(email => email.Trim())
+                                                .Where(email => !string.IsNullOrWhiteSpace(email))
+                                                .ToList();
+
+            newEvent.Attendees = attendeesEmails.Select(email => new Attendee
+            {
+                EmailAddress = new EmailAddress { Address = email },
+                Type = AttendeeType.Required
+            }).ToList();
+        }
+        else
+        {
+            newEvent.Attendees = new List<Attendee>();
+        }
+
+        // Set the event description
+        newEvent.Body = new ItemBody
+        {
+            ContentType = BodyType.Text,
+            Content = string.IsNullOrWhiteSpace(newEventBody) ? "No description available" : newEventBody
+        };
+
+        // Call the service to create the event
+        var result = await GraphService.CreateCalendarEventAsync(newEvent);
+
+        if (result.CreatedEvent != null)
+        {
+            // Log the event properties for verification
+            Console.WriteLine("Event Created:");
+            Console.WriteLine($"Subject: {result.CreatedEvent.Subject}");
+            Console.WriteLine($"Start: {result.CreatedEvent.Start.DateTime} ({result.CreatedEvent.Start.TimeZone})");
+            Console.WriteLine($"End: {result.CreatedEvent.End.DateTime} ({result.CreatedEvent.End.TimeZone})");
+            Console.WriteLine($"Location: {result.CreatedEvent.Location?.DisplayName}");
+            Console.WriteLine($"Attendees: {string.Join(", ", result.CreatedEvent.Attendees.Select(a => a.EmailAddress.Address))}");
+            Console.WriteLine($"Description: {result.CreatedEvent.Body?.Content}");
+
+            // Add the created event to the list with computed properties
+            calendarEventsWithComputedProperties.Add(new EventViewModel(result.CreatedEvent));
+            CloseNewEventDialog();
+            StateHasChanged();
+        }
+        else
+        {
+            error = result.ErrorMessage ?? "An error occurred while creating the event.";
+        }
+    }
+    catch (Exception ex)
+    {
+        error = $"Error creating event: {ex.Message}";
+    }
+}
+
+
+}
+@code {
+    private async Task CopyEmailToClipboard()
+    {
+        // Ensure that email has valid From and To fields
+        var fromEmail = selectedEmail.From?.EmailAddress != null
+            ? $"{selectedEmail.From.EmailAddress.Name} <{selectedEmail.From.EmailAddress.Address}>"
+            : "Unknown Sender";
+
+        var toEmails = selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any()
+            ? string.Join(", ", selectedEmail.ToRecipients.Select(r => r.EmailAddress != null 
+                ? $"{r.EmailAddress.Name} <{r.EmailAddress.Address}>" 
+                : "Unknown Recipient"))
+            : "No recipients";
+
+        // Combine From and To for Attendees
+        var attendees = fromEmail + (toEmails != "No recipients" ? $", {toEmails}" : "");
+
+        // Ensure that ReceivedDateTime is properly formatted
+        var receivedDateTime = selectedEmail.ReceivedDateTime?.ToLocalTime().ToString("g") ?? "N/A";
+
+        // Get the plain text version of the email body
+        var bodyContent = string.IsNullOrEmpty(GetPlainText(selectedEmail))
+            ? "No body content available."
+            : GetPlainText(selectedEmail);
+
+        // Prepare the email content to be copied
+        var clipboardContent = $"Subject: {selectedEmail.Subject ?? "No subject"}\n" +
+                            $"From: {fromEmail}\n" +
+                            $"To: {toEmails}\n" +
+                            $"Attendees: {attendees}\n" +  // Adding Attendees field
+                            $"Received: {receivedDateTime}\n\n" +
+                            $"Body:\n{bodyContent}";
+
+        // Output for debugging (optional)
+        Console.WriteLine("Clipboard Content:\n" + clipboardContent);
+
+        // Call the JavaScript function to copy the content to the clipboard
+        await JS.InvokeVoidAsync("copyToClipboard", clipboardContent);
+    }
+
+
+
+    // Method to remove HTML tags from email body content
+    private string GetPlainText(EmailViewModel email)
+    {
+        if (email.BodyContentType == BodyType.Html)
+        {
+            // Remove HTML comments
+            var plainText = System.Text.RegularExpressions.Regex.Replace(email.BodyContent, "<!--.*?-->", string.Empty, System.Text.RegularExpressions.RegexOptions.Singleline);
+
+            // Remove HTML tags
+            plainText = System.Text.RegularExpressions.Regex.Replace(plainText, "<.*?>", string.Empty);
+
+            // Decode HTML entities (e.g., &nbsp; -> space)
+            plainText = System.Net.WebUtility.HtmlDecode(plainText);
+
+            // Normalize and trim excess whitespace
+            plainText = System.Text.RegularExpressions.Regex.Replace(plainText, @"\s+", " ").Trim();
+
+            return plainText;
+        }
+
+        return email.BodyContent;
+    }
+
 
 }

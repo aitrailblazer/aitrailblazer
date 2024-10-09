@@ -1,0 +1,16 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "\nCurrent date: Tuesday, 08 October 2024\n\nEach response line matches the following format:\nFIELD identifier^^^value\n\nGive a response with the following lines only, with values inferred from USER_DATA:\n\nFIELD EventSubject^^^The This is the title or subject of the event or meeting. of type string\nFIELD EventStartDateFromReceived^^^The The start date of the event, in the format MM/DD/YYYY. of type string\nFIELD EventStartTimeFromReceived^^^The The time the event starts, in the format HH:mm (24-hour clock). (multiple choice, with allowed values: \"00:00\",\"00:30\",\"01:00\",\"01:30\",\"02:00\",\"02:30\",\"03:00\",\"03:30\",\"04:00\",\"04:30\",\"05:00\",\"05:30\",\"06:00\",\"06:30\",\"07:00\",\"07:30\",\"08:00\",\"08:30\",\"09:00\",\"09:30\",\"10:00\",\"10:30\",\"11:00\",\"11:30\",\"12:00\",\"12:30\",\"13:00\",\"13:30\",\"14:00\",\"14:30\",\"15:00\",\"15:30\",\"16:00\",\"16:30\",\"17:00\",\"17:30\",\"18:00\",\"18:30\",\"19:00\",\"19:30\",\"20:00\",\"20:30\",\"21:00\",\"21:30\",\"22:00\",\"22:30\",\"23:00\",\"23:30\")\nFIELD EventEndDateFromReceived^^^The The end date of the event, in the format MM/DD/YYYY. of type string\nFIELD EventEndTimeFromReceived^^^The The time the event ends, in the format HH:mm (24-hour clock). (multiple choice, with allowed values: \"00:00\",\"00:30\",\"01:00\",\"01:30\",\"02:00\",\"02:30\",\"03:00\",\"03:30\",\"04:00\",\"04:30\",\"05:00\",\"05:30\",\"06:00\",\"06:30\",\"07:00\",\"07:30\",\"08:00\",\"08:30\",\"09:00\",\"09:30\",\"10:00\",\"10:30\",\"11:00\",\"11:30\",\"12:00\",\"12:30\",\"13:00\",\"13:30\",\"14:00\",\"14:30\",\"15:00\",\"15:30\",\"16:00\",\"16:30\",\"17:00\",\"17:30\",\"18:00\",\"18:30\",\"19:00\",\"19:30\",\"20:00\",\"20:30\",\"21:00\",\"21:30\",\"22:00\",\"22:30\",\"23:00\",\"23:30\")\nFIELD EventLocation^^^The The location of the event, either physical or virtual, such as 'Conference Room A' or 'Microsoft Teams Meeting'. of type string\nFIELD EventAttendees^^^The A list of email addresses of people attending the event, separated by commas. of type string\nFIELD EventDescriptionFromBody^^^The A detailed description of the event or meeting, including the agenda or purpose. of type string\nEND_RESPONSE\n\nDo not explain how the values were determined.\nFor fields without any corresponding information in USER_DATA, use value value NO_DATA."
+    },
+    {
+      "role": "user",
+      "content": "\nUSER_DATA: Subject: Meeting Request with John Doe\nFrom: Constantine <Constantine@aitrailblazer.com>\nTo: Constantine <Constantine@aitrailblazer.com>\nAttendees: Constantine <john@doe.com>, Constantine <Constantine@aitrailblazer.com>\nReceived: 10/8/2024 3:33 PM\n\nBody:\nHi Constantine, I would like to schedule a 30-minute meeting to discuss the Q3 Marketing Strategy.Are you available next Tuesday at 3:00 PM? Best regards, John Doe\n"
+    }
+  ],
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 2000,
+  "stream": false
+}

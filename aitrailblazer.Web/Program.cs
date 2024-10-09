@@ -210,7 +210,7 @@ var parametersAzureService = new ParametersAzureService
 
 builder.Services.AddSingleton(parametersAzureService);
 
-builder.Services.AddSingleton<SmartPasteInference, MyFormSmartPasteInference>();
+//builder.Services.AddSingleton<SmartPasteInference, MyFormSmartPasteInference>();
 
 // Register the SmartPasteInferenceFactory as Scoped
 //builder.Services.AddScoped<ISmartPasteInferenceFactory, SmartPasteInferenceFactory>();
@@ -273,6 +273,8 @@ builder.Services.AddScoped<TokenLabelService>();
 // Register Services
 builder.Services.AddScoped<TimeZoneService>();
 builder.Services.AddScoped<TimeFunctions>();
+builder.Services.AddScoped<KQLFunctions>();
+
 builder.Services.AddScoped<KernelSetup>();
 
 builder.Services.AddAuthorizationCore();
