@@ -19,6 +19,7 @@
 @using aitrailblazer.net.Models; 
 @using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
 @using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle
+@using Newtonsoft.Json;
 
 @using Markdig
 @inject AITGraphService GraphService
@@ -994,7 +995,7 @@ else
   
 
 
-    // Event handler for button click
+  // Event handler for button click
     private async Task OnButtonASAPTimeClicked()
     {
         if (string.IsNullOrWhiteSpace(userQuery))
@@ -1010,15 +1011,14 @@ else
             error = null;
             response = string.Empty;
 
-
             // Call the Azure OpenAI handler with the user's query
             var jsonResponse = await azureOpenAIHandler.ShowNewsAsync(userQuery);
 
-            // Deserialize JSON into NewsResponse object
-            var newsResponse = JsonSerializer.Deserialize<NewsResponse>(jsonResponse, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            // Log the JSON response for debugging
+            Console.WriteLine($"JSON Response: {jsonResponse}");
+
+            // Deserialize JSON into NewsResponse object using Newtonsoft.Json
+            var newsResponse = JsonConvert.DeserializeObject<NewsResponse>(jsonResponse);
 
             if (newsResponse != null && newsResponse.TotalResults > 0 && newsResponse.Articles != null)
             {
@@ -1026,29 +1026,25 @@ else
                 showResponse = true;
 
                 response = $"Found {newsResponse.TotalResults} articles for your query.";
-
             }
             else
             {
                 showResponse = true;
                 newsArticles = new List<OurNewsArticle>();
                 response = "No news articles found for your query.";
-
             }
         }
-        catch (JsonException jsonEx)
+        catch (Newtonsoft.Json.JsonException jsonEx)
         {
-            response = "Failed to parse news data.";
+            response = $"Failed to parse news data: {jsonEx.Message}";
             showResponse = true;
             newsArticles = new List<OurNewsArticle>();
-
         }
         catch (Exception ex)
         {
-            response = "An error occurred while fetching news articles.";
+            response = $"An error occurred while fetching news articles: {ex.Message}";
             showResponse = true;
             newsArticles = new List<OurNewsArticle>();
-
         }
         finally
         {

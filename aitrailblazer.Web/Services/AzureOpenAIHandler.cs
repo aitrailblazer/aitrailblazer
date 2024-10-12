@@ -2423,7 +2423,7 @@ Search Action:
 
             var searchResult = result.GetValue<string>();
 
-            //_logger.LogInformation($"ShowNewsAsync Generated search Result: {searchResult}");
+            _logger.LogInformation($"ShowNewsAsync Generated search Result: {searchResult}");
 
             return searchResult;
         }
