@@ -1,0 +1,140 @@
+using System;
+using System.Text.Encodings.Web;
+using Microsoft.Extensions.Logging;
+
+public class SearchUrlPlugin
+{
+    private readonly ILogger<SearchUrlPlugin> _logger;
+
+    public SearchUrlPlugin(ILogger<SearchUrlPlugin> logger)
+    {
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Amazon.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Amazon search URL.</returns>
+    public string GenerateAmazonSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.amazon.com/s?k={encodedQuery}";
+        _logger.LogInformation($"Generated Amazon search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Bing.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Bing search URL.</returns>
+    public string GenerateBingSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.bing.com/search?q={encodedQuery}";
+        _logger.LogInformation($"Generated Bing search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Bing Images.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Bing Images search URL.</returns>
+    public string GenerateBingImagesSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.bing.com/images/search?q={encodedQuery}";
+        _logger.LogInformation($"Generated Bing Images search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Bing Maps.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Bing Maps search URL.</returns>
+    public string GenerateBingMapsSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.bing.com/maps?q={encodedQuery}";
+        _logger.LogInformation($"Generated Bing Maps search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Facebook.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Facebook search URL.</returns>
+    public string GenerateFacebookSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.facebook.com/search/top/?q={encodedQuery}";
+        _logger.LogInformation($"Generated Facebook search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for GitHub.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The GitHub search URL.</returns>
+    public string GenerateGitHubSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://github.com/search?q={encodedQuery}";
+        _logger.LogInformation($"Generated GitHub search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for LinkedIn.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The LinkedIn search URL.</returns>
+    public string GenerateLinkedInSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://www.linkedin.com/search/results/index/?keywords={encodedQuery}";
+        _logger.LogInformation($"Generated LinkedIn search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Twitter.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Twitter search URL.</returns>
+    public string GenerateTwitterSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://twitter.com/search?q={encodedQuery}";
+        _logger.LogInformation($"Generated Twitter search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Generates a search URL for Wikipedia.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>The Wikipedia search URL.</returns>
+    public string GenerateWikipediaSearchUrl(string query)
+    {
+        var encodedQuery = EncodeQuery(query);
+        var url = $"https://wikipedia.org/w/index.php?search={encodedQuery}";
+        _logger.LogInformation($"Generated Wikipedia search URL: {url}");
+        return url;
+    }
+
+    /// <summary>
+    /// Encodes a query string for safe inclusion in a URL.
+    /// </summary>
+    /// <param name="query">The query string to encode.</param>
+    /// <returns>The encoded query string.</returns>
+    private string EncodeQuery(string query)
+    {
+        return UrlEncoder.Default.Encode(query);
+    }
+}

@@ -8,12 +8,16 @@ public class KernelSetup
 {
     private readonly TimeFunctions _timeFunctions;
     private readonly KQLFunctions _kqlFunctions;
+    //private readonly SearchUrlPlugin _searchUrlPlugin;
+    private readonly NewsFunctions _newsFunctions;
     private readonly ILogger<KernelSetup> _logger;
 
-    public KernelSetup(TimeFunctions timeFunctions, KQLFunctions kqlFunctions,ILogger<KernelSetup> logger)
+    public KernelSetup(TimeFunctions timeFunctions, KQLFunctions kqlFunctions, NewsFunctions newsFunctions,ILogger<KernelSetup> logger)
     {
         _timeFunctions = timeFunctions;
         _kqlFunctions = kqlFunctions;
+        //_searchUrlPlugin = searchUrlPlugin;
+        _newsFunctions = newsFunctions;
         _logger = logger;
     }
 
@@ -310,6 +314,28 @@ public class KernelSetup
             });
 
         _logger.LogInformation("KQL plugin setup completed successfully.");
+        
+        return kernel;
+    }
+
+    public Kernel SetupNewsPlugin(Kernel kernel)
+    {
+        kernel.Plugins.AddFromFunctions("news_plugin",
+            new[]
+            {
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<string, Task<string>>(_newsFunctions.SearchNewsAsyncForAI),
+                    functionName: "search_news_async_ai",
+                    description: "Search news articles using Bing News Search and return results formatted for AI interactions."
+                ),
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<Task<string>>(_newsFunctions.GetTrendingTopicsAsyncForAI),
+                    functionName: "get_trending_topics_ai",
+                    description: "Get trending topics from Bing News and return results formatted for AI interactions."
+                )
+            });
+
+        _logger.LogInformation("News plugin setup completed successfully.");
         return kernel;
     }
 }

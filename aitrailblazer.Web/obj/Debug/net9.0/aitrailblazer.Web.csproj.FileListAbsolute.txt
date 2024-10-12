@@ -448,3 +448,10 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/73cqhwei5s-vpnooftw05.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Services/1.req.json
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Services/2.req.json
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Google.Apis.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Google.Apis.Core.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Google.Apis.CustomSearchAPI.v1.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Microsoft.SemanticKernel.Plugins.Web.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Microsoft.Kiota.Bundle.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/CognitiveServices.Sdk.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/CognitiveServices.Sdk.pdb

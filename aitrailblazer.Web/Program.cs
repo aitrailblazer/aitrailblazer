@@ -60,7 +60,7 @@ string azureOpenAIModelName02 = secretClient.GetSecret("AzureOpenAIModelName02")
 string azureOpenAIModelName03 = secretClient.GetSecret("AzureOpenAIModelName03").Value.Value;
 string azureOpenAIEndpoint03 = secretClient.GetSecret("AzureOpenAIEndpoint03").Value.Value;
 string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value;
-string bingSearchKey = secretClient.GetSecret("BING-API-KEY").Value.Value;
+string bingSearchApiKey  = secretClient.GetSecret("BING-API-KEY").Value.Value;
 
 // Fetch other configuration values from Key Vault or use Environment Variables as fallback
 string azureOpenAIMaxCompletionTokens = secretClient.GetSecret("MaxCompletionTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
@@ -204,7 +204,7 @@ var parametersAzureService = new ParametersAzureService
     AzureOpenAIDALLEEndpoint01 = azureOpenAIDALLEEndpoint01,
     AzureOpenAIDALLEKey01 = azureOpenAIDALLEKey01,
     AzureOpenAIDALLEModelName01 = azureOpenAIDALLEModelName01,
-    BingSearchKey = bingSearchKey,
+    BingSearchApiKey = bingSearchApiKey,
     //ApplicationInsightsConnectionString = applicationInsightsConnectionString
 };
 
@@ -274,6 +274,14 @@ builder.Services.AddScoped<TokenLabelService>();
 builder.Services.AddScoped<TimeZoneService>();
 builder.Services.AddScoped<TimeFunctions>();
 builder.Services.AddScoped<KQLFunctions>();
+
+//builder.Services.AddScoped<WebSearchService>();
+// Register BingNewsService as a singleton or scoped service
+builder.Services.AddSingleton<BingNewsService>();
+
+
+//builder.Services.AddScoped<SearchUrlPlugin>();
+builder.Services.AddScoped<NewsFunctions>();
 
 builder.Services.AddScoped<KernelSetup>();
 

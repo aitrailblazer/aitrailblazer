@@ -7,14 +7,26 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
 @using AITGraph.Sdk.Models
+@using CognitiveServices.Sdk.News.Search;
+@using CognitiveServices.Sdk.News.Trendingtopics;
+@using CognitiveServices.Sdk.Models;
 @using AITrailBlazer.Web.Services
 @using aitrailblazer.net.Services
 @using aitrailblazer.net.Models
+@using SearchSdk = CognitiveServices.Sdk.News.Search;
+@using TrendingSdk = CognitiveServices.Sdk.News.Trendingtopics;
+@using System.Text.Json; 
+@using aitrailblazer.net.Models; 
+@using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
+@using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle
 
 @using Markdig
 @inject AITGraphService GraphService
+@inject AITGraphService GraphService
+
 @inject NavigationManager NavigationManager
 @inject AzureOpenAIHandler azureOpenAIHandler
+@inject BingNewsService BingNewsService
 @inject IJSRuntime JS
 @using GraphMessage = AITGraph.Sdk.Models.Message
 
@@ -91,27 +103,53 @@ else if (user != null)
                 } 
                 else 
                 {
-                    @if (showResponse && !string.IsNullOrEmpty(response))
-                    {
-                        <FluentCard MinimalStyle="false" Class="response-card" Width="720px" 
-                                    Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999; height: {calculatedHeight}px;")">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <FluentLabel Typo="Typography.Subject" Class="response-label">
-                                    Response:
-                                </FluentLabel>
-                                <FluentButton 
-                                    IconStart="@(new Icons.Filled.Size24.Dismiss())" 
-                                    Appearance="Appearance.Stealth" 
-                                    Class="close-button"
-                                    OnClick="@CloseResponse"
-                                    aria-label="Close Response">
-                                </FluentButton>
+                    @response
+@if (showResponse)
+{
+    @if (!string.IsNullOrEmpty(response))
+    {
+        <div class="alert alert-info">@response</div>
+    }
+
+    @if (newsArticles != null && newsArticles.Any())
+    {
+        <FluentCard MinimalStyle="false" Class="response-card" Width="1840px" Height="100%"
+                    Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999;")">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <FluentLabel Typo="Typography.Subject" Class="response-label">
+                    News Articles:
+                </FluentLabel>
+                <FluentButton 
+                    IconStart="@(new Icons.Filled.Size24.Dismiss())" 
+                    Appearance="Appearance.Stealth" 
+                    Class="close-button"
+                    OnClick="@CloseResponse"
+                    aria-label="Close Response">
+                </FluentButton>
+            </div>
+            <div class="news-articles-container" style="overflow-y: auto; max-height: 80vh;">
+                @foreach (var article in newsArticles)
+                {
+                    <FluentCard Class="article-card" MinimalStyle="false" Width="780px" Height="120px" Style="margin-bottom: 16px; padding: 16px;">
+                        <div style="display: flex;">
+                            @if (!string.IsNullOrEmpty(article.ThumbnailUrl))
+                            {
+                                <img src="@article.ThumbnailUrl" alt="Thumbnail" style="max-width: 120px; margin-right: 16px;" />
+                            }
+                            <div>
+                                <FluentAnchor Href="@article.Url" Target="_blank" Style="font-size: 20px; font-weight: bold; color: #0078D4; text-decoration: none;">
+                                    @article.Name
+                                </FluentAnchor>
+                                <p style="margin-top: 8px;">@article.Description</p>
                             </div>
-                            <FluentTextBlock Typo="Typography.Body" Class="response-text" Style="max-height: @(calculatedHeight - 50)px; overflow-y: auto;">
-                                @((MarkupString)formattedResponse)
-                            </FluentTextBlock>
-                        </FluentCard>
-                    }
+                        </div>
+                    </FluentCard>
+                }
+            </div>
+        </FluentCard>
+    }
+}
+
                 }
             </FluentStack>
         </div>
@@ -867,8 +905,9 @@ else
             // Fetch contacts
             var contacts = await GraphService.GetUserContactsAsync(50);
             contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
+            response = await azureOpenAIHandler.GenerateTitleAsync("test","test");
 
- 
+     
         }
         catch (AuthenticationRequiredException)
         {
@@ -949,6 +988,11 @@ else
         // Optional: Handle input changes if needed
         // Currently, @bind-Value takes care of updating userQuery
     }
+    // List to hold the news articles
+    private List<OurNewsArticle> newsArticles = new List<OurNewsArticle>();
+
+  
+
 
     // Event handler for button click
     private async Task OnButtonASAPTimeClicked()
@@ -964,16 +1008,47 @@ else
         {
             Submitting = true;
             error = null;
+            response = string.Empty;
+
 
             // Call the Azure OpenAI handler with the user's query
-            response = await azureOpenAIHandler.GetASAPTime(userQuery);
-            formattedResponse = Markdown.ToHtml(response);
-            showResponse = true; // Show the response card when a new response is received
+            var jsonResponse = await azureOpenAIHandler.ShowNewsAsync(userQuery);
+
+            // Deserialize JSON into NewsResponse object
+            var newsResponse = JsonSerializer.Deserialize<NewsResponse>(jsonResponse, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (newsResponse != null && newsResponse.TotalResults > 0 && newsResponse.Articles != null)
+            {
+                newsArticles = newsResponse.Articles;
+                showResponse = true;
+
+                response = $"Found {newsResponse.TotalResults} articles for your query.";
+
+            }
+            else
+            {
+                showResponse = true;
+                newsArticles = new List<OurNewsArticle>();
+                response = "No news articles found for your query.";
+
+            }
+        }
+        catch (JsonException jsonEx)
+        {
+            response = "Failed to parse news data.";
+            showResponse = true;
+            newsArticles = new List<OurNewsArticle>();
+
         }
         catch (Exception ex)
         {
-            error = $"Error processing your request: {ex.Message}";
-            showResponse = false; // Hide the card in case of an error
+            response = "An error occurred while fetching news articles.";
+            showResponse = true;
+            newsArticles = new List<OurNewsArticle>();
+
         }
         finally
         {

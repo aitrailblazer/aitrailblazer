@@ -700,7 +700,7 @@ fluent-horizontal-scroll {
 }
 
 .response-card {
-  width: 800px; /* Adjust width as necessary */
+  width: 1640px; /* Adjust width as necessary */
   padding: 5px;
   display: flex;
   flex-direction: column;
@@ -710,7 +710,7 @@ fluent-horizontal-scroll {
   top: 100px; /* Adjust based on the button's height and desired gap */
   left: 50%; /* Centers the element horizontally */
   transform: translateX(-50%); /* Corrects the horizontal position */
-  max-height: 400px; /* Adjust max height as necessary */
+  max-height: 1200px; /* Adjust max height as necessary */
   overflow-y: auto; /* Allows scrolling within the card if content exceeds max height */
   border: 1px dotted var(--accent-fill-rest);
 }

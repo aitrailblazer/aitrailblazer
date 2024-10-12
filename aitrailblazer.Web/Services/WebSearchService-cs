@@ -1,0 +1,168 @@
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
+public class WebSearchService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger<WebSearchService> _logger;
+    private const int MaxRetries = 3; // Maximum number of retries for transient errors
+
+    public WebSearchService(HttpClient httpClient, ILogger<WebSearchService> logger)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Performs a web search using the generated search URL.
+    /// </summary>
+    /// <param name="searchUrl">The search URL to perform the web search.</param>
+    /// <returns>A string containing the list of unique extracted URLs or an appropriate message.</returns>
+    public async Task<string> PerformWebSearchAsync(string searchUrl)
+    {
+        _logger.LogInformation($"Performing web search with URL: {searchUrl}");
+
+        try
+        {
+            // Extract the actual URL from the searchUrl string
+            string extractedUrl = ExtractUrlFromResponse(searchUrl);
+
+            // Validate the extracted URL
+            if (string.IsNullOrWhiteSpace(extractedUrl) || !Uri.IsWellFormedUriString(extractedUrl, UriKind.Absolute))
+            {
+                _logger.LogWarning("Extracted search URL is invalid or empty.");
+                return "Invalid search URL.";
+            }
+
+            _logger.LogInformation($"Extracted URL: {extractedUrl}");
+
+            int retryCount = 0;
+            while (retryCount < MaxRetries)
+            {
+                try
+                {
+                    // Make an HTTP GET request to the extracted URL
+                    _logger.LogInformation($"Sending HTTP GET request to: {extractedUrl}");
+                    HttpResponseMessage response = await _httpClient.GetAsync(extractedUrl);
+
+                    // Ensure the request was successful
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        _logger.LogWarning($"Failed to fetch search results. Status code: {response.StatusCode}. Attempt {retryCount + 1} of {MaxRetries}.");
+
+                        // Retry for transient status codes (5xx)
+                        if ((int)response.StatusCode >= 500 && (int)response.StatusCode < 600)
+                        {
+                            retryCount++;
+                            await Task.Delay(1000 * retryCount); // Exponential backoff delay
+                            continue;
+                        }
+
+                        return $"Error: Unable to perform the search. Status code: {response.StatusCode}";
+                    }
+
+                    // Read the response content
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        _logger.LogWarning("The response content is empty.");
+                        return "The search returned no results.";
+                    }
+
+                    _logger.LogInformation($"Search completed successfully. Response length: {content.Length} characters.");
+
+                    // Extract and remove duplicate URLs present in double quotes from the response content
+                    List<string> extractedUrls = ExtractUrlsInDoubleQuotes(content);
+                    HashSet<string> uniqueUrls = new HashSet<string>(extractedUrls); // Remove duplicates
+
+                    if (uniqueUrls.Count > 0)
+                    {
+                        _logger.LogInformation("Extracted unique URLs:");
+                        string urlList = string.Join("\n", uniqueUrls);
+                        _logger.LogInformation(urlList);
+                        return $"Extracted Unique URLs:\n{urlList}";
+                    }
+                    else
+                    {
+                        _logger.LogInformation("No URLs were found within double quotes in the response content.");
+                        return "No URLs were found in the content.";
+                    }
+                }
+                catch (HttpRequestException ex) when (retryCount < MaxRetries)
+                {
+                    _logger.LogWarning($"Transient HTTP request error during search: {ex.Message}. Attempt {retryCount + 1} of {MaxRetries}.");
+                    retryCount++;
+                    await Task.Delay(1000 * retryCount); // Exponential backoff delay
+                }
+            }
+
+            // If all retries fail, return an error message
+            _logger.LogError("Maximum retry attempts reached. The web search could not be completed.");
+            return "An error occurred while performing the web search after multiple attempts. Please try again later.";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unexpected error occurred during the web search.");
+            return "An unexpected error occurred during the web search. Please contact support.";
+        }
+    }
+
+    /// <summary>
+    /// Extracts the URL from the response string.
+    /// </summary>
+    /// <param name="response">The response containing the search URL.</param>
+    /// <returns>The extracted URL.</returns>
+    private string ExtractUrlFromResponse(string response)
+    {
+        _logger.LogInformation("Extracting URL from the response.");
+
+        // Regular expression pattern to extract the URL within parentheses
+        var match = Regex.Match(response, @"\((https?://[^\s)]+)\)");
+        if (match.Success)
+        {
+            string url = match.Groups[1].Value.Trim();
+            _logger.LogInformation($"Extracted URL: {url}");
+            return url;
+        }
+
+        _logger.LogWarning("No valid URL found in the response.");
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Extracts URLs present within double quotes in the response content.
+    /// </summary>
+    /// <param name="responseContent">The HTML content of the web page.</param>
+    /// <returns>A list of extracted URLs.</returns>
+    private List<string> ExtractUrlsInDoubleQuotes(string responseContent)
+    {
+        _logger.LogInformation("Extracting URLs present within double quotes.");
+
+        // Regular expression pattern to match URLs within double quotes
+        string pattern = "\"(https?://[^\"]+)\"";
+        var matches = Regex.Matches(responseContent, pattern);
+
+        // Extract the matched URLs into a list
+        List<string> urls = new List<string>();
+        foreach (Match match in matches)
+        {
+            urls.Add(match.Groups[1].Value); // Add the URL without the surrounding quotes
+        }
+
+        if (urls.Count == 0)
+        {
+            _logger.LogWarning("No URLs found within double quotes in the response content.");
+        }
+        else
+        {
+            _logger.LogInformation($"Found {urls.Count} URLs within double quotes.");
+        }
+
+        return urls;
+    }
+}

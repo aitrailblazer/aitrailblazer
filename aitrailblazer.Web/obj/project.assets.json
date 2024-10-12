@@ -19,11 +19,11 @@
           }
         }
       },
-      "Azure.AI.OpenAI/2.0.0-beta.5": {
+      "Azure.AI.OpenAI/2.1.0-beta.1": {
         "type": "package",
         "dependencies": {
-          "Azure.Core": "1.42.0",
-          "OpenAI": "2.0.0-beta.11"
+          "Azure.Core": "1.43.0",
+          "OpenAI": "2.1.0-beta.1"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
@@ -36,16 +36,16 @@
           }
         }
       },
-      "Azure.Core/1.43.0": {
+      "Azure.Core/1.44.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
-          "System.ClientModel": "1.0.0",
+          "System.ClientModel": "1.1.0",
           "System.Diagnostics.DiagnosticSource": "6.0.1",
-          "System.Memory.Data": "1.0.2",
+          "System.Memory.Data": "6.0.0",
           "System.Numerics.Vectors": "4.5.0",
           "System.Text.Encodings.Web": "6.0.0",
-          "System.Text.Json": "6.0.9",
+          "System.Text.Json": "6.0.10",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "compile": {
@@ -167,6 +167,54 @@
         },
         "runtime": {
           "lib/net8.0/Fluid.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Google.Apis/1.60.0": {
+        "type": "package",
+        "dependencies": {
+          "Google.Apis.Core": "1.60.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Google.Apis.Core/1.60.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Google.Apis.CustomSearchAPI.v1/1.60.0.3001": {
+        "type": "package",
+        "dependencies": {
+          "Google.Apis": "1.60.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.CustomSearchAPI.v1.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.CustomSearchAPI.v1.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -1739,10 +1787,10 @@
           }
         }
       },
-      "Microsoft.Kiota.Abstractions/1.9.8": {
+      "Microsoft.Kiota.Abstractions/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Std.UriTemplate": "1.0.3"
+          "Std.UriTemplate": "2.0.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Abstractions.dll": {
@@ -1755,11 +1803,11 @@
           }
         }
       },
-      "Microsoft.Kiota.Authentication.Azure/1.9.8": {
+      "Microsoft.Kiota.Authentication.Azure/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Azure.Core": "1.40.0",
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Azure.Core": "1.44.1",
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Authentication.Azure.dll": {
@@ -1772,10 +1820,31 @@
           }
         }
       },
-      "Microsoft.Kiota.Http.HttpClientLibrary/1.9.8": {
+      "Microsoft.Kiota.Bundle/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Microsoft.Kiota.Abstractions": "1.13.1",
+          "Microsoft.Kiota.Http.HttpClientLibrary": "1.13.1",
+          "Microsoft.Kiota.Serialization.Form": "1.13.1",
+          "Microsoft.Kiota.Serialization.Json": "1.13.1",
+          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
+          "Microsoft.Kiota.Serialization.Text": "1.13.1"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Kiota.Bundle.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Kiota.Bundle.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Kiota.Http.HttpClientLibrary/1.13.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Http.HttpClientLibrary.dll": {
@@ -1788,10 +1857,10 @@
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Form/1.9.8": {
+      "Microsoft.Kiota.Serialization.Form/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Form.dll": {
@@ -1804,10 +1873,10 @@
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Json/1.9.8": {
+      "Microsoft.Kiota.Serialization.Json/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Json.dll": {
@@ -1820,10 +1889,10 @@
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Multipart/1.9.8": {
+      "Microsoft.Kiota.Serialization.Multipart/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Multipart.dll": {
@@ -1836,10 +1905,10 @@
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Text/1.9.8": {
+      "Microsoft.Kiota.Serialization.Text/1.13.1": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.8"
+          "Microsoft.Kiota.Abstractions": "1.13.1"
         },
         "compile": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Text.dll": {
@@ -1913,11 +1982,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel/1.21.1": {
+      "Microsoft.SemanticKernel/1.22.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.21.1",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.22.0",
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.dll": {
@@ -1930,7 +1999,7 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Abstractions/1.21.1": {
+      "Microsoft.SemanticKernel.Abstractions/1.22.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
@@ -1951,11 +2020,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Agents.Abstractions/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Agents.Abstractions/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
-          "Microsoft.SemanticKernel.Core": "1.21.1",
+          "Microsoft.SemanticKernel.Core": "1.22.0",
           "System.Linq.Async": "6.0.1",
           "System.Text.Json": "8.0.4"
         },
@@ -1970,10 +2039,10 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Agents.Core/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Agents.Core/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Agents.Abstractions": "1.21.1-alpha"
+          "Microsoft.SemanticKernel.Agents.Abstractions": "1.22.0-alpha"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Agents.Core.dll": {
@@ -1986,11 +2055,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.21.1-beta": {
+      "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.22.0-beta": {
         "type": "package",
         "dependencies": {
           "Azure.AI.Inference": "1.0.0-beta.1",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.dll": {
@@ -2003,12 +2072,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.21.1": {
+      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.22.0": {
         "type": "package",
         "dependencies": {
-          "Azure.AI.OpenAI": "2.0.0-beta.5",
-          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.21.1",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Azure.AI.OpenAI": "[2.1.0-beta.1]",
+          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.22.0",
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
@@ -2021,12 +2090,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.OpenAI/1.21.1": {
+      "Microsoft.SemanticKernel.Connectors.OpenAI/1.22.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.21.1",
-          "OpenAI": "2.0.0-beta.11",
-          "System.ClientModel": "1.1.0-beta.7"
+          "Microsoft.SemanticKernel.Core": "1.22.0",
+          "OpenAI": "[2.1.0-beta.1]"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll": {
@@ -2039,11 +2107,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Core/1.21.1": {
+      "Microsoft.SemanticKernel.Core/1.22.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
-          "Microsoft.SemanticKernel.Abstractions": "1.21.1"
+          "Microsoft.SemanticKernel.Abstractions": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Core.dll": {
@@ -2056,12 +2124,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.Core/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Plugins.Core/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.TimeProvider": "8.0.1",
           "Microsoft.Extensions.Http": "8.0.0",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
@@ -2074,14 +2142,14 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.OpenApi/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Plugins.OpenApi/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "JsonSchema.Net": "5.4.2",
           "Microsoft.Identity.Client.Extensions.Msal": "2.28.0",
           "Microsoft.OpenApi": "1.6.21",
           "Microsoft.OpenApi.Readers": "1.6.21",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.dll": {
@@ -2094,12 +2162,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "Microsoft.OpenApi.ApiManifest": "0.5.4-preview",
-          "Microsoft.SemanticKernel.Core": "1.21.1",
-          "Microsoft.SemanticKernel.Plugins.OpenApi": "1.21.1-alpha"
+          "Microsoft.SemanticKernel.Core": "1.22.0",
+          "Microsoft.SemanticKernel.Plugins.OpenApi": "1.22.0-alpha"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.dll": {
@@ -2112,12 +2180,31 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.21.1": {
+      "Microsoft.SemanticKernel.Plugins.Web/1.22.0-alpha": {
+        "type": "package",
+        "dependencies": {
+          "Google.Apis.CustomSearchAPI.v1": "1.60.0.3001",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
+          "Microsoft.SemanticKernel.Abstractions": "1.22.0",
+          "System.Text.Json": "8.0.4"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.22.0": {
         "type": "package",
         "dependencies": {
           "Handlebars.Net": "2.1.6",
           "Handlebars.Net.Helpers": "2.4.5",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.dll": {
@@ -2130,11 +2217,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "Fluid.Core": "2.11.1",
-          "Microsoft.SemanticKernel.Core": "1.21.1"
+          "Microsoft.SemanticKernel.Core": "1.22.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.dll": {
@@ -2147,13 +2234,13 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Prompty/1.21.1-alpha": {
+      "Microsoft.SemanticKernel.Prompty/1.22.0-alpha": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.FileProviders.Physical": "[8.0.0, 9.0.0)",
-          "Microsoft.SemanticKernel.Core": "1.21.1",
-          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.21.1",
-          "Microsoft.SemanticKernel.PromptTemplates.Liquid": "1.21.1-alpha",
+          "Microsoft.SemanticKernel.Core": "1.22.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.22.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Liquid": "1.22.0-alpha",
           "YamlDotNet": "15.3.0"
         },
         "compile": {
@@ -2167,10 +2254,10 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Yaml/1.21.1": {
+      "Microsoft.SemanticKernel.Yaml/1.22.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.21.1",
+          "Microsoft.SemanticKernel.Core": "1.22.0",
           "YamlDotNet": "15.3.0"
         },
         "compile": {
@@ -2212,10 +2299,10 @@
           }
         }
       },
-      "OpenAI/2.0.0-beta.11": {
+      "OpenAI/2.1.0-beta.1": {
         "type": "package",
         "dependencies": {
-          "System.ClientModel": "1.1.0-beta.5",
+          "System.ClientModel": "1.1.0",
           "System.Diagnostics.DiagnosticSource": "6.0.1"
         },
         "compile": {
@@ -2521,7 +2608,7 @@
           "lib/netstandard2.0/SmartComponents.Inference.OpenAI.dll": {}
         }
       },
-      "Std.UriTemplate/1.0.3": {
+      "Std.UriTemplate/2.0.0": {
         "type": "package",
         "compile": {
           "lib/net5.0/Std.UriTemplate.dll": {}
@@ -2539,11 +2626,11 @@
           "lib/net6.0/Stef.Validation.dll": {}
         }
       },
-      "System.ClientModel/1.1.0-beta.7": {
+      "System.ClientModel/1.1.0": {
         "type": "package",
         "dependencies": {
           "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "4.7.2"
+          "System.Text.Json": "6.0.9"
         },
         "compile": {
           "lib/net6.0/System.ClientModel.dll": {
@@ -2687,21 +2774,23 @@
           "lib/netcoreapp2.1/_._": {}
         }
       },
-      "System.Memory.Data/1.0.2": {
+      "System.Memory.Data/6.0.0": {
         "type": "package",
         "dependencies": {
-          "System.Text.Encodings.Web": "4.7.2",
-          "System.Text.Json": "4.6.0"
+          "System.Text.Json": "6.0.0"
         },
         "compile": {
-          "lib/netstandard2.0/System.Memory.Data.dll": {
+          "lib/net6.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.0/System.Memory.Data.dll": {
+          "lib/net6.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "System.Numerics.Vectors/4.5.0": {
@@ -3000,13 +3089,13 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.9.7",
-          "Microsoft.Kiota.Authentication.Azure": "1.1.7",
-          "Microsoft.Kiota.Http.HttpClientLibrary": "1.4.3",
-          "Microsoft.Kiota.Serialization.Form": "1.2.5",
-          "Microsoft.Kiota.Serialization.Json": "1.3.3",
-          "Microsoft.Kiota.Serialization.Multipart": "1.1.5",
-          "Microsoft.Kiota.Serialization.Text": "1.2.2"
+          "Microsoft.Kiota.Abstractions": "1.13.1",
+          "Microsoft.Kiota.Authentication.Azure": "1.13.1",
+          "Microsoft.Kiota.Http.HttpClientLibrary": "1.13.1",
+          "Microsoft.Kiota.Serialization.Form": "1.13.1",
+          "Microsoft.Kiota.Serialization.Json": "1.13.1",
+          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
+          "Microsoft.Kiota.Serialization.Text": "1.13.1"
         },
         "compile": {
           "bin/placeholder/AITGraph.Sdk.dll": {}
@@ -3039,6 +3128,20 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "CognitiveServices.Sdk/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Kiota.Authentication.Azure": "1.13.1",
+          "Microsoft.Kiota.Bundle": "1.13.1"
+        },
+        "compile": {
+          "bin/placeholder/CognitiveServices.Sdk.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CognitiveServices.Sdk.dll": {}
+        }
       }
     }
   },
@@ -3059,32 +3162,32 @@
         "lib/netstandard2.0/Azure.AI.Inference.xml"
       ]
     },
-    "Azure.AI.OpenAI/2.0.0-beta.5": {
-      "sha512": "uL2EoYkucK0/sdiBuLrCb4SyyTyNrd5QErc5HICBPsFrvs7r8y8EVL5YxUGud7zCE/kADR/gWfnvgNDfa4dmrA==",
+    "Azure.AI.OpenAI/2.1.0-beta.1": {
+      "sha512": "mbCkF0ORgHr7YAA3KntkCqlwSQFaffwvIktJGzbm+wwwzuMvSYsv6KjyX9jzrhgob44HAh6IlkGTKDdMUUfSjg==",
       "type": "package",
-      "path": "azure.ai.openai/2.0.0-beta.5",
+      "path": "azure.ai.openai/2.1.0-beta.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "CHANGELOG.md",
         "README.md",
-        "azure.ai.openai.2.0.0-beta.5.nupkg.sha512",
+        "azure.ai.openai.2.1.0-beta.1.nupkg.sha512",
         "azure.ai.openai.nuspec",
         "azureicon.png",
         "lib/netstandard2.0/Azure.AI.OpenAI.dll",
         "lib/netstandard2.0/Azure.AI.OpenAI.xml"
       ]
     },
-    "Azure.Core/1.43.0": {
-      "sha512": "XE6GHvFAv0djbzNSC3jJPDytcDRmg2CUYlh4V4HjIjX9xLP90OYDPz1KyF02qJJJTF9wLuG4C0XIQm22MGkCww==",
+    "Azure.Core/1.44.1": {
+      "sha512": "YyznXLQZCregzHvioip07/BkzjuWNXogJEVz9T5W6TwjNr17ax41YGzYMptlo2G10oLCuVPoyva62y0SIRDixg==",
       "type": "package",
-      "path": "azure.core/1.43.0",
+      "path": "azure.core/1.44.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "CHANGELOG.md",
         "README.md",
-        "azure.core.1.43.0.nupkg.sha512",
+        "azure.core.1.44.1.nupkg.sha512",
         "azure.core.nuspec",
         "azureicon.png",
         "lib/net461/Azure.Core.dll",
@@ -3203,6 +3306,73 @@
         "lib/netstandard2.0/Fluid.pdb",
         "lib/netstandard2.0/Fluid.xml",
         "logo_64x64.png"
+      ]
+    },
+    "Google.Apis/1.60.0": {
+      "sha512": "T8ojAsKlsMkt5nZhTQuocqHYzm/knVm8o2/JMm4louEjaKzT4x0FihoCIxCYSTRGWkYC27LPWspyG4p76+bMzA==",
+      "type": "package",
+      "path": "google.apis/1.60.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "NuGetIcon.png",
+        "google.apis.1.60.0.nupkg.sha512",
+        "google.apis.nuspec",
+        "lib/net45/Google.Apis.PlatformServices.dll",
+        "lib/net45/Google.Apis.dll",
+        "lib/net45/Google.Apis.pdb",
+        "lib/net45/Google.Apis.xml",
+        "lib/netstandard1.3/Google.Apis.dll",
+        "lib/netstandard1.3/Google.Apis.pdb",
+        "lib/netstandard1.3/Google.Apis.xml",
+        "lib/netstandard2.0/Google.Apis.dll",
+        "lib/netstandard2.0/Google.Apis.pdb",
+        "lib/netstandard2.0/Google.Apis.xml"
+      ]
+    },
+    "Google.Apis.Core/1.60.0": {
+      "sha512": "NOkjqMQblYEZXt2OEgshWayveYW11Pi+Uz0I30Kzl9BvL4TZLJzMqtiu1EdV8XkyyjGuAUgANdi4BOqRDlbVEw==",
+      "type": "package",
+      "path": "google.apis.core/1.60.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "NuGetIcon.png",
+        "google.apis.core.1.60.0.nupkg.sha512",
+        "google.apis.core.nuspec",
+        "lib/net45/Google.Apis.Core.dll",
+        "lib/net45/Google.Apis.Core.pdb",
+        "lib/net45/Google.Apis.Core.xml",
+        "lib/netstandard1.3/Google.Apis.Core.dll",
+        "lib/netstandard1.3/Google.Apis.Core.pdb",
+        "lib/netstandard1.3/Google.Apis.Core.xml",
+        "lib/netstandard2.0/Google.Apis.Core.dll",
+        "lib/netstandard2.0/Google.Apis.Core.pdb",
+        "lib/netstandard2.0/Google.Apis.Core.xml"
+      ]
+    },
+    "Google.Apis.CustomSearchAPI.v1/1.60.0.3001": {
+      "sha512": "gqgz69K2PWnLR/I939HJ3GRFMTvy84qvuRx2jXGd+QLD/2WpVWjTgEAwx6WRlsQULwe5PYV6v3M/hAC9N06xnQ==",
+      "type": "package",
+      "path": "google.apis.customsearchapi.v1/1.60.0.3001",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "NuGetIcon.png",
+        "google.apis.customsearchapi.v1.1.60.0.3001.nupkg.sha512",
+        "google.apis.customsearchapi.v1.nuspec",
+        "lib/net45/Google.Apis.CustomSearchAPI.v1.dll",
+        "lib/net45/Google.Apis.CustomSearchAPI.v1.pdb",
+        "lib/net45/Google.Apis.CustomSearchAPI.v1.xml",
+        "lib/netstandard1.3/Google.Apis.CustomSearchAPI.v1.dll",
+        "lib/netstandard1.3/Google.Apis.CustomSearchAPI.v1.pdb",
+        "lib/netstandard1.3/Google.Apis.CustomSearchAPI.v1.xml",
+        "lib/netstandard2.0/Google.Apis.CustomSearchAPI.v1.dll",
+        "lib/netstandard2.0/Google.Apis.CustomSearchAPI.v1.pdb",
+        "lib/netstandard2.0/Google.Apis.CustomSearchAPI.v1.xml"
       ]
     },
     "Google.Protobuf/3.22.5": {
@@ -5351,10 +5521,10 @@
         "microsoft.jsinterop.nuspec"
       ]
     },
-    "Microsoft.Kiota.Abstractions/1.9.8": {
-      "sha512": "qynBhyYMkEkItQfoNpIJSNje3RXpsrrKiKXy3pIytqtrGD9GfKJCgXazCGjj7WAKOCuwOQTYhCo40V+EWs3L1w==",
+    "Microsoft.Kiota.Abstractions/1.13.1": {
+      "sha512": "RJWCkL+tmDjbOO9AHh1gCd34uVm2Zmz9h1q3pJgJL9u4jePeX+Wgx2moOOxtdINRfb0efKiSCvgkwLnUrXm7Gw==",
       "type": "package",
-      "path": "microsoft.kiota.abstractions/1.9.8",
+      "path": "microsoft.kiota.abstractions/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5369,14 +5539,14 @@
         "lib/netstandard2.0/Microsoft.Kiota.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Abstractions.xml",
-        "microsoft.kiota.abstractions.1.9.8.nupkg.sha512",
+        "microsoft.kiota.abstractions.1.13.1.nupkg.sha512",
         "microsoft.kiota.abstractions.nuspec"
       ]
     },
-    "Microsoft.Kiota.Authentication.Azure/1.9.8": {
-      "sha512": "EWWT606c0Qhbumd6i7K5x7KS/XZw24VbC7qG8S7Kh4q0uIjU0F2UXixN4UnvFPoMmMNNrjm/WAOiam91kvGQ1w==",
+    "Microsoft.Kiota.Authentication.Azure/1.13.1": {
+      "sha512": "QMXf6/r6Fj5oX2SLSmycg7gAc4x12uwfgGiJvNV2n1DzKNGD2BqVplwQrR7JoNPGUUx00rUqEsPNB9jIMz3Amg==",
       "type": "package",
-      "path": "microsoft.kiota.authentication.azure/1.9.8",
+      "path": "microsoft.kiota.authentication.azure/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5391,14 +5561,36 @@
         "lib/netstandard2.0/Microsoft.Kiota.Authentication.Azure.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Authentication.Azure.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Authentication.Azure.xml",
-        "microsoft.kiota.authentication.azure.1.9.8.nupkg.sha512",
+        "microsoft.kiota.authentication.azure.1.13.1.nupkg.sha512",
         "microsoft.kiota.authentication.azure.nuspec"
       ]
     },
-    "Microsoft.Kiota.Http.HttpClientLibrary/1.9.8": {
-      "sha512": "mTBNrKiXDNNWnkADv7VzeXKmpAO+bx+ugKhpbX0m9FsJUk+MG5p71ynzHpMzTMQ2igjDlVCMitAO3g0nIN5Zqg==",
+    "Microsoft.Kiota.Bundle/1.13.1": {
+      "sha512": "xuJ+PhCmMh/AMCRuqdblj7euEvEQ+jNlYBrT7a1OaZ1f0b8wRCFnoHFXVGyRNvqvGaXLA/oMTklClMTYEpiziw==",
       "type": "package",
-      "path": "microsoft.kiota.http.httpclientlibrary/1.9.8",
+      "path": "microsoft.kiota.bundle/1.13.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net5.0/Microsoft.Kiota.Bundle.dll",
+        "lib/net5.0/Microsoft.Kiota.Bundle.xml",
+        "lib/net6.0/Microsoft.Kiota.Bundle.dll",
+        "lib/net6.0/Microsoft.Kiota.Bundle.xml",
+        "lib/net8.0/Microsoft.Kiota.Bundle.dll",
+        "lib/net8.0/Microsoft.Kiota.Bundle.xml",
+        "lib/netstandard2.0/Microsoft.Kiota.Bundle.dll",
+        "lib/netstandard2.0/Microsoft.Kiota.Bundle.xml",
+        "lib/netstandard2.1/Microsoft.Kiota.Bundle.dll",
+        "lib/netstandard2.1/Microsoft.Kiota.Bundle.xml",
+        "microsoft.kiota.bundle.1.13.1.nupkg.sha512",
+        "microsoft.kiota.bundle.nuspec"
+      ]
+    },
+    "Microsoft.Kiota.Http.HttpClientLibrary/1.13.1": {
+      "sha512": "uOtonANkzSzSqgyP9c3k+TD91T5pDr5/tIW7TZCdmX09QDVl6a5XHRfAaMs7r+GKN7hU7fQkTU1gIGCqIDht/w==",
+      "type": "package",
+      "path": "microsoft.kiota.http.httpclientlibrary/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5415,14 +5607,14 @@
         "lib/netstandard2.0/Microsoft.Kiota.Http.HttpClientLibrary.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Http.HttpClientLibrary.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Http.HttpClientLibrary.xml",
-        "microsoft.kiota.http.httpclientlibrary.1.9.8.nupkg.sha512",
+        "microsoft.kiota.http.httpclientlibrary.1.13.1.nupkg.sha512",
         "microsoft.kiota.http.httpclientlibrary.nuspec"
       ]
     },
-    "Microsoft.Kiota.Serialization.Form/1.9.8": {
-      "sha512": "+HSX0XUkhZzKJS4v9i1rEgSlo3VgyljcXpTx4fD/gowmmMd7ZP7EyD769fCm2mIOnM0okJKuUvhPvChQhs8YCw==",
+    "Microsoft.Kiota.Serialization.Form/1.13.1": {
+      "sha512": "sxvBgyFq2wNe2WhaKHQl3oeE8ZFJ1NYFpHOIxz45dxbuJWfflaNTbAoqX11QjaHhHmlbu0OvLVFxObmLTv3UXg==",
       "type": "package",
-      "path": "microsoft.kiota.serialization.form/1.9.8",
+      "path": "microsoft.kiota.serialization.form/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5437,14 +5629,14 @@
         "lib/netstandard2.0/Microsoft.Kiota.Serialization.Form.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Form.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Form.xml",
-        "microsoft.kiota.serialization.form.1.9.8.nupkg.sha512",
+        "microsoft.kiota.serialization.form.1.13.1.nupkg.sha512",
         "microsoft.kiota.serialization.form.nuspec"
       ]
     },
-    "Microsoft.Kiota.Serialization.Json/1.9.8": {
-      "sha512": "QSHUipKdTLw7Xpe9AH/2u8tQKQoht185caOtTPGjWyTigmVChw7TF7BzTwA/mA3GSLSyD+IWwUgLdoh/9Ty2sQ==",
+    "Microsoft.Kiota.Serialization.Json/1.13.1": {
+      "sha512": "2vPP7XmIUl2A2oC3OVDe9HFYboosGwSronsFP0lUz94S7dqfhVwbTvPuQH/Uc5oe3Pg5sycXgGACBhbO95SZdQ==",
       "type": "package",
-      "path": "microsoft.kiota.serialization.json/1.9.8",
+      "path": "microsoft.kiota.serialization.json/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5459,14 +5651,14 @@
         "lib/netstandard2.0/Microsoft.Kiota.Serialization.Json.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Json.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Json.xml",
-        "microsoft.kiota.serialization.json.1.9.8.nupkg.sha512",
+        "microsoft.kiota.serialization.json.1.13.1.nupkg.sha512",
         "microsoft.kiota.serialization.json.nuspec"
       ]
     },
-    "Microsoft.Kiota.Serialization.Multipart/1.9.8": {
-      "sha512": "VgsA1bnsS0itQKiaR+YvxfM0NmEVN5o/GKkuadkPo0Q1F7QQHb9FNsZXn4mr9uIlCwrFAEBInMaVXGWPP4GJ0A==",
+    "Microsoft.Kiota.Serialization.Multipart/1.13.1": {
+      "sha512": "1/mZDnznud+/ciIU/1lwmzQEWwk4y30jl59oKbG6bDczYZ9is7OFTTzTZA2dv+v81ScNBhTFNrvYU1f2fldMFA==",
       "type": "package",
-      "path": "microsoft.kiota.serialization.multipart/1.9.8",
+      "path": "microsoft.kiota.serialization.multipart/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5481,14 +5673,14 @@
         "lib/netstandard2.0/Microsoft.Kiota.Serialization.Multipart.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Multipart.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Multipart.xml",
-        "microsoft.kiota.serialization.multipart.1.9.8.nupkg.sha512",
+        "microsoft.kiota.serialization.multipart.1.13.1.nupkg.sha512",
         "microsoft.kiota.serialization.multipart.nuspec"
       ]
     },
-    "Microsoft.Kiota.Serialization.Text/1.9.8": {
-      "sha512": "Tsu+2TRo2GUhhoy0nVT7t/2OQ8MmkBHv59dSY/1UEyJz9dhiWJlaD8ykixX0mE4ppqD5QgkcbhaGNy0UL+jcAw==",
+    "Microsoft.Kiota.Serialization.Text/1.13.1": {
+      "sha512": "UF3/mZFC7HqEcMUOXJwiACkykgWxhrs0m9a4u4/YnlbK14h1keoOJIRXMguAce6jOlLA4VgveNGjxSWYQ5pHzA==",
       "type": "package",
-      "path": "microsoft.kiota.serialization.text/1.9.8",
+      "path": "microsoft.kiota.serialization.text/1.13.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5503,7 +5695,7 @@
         "lib/netstandard2.0/Microsoft.Kiota.Serialization.Text.xml",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Text.dll",
         "lib/netstandard2.1/Microsoft.Kiota.Serialization.Text.xml",
-        "microsoft.kiota.serialization.text.1.9.8.nupkg.sha512",
+        "microsoft.kiota.serialization.text.1.13.1.nupkg.sha512",
         "microsoft.kiota.serialization.text.nuspec"
       ]
     },
@@ -5579,10 +5771,10 @@
         "microsoft.openapi.readers.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel/1.21.1": {
-      "sha512": "k7/mkdTfLf0X2SYtQM2H4it/NPB1psNyLaBpXHnjTwmUih/K4zCUxnuBrad2Lf86m+CPe4BL+lg7nhB8kSkL7Q==",
+    "Microsoft.SemanticKernel/1.22.0": {
+      "sha512": "ODcjUfyjPob2l+BfaGkwkjd2pa8Ftsvej/kMpUmkY1RfOHGh6yXw+n8ZgHmSMlxZ5X3NFaablb2t26PH/jACEA==",
       "type": "package",
-      "path": "microsoft.semantickernel/1.21.1",
+      "path": "microsoft.semantickernel/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5592,14 +5784,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.xml",
-        "microsoft.semantickernel.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Abstractions/1.21.1": {
-      "sha512": "qULY6P6tMHLIfc1tHNgTzL3dfY2O+Q4CEqQHaz8UtXSofbbfluL/4z1XM3oF6l9Fat8pGN1F+2dGXtCwnSk90A==",
+    "Microsoft.SemanticKernel.Abstractions/1.22.0": {
+      "sha512": "dWgmsv+t1/6mP4+19ODW5S5jCmfxE4yjcnOoT0u+KtfMbWQ9GOGXOyXqxmTw85kxzFofIS0iBWdMM+cv8LNqHg==",
       "type": "package",
-      "path": "microsoft.semantickernel.abstractions/1.21.1",
+      "path": "microsoft.semantickernel.abstractions/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5609,14 +5801,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.xml",
-        "microsoft.semantickernel.abstractions.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.abstractions.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.abstractions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Agents.Abstractions/1.21.1-alpha": {
-      "sha512": "FsvTJbm+NQhS5kPbabQleQcBZnhjM5KI06gAh7CTWgRHRHEStiMmBWj81lTTgccUKrmE3j2+JQ3RDh77WB9Vug==",
+    "Microsoft.SemanticKernel.Agents.Abstractions/1.22.0-alpha": {
+      "sha512": "TtrNS0ZQLAI0uv9mogUQ99W2rc6coCR2RiaWFmVF7eSKNeG0nhsElM40gfVqdZ+j9o8GFlnqhI1a94UiSu2dZw==",
       "type": "package",
-      "path": "microsoft.semantickernel.agents.abstractions/1.21.1-alpha",
+      "path": "microsoft.semantickernel.agents.abstractions/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5626,14 +5818,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Agents.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Abstractions.xml",
-        "microsoft.semantickernel.agents.abstractions.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.agents.abstractions.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.agents.abstractions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Agents.Core/1.21.1-alpha": {
-      "sha512": "PmXXNI+bOCTxvO1PN0MZ7Qnv7h0S0T3hzcefsJNX6FaIRhwSadX3fNVnvLh6l5XEwBVUOW6aLfjN2cyYYzDFnw==",
+    "Microsoft.SemanticKernel.Agents.Core/1.22.0-alpha": {
+      "sha512": "tTtkLMmAjWh3qw1/Vk9IlafTgizFmm2kqwxguFn1uj6q93n81ad3by04NWOqMCTB/SW+FiS410F4JRgBwb42EA==",
       "type": "package",
-      "path": "microsoft.semantickernel.agents.core/1.21.1-alpha",
+      "path": "microsoft.semantickernel.agents.core/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5643,14 +5835,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Agents.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Core.xml",
-        "microsoft.semantickernel.agents.core.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.agents.core.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.agents.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.21.1-beta": {
-      "sha512": "hWhqqoKi02xLFpOFUITPYSjBvYHiOHANoS+YfLWwsOK/gaV/SJV2Wg9MSnuKueGV0YBL0YhqWknsFV+96vcL7A==",
+    "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.22.0-beta": {
+      "sha512": "2LQ4FMMqKGk0YpudW6aTcgAl5qOPzftLkN0RhZ3w/CAmR5fF/lpbe2K+Eu0Yo5oppdAE32zeGNM/ro2NWWqBdQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.azureaiinference/1.21.1-beta",
+      "path": "microsoft.semantickernel.connectors.azureaiinference/1.22.0-beta",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5660,14 +5852,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.xml",
-        "microsoft.semantickernel.connectors.azureaiinference.1.21.1-beta.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureaiinference.1.22.0-beta.nupkg.sha512",
         "microsoft.semantickernel.connectors.azureaiinference.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.21.1": {
-      "sha512": "p7bZjrcDUqW45tJgzuh3mIgKW3GOiZlRQVZh68TWKxJUwrH/ykj55282Wou4i7GRYwh4wNbtEsEDObCpOCyKuQ==",
+    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.22.0": {
+      "sha512": "gffK9ufAQCbmrRD+W2gSZB70Apm+3LAAiExPEWFjKninjw1TuNpnlVCf3pkyp46zuM4JmwWd9B9QwynKGUXauA==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.azureopenai/1.21.1",
+      "path": "microsoft.semantickernel.connectors.azureopenai/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5677,14 +5869,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
-        "microsoft.semantickernel.connectors.azureopenai.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureopenai.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.connectors.azureopenai.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.OpenAI/1.21.1": {
-      "sha512": "7/J4bvKkcmpbx4u7ltGYRRDpSZf6Iam37VuJWMueRT/8cGuQc0vMmSt7RRrp1Af6WCJyRtPdVUmq8BtYOqAuqQ==",
+    "Microsoft.SemanticKernel.Connectors.OpenAI/1.22.0": {
+      "sha512": "1XpGwBojBCATtKpaJFmkfbbRL9aNAK/yp5xoNq57t3g3rOTXPj0hHEUhpQHYKhGykVbAE88MS845qTyW/z+ycQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.openai/1.21.1",
+      "path": "microsoft.semantickernel.connectors.openai/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5694,14 +5886,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
-        "microsoft.semantickernel.connectors.openai.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.connectors.openai.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.connectors.openai.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Core/1.21.1": {
-      "sha512": "fSTOhHtWPSfCB8+oECrHLan930x/c/tLSt2RNIqJwh1rlLqXniQgpEXWzmT0VPzyiX+fiobuu3FtjLT7fqnKNQ==",
+    "Microsoft.SemanticKernel.Core/1.22.0": {
+      "sha512": "+o8tnlFyqiNOUWy3NWzY09kc532Wu8305YAQGUu2eHOOu+8zN6bsbugpHoBvtHVIrjeSFtcir9BB+KqGEs25Lg==",
       "type": "package",
-      "path": "microsoft.semantickernel.core/1.21.1",
+      "path": "microsoft.semantickernel.core/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5711,14 +5903,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Core.xml",
-        "microsoft.semantickernel.core.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.core.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.Core/1.21.1-alpha": {
-      "sha512": "rMYJADhODxW2OFVnbm0VPdq1yLPqgWvCZwgCM96OmC/STDMe85WOfDibrHuOOsDQkq61zbgpo/M6kvqiEHGEtg==",
+    "Microsoft.SemanticKernel.Plugins.Core/1.22.0-alpha": {
+      "sha512": "PsmRj9kukSqWFgmdPh6okgw1AW/v+ND/1z5DVIwaFSXbTj/do/MamOi6owbD02u1tZH6W1drsGavsQIGFhgiVg==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.core/1.21.1-alpha",
+      "path": "microsoft.semantickernel.plugins.core/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5728,14 +5920,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.xml",
-        "microsoft.semantickernel.plugins.core.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.core.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.OpenApi/1.21.1-alpha": {
-      "sha512": "Wxjo1Oov7jK4UgrhX9hr3hMYKGTZhgkYAf3yNOT/Jwh9yVUicgBiPoUeaa2nYB7Ch1sCKFyWSIakv7xRxEQD+g==",
+    "Microsoft.SemanticKernel.Plugins.OpenApi/1.22.0-alpha": {
+      "sha512": "VZpcwJVdQlaQvTwaKzZ2DF7/BUfUWbqO7kYMVrWqVBsNT0QxgsGyNG/VQmLYA8su1RiMtbmIFySL3w2hUJtK7A==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.openapi/1.21.1-alpha",
+      "path": "microsoft.semantickernel.plugins.openapi/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5745,14 +5937,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.xml",
-        "microsoft.semantickernel.plugins.openapi.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.openapi.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.openapi.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.21.1-alpha": {
-      "sha512": "4TvSeGMX3s9CnsZ3rZaLTqXcOK5YHrWUI97IPYcCiLxgsPZlV6iQMIR9eXWwvDSUsSKuhPOxEVfeGWn84gc4Lg==",
+    "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.22.0-alpha": {
+      "sha512": "EIdlggwXSIPYZXY5ck4Jljr5X3PTrN1IXDeqLJhB1HiYTLpWfD4C1k32MtkIWmy+KgMTSTB6s2sqDid182C7vg==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.openapi.extensions/1.21.1-alpha",
+      "path": "microsoft.semantickernel.plugins.openapi.extensions/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5762,14 +5954,31 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.xml",
-        "microsoft.semantickernel.plugins.openapi.extensions.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.openapi.extensions.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.openapi.extensions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.21.1": {
-      "sha512": "0A1rREBz+h0gzJcLp7lxb4tY+z76UISLqxBonCECIdNV2+dxoUI3jk0qiZxc/jFTiz3hJw++fiSMkf5ALjLtZg==",
+    "Microsoft.SemanticKernel.Plugins.Web/1.22.0-alpha": {
+      "sha512": "sSBlzEf0XIbLPvD/D2xbaWVj0i+EqCjRnt2kFMaOm+fOyC7f3YBmPrU/vSvOB8oSGLnc7AcCdI1f7E7xHYfZig==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.21.1",
+      "path": "microsoft.semantickernel.plugins.web/1.22.0-alpha",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Web.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Web.xml",
+        "microsoft.semantickernel.plugins.web.1.22.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.web.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.22.0": {
+      "sha512": "nK6LWgRTsljsWi0Fpes6rx/NduFoa6Kj2wFszNdfvfrH07zKm2/c68AOB7eYioAMRvNtTNuzNrIkhiwzD3dG/g==",
+      "type": "package",
+      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5779,14 +5988,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.xml",
-        "microsoft.semantickernel.prompttemplates.handlebars.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.prompttemplates.handlebars.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.prompttemplates.handlebars.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.21.1-alpha": {
-      "sha512": "BmKo4LFa3GDyI00SNdppfy4anaCmryD6gU7m8/JPbQtj0BM4XJb2u07UmgIVLn7xXMAp22mTb2ZdAtAdD64HVg==",
+    "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.22.0-alpha": {
+      "sha512": "ZuQTVY6/c5X6LlpfWjwH+Ph/M0WUVfGT+qaBl0dRkKqy1yj6GsiHyiPBRyAhCbYXkd+FpvJdsoR+WjsdfiGKTw==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompttemplates.liquid/1.21.1-alpha",
+      "path": "microsoft.semantickernel.prompttemplates.liquid/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5796,14 +6005,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.xml",
-        "microsoft.semantickernel.prompttemplates.liquid.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.prompttemplates.liquid.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.prompttemplates.liquid.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Prompty/1.21.1-alpha": {
-      "sha512": "JiTfqqTV/4yqGJ20tBkD1xugrJrbHE2KN0/hdBZpHDFEAoI8XCOwk89ciaBMH5VG6NYRtIobUtENomUYnbmK4Q==",
+    "Microsoft.SemanticKernel.Prompty/1.22.0-alpha": {
+      "sha512": "uqlZX/KrA0zqTtw4NEgxKMZVY3TIGE6Z+7VLw88HGVbVvjV+ZyY6xv00v9LuThS+UHI9MQkX1vJQXtyUswASag==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompty/1.21.1-alpha",
+      "path": "microsoft.semantickernel.prompty/1.22.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5813,14 +6022,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Prompty.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Prompty.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Prompty.xml",
-        "microsoft.semantickernel.prompty.1.21.1-alpha.nupkg.sha512",
+        "microsoft.semantickernel.prompty.1.22.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.prompty.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Yaml/1.21.1": {
-      "sha512": "Jx5d+6sfOhcQ5WBVYzmaDRrMZV5YvFLkYtvu5nOoflQ9/tA0BW/Jr6yOmlcXaAJxNcgq46mPeD8rVNipsVtX+Q==",
+    "Microsoft.SemanticKernel.Yaml/1.22.0": {
+      "sha512": "Ub+0Jczz4TAhoZjgq+6aJNCkdve+nb4X8O/ufQ6QUUhyFgOgx2pDscJXVQHQNFNGldj3S66ndK/lMVhBtNzkJg==",
       "type": "package",
-      "path": "microsoft.semantickernel.yaml/1.21.1",
+      "path": "microsoft.semantickernel.yaml/1.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5830,7 +6039,7 @@
         "lib/net8.0/Microsoft.SemanticKernel.Yaml.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Yaml.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Yaml.xml",
-        "microsoft.semantickernel.yaml.1.21.1.nupkg.sha512",
+        "microsoft.semantickernel.yaml.1.22.0.nupkg.sha512",
         "microsoft.semantickernel.yaml.nuspec"
       ]
     },
@@ -5993,10 +6202,10 @@
         "packageIcon.png"
       ]
     },
-    "OpenAI/2.0.0-beta.11": {
-      "sha512": "hV+M9NDwKoaHL3lFsGdwW4moP4QgdKzjjh0bsjyFxzHJhazb/7wG9lvXQ8XOWE/y5WJzuiKTmBfGSeC/svcOYA==",
+    "OpenAI/2.1.0-beta.1": {
+      "sha512": "C9TLSmUvcORI5BIz9llR+/Sj7xJmFJY4CoejGamzBg77XJ8DXjAHEXvpJGtqH8toBDSXRPn+9DD3Rs946AhCCA==",
       "type": "package",
-      "path": "openai/2.0.0-beta.11",
+      "path": "openai/2.1.0-beta.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6007,7 +6216,7 @@
         "lib/net6.0/OpenAI.xml",
         "lib/netstandard2.0/OpenAI.dll",
         "lib/netstandard2.0/OpenAI.xml",
-        "openai.2.0.0-beta.11.nupkg.sha512",
+        "openai.2.1.0-beta.1.nupkg.sha512",
         "openai.nuspec"
       ]
     },
@@ -6371,17 +6580,17 @@
         "smartcomponents.inference.openai.nuspec"
       ]
     },
-    "Std.UriTemplate/1.0.3": {
-      "sha512": "0C9WPYRHGHI4L1X3w7mdrr2WKz//6d/T000SqX5HNNPScFGfQYRuL8FBhn4Ny1WGcCnuMZXb6kfCnMW5OtCdTw==",
+    "Std.UriTemplate/2.0.0": {
+      "sha512": "GNBep1IBAGlVG3TUs1ZZ+1H9jgsw1ojBF6u34o8hpZC/YSTJCzCu4uYGU76a8SvhC8Q8baGqnmwJjHdxsVSUyg==",
       "type": "package",
-      "path": "std.uritemplate/1.0.3",
+      "path": "std.uritemplate/2.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Readme.md",
         "lib/net5.0/Std.UriTemplate.dll",
         "lib/netstandard2.0/Std.UriTemplate.dll",
-        "std.uritemplate.1.0.3.nupkg.sha512",
+        "std.uritemplate.2.0.0.nupkg.sha512",
         "std.uritemplate.nuspec"
       ]
     },
@@ -6406,10 +6615,10 @@
         "stef.validation.nuspec"
       ]
     },
-    "System.ClientModel/1.1.0-beta.7": {
-      "sha512": "sXCvFecMpW2ir1raJd9cNBxi+tmt+nMcRVrpSIX/QvLJi45mEjX54iwnlLJhybxTkxmecSXuANQsh6a9fEspbA==",
+    "System.ClientModel/1.1.0": {
+      "sha512": "UocOlCkxLZrG2CKMAAImPcldJTxeesHnHGHwhJ0pNlZEvEXcWKuQvVOER2/NiOkJGRJk978SNdw3j6/7O9H1lg==",
       "type": "package",
-      "path": "system.clientmodel/1.1.0-beta.7",
+      "path": "system.clientmodel/1.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6420,7 +6629,7 @@
         "lib/net6.0/System.ClientModel.xml",
         "lib/netstandard2.0/System.ClientModel.dll",
         "lib/netstandard2.0/System.ClientModel.xml",
-        "system.clientmodel.1.1.0-beta.7.nupkg.sha512",
+        "system.clientmodel.1.1.0.nupkg.sha512",
         "system.clientmodel.nuspec"
       ]
     },
@@ -6798,22 +7007,27 @@
         "version.txt"
       ]
     },
-    "System.Memory.Data/1.0.2": {
-      "sha512": "JGkzeqgBsiZwKJZ1IxPNsDFZDhUvuEdX8L8BDC8N3KOj+6zMcNU28CNN59TpZE/VJYy9cP+5M+sbxtWJx3/xtw==",
+    "System.Memory.Data/6.0.0": {
+      "sha512": "ntFHArH3I4Lpjf5m4DCXQHJuGwWPNVJPaAvM95Jy/u+2Yzt2ryiyIN04LAogkjP9DeRcEOiviAjQotfmPq/FrQ==",
       "type": "package",
-      "path": "system.memory.data/1.0.2",
+      "path": "system.memory.data/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "CHANGELOG.md",
-        "DotNetPackageIcon.png",
-        "README.md",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.Memory.Data.targets",
+        "buildTransitive/netcoreapp3.1/_._",
         "lib/net461/System.Memory.Data.dll",
         "lib/net461/System.Memory.Data.xml",
+        "lib/net6.0/System.Memory.Data.dll",
+        "lib/net6.0/System.Memory.Data.xml",
         "lib/netstandard2.0/System.Memory.Data.dll",
         "lib/netstandard2.0/System.Memory.Data.xml",
-        "system.memory.data.1.0.2.nupkg.sha512",
-        "system.memory.data.nuspec"
+        "system.memory.data.6.0.0.nupkg.sha512",
+        "system.memory.data.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Numerics.Vectors/4.5.0": {
@@ -7802,12 +8016,18 @@
       "type": "project",
       "path": "../aitrailblazer.ServiceDefaults/aitrailblazer.ServiceDefaults.csproj",
       "msbuildProject": "../aitrailblazer.ServiceDefaults/aitrailblazer.ServiceDefaults.csproj"
+    },
+    "CognitiveServices.Sdk/1.0.0": {
+      "type": "project",
+      "path": "../CognitiveServices.Sdk/CognitiveServices.Sdk.csproj",
+      "msbuildProject": "../CognitiveServices.Sdk/CognitiveServices.Sdk.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
       "AITGraph.Sdk >= 1.0.0",
       "Azure.Storage.Blobs >= 12.22.1",
+      "CognitiveServices.Sdk >= 1.0.0",
       "HtmlAgilityPack >= 1.11.66",
       "Markdig >= 0.37.0",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 8.0.6",
@@ -7816,23 +8036,24 @@
       "Microsoft.Identity.Web >= 2.20.0",
       "Microsoft.Identity.Web.GraphServiceClientBeta >= 2.20.0",
       "Microsoft.Identity.Web.UI >= 2.20.0",
-      "Microsoft.Kiota.Abstractions >= 1.9.8",
-      "Microsoft.Kiota.Authentication.Azure >= 1.9.8",
-      "Microsoft.Kiota.Http.HttpClientLibrary >= 1.9.8",
-      "Microsoft.Kiota.Serialization.Form >= 1.9.8",
-      "Microsoft.Kiota.Serialization.Json >= 1.9.8",
-      "Microsoft.Kiota.Serialization.Multipart >= 1.9.8",
-      "Microsoft.Kiota.Serialization.Text >= 1.9.8",
-      "Microsoft.SemanticKernel >= 1.21.1",
-      "Microsoft.SemanticKernel.Agents.Abstractions >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.Agents.Core >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.Connectors.AzureAIInference >= 1.21.1-beta",
-      "Microsoft.SemanticKernel.Plugins.Core >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.Plugins.OpenApi >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.PromptTemplates.Handlebars >= 1.21.1",
-      "Microsoft.SemanticKernel.Prompty >= 1.21.1-alpha",
-      "Microsoft.SemanticKernel.Yaml >= 1.21.1",
+      "Microsoft.Kiota.Abstractions >= 1.13.1",
+      "Microsoft.Kiota.Authentication.Azure >= 1.13.1",
+      "Microsoft.Kiota.Http.HttpClientLibrary >= 1.13.1",
+      "Microsoft.Kiota.Serialization.Form >= 1.13.1",
+      "Microsoft.Kiota.Serialization.Json >= 1.13.1",
+      "Microsoft.Kiota.Serialization.Multipart >= 1.13.1",
+      "Microsoft.Kiota.Serialization.Text >= 1.13.1",
+      "Microsoft.SemanticKernel >= 1.22.0",
+      "Microsoft.SemanticKernel.Agents.Abstractions >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Agents.Core >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Connectors.AzureAIInference >= 1.22.0-beta",
+      "Microsoft.SemanticKernel.Plugins.Core >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Plugins.OpenApi >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Plugins.Web >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.PromptTemplates.Handlebars >= 1.22.0",
+      "Microsoft.SemanticKernel.Prompty >= 1.22.0-alpha",
+      "Microsoft.SemanticKernel.Yaml >= 1.22.0",
       "Newtonsoft.Json >= 13.0.3",
       "SixLabors.ImageSharp >= 3.1.5",
       "SmartComponents.AspNetCore >= 0.1.0-preview10148",
@@ -7871,6 +8092,9 @@
             },
             "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ServiceDefaults/aitrailblazer.ServiceDefaults.csproj": {
               "projectPath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ServiceDefaults/aitrailblazer.ServiceDefaults.csproj"
+            },
+            "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/CognitiveServices.Sdk/CognitiveServices.Sdk.csproj": {
+              "projectPath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/CognitiveServices.Sdk/CognitiveServices.Sdk.csproj"
             }
           }
         }
@@ -7928,71 +8152,75 @@
           },
           "Microsoft.Kiota.Abstractions": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Authentication.Azure": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Http.HttpClientLibrary": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Serialization.Form": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Serialization.Json": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Serialization.Multipart": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.Kiota.Serialization.Text": {
             "target": "Package",
-            "version": "[1.9.8, )"
+            "version": "[1.13.1, )"
           },
           "Microsoft.SemanticKernel": {
             "target": "Package",
-            "version": "[1.21.1, )"
+            "version": "[1.22.0, )"
           },
           "Microsoft.SemanticKernel.Agents.Abstractions": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Agents.Core": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
             "target": "Package",
-            "version": "[1.21.1-beta, )"
+            "version": "[1.22.0-beta, )"
           },
           "Microsoft.SemanticKernel.Plugins.Core": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Plugins.OpenApi": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
+          },
+          "Microsoft.SemanticKernel.Plugins.Web": {
+            "target": "Package",
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.PromptTemplates.Handlebars": {
             "target": "Package",
-            "version": "[1.21.1, )"
+            "version": "[1.22.0, )"
           },
           "Microsoft.SemanticKernel.Prompty": {
             "target": "Package",
-            "version": "[1.21.1-alpha, )"
+            "version": "[1.22.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Yaml": {
             "target": "Package",
-            "version": "[1.21.1, )"
+            "version": "[1.22.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
@@ -8041,6 +8269,16 @@
       "warningLevel": 1,
       "message": "Package 'System.Formats.Asn1' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-447r-wph3-92pm",
       "libraryId": "System.Formats.Asn1",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Text.Json' 8.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
+      "libraryId": "System.Text.Json",
       "targetGraphs": [
         "net9.0"
       ]

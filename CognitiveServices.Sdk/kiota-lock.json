@@ -1,0 +1,36 @@
+{
+  "descriptionHash": "85512222EC8D3248C87BEBCCA5FF74854A02271A98D60749847653D989F5CC863EA0E26DAE2BB2848BA99ADD80BCEBD3AA790ED393CDEB64A297AA6982ACE8AD",
+  "descriptionLocation": "../src/CognitiveServices.Sdk/OpenApi/CognitiveServicesEntitySearch.json",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.19.0",
+  "clientClassName": "CognitiveServicesApiClient",
+  "typeAccessModifier": "Public",
+  "clientNamespaceName": "CognitiveServices.Sdk",
+  "language": "CSharp",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": true,
+  "includeAdditionalData": true,
+  "disableSSLValidation": false,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Form.FormSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Multipart.MultipartSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Text.TextParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Form.FormParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain;q=0.9",
+    "application/x-www-form-urlencoded;q=0.2",
+    "multipart/form-data;q=0.1"
+  ],
+  "includePatterns": [
+    "**/entities"
+  ],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}

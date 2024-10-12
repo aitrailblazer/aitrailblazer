@@ -41,7 +41,7 @@ namespace aitrailblazer.net.Services
         public required string AzureOpenAIDALLEKey01 { get; set; }
         public required string AzureOpenAIDALLEModelName01 { get; set; }
 
-        public required string BingSearchKey { get; set; }
+        public required string BingSearchApiKey { get; set; }
         //public required string ApplicationInsightsConnectionString { get; set; }
     }
 }

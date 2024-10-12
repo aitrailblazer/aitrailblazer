@@ -46,31 +46,31 @@
           "dependencies": {
             "Microsoft.Kiota.Abstractions": {
               "target": "Package",
-              "version": "[1.9.7, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Authentication.Azure": {
               "target": "Package",
-              "version": "[1.1.7, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Http.HttpClientLibrary": {
               "target": "Package",
-              "version": "[1.4.3, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Serialization.Form": {
               "target": "Package",
-              "version": "[1.2.5, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Serialization.Json": {
               "target": "Package",
-              "version": "[1.3.3, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Serialization.Multipart": {
               "target": "Package",
-              "version": "[1.1.5, )"
+              "version": "[1.13.1, )"
             },
             "Microsoft.Kiota.Serialization.Text": {
               "target": "Package",
-              "version": "[1.2.2, )"
+              "version": "[1.13.1, )"
             }
           },
           "imports": [

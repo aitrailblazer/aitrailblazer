@@ -15,20 +15,26 @@ using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Microsoft.SemanticKernel.Plugins.OpenApi.Extensions;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Plugins.Web;
+using Microsoft.SemanticKernel.Data;
+using Microsoft.SemanticKernel.Plugins.Web.Bing;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using aitrailblazer.net.Utilities;
-
+using Microsoft.Extensions.Logging;
 using Kernel = Microsoft.SemanticKernel.Kernel;
 using Microsoft.SemanticKernel.Plugins.Core;
 using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
 using Fluid.Ast;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-
+using CognitiveServices.Sdk.News;
+using CognitiveServices.Sdk.News.Search;
+using CognitiveServices.Sdk.News.Trendingtopics;
+using CognitiveServices.Sdk.Models;
 using Newtonsoft.Json;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Caching.Memory;
@@ -50,6 +56,8 @@ namespace aitrailblazer.net.Services
         private readonly AgentConfigurationService _agentConfigurationService; // Add AgentConfigurationService
         private readonly ILogger<AzureOpenAIHandler> _logger;
         private readonly KernelSetup _kernelSetup;
+        //private readonly WebSearchService _webSearchService;
+
 
         public AzureOpenAIHandler(
             ParametersAzureService parametersAzureService,
@@ -71,6 +79,7 @@ namespace aitrailblazer.net.Services
             _agentConfigurationService = agentConfigurationService;
             _logger = logger;
             _kernelSetup = kernelSetup;
+            //_webSearchService = webSearchService;
         }
 
 
@@ -1065,6 +1074,180 @@ namespace aitrailblazer.net.Services
                 _parametersAzureService.StorageContainerName);
             return manager;
         }
+
+public async Task<string> BingTextSearchAsync(string question)
+{
+    string modelId = "gpt-4o-mini";
+    int maxTokens = 256;
+
+    // Initialize the kernel with modelId and maxTokens
+    IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+    Kernel kernel = kernelBuilder.Build();
+
+    // Step 1: Rephrase the question
+    string rephrasedQuestion = await RephraseQuestionAsync(question);
+    _logger.LogInformation($"BingTextSearchAsync: Rephrased question: {rephrasedQuestion}");
+
+    // Step 2: Fetch Bing search results
+    string bingInformation = await FetchBingSearchResultsWithRetryAsync(kernel, question, 3);
+
+    // Step 3: Generate the final answer using the semantic function
+    return await GenerateAnswerAsync(kernel, question, rephrasedQuestion, maxTokens);
+}
+
+// Function to rephrase the question using AI
+private async Task<string> RephraseQuestionAsync(string question)
+{
+     string modelId = "gpt-4o-mini";
+    int maxTokens = 256;
+
+    // Initialize the kernel with modelId and maxTokens
+    IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+    Kernel kernel = kernelBuilder.Build();
+    const string RephrasePrompt = """
+        Rephrase the following question to make it more suitable for a search engine query:
+        
+        Question: "{{ $query }}"
+        Rephrased Query:
+    """;
+
+    var rephraseFunction = kernel.CreateFunctionFromPrompt(RephrasePrompt, new OpenAIPromptExecutionSettings
+    {
+        Temperature = 0.7,
+        TopP = 0.9,
+        MaxTokens = 50
+    });
+
+    try
+    {
+        var rephraseResult = await kernel.InvokeAsync(rephraseFunction, new KernelArguments { ["query"] = question });
+        return rephraseResult.GetValue<string>()?.Trim() ?? question; // Fallback to original if rephrasing fails
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"RephraseQuestionAsync: Error while rephrasing the question. {ex.Message}");
+        return question; // Fallback to the original question
+    }
+}
+
+// Function to fetch Bing search results with retry logic
+private async Task<string> FetchBingSearchResultsWithRetryAsync(Kernel kernel, string query, int maxRetries)
+{
+    string searchPluginName = "bing";
+    var bingConnector = new BingConnector(_parametersAzureService.BingSearchApiKey);
+    var bing = new WebSearchEnginePlugin(bingConnector);
+    
+    kernel.ImportPluginFromObject(bing, searchPluginName);
+    
+
+    int attempt = 0;
+    while (attempt < maxRetries)
+    {
+        try
+        {
+            _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} - Fetching information from Bing...");
+            var function = kernel.Plugins[searchPluginName]["search"];
+            var searchResult = await kernel.InvokeAsync(function, new() { ["query"] = query });
+
+            var bingInformation = searchResult.GetValue<string>();
+            if (string.IsNullOrWhiteSpace(bingInformation))
+            {
+                throw new Exception("Failed to get a valid response from the web search engine.");
+            }
+
+            _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Information found from Bing: {bingInformation}");
+            return bingInformation;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} failed. {ex.Message}");
+            attempt++;
+            if (attempt >= maxRetries)
+            {
+                _logger.LogError("FetchBingSearchResultsWithRetryAsync: Max retries reached. Could not fetch information from Bing.");
+                throw new Exception("Failed to get a response from the web search engine after multiple attempts.");
+            }
+            await Task.Delay(1000); // Wait before retrying
+        }
+    }
+
+    throw new Exception("FetchBingSearchResultsWithRetryAsync: Unexpected failure. This line should not be reached.");
+}
+
+// Function to generate the final answer
+private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, string bingInformation, int maxTokens)
+{
+    const string SemanticFunction = """
+        Answer questions based on the facts and the information provided. If you do not have enough information to confidently answer the question, use the available search command to find the necessary details.
+
+        Always perform a search to gather the latest information and use it to enhance your answer.
+
+        When answering multiple questions, use a bullet point list. Mention the source of the information to improve credibility.
+
+        Include citations to the relevant information where it is referenced in the response.
+
+        [COMMANDS AVAILABLE]
+        - bing.search
+
+        [INFORMATION PROVIDED]
+        {{ $externalInformation }}
+
+        [EXAMPLES]
+
+        [EXAMPLE 1]
+        Question: What is the tallest building in the world?
+        Answer: {{ '{{' }} bing.search "tallest building in the world" {{ '}}' }}.
+
+        [EXAMPLE 2]
+        Question: What is the tallest building in the world? How high is it?
+        Answer:
+        * The tallest building in the world is {{ '{{' }} bing.search "tallest building in the world" {{ '}}' }}.
+        * It has a height of {{ '{{' }} bing.search "height of the tallest building in the world" {{ '}}' }}.
+
+        [EXAMPLE 3]
+        Question: What is the stock price of Tesla today?
+        Answer: {{ '{{' }} bing.search "current Tesla stock price" {{ '}}' }}.
+
+        [EXAMPLE 4]
+        Question: Who won the Best Actor award at the latest Oscars?
+        Answer: {{ '{{' }} bing.search "latest Oscars Best Actor winner" {{ '}}' }}.
+
+        [END OF EXAMPLES]
+
+        [TASK]
+        Question: {{ $question }}.
+        Answer:
+    """;
+
+    var executionSettings = new OpenAIPromptExecutionSettings
+    {
+        Temperature = 0.1,
+        TopP = 0.1,
+        MaxTokens = maxTokens,
+        ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+    };
+
+    var oracle = kernel.CreateFunctionFromPrompt(SemanticFunction, executionSettings);
+
+    var arguments = new KernelArguments
+    {
+        ["query"] = query,
+        ["externalInformation"] = bingInformation
+    };
+
+    try
+    {
+        var finalAnswer = await kernel.InvokeAsync(oracle, arguments);
+        var result = finalAnswer.GetValue<string>();
+        _logger.LogInformation($"GenerateAnswerAsync: Final Answer: {result}");
+        return result;
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"GenerateAnswerAsync: Error generating the final answer. {ex.Message}");
+        return "An error occurred while generating the final answer. Please try again.";
+    }
+}
 
         public async Task RunImportPluginFromApiManifestAsync(string modelId, int maxTokens)
         {
@@ -2155,6 +2338,126 @@ namespace aitrailblazer.net.Services
 
             }
         }
+
+        /// <summary>
+        /// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
+        /// then performs the web search and returns the search result content.
+        /// </summary>
+        /// <param name="input">The natural language description for the search.</param>
+        /// <returns>The search result content as a string.</returns>
+public async Task<string> ShowNewsAsync(string input)
+{
+    int maxTokens = 1024;
+    _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
+
+    try
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            _logger.LogInformation("Input cannot be null or empty.");
+            return "Invalid input.";
+        }
+
+        // Build the kernel
+        string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+        IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+        Kernel kernel = kernelBuilder.Build();
+
+        // Setup the Search URL plugin
+        kernel = _kernelSetup.SetupNewsPlugin(kernel);
+
+        double temperature = 0.1;
+        double topP = 0.1;
+        int seed = 356;
+
+        // Configure execution settings
+        var executionSettings = new AzureOpenAIPromptExecutionSettings
+        {
+            Temperature = temperature,
+            TopP = topP,
+            MaxTokens = maxTokens,
+            //StopSequences = new string[] { "\n\n" },
+            Seed = seed,
+            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+        };
+
+        var arguments = new KernelArguments(executionSettings)
+        {
+            ["Input"] = input
+        };
+
+        // Define the prompt with explicit instructions and available Search URL functions
+        string prompt = @"
+You are an assistant that can perform the following actions based on user input:
+
+1. Search for news articles using the `search_news_async_ai` function.
+2. Retrieve trending news topics using the `get_trending_topics_ai` function.
+
+Available functions:
+- search_news_async_ai: Search news articles using Bing News Search and return results formatted for AI interactions.
+- get_trending_topics_ai: Get trending topics from Bing News and return results formatted for AI interactions.
+
+Examples:
+
+Example 1:
+Natural language description: Find the latest advancements in artificial intelligence.
+Search Action: search_news_async_ai('latest advancements in artificial intelligence')
+
+Example 2:
+Natural language description: What are the trending news topics today?
+Search Action: get_trending_topics_ai()
+
+Now, based on the following input, determine which function to use and provide the appropriate function call.
+
+Natural language description: {{$Input}}
+
+Search Action:
+        ";
+
+        _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync invoking kernel with prompt.");
+
+        // Execute the kernel function
+        try
+        {
+            var result = await kernel.InvokePromptAsync(prompt, arguments);
+
+            var searchResult = result.GetValue<string>();
+
+            //_logger.LogInformation($"ShowNewsAsync Generated search Result: {searchResult}");
+
+            return searchResult;
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Argument error: {ex.Message}");
+            return "An error occurred with the arguments. Please check your input and try again.";
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Invalid operation: {ex.Message}");
+            return "An invalid operation occurred during function execution. Please try again.";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Unexpected error: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                _logger.LogError(ex.InnerException, "Inner Exception Details");
+            }
+            return "An unexpected error occurred during execution. Please try again.";
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync A critical error occurred.");
+        if (ex.InnerException != null)
+        {
+            _logger.LogError(ex.InnerException, "Inner Exception Details");
+        }
+        return "A critical error occurred. Please contact support.";
+    }
+}
+
 
         /// <summary>
         /// Generates a KQL query based on a natural language input using GPT-4 and the registered KQL functions.

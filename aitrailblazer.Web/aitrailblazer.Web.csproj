@@ -12,6 +12,7 @@
 
     <ProjectReference Include="..\aitrailblazer.ServiceDefaults\aitrailblazer.ServiceDefaults.csproj" />
     <ProjectReference Include="..\AITGraph.Sdk\AITGraph.Sdk.csproj" />
+    <ProjectReference Include="..\CognitiveServices.Sdk\CognitiveServices.Sdk.csproj" />
 
   </ItemGroup>
 
@@ -25,23 +26,24 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="2.20.0" />
     <PackageReference Include="Microsoft.Identity.Web.GraphServiceClientBeta" Version="2.20.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.20.0" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.9.8" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.9.8" />
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.21.1" />
-    <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" Version="1.21.1-beta" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi.Extensions" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.21.1" />
-    <PackageReference Include="Microsoft.SemanticKernel.Prompty" Version="1.21.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Yaml" Version="1.21.1" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.13.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.13.1" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.22.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" Version="1.22.0-beta" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.OpenApi.Extensions" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Web" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.22.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Prompty" Version="1.22.0-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel.Yaml" Version="1.22.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="SmartComponents.AspNetCore" Version="0.1.0-preview10148" />
