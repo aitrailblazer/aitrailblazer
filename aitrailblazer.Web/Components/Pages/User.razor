@@ -7,27 +7,21 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
 @using AITGraph.Sdk.Models
-@using CognitiveServices.Sdk.News.Search;
-@using CognitiveServices.Sdk.News.Trendingtopics;
-@using CognitiveServices.Sdk.Models;
+
 @using AITrailBlazer.Web.Services
 @using aitrailblazer.net.Services
 @using aitrailblazer.net.Models
-@using SearchSdk = CognitiveServices.Sdk.News.Search;
-@using TrendingSdk = CognitiveServices.Sdk.News.Trendingtopics;
 @using System.Text.Json; 
 @using aitrailblazer.net.Models; 
+@using NewsResponse = aitrailblazer.net.Models.NewsResponse
+
 @using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
-@using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle
-@using Newtonsoft.Json;
 
 @using Markdig
-@inject AITGraphService GraphService
 @inject AITGraphService GraphService
 
 @inject NavigationManager NavigationManager
 @inject AzureOpenAIHandler azureOpenAIHandler
-@inject BingNewsService BingNewsService
 @inject IJSRuntime JS
 @using GraphMessage = AITGraph.Sdk.Models.Message
 
@@ -69,27 +63,37 @@ else if (user != null)
         <!-- Input Section for Azure OpenAI Query -->
         <div style="margin-top: 20px; display: flex; align-items: center; max-width: 820px;">
             <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
+                @if (Submitting)
+                {
+                    <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                    <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                }                  
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
-                    <FluentTextArea 
-                        Typo="Typography.Body" 
-                        @bind-Value="@userQuery" 
-                        @oninput="HandleInput" 
-                        Placeholder="Enter your question here..."
-                        style="flex: 1; max-height: 120px; overflow-y: auto;" 
-                        Class="card-splitter alert alert-primary content-splitter-font-size"
-                        Appearance="FluentInputAppearance.Filled" 
-                        Autofocus="@Autofocus" 
-                        Minlength="@MinLength"
-                        MaxLength="@MaxLength" 
-                        Rows="@Rows" 
-                        id="fluentTextArea" />
+                
                     
+                <FluentTextArea 
+                    Typo="Typography.Body" 
+                    @bind-Value="@userQuery" 
+                    @oninput="HandleInput" 
+                    Placeholder="Enter your question here..."
+                    style="flex: 1; overflow-y: hidden; resize: none;" 
+                    Class="card-splitter alert alert-primary content-splitter-font-size"
+                    Appearance="FluentInputAppearance.Filled" 
+                    Autofocus="@Autofocus" 
+                    Minlength="@MinLength"
+                    MaxLength="@MaxLength" 
+                    Rows="2" 
+                    id="fluentTextArea" 
+                     @oninput="@(async (ChangeEventArgs e) => await AutoResizeTextArea())"
+                />
+
+
                     <FluentButton 
-                        IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" 
+                        IconStart="@(new Icons.Filled.Size32.SearchSparkle())" 
                         Class="FluentButton"
-                        OnClick="@OnButtonASAPTimeClicked" 
+                        OnClick="@OnButtonASAPNewsClicked" 
                         >
-                        Send
+                        AI-Powered Search
                     </FluentButton>
                 </FluentStack>
                 @if (isDeleting)
@@ -97,63 +101,78 @@ else if (user != null)
                     <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
                     <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
                 }
-                @if (Submitting)
-                {
-                    <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
-                    <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
-                } 
-                else 
-                {
-                    @response
+
+            </FluentStack>
+        </div>
 @if (showResponse)
 {
     @if (!string.IsNullOrEmpty(response))
     {
         <div class="alert alert-info">@response</div>
     }
-
     @if (newsArticles != null && newsArticles.Any())
     {
-        <FluentCard MinimalStyle="false" Class="response-card" Width="1840px" Height="100%"
-                    Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999;")">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <FluentLabel Typo="Typography.Subject" Class="response-label">
-                    News Articles:
-                </FluentLabel>
-                <FluentButton 
-                    IconStart="@(new Icons.Filled.Size24.Dismiss())" 
-                    Appearance="Appearance.Stealth" 
-                    Class="close-button"
-                    OnClick="@CloseResponse"
-                    aria-label="Close Response">
-                </FluentButton>
-            </div>
-            <div class="news-articles-container" style="overflow-y: auto; max-height: 80vh;">
-                @foreach (var article in newsArticles)
-                {
-                    <FluentCard Class="article-card" MinimalStyle="false" Width="780px" Height="120px" Style="margin-bottom: 16px; padding: 16px;">
-                        <div style="display: flex;">
-                            @if (!string.IsNullOrEmpty(article.ThumbnailUrl))
-                            {
-                                <img src="@article.ThumbnailUrl" alt="Thumbnail" style="max-width: 120px; margin-right: 16px;" />
-                            }
-                            <div>
-                                <FluentAnchor Href="@article.Url" Target="_blank" Style="font-size: 20px; font-weight: bold; color: #0078D4; text-decoration: none;">
-                                    @article.Name
-                                </FluentAnchor>
-                                <p style="margin-top: 8px;">@article.Description</p>
-                            </div>
-                        </div>
-                    </FluentCard>
-                }
-            </div>
-        </FluentCard>
+@if (newsArticles != null && newsArticles.Any())
+{
+@if (newsArticles != null && newsArticles.Any())
+{
+    <FluentCard MinimalStyle="true" Class="response-card" Width="1200px" 
+        Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999; height: 100%; max-height: 90vh; overflow-y: auto;")">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <FluentLabel Typo="Typography.Subject" Class="response-label">
+                News Articles:
+            </FluentLabel>
+            <FluentButton 
+                IconStart="@(new Icons.Filled.Size24.Dismiss())" 
+                Appearance="Appearance.Stealth" 
+                Class="close-button"
+                OnClick="@CloseResponse"
+                aria-label="Close Response">
+            </FluentButton>
+        </div>
+
+        <!-- Scrollable container for articles -->
+        <div class="news-articles-container" style="overflow-y: auto; max-height: 80vh;">
+            @foreach (var article in newsArticles)
+            {
+            <!-- Article card, now wider -->
+            <FluentCard Class="article-card" MinimalStyle="false" Width="1100px" Height="180px" Style="margin-bottom: 16px; padding: 16px;">
+                <div style="display: flex; width: 100%;">
+                    @if (!string.IsNullOrEmpty(article.ThumbnailUrl))
+                    {
+                       <img src="@article.ThumbnailUrl" alt="Thumbnail" style="width: 120px; height: 120px; object-fit: cover; margin-right: 16px;" />
+
+                    }
+                    <div style="flex: 1;">
+                        <!-- Article Title with Link -->
+                        <FluentAnchor Href="@article.Url" Target="_blank" Style="font-size: 20px; font-weight: bold; color: #0078D4; text-decoration: none;">
+                            @article.Name
+                        </FluentAnchor>
+
+                        <!-- Article Description -->
+                        <p style="margin-top: 8px;">@article.Description</p>
+
+                        <!-- News Source, Category, and Date Published on one line -->
+                        <p style="margin-top: 8px; font-size: 14px; color: #888;">
+                            Source: <strong>@article.Source</strong> |
+                            Category: <strong>@article.Category</strong> |
+                            Published on: <strong>@DateTime.Parse(article.DatePublished).ToString("MMMM dd, yyyy hh:mm tt")</strong>
+                        </p>
+                    </div>
+                </div>
+            </FluentCard>
+
+
+            }
+        </div>
+    </FluentCard>
+}
+
+}
+
     }
 }
 
-                }
-            </FluentStack>
-        </div>
 
         <FluentTabs @bind-ActiveTabId="@activeTabId" OnTabChange="HandleOnTabChange">
             <!-- Emails Tab -->
@@ -906,9 +925,9 @@ else
             // Fetch contacts
             var contacts = await GraphService.GetUserContactsAsync(50);
             contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
-            response = await azureOpenAIHandler.GenerateTitleAsync("test","test");
+            
+            //response = await azureOpenAIHandler.SKTestAsync("programming");
 
-     
         }
         catch (AuthenticationRequiredException)
         {
@@ -983,6 +1002,8 @@ else
         return dateTimeString; // Return the original string if parsing fails
     }
 
+    // @using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
+
     // Event handler for handling input changes (optional)
     private void HandleInput(ChangeEventArgs e)
     {
@@ -996,7 +1017,7 @@ else
 
 
   // Event handler for button click
-    private async Task OnButtonASAPTimeClicked()
+    private async Task OnButtonASAPNewsClicked()
     {
         if (string.IsNullOrWhiteSpace(userQuery))
         {
@@ -1018,9 +1039,8 @@ else
             Console.WriteLine($"JSON Response: {jsonResponse}");
 
             // Deserialize JSON into NewsResponse object using Newtonsoft.Json
-            var newsResponse = JsonConvert.DeserializeObject<NewsResponse>(jsonResponse);
-
-            if (newsResponse != null && newsResponse.TotalResults > 0 && newsResponse.Articles != null)
+            var newsResponse = JsonSerializer.Deserialize<NewsResponse>(jsonResponse);
+            if (newsResponse != null)
             {
                 newsArticles = newsResponse.Articles;
                 showResponse = true;
@@ -1902,4 +1922,11 @@ private async Task SaveEventAsync()
     }
 
 
+}
+@code {
+    private async Task AutoResizeTextArea()
+    {
+        // Use JavaScript to resize the textarea dynamically
+        await JS.InvokeVoidAsync("autoResizeTextarea", "fluentTextArea");
+    }
 }

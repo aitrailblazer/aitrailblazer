@@ -17,15 +17,15 @@
           "/Users/constantinevassilev02/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -38,21 +38,14 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "all"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "Microsoft.Kiota.Abstractions": {
-              "target": "Package",
-              "version": "[1.13.1, )"
-            },
-            "Microsoft.Kiota.Authentication.Azure": {
-              "target": "Package",
-              "version": "[1.13.1, )"
-            },
-            "Microsoft.Kiota.Http.HttpClientLibrary": {
               "target": "Package",
               "version": "[1.13.1, )"
             },
@@ -84,26 +77,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.5, 8.0.5]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.osx-arm64",
-              "version": "[8.0.5, 8.0.5]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.5, 8.0.5]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -141,7 +120,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "all"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -149,15 +129,15 @@
           "dependencies": {
             "Microsoft.Extensions.Http.Resilience": {
               "target": "Package",
-              "version": "[8.7.0, )"
+              "version": "[8.10.0, )"
             },
             "Microsoft.Extensions.ServiceDiscovery": {
               "target": "Package",
-              "version": "[8.0.2, )"
+              "version": "[8.2.1, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.9.1, )"
+              "version": "[4.10.2, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Emoji": {
               "target": "Package",
@@ -165,7 +145,7 @@
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.9.1, )"
+              "version": "[4.10.2, )"
             },
             "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
               "target": "Package",
@@ -207,7 +187,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -255,7 +235,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "all"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -263,11 +244,11 @@
           "dependencies": {
             "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[12.22.1, )"
+              "version": "[12.22.2, )"
             },
             "HtmlAgilityPack": {
               "target": "Package",
-              "version": "[1.11.66, )"
+              "version": "[1.11.67, )"
             },
             "Markdig": {
               "target": "Package",
@@ -275,37 +256,29 @@
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[9.0.0-rc.1.24452.1, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.10.1, )"
+              "version": "[4.10.2, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.10.1, )"
+              "version": "[4.10.2, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
-              "version": "[2.20.0, )"
+              "version": "[3.2.2, )"
             },
             "Microsoft.Identity.Web.GraphServiceClientBeta": {
               "target": "Package",
-              "version": "[2.20.0, )"
+              "version": "[3.2.2, )"
             },
             "Microsoft.Identity.Web.UI": {
               "target": "Package",
-              "version": "[2.20.0, )"
+              "version": "[3.2.2, )"
             },
             "Microsoft.Kiota.Abstractions": {
-              "target": "Package",
-              "version": "[1.13.1, )"
-            },
-            "Microsoft.Kiota.Authentication.Azure": {
-              "target": "Package",
-              "version": "[1.13.1, )"
-            },
-            "Microsoft.Kiota.Http.HttpClientLibrary": {
               "target": "Package",
               "version": "[1.13.1, )"
             },
@@ -340,6 +313,10 @@
             "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
               "target": "Package",
               "version": "[1.22.0-beta, )"
+            },
+            "Microsoft.SemanticKernel.Connectors.OpenAI": {
+              "target": "Package",
+              "version": "[1.22.0, )"
             },
             "Microsoft.SemanticKernel.Plugins.Core": {
               "target": "Package",
@@ -405,7 +382,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -443,16 +420,13 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "all"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "Microsoft.Kiota.Authentication.Azure": {
-              "target": "Package",
-              "version": "[1.13.1, )"
-            },
             "Microsoft.Kiota.Bundle": {
               "target": "Package",
               "version": "[1.13.1, )"
@@ -474,7 +448,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-preview.6.24328.19/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -274,6 +274,7 @@ builder.Services.AddScoped<TokenLabelService>();
 builder.Services.AddScoped<TimeZoneService>();
 builder.Services.AddScoped<TimeFunctions>();
 builder.Services.AddScoped<KQLFunctions>();
+builder.Services.AddScoped<SKHandler>();
 
 //builder.Services.AddScoped<WebSearchService>();
 // Register BingNewsService as a singleton or scoped service

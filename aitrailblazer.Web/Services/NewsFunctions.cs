@@ -15,7 +15,6 @@ using TrendingSdk = CognitiveServices.Sdk.News.Trendingtopics;
 using OurNewsArticle = aitrailblazer.net.Models.NewsArticle;
 using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle;
 
-
 namespace aitrailblazer.net.Services
 {
     public class NewsFunctions
@@ -33,6 +32,7 @@ namespace aitrailblazer.net.Services
 
         #region Core Functions
 
+        // Function to search for news articles
         public async Task<string> SearchNewsAsync(string userQuery)
         {
             _logger.LogInformation("Entering 'SearchNewsAsync' with userQuery: {UserQuery}", userQuery);
@@ -46,68 +46,115 @@ namespace aitrailblazer.net.Services
                 queryParameters.TextFormat = SearchSdk.GetTextFormatQueryParameterType.Raw;
                 queryParameters.OriginalImg = true;
             });
-
-            if (newsResults?.Value != null && newsResults.Value.Count > 0)
+              // Serialize the response into a well-formatted JSON output
+            var jsonResponse = JsonSerializer.Serialize(newsResults, new JsonSerializerOptions
             {
-                var newsArticles = newsResults.Value;
+                WriteIndented = true
+            });
 
-                var formattedArticles = newsArticles.Select(article => new OurNewsArticle
-                {
-                    Name = article.Name,
-                    Url = article.Url,
-                    Description = article.Description,
-                    ThumbnailUrl = article.Image?.Thumbnail?.ContentUrl
-                }).ToList();
+            _logger.LogInformation("Exiting 'SearchNewsAsync' with response: {Response}", jsonResponse);
 
-                var newsResponse = new NewsResponse
-                {
-                    Query = userQuery,
-                    TotalResults = newsArticles.Count,
-                    Articles = formattedArticles
-                };
-
-                var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-                _logger.LogInformation("Exiting 'SearchNewsAsync' with response: {Response}", jsonResponse);
-
-                return jsonResponse;
-            }
-            else
-            {
-                _logger.LogWarning("No news articles found for userQuery: {UserQuery}", userQuery);
-
-                var emptyResponse = new NewsResponse
-                {
-                    Query = userQuery,
-                    TotalResults = 0,
-                    Articles = new List<OurNewsArticle>()
-                };
-
-                var jsonEmptyResponse = JsonSerializer.Serialize(emptyResponse, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-                return jsonEmptyResponse;
-            }
+            return jsonResponse;
+        
+            //return FormatNewsResults(newsResults, userQuery);
         }
 
-        // Updated GetTrendingTopicsAsync
-        public async Task<string> GetTrendingTopicsAsync()
+        // Function to fetch trending topics
+        public async Task<string> GetTrendingTopicsAsync(string userQuery)
         {
             _logger.LogInformation("Entering 'GetTrendingTopicsAsync'");
 
             var trendingTopics = await _bingNewsService.GetTrendingTopicsAsync(queryParameters =>
             {
                 queryParameters.Mkt = "en-US";
-                queryParameters.Count = 10;
+                queryParameters.Count = 5;
                 queryParameters.SafeSearch = TrendingSdk.GetSafeSearchQueryParameterType.Moderate;
                 queryParameters.TextFormat = TrendingSdk.GetTextFormatQueryParameterType.Raw;
             });
 
+            return FormatTrendingTopics(trendingTopics, userQuery);
+        }
+
+        // Function to fetch headline news
+        public async Task<string> GetHeadlineNewsAsync()
+        {
+            _logger.LogInformation("Entering 'GetHeadlineNewsAsync'");
+
+            var headlineNews = await _bingNewsService.GetHeadlineNewsAsync(queryParameters =>
+            {
+                queryParameters.Mkt = "en-US";
+                queryParameters.Count = 10;
+                queryParameters.SafeSearch = SearchSdk.GetSafeSearchQueryParameterType.Moderate;
+            });
+
+            return FormatNewsResults(headlineNews, "Headline News");
+        }
+
+        // Helper method to format news results
+ private string FormatNewsResults(News? newsResults, string query)
+{
+    if (newsResults?.Value != null && newsResults.Value.Count > 0)
+    {
+        var newsArticles = newsResults.Value;
+
+        // Format the news articles with additional fields (e.g., DatePublished, Source, Category)
+        var formattedArticles = newsArticles.Select(article => new OurNewsArticle
+        {
+            Name = article.Name,
+            Url = article.Url,
+            Description = article.Description,
+            ThumbnailUrl = article.Image?.Thumbnail?.ContentUrl ?? string.Empty,
+            //DatePublished = article.DatePublished.HasValue
+            //    ? article.DatePublished.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            //    : "Date not available",
+            Source = article.Provider != null && article.Provider.Any()
+                ? article.Provider.FirstOrDefault()?.Name ?? "Unknown source"
+                : "Unknown source",
+            //Category = article.Category ?? "General"
+        }).ToList();
+
+        var newsResponse = new NewsResponse
+        {
+            Query = query,
+            TotalResults = newsArticles.Count,
+            Articles = formattedArticles,
+            //FetchedAt = DateTime.UtcNow // Capture the time of fetching the news
+        };
+
+        // Serialize the response into a well-formatted JSON output
+        var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        _logger.LogInformation("Exiting 'FormatNewsResults' with response: {Response}", jsonResponse);
+
+        return jsonResponse;
+    }
+    else
+    {
+        _logger.LogWarning("No news articles found for query: {Query}", query);
+
+        var emptyResponse = new NewsResponse
+        {
+            Query = query,
+            TotalResults = 0,
+            Articles = new List<OurNewsArticle>(),
+            //FetchedAt = DateTime.UtcNow
+        };
+
+        var jsonEmptyResponse = JsonSerializer.Serialize(emptyResponse, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        return jsonEmptyResponse;
+    }
+}
+
+        // Helper method to format trending topics
+        private string FormatTrendingTopics(TrendingTopics? trendingTopics, string query)
+        {
             if (trendingTopics?.Value != null && trendingTopics.Value.Count > 0)
             {
                 var topics = trendingTopics.Value;
@@ -117,29 +164,28 @@ namespace aitrailblazer.net.Services
                     Name = topic.Name,
                     Url = topic.WebSearchUrl,
                     Description = topic.Query?.Text ?? string.Empty,
-                    ThumbnailUrl = null // Assuming trending topics don't have thumbnails
+                    ThumbnailUrl = topic.Image?.Url ?? string.Empty
                 }).ToList();
 
                 var newsResponse = new NewsResponse
                 {
-                    Query = "Trending Topics",
+                    Query = query,
                     TotalResults = topics.Count,
                     Articles = formattedTopics
                 };
 
-                // Serialize the response to JSON
                 var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
                 {
                     WriteIndented = true
                 });
 
-                _logger.LogInformation("Exiting 'GetTrendingTopicsAsync' with response: {Response}", jsonResponse);
+                _logger.LogInformation("Exiting 'FormatTrendingTopics' with response: {Response}", jsonResponse);
                 return jsonResponse;
             }
             else
             {
                 _logger.LogWarning("No trending topics found.");
-                // Return an empty response or an error message in JSON
+
                 var emptyResponse = JsonSerializer.Serialize(new
                 {
                     Query = "Trending Topics",
@@ -155,11 +201,7 @@ namespace aitrailblazer.net.Services
 
         #region AI-Exposed Wrapper Functions
 
-        /// <summary>
-        /// Wrapper function to expose SearchNewsAsync for AI interactions with StopSequence "\n\n".
-        /// </summary>
-        /// <param name="userQuery">The search query entered by the user.</param>
-        /// <returns>Formatted news search results with StopSequence.</returns>
+        // Wrapper function to expose SearchNewsAsync for AI interactions
         public async Task<string> SearchNewsAsyncForAI(string userQuery)
         {
             _logger.LogInformation("Entering 'SearchNewsAsyncForAI' with userQuery: {UserQuery}", userQuery);
@@ -171,21 +213,30 @@ namespace aitrailblazer.net.Services
             return newsResponse;
         }
 
-        /// <summary>
-        /// Wrapper function to expose GetTrendingTopicsAsync for AI interactions with StopSequence "\n\n".
-        /// </summary>
-        /// <returns>Formatted trending topics with StopSequence.</returns>
-        public async Task<string> GetTrendingTopicsAsyncForAI()
+        // Wrapper function to expose GetTrendingTopicsAsync for AI interactions
+        public async Task<string> GetTrendingTopicsAsyncForAI(string userQuery)
         {
-            _logger.LogInformation("Entering 'GetTrendingTopicsAsyncForAI'");
+            _logger.LogInformation("Entering 'GetTrendingTopicsAsyncForAI' with userQuery: {UserQuery}", userQuery);
 
-            var newsResponse = await GetTrendingTopicsAsync();
-
+            var newsResponse = await GetTrendingTopicsAsync(userQuery);
 
             _logger.LogInformation("Exiting 'GetTrendingTopicsAsyncForAI' with newsResponse length: {OutputLength}", newsResponse.Length);
 
             return newsResponse;
         }
+
+        // Wrapper function to expose GetHeadlineNewsAsync for AI interactions
+        public async Task<string> GetHeadlineNewsAsyncForAI()
+        {
+            _logger.LogInformation("Entering 'GetHeadlineNewsAsyncForAI'");
+
+            var newsResponse = await GetHeadlineNewsAsync();
+
+            _logger.LogInformation("Exiting 'GetHeadlineNewsAsyncForAI' with newsResponse length: {OutputLength}", newsResponse.Length);
+
+            return newsResponse;
+        }
+
         #endregion
     }
 }

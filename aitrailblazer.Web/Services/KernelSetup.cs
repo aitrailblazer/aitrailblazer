@@ -12,7 +12,7 @@ public class KernelSetup
     private readonly NewsFunctions _newsFunctions;
     private readonly ILogger<KernelSetup> _logger;
 
-    public KernelSetup(TimeFunctions timeFunctions, KQLFunctions kqlFunctions, NewsFunctions newsFunctions,ILogger<KernelSetup> logger)
+    public KernelSetup(TimeFunctions timeFunctions, NewsFunctions newsFunctions, KQLFunctions kqlFunctions,ILogger<KernelSetup> logger)
     {
         _timeFunctions = timeFunctions;
         _kqlFunctions = kqlFunctions;
@@ -318,7 +318,12 @@ public class KernelSetup
         return kernel;
     }
 
-    public Kernel SetupNewsPlugin(Kernel kernel)
+    /// <summary>
+    /// Sets up the News plugin by registering all available news-related functions.
+    /// </summary>
+    /// <param name="kernel">The Kernel instance to which the plugin will be added.</param>
+    /// <returns>The Kernel instance with the News plugin registered.</returns>
+    public Kernel AddNewsPlugin(Kernel kernel)
     {
         kernel.Plugins.AddFromFunctions("news_plugin",
             new[]
@@ -326,16 +331,25 @@ public class KernelSetup
                 KernelFunctionFactory.CreateFromMethod(
                     method: new Func<string, Task<string>>(_newsFunctions.SearchNewsAsyncForAI),
                     functionName: "search_news_async_ai",
-                    description: "Search news articles using Bing News Search and return results formatted for AI interactions."
+                    description: "Performs a search for news articles based on a specified query using Bing News Search. Returns the results in a structured format optimized for AI interactions."
                 ),
+
                 KernelFunctionFactory.CreateFromMethod(
-                    method: new Func<Task<string>>(_newsFunctions.GetTrendingTopicsAsyncForAI),
+                    method: new Func<string, Task<string>>(_newsFunctions.GetTrendingTopicsAsyncForAI),
                     functionName: "get_trending_topics_ai",
-                    description: "Get trending topics from Bing News and return results formatted for AI interactions."
+                    description: "Retrieves a list of trending news topics from Bing News, highlighting popular stories across various categories. Returns results formatted for seamless AI interactions."
+                ),
+
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<Task<string>>(_newsFunctions.GetHeadlineNewsAsyncForAI),
+                    functionName: "get_headline_news_ai",
+                    description: "Fetches today's top news articles across all major categories from Bing News. Provides results in a structured format ideal for AI-driven responses."
                 )
+
             });
 
         _logger.LogInformation("News plugin setup completed successfully.");
         return kernel;
     }
+    
 }

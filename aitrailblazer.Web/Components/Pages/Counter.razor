@@ -1,6 +1,10 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
 
+@using aitrailblazer.net.Services
+
+@inject SKHandler skHandler
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -9,11 +13,20 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+@response
+
 @code {
+    private string response;
+
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        response = await skHandler.SKTestAsync("programming");
+
     }
 }

@@ -4,6 +4,7 @@ namespace aitrailblazer.net.Services
 #pragma warning disable CS0162 // unreachable code is managed via boolean settings
 
     using Microsoft.SemanticKernel;
+    using Microsoft.SemanticKernel.Connectors.AzureAIInference;
 
     public class KernelService
     {
@@ -19,25 +20,44 @@ namespace aitrailblazer.net.Services
             IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
 
             string deploymentName;
-            string endpoint;
             string apiKey;
+            string endpoint;
+
             //string modelId;  gpt-4o-mini gpt-4o
             
 
             deploymentName = modelId;
+            // Convert the string endpoint to a Uri
+            Uri endpointUri = new Uri(_parametersAzureService.AzureOpenAIEndpoint03);
             endpoint = _parametersAzureService.AzureOpenAIEndpoint03;
+
             apiKey = _parametersAzureService.AzureOpenAIKey03;
             modelId = modelId;
-            //Console.WriteLine($"Deployment Name: {deploymentName}");
-            //Console.WriteLine($"Endpoint: {endpoint}");
-            //Console.WriteLine($"API Key: {apiKey}");
-            //Console.WriteLine($"Model ID: {modelId}");
+            Console.WriteLine($"Deployment Name: {deploymentName}");
+            Console.WriteLine($"Endpoint: {endpoint}");
+            // https://aitrailblazereastus2.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-08-01-preview
+            Console.WriteLine($"endpointUri: {endpointUri}");
+
+            Console.WriteLine($"API Key: {apiKey}");
+            Console.WriteLine($"Model ID: {modelId}");
 
             kernelBuilder.AddAzureOpenAIChatCompletion(
                 deploymentName: deploymentName,
                 endpoint: endpoint,
                 apiKey: apiKey,
-                modelId: modelId);
+                modelId: modelId, // Optional name of the underlying model if the deployment name doesn't match the model name
+                //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                httpClient: new HttpClient() // Optional; if not provided, the HttpClient from the kernel will be used
+                );
+
+
+            //kernelBuilder.AddAzureAIInferenceChatCompletion(
+            //    endpoint: endpointUri,
+            //    apiKey: apiKey,
+            //    modelId: modelId,
+            //    serviceId: "AzureOpenAIChat",
+            //    httpClient: new HttpClient());
+
 
             return kernelBuilder;
         }

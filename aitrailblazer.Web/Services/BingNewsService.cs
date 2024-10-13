@@ -14,7 +14,9 @@ using aitrailblazer.net.Services; // Assuming this is the namespace where Parame
 using System.Net.Http; // Added for HttpClient
 using System.Text.Json; // Added for JSON serialization
 using System.Text.Json.Serialization; // Added for JSON serialization options
-
+using OurNewsArticle = aitrailblazer.net.Models.NewsArticle;
+using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle;
+using aitrailblazer.net.Models;
 public class BingNewsService
 {
     private readonly NewsRequestBuilder _newsRequestBuilder;
@@ -122,11 +124,10 @@ public class BingNewsService
         }
     }
 
-    // Method to search for news articles
     public async Task<News?> SearchNewsAsync(
-        string query,
-        Action<SearchRequestBuilder.SearchRequestBuilderGetQueryParameters>? queryParameters = null,
-        CancellationToken cancellationToken = default)
+       string query,
+       Action<SearchRequestBuilder.SearchRequestBuilderGetQueryParameters>? queryParameters = null,
+       CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -158,22 +159,51 @@ public class BingNewsService
             {
                 _logger.LogInformation("Successfully retrieved news articles for query '{Query}'. Count: {Count}", query, news.Value.Count);
 
-                // Log details of each news article
-                foreach (var article in news.Value)
+                // Collect all formatted articles into a list of OurNewsArticle
+                var formattedArticles = news.Value.Select(article =>
                 {
-                    // Attempt to access the publication date
-                    var datePublished = GetArticleDatePublished(article);
+                    // Call GetArticleDatePublished to retrieve the date published value
+                    var datePublished = GetArticleDatePublished(article) ?? "Date not available";
 
                     _logger.LogInformation("News Article - Title: {Title}, URL: {Url}, DatePublished: {DatePublished}",
-                        article.Name, article.Url, datePublished ?? "N/A");
-                }
+                        article.Name, article.Url, datePublished);
+
+                    return new OurNewsArticle
+                    {
+                        Name = article.Name,
+                        Url = article.Url,
+                        Description = article.Description ?? "No description available",
+                        ThumbnailUrl = article.Image?.Thumbnail?.ContentUrl ?? string.Empty,
+                        DatePublished = datePublished,  // Assign the found datePublished
+                        Source = article.Provider != null && article.Provider.Any()
+                            ? article.Provider.FirstOrDefault()?.Name ?? "Unknown source"
+                            : "Unknown source"
+                    };
+                }).ToList();
+
+                // You can log or serialize the formatted articles
+                var newsResponse = new NewsResponse
+                {
+                    Query = query,
+                    TotalResults = formattedArticles.Count,
+                    Articles = formattedArticles
+                };
+
+                var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                _logger.LogInformation("Formatted News Response: {Response}", jsonResponse);
+
+                // Return the original raw news object as per your requirement
+                return news;
             }
             else
             {
                 _logger.LogWarning("News search response is null or empty for query '{Query}'.", query);
+                return null;
             }
-
-            return news;
         }
         catch (ApiException ex)
         {
@@ -191,8 +221,73 @@ public class BingNewsService
         }
     }
 
+    // Method to search for news articles
+
+    public async Task<News?> GetHeadlineNewsAsync(
+        Action<SearchRequestBuilder.SearchRequestBuilderGetQueryParameters>? queryParameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Starting GetHeadlineNewsAsync to fetch today's top news.");
+
+        try
+        {
+            _logger.LogDebug("Building request for top news search.");
+
+            // Prepare the API request for top news with 'q' set to an empty string
+            var news = await _newsRequestBuilder.Search.GetAsync(requestConfiguration =>
+            {
+                requestConfiguration.QueryParameters = new SearchRequestBuilder.SearchRequestBuilderGetQueryParameters
+                {
+                    Q = "Get today's top news" // Set 'q' to an empty string to fetch today's top news
+                };
+
+                if (queryParameters != null)
+                {
+                    _logger.LogDebug("Applying additional query parameters for top news search.");
+                    queryParameters.Invoke(requestConfiguration.QueryParameters);
+                }
+            }, cancellationToken).ConfigureAwait(false);
+
+            if (news != null && news.Value != null)
+            {
+                _logger.LogInformation("Successfully retrieved today's top news. Count: {Count}", news.Value.Count);
+
+                // Log details of each top news article
+                foreach (var article in news.Value)
+                {
+                    // Attempt to access the publication date
+                    var datePublished = GetArticleDatePublished(article);
+
+                    _logger.LogInformation("Top News Article - Title: {Title}, URL: {Url}, DatePublished: {DatePublished}",
+                        article.Name, article.Url, datePublished ?? "N/A");
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Top news search response is null or empty.");
+            }
+
+            return news;
+        }
+        catch (ApiException ex)
+        {
+            _logger.LogError(ex, "API Error while fetching top news: {Message}", ex.Message);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching top news: {Message}", ex.Message);
+            throw;
+        }
+        finally
+        {
+            _logger.LogInformation("GetHeadlineNewsAsync completed.");
+        }
+    }
+
+
     // Helper method to extract DatePublished from the article
-    private string? GetArticleDatePublished(NewsArticle article)
+    private string? GetArticleDatePublished(CognitiveServices.Sdk.Models.NewsArticle article)
     {
         // Attempt to get the DatePublished property
         if (article.AdditionalData != null && article.AdditionalData.TryGetValue("datePublished", out var datePublishedValue))
@@ -231,13 +326,27 @@ public class LoggingHandler : DelegatingHandler
         // Read the raw JSON response
         var content = await response.Content.ReadAsStringAsync();
 
-        // Log the raw JSON
-        _logger.LogInformation("Received response from {Url} with status code {StatusCode}:\n{Json}",
-            request.RequestUri, response.StatusCode, content);
+        // Attempt to format the JSON content for better readability
+        try
+        {
+            var parsedJson = Newtonsoft.Json.Linq.JObject.Parse(content);
+            var formattedJson = parsedJson.ToString(Newtonsoft.Json.Formatting.Indented);
+
+            // Log the formatted JSON
+            _logger.LogInformation("Received response from {Url} with status code {StatusCode}:\n{Json}",
+                request.RequestUri, response.StatusCode, formattedJson);
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            // If the content is not valid JSON, log it as-is
+            _logger.LogInformation("Received response from {Url} with status code {StatusCode}:\n{Json}",
+                request.RequestUri, response.StatusCode, content);
+        }
 
         // Return the response
         return response;
     }
+
 }
 
 public class BingApiKeyAuthenticationProvider : IAuthenticationProvider

@@ -102,3 +102,4 @@ dotnet new classlib
 
 dotnet add package Microsoft.Kiota.Authentication.Azure 
 dotnet add package Microsoft.Kiota.Bundle 
+

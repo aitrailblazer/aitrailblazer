@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/aitrailblazer.ApiService.props" />
-</Project>

@@ -238,6 +238,7 @@ body, html, .container, .fixed-top-nav, .chat-pane-container {
   border-top: 1px solid #ddd;
   text-align: right;
 }
+
 .response-card {
   margin-top: 20px;
   padding: 15px;
@@ -247,6 +248,53 @@ body, html, .container, .fixed-top-nav, .chat-pane-container {
   position: relative;
   transition: opacity 0.3s ease, max-height 0.3s ease;
   opacity: 1;
+  height: auto;
+  max-height: 90vh;
+}
+
+.article-card {
+  background-color: var(--neutral-fill-rest);
+  border-radius: 8px;
+  border: 1px solid var(--neutral-outline-rest);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.article-card img {
+  border-radius: 4px;
+  max-width: 180px;
+  margin-right: 16px;
+}
+
+.article-card a {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0078D4;
+  text-decoration: none;
+}
+
+.article-card a:hover {
+  text-decoration: underline;
+}
+
+.article-card p {
+  margin-top: 8px;
+  color: var(--neutral-foreground-rest);
+  line-height: 1.5;
+}
+
+.news-articles-container {
+    overflow-y: auto;
+    max-height: 880px; /* Adjusted height for more scrollable area */
 }
 
 .response-label {

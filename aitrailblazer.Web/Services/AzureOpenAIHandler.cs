@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+
 using System;
 using System.Web;
 using System.Text.Json.Nodes;
@@ -18,6 +20,7 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Plugins.Web;
 using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
+
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Extensions;
@@ -40,6 +43,8 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using aitrailblazer.net.Models;
+using OpenAI.Chat;
 
 namespace aitrailblazer.net.Services
 {
@@ -1542,13 +1547,21 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation($"GetASAPQuick An unexpected error occurred: {ex.Message}");
-                    return "An unexpected error occurred during execution. Please try again.";
+                    _logger.LogError(ex, "GetASAPQuick An unexpected error occurred.");
+                    if (ex.InnerException != null)
+                    {
+                        _logger.LogError(ex.InnerException, "Inner Exception Details");
+                    }
+                    return "A critical error occurred. Please contact support.";
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"GetASAPQuick A critical error occurred: {ex.Message}");
+                _logger.LogError(ex, "GetASAPQuick  A critical error occurred.");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
                 return "A critical error occurred. Please contact support.";
             }
         }
@@ -2339,46 +2352,92 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             }
         }
 
-        /// <summary>
-        /// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
-        /// then performs the web search and returns the search result content.
-        /// </summary>
-        /// <param name="input">The natural language description for the search.</param>
-        /// <returns>The search result content as a string.</returns>
+        public async Task<string> SKTestAsync(string input)
+        {
+            int maxTokens = 1024;
+
+            string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            Kernel kernel = kernelBuilder.Build();
+
+            // Create a semantic function
+            var prompt = "Tell me a joke about {{$input}}";
+            var jokeFunction = kernel.CreateFunctionFromPrompt(prompt);
+
+            try
+            {
+                // Run the function
+                var result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
+                var searchResult = result.GetValue<string>();
+
+                _logger.LogInformation($"SKTestAsync Generated search Result: {searchResult}");
+
+                return searchResult;
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler SKTestAsync Argument error: {ex.Message}");
+                return "An error occurred with the arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler SKTestAsync Invalid operation: {ex.Message}");
+                return "An invalid operation occurred during function execution. Please try again.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler SKTestAsync Unexpected error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again.";
+            }
+        }
+
+ /// <summary>
+/// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
+/// then performs the web search and returns the search result content.
+/// </summary>
+/// <param name="input">The natural language description for the search.</param>
+/// <returns>The search result content as a string.</returns>
 public async Task<string> ShowNewsAsync(string input)
 {
-    int maxTokens = 1024;
+    const int maxTokens = 16000;
+    const string modelId = "gpt-4o"; // Ensure this is the correct model ID
+    const double temperature = 0.1;
+    const double topP = 0.1;
+    const int seed = 356;
+
     _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
+
+    // Input validation
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        _logger.LogWarning("Input cannot be null or empty.");
+        return "Invalid input. Please provide a valid search query.";
+    }
 
     try
     {
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            _logger.LogInformation("Input cannot be null or empty.");
-            return "Invalid input.";
-        }
-
+        _logger.LogInformation("Building kernel and setting up news plugin.");
+        
         // Build the kernel
-        string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
         IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
         Kernel kernel = kernelBuilder.Build();
 
-        // Setup the Search URL plugin
-        kernel = _kernelSetup.SetupNewsPlugin(kernel);
-
-        double temperature = 0.1;
-        double topP = 0.1;
-        int seed = 356;
+        // Setup the News plugin
+        kernel = _kernelSetup.AddNewsPlugin(kernel);
 
         // Configure execution settings
-        var executionSettings = new AzureOpenAIPromptExecutionSettings
+        var executionSettings = new OpenAIPromptExecutionSettings
         {
             Temperature = temperature,
             TopP = topP,
             MaxTokens = maxTokens,
-            //StopSequences = new string[] { "\n\n" },
             Seed = seed,
-            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+            ResponseFormat = typeof(NewsResponse) // Specify the expected response type
         };
 
         var arguments = new KernelArguments(executionSettings)
@@ -2386,75 +2445,96 @@ public async Task<string> ShowNewsAsync(string input)
             ["Input"] = input
         };
 
-        // Define the prompt with explicit instructions and available Search URL functions
+        // Define the prompt
         string prompt = @"
-You are an assistant that can perform the following actions based on user input:
+You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to news and content searches.
 
-1. Search for news articles using the `search_news_async_ai` function.
-2. Retrieve trending news topics using the `get_trending_topics_ai` function.
+You have access to the following functions:
 
-Available functions:
-- search_news_async_ai: Search news articles using Bing News Search and return results formatted for AI interactions.
-- get_trending_topics_ai: Get trending topics from Bing News and return results formatted for AI interactions.
+1. **Search for news articles** using the `search_news_async_ai` function.
+   - This function searches for specific news articles based on a user-defined query and returns results in a structured JSON format.
 
-Examples:
+2. **Retrieve trending news topics** using the `get_trending_topics_ai` function.
+   - This function retrieves trending and popular news topics from Bing News and returns results in a structured JSON format.
 
-Example 1:
-Natural language description: Find the latest advancements in artificial intelligence.
-Search Action: search_news_async_ai('latest advancements in artificial intelligence')
+3. **Retrieve today's top news articles** using the `get_headline_news_ai` function.
+   - This function fetches top news articles across all categories from Bing News and returns results in a structured JSON format.
 
-Example 2:
-Natural language description: What are the trending news topics today?
-Search Action: get_trending_topics_ai()
+### Available Functions:
+- `search_news_async_ai`: Search for specific news articles based on user input.
+- `get_trending_topics_ai`: Retrieve trending and popular news topics.
+- `get_headline_news_ai`: Fetch today's top news articles across all categories.
 
-Now, based on the following input, determine which function to use and provide the appropriate function call.
+### Instructions:
+Based on the user's input, analyze the query and determine the most appropriate function to call. 
+- If the user asks for specific news articles on a certain topic, use the `search_news_async_ai` function.
+- If the user is looking for trending topics or general popular news, use the `get_trending_topics_ai` function.
+- If the user requests top news or headline news, use the `get_headline_news_ai` function.
 
-Natural language description: {{$Input}}
+After determining the function, execute it, and return the response in JSON format.
 
-Search Action:
-        ";
+**User Input:** {{$Input}}
 
-        _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync invoking kernel with prompt.");
+**Chosen Action:**
+";
+
+        _logger.LogInformation("Executing kernel with provided input.");
 
         // Execute the kernel function
-        try
-        {
-            var result = await kernel.InvokePromptAsync(prompt, arguments);
+        var result = await kernel.InvokePromptAsync(prompt, arguments);
 
-            var searchResult = result.GetValue<string>();
+        if (result != null)
+        {
+            string newsResponse = result.ToString();
 
-            _logger.LogInformation($"ShowNewsAsync Generated search Result: {searchResult}");
-
-            return searchResult;
-        }
-        catch (ArgumentException ex)
-        {
-            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Argument error: {ex.Message}");
-            return "An error occurred with the arguments. Please check your input and try again.";
-        }
-        catch (InvalidOperationException ex)
-        {
-            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Invalid operation: {ex.Message}");
-            return "An invalid operation occurred during function execution. Please try again.";
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"AzureOpenAIHandler ShowNewsAsync Unexpected error: {ex.Message}");
-            if (ex.InnerException != null)
+            // Format the response with proper indentation
+            try
             {
-                _logger.LogError(ex.InnerException, "Inner Exception Details");
+                var newsResponseObj = System.Text.Json.JsonSerializer.Deserialize<NewsResponse>(newsResponse);
+                var formattedNewsResponse = System.Text.Json.JsonSerializer.Serialize(newsResponseObj, new System.Text.Json.JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                // Log the formatted response
+                _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{FormattedNewsResponse}", formattedNewsResponse);
+
+                return formattedNewsResponse;
             }
-            return "An unexpected error occurred during execution. Please try again.";
+            catch (System.Text.Json.JsonException jsonEx)
+            {
+                _logger.LogError(jsonEx, "Error while formatting the news response.");
+                return newsResponse; // Return the raw response if formatting fails
+            }
         }
+        else
+        {
+            _logger.LogError("ShowNewsAsync failed to generate a valid response.");
+            return "No results were generated from the search.";
+        }
+    }
+    catch (ArgumentException ex)
+    {
+        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Argument error: {Message}", ex.Message);
+        return "An error occurred with the input arguments. Please check your input and try again.";
+    }
+    catch (InvalidOperationException ex)
+    {
+        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Invalid operation: {Message}", ex.Message);
+        return "An invalid operation occurred during execution. Please try again.";
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync A critical error occurred.");
+        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync encountered an unexpected error.");
         if (ex.InnerException != null)
         {
             _logger.LogError(ex.InnerException, "Inner Exception Details");
         }
-        return "A critical error occurred. Please contact support.";
+        return "An unexpected error occurred during execution. Please try again later.";
+    }
+    finally
+    {
+        _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
     }
 }
 

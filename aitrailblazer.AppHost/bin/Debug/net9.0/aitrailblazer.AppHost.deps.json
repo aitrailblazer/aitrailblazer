@@ -8,21 +8,21 @@
     ".NETCoreApp,Version=v9.0": {
       "aitrailblazer.AppHost/1.0.0": {
         "dependencies": {
-          "Aspire.Dashboard.Sdk.osx-arm64": "8.2.0",
-          "Aspire.Hosting.AppHost": "8.2.0",
-          "Aspire.Hosting.Orchestration.osx-arm64": "8.2.0"
+          "Aspire.Dashboard.Sdk.osx-arm64": "8.2.1",
+          "Aspire.Hosting.AppHost": "8.2.1",
+          "Aspire.Hosting.Orchestration.osx-arm64": "8.2.1"
         },
         "runtime": {
           "aitrailblazer.AppHost.dll": {}
         }
       },
-      "Aspire.Dashboard.Sdk.osx-arm64/8.2.0": {},
-      "Aspire.Hosting/8.2.0": {
+      "Aspire.Dashboard.Sdk.osx-arm64/8.2.1": {},
+      "Aspire.Hosting/8.2.1": {
         "dependencies": {
-          "Google.Protobuf": "3.27.3",
+          "Google.Protobuf": "3.28.0",
           "Grpc.AspNetCore": "2.65.0",
           "Grpc.Net.ClientFactory": "2.65.0",
-          "Grpc.Tools": "2.65.0",
+          "Grpc.Tools": "2.66.0",
           "KubernetesClient": "14.0.9",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.Extensions.Configuration.Binder": "8.0.2",
@@ -33,12 +33,13 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
           "Microsoft.Extensions.Options": "8.0.2",
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "Polly.Core": "8.4.1"
+          "Polly.Core": "8.4.1",
+          "System.Text.Json": "8.0.4"
         },
         "runtime": {
           "lib/net8.0/Aspire.Hosting.dll": {
-            "assemblyVersion": "8.2.0.0",
-            "fileVersion": "8.200.24.42805"
+            "assemblyVersion": "8.2.1.0",
+            "fileVersion": "8.200.124.47304"
           }
         },
         "resources": {
@@ -83,13 +84,13 @@
           }
         }
       },
-      "Aspire.Hosting.AppHost/8.2.0": {
+      "Aspire.Hosting.AppHost/8.2.1": {
         "dependencies": {
-          "Aspire.Hosting": "8.2.0",
-          "Google.Protobuf": "3.27.3",
+          "Aspire.Hosting": "8.2.1",
+          "Google.Protobuf": "3.28.0",
           "Grpc.AspNetCore": "2.65.0",
           "Grpc.Net.ClientFactory": "2.65.0",
-          "Grpc.Tools": "2.65.0",
+          "Grpc.Tools": "2.66.0",
           "KubernetesClient": "14.0.9",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.Extensions.Configuration.Binder": "8.0.2",
@@ -100,16 +101,17 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
           "Microsoft.Extensions.Options": "8.0.2",
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "Polly.Core": "8.4.1"
+          "Polly.Core": "8.4.1",
+          "System.Text.Json": "8.0.4"
         },
         "runtime": {
           "lib/net8.0/Aspire.Hosting.AppHost.dll": {
-            "assemblyVersion": "8.2.0.0",
-            "fileVersion": "8.200.24.42805"
+            "assemblyVersion": "8.2.1.0",
+            "fileVersion": "8.200.124.47304"
           }
         }
       },
-      "Aspire.Hosting.Orchestration.osx-arm64/8.2.0": {},
+      "Aspire.Hosting.Orchestration.osx-arm64/8.2.1": {},
       "Fractions/7.3.0": {
         "runtime": {
           "lib/netstandard2.1/Fractions.dll": {
@@ -118,19 +120,19 @@
           }
         }
       },
-      "Google.Protobuf/3.27.3": {
+      "Google.Protobuf/3.28.0": {
         "runtime": {
           "lib/net5.0/Google.Protobuf.dll": {
-            "assemblyVersion": "3.27.3.0",
-            "fileVersion": "3.27.3.0"
+            "assemblyVersion": "3.28.0.0",
+            "fileVersion": "3.28.0.0"
           }
         }
       },
       "Grpc.AspNetCore/2.65.0": {
         "dependencies": {
-          "Google.Protobuf": "3.27.3",
+          "Google.Protobuf": "3.28.0",
           "Grpc.AspNetCore.Server.ClientFactory": "2.65.0",
-          "Grpc.Tools": "2.65.0"
+          "Grpc.Tools": "2.66.0"
         }
       },
       "Grpc.AspNetCore.Server/2.65.0": {
@@ -199,7 +201,7 @@
           }
         }
       },
-      "Grpc.Tools/2.65.0": {},
+      "Grpc.Tools/2.66.0": {},
       "IdentityModel/5.2.0": {
         "runtime": {
           "lib/net5.0/IdentityModel.dll": {
@@ -277,7 +279,7 @@
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.Extensions.Configuration.FileExtensions": "8.0.0",
           "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0",
-          "System.Text.Json": "8.0.0"
+          "System.Text.Json": "8.0.4"
         }
       },
       "Microsoft.Extensions.Configuration.UserSecrets/8.0.0": {
@@ -397,7 +399,7 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
           "Microsoft.Extensions.Logging.Configuration": "8.0.0",
           "Microsoft.Extensions.Options": "8.0.2",
-          "System.Text.Json": "8.0.0"
+          "System.Text.Json": "8.0.4"
         }
       },
       "Microsoft.Extensions.Logging.Debug/8.0.0": {
@@ -423,7 +425,7 @@
           "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
           "Microsoft.Extensions.Options": "8.0.2",
           "Microsoft.Extensions.Primitives": "8.0.0",
-          "System.Text.Json": "8.0.0"
+          "System.Text.Json": "8.0.4"
         }
       },
       "Microsoft.Extensions.Options/8.0.2": {
@@ -515,7 +517,7 @@
         }
       },
       "System.Text.Encodings.Web/8.0.0": {},
-      "System.Text.Json/8.0.0": {
+      "System.Text.Json/8.0.4": {
         "dependencies": {
           "System.Text.Encodings.Web": "8.0.0"
         }
@@ -536,33 +538,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Aspire.Dashboard.Sdk.osx-arm64/8.2.0": {
+    "Aspire.Dashboard.Sdk.osx-arm64/8.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vLwLcWEBJZMToxT2tQKp6atxhC7bnWHK41Y5GjAAYbOpTi4sG7fMfJRXD1OUJpt6fW5W+r9fIzQqfzTpGK8AyA==",
-      "path": "aspire.dashboard.sdk.osx-arm64/8.2.0",
-      "hashPath": "aspire.dashboard.sdk.osx-arm64.8.2.0.nupkg.sha512"
+      "sha512": "sha512-Roz0Et6Y5b81ftjtDVtWGWIV4u+HcSdJafoZKeBrAZwEdMKudCv9RxVgy7sk7pRA/7YxUAphyffxKFU4xBIQ3Q==",
+      "path": "aspire.dashboard.sdk.osx-arm64/8.2.1",
+      "hashPath": "aspire.dashboard.sdk.osx-arm64.8.2.1.nupkg.sha512"
     },
-    "Aspire.Hosting/8.2.0": {
+    "Aspire.Hosting/8.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-HxqwyK6/V5RJWZtGcO6TjHvW53vbYrG02MrTGhRhmYgMaQcTVRKFht+Slk0IQZ5EHz7flH+Wm/pAb3496p9i6Q==",
-      "path": "aspire.hosting/8.2.0",
-      "hashPath": "aspire.hosting.8.2.0.nupkg.sha512"
+      "sha512": "sha512-RYFLjJIW4eud/dx7hOx/8g09rKwibNyB1eKc5C+BgvgTTTAQ1BxVbb2YoRssc2cu0ANmIGPgzcAJik+M/raqUA==",
+      "path": "aspire.hosting/8.2.1",
+      "hashPath": "aspire.hosting.8.2.1.nupkg.sha512"
     },
-    "Aspire.Hosting.AppHost/8.2.0": {
+    "Aspire.Hosting.AppHost/8.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-s/wyGdvFnk2Xtu7fyYqAkxOxfDVxyiY0YYgcx1Jx8m9bBRk1UGdSq+muXjV8ADus4nPas1UWScBAtdxmJ4BjkQ==",
-      "path": "aspire.hosting.apphost/8.2.0",
-      "hashPath": "aspire.hosting.apphost.8.2.0.nupkg.sha512"
+      "sha512": "sha512-9d+PaKrKSWgP1PIqQmlFNv7Q8+0N19ONVKfIPTXhDcyq2qv78/sGYV++K/cDXzX6P9Ult6JEdCHiii0t+PHmZA==",
+      "path": "aspire.hosting.apphost/8.2.1",
+      "hashPath": "aspire.hosting.apphost.8.2.1.nupkg.sha512"
     },
-    "Aspire.Hosting.Orchestration.osx-arm64/8.2.0": {
+    "Aspire.Hosting.Orchestration.osx-arm64/8.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Xuyzp2I0tCFzHNrbGQWUpG02W65mKssOHFu3ejovAQtiuWvwR7EhFC4qKMSL6nIdY07gj0Uhc169YtMaEVAP7A==",
-      "path": "aspire.hosting.orchestration.osx-arm64/8.2.0",
-      "hashPath": "aspire.hosting.orchestration.osx-arm64.8.2.0.nupkg.sha512"
+      "sha512": "sha512-68lq6cRXGVJwdamQIKtloV59Zqrf1qx7sKEO83JkjR8cCDUMMc1aFEEz/yl7oH7yKhDWFG5JcU4nG2/lMW7IMQ==",
+      "path": "aspire.hosting.orchestration.osx-arm64/8.2.1",
+      "hashPath": "aspire.hosting.orchestration.osx-arm64.8.2.1.nupkg.sha512"
     },
     "Fractions/7.3.0": {
       "type": "package",
@@ -571,12 +573,12 @@
       "path": "fractions/7.3.0",
       "hashPath": "fractions.7.3.0.nupkg.sha512"
     },
-    "Google.Protobuf/3.27.3": {
+    "Google.Protobuf/3.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ld+oe1+Mc6no643d8otGm6Zylu7KBpGnAiqOW3nOpV8VxUuqhz70vRNKUU5grLaCeuUQVF8t9dm8TgmkTMr1Tg==",
-      "path": "google.protobuf/3.27.3",
-      "hashPath": "google.protobuf.3.27.3.nupkg.sha512"
+      "sha512": "sha512-lVsLcLIHpkOABswgydr0sjkIhSN5XE9C6AgLXxvMsa6pSSJIpmAIPvK/NZpuF+HTB6xp1R8T5nhLausWVOrU/w==",
+      "path": "google.protobuf/3.28.0",
+      "hashPath": "google.protobuf.3.28.0.nupkg.sha512"
     },
     "Grpc.AspNetCore/2.65.0": {
       "type": "package",
@@ -627,12 +629,12 @@
       "path": "grpc.net.common/2.65.0",
       "hashPath": "grpc.net.common.2.65.0.nupkg.sha512"
     },
-    "Grpc.Tools/2.65.0": {
+    "Grpc.Tools/2.66.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2HX7+tPCIXwx1nsyj2h0i703D8SM2CMTUqdjDHAsU3HmKKksMJ7K6x31Rhg9yLJsW76OJItyoD9fk7W3HP/Wgw==",
-      "path": "grpc.tools/2.65.0",
-      "hashPath": "grpc.tools.2.65.0.nupkg.sha512"
+      "sha512": "sha512-URTltx2E0aTGQqVW+H09AZiGR/qyQ3naHPymSG1/Ytgm8bPdjSltnsIFanbxb7rXxdYwGzLFGy82R82M1UktXg==",
+      "path": "grpc.tools/2.66.0",
+      "hashPath": "grpc.tools.2.66.0.nupkg.sha512"
     },
     "IdentityModel/5.2.0": {
       "type": "package",
@@ -914,12 +916,12 @@
       "path": "system.text.encodings.web/8.0.0",
       "hashPath": "system.text.encodings.web.8.0.0.nupkg.sha512"
     },
-    "System.Text.Json/8.0.0": {
+    "System.Text.Json/8.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-OdrZO2WjkiEG6ajEFRABTRCi/wuXQPxeV6g8xvUJqdxMvvuCCEk86zPla8UiIQJz3durtUEbNyY/3lIhS0yZvQ==",
-      "path": "system.text.json/8.0.0",
-      "hashPath": "system.text.json.8.0.0.nupkg.sha512"
+      "sha512": "sha512-bAkhgDJ88XTsqczoxEMliSrpijKZHhbJQldhAmObj/RbrN3sU5dcokuXmWJWsdQAhiMJ9bTayWsL1C9fbbCRhw==",
+      "path": "system.text.json/8.0.4",
+      "hashPath": "system.text.json.8.0.4.nupkg.sha512"
     },
     "YamlDotNet/16.0.0": {
       "type": "package",
