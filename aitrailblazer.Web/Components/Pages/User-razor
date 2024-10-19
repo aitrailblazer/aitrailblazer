@@ -871,7 +871,8 @@ else
 
 
             // Fetch calendar events
-            calendarEventsResult = await GraphService.GetCalendarEventsAsync(20, startOfWeek, endOfWeek); // Get the next 20 events
+            //calendarEventsResult = await GraphService.GetCalendarViewAsync(20, startOfWeek, endOfWeek); // Get the next 20 events
+            string result  = await GraphService.GetCalendarViewAsync(20, startOfWeek, endOfWeek); // Get the next 20 events
 
             if (calendarEventsResult.Events != null && calendarEventsResult.Events.Any())
             {

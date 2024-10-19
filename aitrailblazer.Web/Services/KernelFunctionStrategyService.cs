@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Agents.Chat;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.TemplateEngine;
 using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+
 
 #pragma warning disable SKEXP0110
 
@@ -266,28 +266,33 @@ namespace aitrailblazer.net.Services
         }
 
         /// <summary>
-        /// Serializes an object to a JSON string.
+        /// Serializes an object to a JSON string using Newtonsoft.Json.
         /// </summary>
         /// <param name="data">The data to serialize.</param>
         /// <returns>A JSON string representation of the data.</returns>
         private string SerializeToJson(object data)
         {
-            var jsonOptions = new JsonSerializerOptions
+            var jsonSettings = new JsonSerializerSettings
             {
-                WriteIndented = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
             };
-            return JsonSerializer.Serialize(data, jsonOptions);
+            return JsonConvert.SerializeObject(data, jsonSettings);
         }
 
         /// <summary>
-        /// Returns a JSON error message.
+        /// Returns a JSON error message using Newtonsoft.Json.
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <returns>A JSON string representing the error.</returns>
         private string ReturnErrorMessage(string message)
         {
-            return JsonSerializer.Serialize(new { Error = message });
+            var errorObject = new { Error = message };
+            return JsonConvert.SerializeObject(errorObject, new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            });
         }
     }
 }

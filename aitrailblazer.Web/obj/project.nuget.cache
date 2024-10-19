@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YhduLyvZ9p4=",
+  "dgSpecHash": "0aj5jECkMEs=",
   "success": true,
   "projectFilePath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/aitrailblazer.Web.csproj",
   "expectedPackageFiles": [
@@ -43,6 +43,9 @@
     "/Users/constantinevassilev02/.nuget/packages/microsoft.bcl.asyncinterfaces/8.0.0/microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.bcl.hashcode/1.1.1/microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.bcl.timeprovider/8.0.1/microsoft.bcl.timeprovider.8.0.1.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.4/microsoft.codeanalysis.analyzers.3.3.4.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.codeanalysis.common/4.8.0/microsoft.codeanalysis.common.4.8.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.codeanalysis.csharp/4.8.0/microsoft.codeanalysis.csharp.4.8.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.ambientmetadata.application/8.10.0/microsoft.extensions.ambientmetadata.application.8.10.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.0-rc.1.24431.7/microsoft.extensions.caching.abstractions.9.0.0-rc.1.24431.7.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.caching.memory/9.0.0-rc.1.24431.7/microsoft.extensions.caching.memory.9.0.0-rc.1.24431.7.nupkg.sha512",
@@ -133,6 +136,8 @@
     "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.prompttemplates.liquid/1.22.0-alpha/microsoft.semantickernel.prompttemplates.liquid.1.22.0-alpha.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.prompty/1.22.0-alpha/microsoft.semantickernel.prompty.1.22.0-alpha.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.yaml/1.22.0/microsoft.semantickernel.yaml.1.22.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.typechat/0.1.240227.3-preview/microsoft.typechat.0.1.240227.3-preview.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.typechat.schema/0.1.240227.3-preview/microsoft.typechat.schema.0.1.240227.3-preview.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/openai/2.1.0-beta.1/openai.2.1.0-beta.1.nupkg.sha512",
@@ -158,6 +163,8 @@
     "/Users/constantinevassilev02/.nuget/packages/stef.validation/0.1.1/stef.validation.0.1.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.clientmodel/1.1.0/system.clientmodel.1.1.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.collections.immutable/7.0.0/system.collections.immutable.7.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.diagnostics.diagnosticsource/8.0.1/system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.formats.asn1/9.0.0-rc.1.24431.7/system.formats.asn1.9.0.0-rc.1.24431.7.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.globalization/4.3.0/system.globalization.4.3.0.nupkg.sha512",
@@ -169,6 +176,7 @@
     "/Users/constantinevassilev02/.nuget/packages/system.memory.data/6.0.0/system.memory.data.6.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.reflection/4.3.0/system.reflection.4.3.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.reflection.primitives/4.3.0/system.reflection.primitives.4.3.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.resources.resourcemanager/4.3.0/system.resources.resourcemanager.4.3.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.runtime/4.3.0/system.runtime.4.3.0.nupkg.sha512",
@@ -188,5 +196,16 @@
     "/Users/constantinevassilev02/.nuget/packages/timezoneconverter/6.1.0/timezoneconverter.6.1.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/yamldotnet/15.3.0/yamldotnet.15.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Extensions.Caching.Memory' 9.0.0-rc.1.24431.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
+      "libraryId": "Microsoft.Extensions.Caching.Memory",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

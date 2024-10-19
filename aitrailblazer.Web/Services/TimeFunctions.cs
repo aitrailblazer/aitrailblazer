@@ -496,14 +496,14 @@ namespace aitrailblazer.net.Services
         /// Wrapper function to expose GetNow for AI interactions with StopSequence "\n\n".
         /// </summary>
         /// <returns>Formatted current date string with StopSequence.</returns>
-        public string GetNowForAI()
-        {
-            DateTime now = GetNow();
-            string formattedNow = now.ToString("yyyy-MM-dd");
-            string aiReadyOutput = $"The current date is {formattedNow}.\n\n"; // "\n\n" as StopSequence
-            _logger.LogInformation($"Function 'GetNowForAI' called. Returning: {aiReadyOutput}");
-            return aiReadyOutput;
-        }
+        ///public string GetNowForAI()
+        //{
+        //    DateTime now = GetNow();
+        //    string formattedNow = now.ToString("yyyy-MM-dd");
+        //    string aiReadyOutput = $"The current date is {formattedNow}.\n\n"; // "\n\n" as StopSequence
+        //    _logger.LogInformation($"Function 'GetNowForAI' called. Returning: {aiReadyOutput}");
+        //    return aiReadyOutput;
+        //}
 
         /// <summary>
         /// Wrapper function to expose IsBusinessDayFunction for AI interactions with StopSequence "\n\n".

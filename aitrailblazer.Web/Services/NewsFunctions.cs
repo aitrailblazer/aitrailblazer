@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using aitrailblazer.Web.Services;
@@ -8,7 +9,6 @@ using CognitiveServices.Sdk.News;
 using CognitiveServices.Sdk.News.Search;
 using CognitiveServices.Sdk.News.Trendingtopics;
 using CognitiveServices.Sdk.Models;
-using System.Text.Json; // For JSON serialization
 using aitrailblazer.net.Models; // For NewsArticle and NewsResponse
 using SearchSdk = CognitiveServices.Sdk.News.Search;
 using TrendingSdk = CognitiveServices.Sdk.News.Trendingtopics;
@@ -46,16 +46,17 @@ namespace aitrailblazer.net.Services
                 queryParameters.TextFormat = SearchSdk.GetTextFormatQueryParameterType.Raw;
                 queryParameters.OriginalImg = true;
             });
-              // Serialize the response into a well-formatted JSON output
-            var jsonResponse = JsonSerializer.Serialize(newsResults, new JsonSerializerOptions
+
+            // Serialize the response into a well-formatted JSON output using Newtonsoft.Json
+            var jsonResponse = JsonConvert.SerializeObject(newsResults, new JsonSerializerSettings
             {
-                WriteIndented = true
+                Formatting = Formatting.Indented
             });
 
             _logger.LogInformation("Exiting 'SearchNewsAsync' with response: {Response}", jsonResponse);
 
             return jsonResponse;
-        
+
             //return FormatNewsResults(newsResults, userQuery);
         }
 
@@ -91,66 +92,66 @@ namespace aitrailblazer.net.Services
         }
 
         // Helper method to format news results
- private string FormatNewsResults(News? newsResults, string query)
-{
-    if (newsResults?.Value != null && newsResults.Value.Count > 0)
-    {
-        var newsArticles = newsResults.Value;
-
-        // Format the news articles with additional fields (e.g., DatePublished, Source, Category)
-        var formattedArticles = newsArticles.Select(article => new OurNewsArticle
+        private string FormatNewsResults(News? newsResults, string query)
         {
-            Name = article.Name,
-            Url = article.Url,
-            Description = article.Description,
-            ThumbnailUrl = article.Image?.Thumbnail?.ContentUrl ?? string.Empty,
-            //DatePublished = article.DatePublished.HasValue
-            //    ? article.DatePublished.Value.ToString("yyyy-MM-dd HH:mm:ss")
-            //    : "Date not available",
-            Source = article.Provider != null && article.Provider.Any()
-                ? article.Provider.FirstOrDefault()?.Name ?? "Unknown source"
-                : "Unknown source",
-            //Category = article.Category ?? "General"
-        }).ToList();
+            if (newsResults?.Value != null && newsResults.Value.Count > 0)
+            {
+                var newsArticles = newsResults.Value;
 
-        var newsResponse = new NewsResponse
-        {
-            Query = query,
-            TotalResults = newsArticles.Count,
-            Articles = formattedArticles,
-            //FetchedAt = DateTime.UtcNow // Capture the time of fetching the news
-        };
+                // Format the news articles with additional fields (e.g., DatePublished, Source, Category)
+                var formattedArticles = newsArticles.Select(article => new OurNewsArticle
+                {
+                    Name = article.Name,
+                    Url = article.Url,
+                    Description = article.Description,
+                    ThumbnailUrl = article.Image?.Thumbnail?.ContentUrl ?? string.Empty,
+                    //DatePublished = article.DatePublished.HasValue
+                    //    ? article.DatePublished.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                    //    : "Date not available",
+                    Source = article.Provider != null && article.Provider.Any()
+                        ? article.Provider.FirstOrDefault()?.Name ?? "Unknown source"
+                        : "Unknown source",
+                    //Category = article.Category ?? "General"
+                }).ToList();
 
-        // Serialize the response into a well-formatted JSON output
-        var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+                var newsResponse = new NewsResponse
+                {
+                    Query = query,
+                    TotalResults = newsArticles.Count,
+                    Articles = formattedArticles,
+                    //FetchedAt = DateTime.UtcNow // Capture the time of fetching the news
+                };
 
-        _logger.LogInformation("Exiting 'FormatNewsResults' with response: {Response}", jsonResponse);
+                // Serialize the response into a well-formatted JSON output using Newtonsoft.Json
+                var jsonResponse = JsonConvert.SerializeObject(newsResponse, new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented
+                });
 
-        return jsonResponse;
-    }
-    else
-    {
-        _logger.LogWarning("No news articles found for query: {Query}", query);
+                _logger.LogInformation("Exiting 'FormatNewsResults' with response: {Response}", jsonResponse);
 
-        var emptyResponse = new NewsResponse
-        {
-            Query = query,
-            TotalResults = 0,
-            Articles = new List<OurNewsArticle>(),
-            //FetchedAt = DateTime.UtcNow
-        };
+                return jsonResponse;
+            }
+            else
+            {
+                _logger.LogWarning("No news articles found for query: {Query}", query);
 
-        var jsonEmptyResponse = JsonSerializer.Serialize(emptyResponse, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+                var emptyResponse = new NewsResponse
+                {
+                    Query = query,
+                    TotalResults = 0,
+                    Articles = new List<OurNewsArticle>(),
+                    //FetchedAt = DateTime.UtcNow
+                };
 
-        return jsonEmptyResponse;
-    }
-}
+                var jsonEmptyResponse = JsonConvert.SerializeObject(emptyResponse, new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented
+                });
+
+                return jsonEmptyResponse;
+            }
+        }
 
         // Helper method to format trending topics
         private string FormatTrendingTopics(TrendingTopics? trendingTopics, string query)
@@ -174,9 +175,9 @@ namespace aitrailblazer.net.Services
                     Articles = formattedTopics
                 };
 
-                var jsonResponse = JsonSerializer.Serialize(newsResponse, new JsonSerializerOptions
+                var jsonResponse = JsonConvert.SerializeObject(newsResponse, new JsonSerializerSettings
                 {
-                    WriteIndented = true
+                    Formatting = Formatting.Indented
                 });
 
                 _logger.LogInformation("Exiting 'FormatTrendingTopics' with response: {Response}", jsonResponse);
@@ -186,14 +187,19 @@ namespace aitrailblazer.net.Services
             {
                 _logger.LogWarning("No trending topics found.");
 
-                var emptyResponse = JsonSerializer.Serialize(new
+                var emptyResponse = new
                 {
                     Query = "Trending Topics",
                     TotalResults = 0,
                     Articles = new List<OurNewsArticle>()
+                };
+
+                var jsonEmptyResponse = JsonConvert.SerializeObject(emptyResponse, new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented
                 });
 
-                return emptyResponse;
+                return jsonEmptyResponse;
             }
         }
 

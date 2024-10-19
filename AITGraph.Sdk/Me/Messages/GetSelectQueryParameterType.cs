@@ -3,8 +3,8 @@ using System.Runtime.Serialization;
 using System;
 namespace AITGraph.Sdk.Me.Messages
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.16.0")]
     /// <summary>Provides operations to manage the messages property of the microsoft.graph.user entity.</summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public enum GetSelectQueryParameterType
     {
         [EnumMember(Value = "id")]

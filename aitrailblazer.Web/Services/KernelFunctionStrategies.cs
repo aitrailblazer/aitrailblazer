@@ -3,7 +3,6 @@ using Microsoft.SemanticKernel.Agents.Chat;
 using Microsoft.SemanticKernel.ChatCompletion;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using aitrailblazer.net.Services;
 using aitrailblazer.net.Models;

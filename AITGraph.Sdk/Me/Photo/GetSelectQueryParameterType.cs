@@ -3,8 +3,8 @@ using System.Runtime.Serialization;
 using System;
 namespace AITGraph.Sdk.Me.Photo
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.16.0")]
     /// <summary>Provides operations to manage the photo property of the microsoft.graph.user entity.</summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     public enum GetSelectQueryParameterType
     {
         [EnumMember(Value = "id")]

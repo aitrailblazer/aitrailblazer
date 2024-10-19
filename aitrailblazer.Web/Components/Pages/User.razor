@@ -1,4 +1,4 @@
-@page "/profile"
+@page "/organizer"
 @rendermode InteractiveServer
 
 @attribute [Authorize]
@@ -11,11 +11,11 @@
 @using AITrailBlazer.Web.Services
 @using aitrailblazer.net.Services
 @using aitrailblazer.net.Models
-@using System.Text.Json; 
 @using aitrailblazer.net.Models; 
 @using NewsResponse = aitrailblazer.net.Models.NewsResponse
-
+@using Newtonsoft.Json <!-- Added for Newtonsoft.Json -->
 @using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
+@using System.Globalization
 
 @using Markdig
 @inject AITGraphService GraphService
@@ -23,6 +23,8 @@
 @inject NavigationManager NavigationManager
 @inject AzureOpenAIHandler azureOpenAIHandler
 @inject IJSRuntime JS
+@inject TimeFunctions _timeFunctions
+
 @using GraphMessage = AITGraph.Sdk.Models.Message
 
 @using Microsoft.AspNetCore.Components.Web
@@ -39,7 +41,7 @@ else if (error != null)
 }
 else if (user != null)
 {
-    <FluentCard MinimalStyle="true" Width="1280px" Height="640px" Style="border: 2px solid var(--accent-fill-rest); padding: 20px;" Class="fluent-card-user-details-size">
+    <FluentCard MinimalStyle="true" Width="1280px" Height="840px" Style="border: 2px solid var(--accent-fill-rest); padding: 20px;" Class="fluent-card-user-details-size">
         <div style="display: flex; align-items: center;">
             @if (userPhotoBase64 != null)
             {
@@ -57,6 +59,8 @@ else if (user != null)
                 <h2>Welcome, @GetUserFullName()!</h2>
                 <p>@GetUserEmail()</p>
                 <p style="color: gray;">We are glad to have you here.</p>
+                <p>@timeZoneInfo</p>
+
             </div>
         </div>
 
@@ -87,13 +91,13 @@ else if (user != null)
                      @oninput="@(async (ChangeEventArgs e) => await AutoResizeTextArea())"
                 />
 
-
+                    <!-- OnButtonASAPTimeClicked -->
                     <FluentButton 
-                        IconStart="@(new Icons.Filled.Size32.SearchSparkle())" 
+                        IconStart="@(new Icons.Filled.Size24.BotSparkle())" 
                         Class="FluentButton"
-                        OnClick="@OnButtonASAPNewsClicked" 
+                        OnClick="@OnButtonASAPTimeClicked" 
                         >
-                        AI-Powered Search
+                        AI-Organizer
                     </FluentButton>
                 </FluentStack>
                 @if (isDeleting)
@@ -106,69 +110,83 @@ else if (user != null)
         </div>
 @if (showResponse)
 {
-    @if (!string.IsNullOrEmpty(response))
+    @if (!string.IsNullOrEmpty(responseQuery))
     {
-        <div class="alert alert-info">@response</div>
+        <div class="alert alert-info">@responseQuery</div>
+    }
+    @if (showResponse && !string.IsNullOrEmpty(responseQuery))
+    {
+        <FluentCard MinimalStyle="false" Class="response-card" Width="720px" 
+                    Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999; height: {calculatedHeight}px;")">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <FluentLabel Typo="Typography.Subject" Class="response-label">
+                    Response:
+                </FluentLabel>
+                <FluentButton 
+                    IconStart="@(new Icons.Filled.Size24.Dismiss())" 
+                    Appearance="Appearance.Stealth" 
+                    Class="close-button"
+                    OnClick="@CloseResponse"
+                    aria-label="Close Response">
+                </FluentButton>
+            </div>
+            <FluentTextBlock Typo="Typography.Body" Class="response-text" Style="max-height: @(calculatedHeight - 50)px; overflow-y: auto;">
+                @((MarkupString)formattedResponse)
+            </FluentTextBlock>
+        </FluentCard>
     }
     @if (newsArticles != null && newsArticles.Any())
     {
-@if (newsArticles != null && newsArticles.Any())
-{
-@if (newsArticles != null && newsArticles.Any())
-{
-    <FluentCard MinimalStyle="true" Class="response-card" Width="1200px" 
-        Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999; height: 100%; max-height: 90vh; overflow-y: auto;")">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <FluentLabel Typo="Typography.Subject" Class="response-label">
-                News Articles:
-            </FluentLabel>
-            <FluentButton 
-                IconStart="@(new Icons.Filled.Size24.Dismiss())" 
-                Appearance="Appearance.Stealth" 
-                Class="close-button"
-                OnClick="@CloseResponse"
-                aria-label="Close Response">
-            </FluentButton>
-        </div>
+            <FluentCard MinimalStyle="true" Class="response-card" Width="1200px" 
+                Style="@($"background-color: #FFFFFF; border: 1px solid #ccc; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 9999; height: 100%; max-height: 90vh; overflow-y: auto;")">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <FluentLabel Typo="Typography.Subject" Class="response-label">
+                        News Articles:
+                    </FluentLabel>
+                    <FluentButton 
+                        IconStart="@(new Icons.Filled.Size24.Dismiss())" 
+                        Appearance="Appearance.Stealth" 
+                        Class="close-button"
+                        OnClick="@CloseResponse"
+                        aria-label="Close Response">
+                    </FluentButton>
+                </div>
 
-        <!-- Scrollable container for articles -->
-        <div class="news-articles-container" style="overflow-y: auto; max-height: 80vh;">
-            @foreach (var article in newsArticles)
-            {
-            <!-- Article card, now wider -->
-            <FluentCard Class="article-card" MinimalStyle="false" Width="1100px" Height="180px" Style="margin-bottom: 16px; padding: 16px;">
-                <div style="display: flex; width: 100%;">
-                    @if (!string.IsNullOrEmpty(article.ThumbnailUrl))
+                <!-- Scrollable container for articles -->
+                <div class="news-articles-container" style="overflow-y: auto; max-height: 80vh;">
+                    @foreach (var article in newsArticles)
                     {
-                       <img src="@article.ThumbnailUrl" alt="Thumbnail" style="width: 120px; height: 120px; object-fit: cover; margin-right: 16px;" />
+                    <!-- Article card, now wider -->
+                    <FluentCard Class="article-card" MinimalStyle="false" Width="1100px" Height="180px" Style="margin-bottom: 16px; padding: 16px;">
+                        <div style="display: flex; width: 100%;">
+                            @if (!string.IsNullOrEmpty(article.ThumbnailUrl))
+                            {
+                            <img src="@article.ThumbnailUrl" alt="Thumbnail" style="width: 120px; height: 120px; object-fit: cover; margin-right: 16px;" />
+
+                            }
+                            <div style="flex: 1;">
+                                <!-- Article Title with Link -->
+                                <FluentAnchor Href="@article.Url" Target="_blank" Style="font-size: 20px; font-weight: bold; color: #0078D4; text-decoration: none;">
+                                    @article.Name
+                                </FluentAnchor>
+
+                                <!-- Article Description -->
+                                <p style="margin-top: 8px;">@article.Description</p>
+
+                                <!-- News Source, Category, and Date Published on one line -->
+                                <p style="margin-top: 8px; font-size: 14px; color: #888;">
+                                    Source: <strong>@article.Source</strong> |
+                                    Category: <strong>@article.Category</strong> |
+                                    Published on: <strong>@DateTime.Parse(article.DatePublished).ToString("MMMM dd, yyyy hh:mm tt")</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </FluentCard>
+
 
                     }
-                    <div style="flex: 1;">
-                        <!-- Article Title with Link -->
-                        <FluentAnchor Href="@article.Url" Target="_blank" Style="font-size: 20px; font-weight: bold; color: #0078D4; text-decoration: none;">
-                            @article.Name
-                        </FluentAnchor>
-
-                        <!-- Article Description -->
-                        <p style="margin-top: 8px;">@article.Description</p>
-
-                        <!-- News Source, Category, and Date Published on one line -->
-                        <p style="margin-top: 8px; font-size: 14px; color: #888;">
-                            Source: <strong>@article.Source</strong> |
-                            Category: <strong>@article.Category</strong> |
-                            Published on: <strong>@DateTime.Parse(article.DatePublished).ToString("MMMM dd, yyyy hh:mm tt")</strong>
-                        </p>
-                    </div>
                 </div>
             </FluentCard>
-
-
-            }
-        </div>
-    </FluentCard>
-}
-
-}
 
     }
 }
@@ -232,94 +250,185 @@ else if (user != null)
                         </FluentStack>
 
                     </FluentStack>
-                    @if (emailsWithComputedProperties != null && emailsWithComputedProperties.Any())
-                    {
-                        <div style="max-height: 640px; overflow-y: auto;" tabindex="-1">
+                        @if (isMessagesLoading)
+                        {
+                            <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                            <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                        }
+                        else
+                        {
+                            @if (emailsWithComputedProperties != null && emailsWithComputedProperties.Any())
+                            {
+                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
 
-                            <FluentDataGrid 
-                            Items="@emailsWithComputedProperties.AsQueryable()" 
-                            TGridItem="EmailViewModel"
-                            ShowHover="true" 
-                            TGridItem="EmailViewModel"
-                            SelectionMode="DataGridSelectionMode.Single" 
-                            SelectedItemsChanged="OnSelectedEmailChanged"
-                            GenerateHeader="GenerateHeaderOption.Sticky">
-                                <PropertyColumn 
-                                Property="@(e => e.SenderName)" 
-                                Title="Sender" Sortable="true" 
-                                Width="200px" />
-
-                                <PropertyColumn 
-                                Property="@(e => e.Subject)" 
-                                Title="Subject" 
-                                Sortable="true" 
-                                Width="300px" />
-
-                                <PropertyColumn 
-                                Property="@(e => e.ReceivedDateTimeFormatted)" 
-                                Title="Received" 
-                                Sortable="true" 
-                                Width="150px" />
-                                <!-- Actions Column -->
-                                <TemplateColumn 
-                                    Title="Actions" 
-                                    Width="100px">
-                                    <ChildContent Context="emailViewModel">
-                                        <FluentButton 
-                                            OnClick="@(() => OpenEmailDialog(emailViewModel))" 
-                                            Appearance="Appearance.Stealth" 
-                                            Size="Size.Small"
-                                            IconStart="@(new Icons.Regular.Size20.Eye())"
-                                            class="text-gray-500 hover:text-gray-700">
-                                            View
-                                        </FluentButton>
-                                    </ChildContent>
-                                </TemplateColumn>
-                            </FluentDataGrid>
-                        </div>
-
-                     }
-                    else
-                    {
-                        <p>No emails available</p>
-                    }
-
-                    <!-- Email Content Dialog -->
-                    @if (selectedEmail != null)
-                    {
-                        <FluentDialog Id="emailContentDialog" Visible="true" OnDismiss="CloseEmailDialog" Style="width: 80vw; max-height: 420px; overflow: auto;">
-                            <div style="max-height: 70vh; overflow-y: auto;">
-                            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => CopyEmailToClipboard())">
-                                Copy to Clipboard
-                            </FluentButton>
-                                <h3>@selectedEmail.Subject</h3>
-                                <p><strong>From:</strong> @selectedEmail.From?.EmailAddress?.Name</p>
-                                <p><strong>To:</strong> @(selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any()
-                                    ? string.Join(", ", selectedEmail.ToRecipients.Select(r => r.EmailAddress.Name))
-                                    : "No recipients")</p>
-                                <p><strong>Received:</strong> @selectedEmail.ReceivedDateTime?.ToLocalTime().ToString("g")</p>
-                                <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
-                                    @if (!string.IsNullOrEmpty(selectedEmail.BodyContent))
+                                    <FluentButton OnClick="RefreshMessagesAsync" Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.ArrowSync())">
+                                        Refresh
+                                    </FluentButton>
+                                    @if (!isMessagesLoading)
                                     {
-                                        @if (selectedEmail.BodyContentType == BodyType.Html)
-                                        {
-                                            @((MarkupString)selectedEmail.BodyContent)
-                                        }
-                                        else
-                                        {
-                                            @selectedEmail.BodyContent
-                                        }
+                                        <FluentButton OnClick="LoadMoreMessagesAsync" Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size20.ArrowDown())">
+                                            Load More Messages
+                                        </FluentButton>
                                     }
                                     else
                                     {
-                                        <em>No content available</em>
+                                        <!-- Loading Spinner for Load More -->
+                                        <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
                                     }
-                                </pre>
-                            </div>
+                                    @if (!isAIOrganizerLoading)
+                                    {
+                                        <FluentButton OnClick="AIOrganizerAsync" Appearance="Appearance.Stealth" IconStart="@(new Icons.Regular.Size24.BotSparkle())">
+                                            AI Organizer
+                                        </FluentButton>
+                                    }
+                                    else
+                                    {
+                                        <!-- Loading Spinner for Load More -->
+                                        <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                                    }
+                                </FluentStack>
+                                <!-- Data Grid for Emails -->
+                                <div style="max-height: 400px; overflow-y: auto;" tabindex="-1">
+                                    <FluentDataGrid 
+                                        Items="@emailsWithComputedProperties.AsQueryable()" 
+                                        TGridItem="PureEmailViewBasicModel"
+                                        ShowHover="true" 
+                                        SelectionMode="DataGridSelectionMode.Single" 
+                                        SelectedItemsChanged="OnSelectedEmailChanged"
+                                        GenerateHeader="GenerateHeaderOption.Sticky">
 
-                            <FluentButton Appearance="Appearance.Accent" OnClick="@CloseEmailDialog">Close</FluentButton>
-                        </FluentDialog>
+                                        <!-- Sender Column -->
+                                        <PropertyColumn Property="@(e => e.From.Name)" Title="Sender" Sortable="true" Width="150px" />
+                                        <PropertyColumn Property="@(e => FormatReceivedDateTime(e.ReceivedDateTime))" Title="Received" Sortable="true" Width="150px" />
+                                        <!-- Subject Column -->
+                                        <PropertyColumn Property="@(e => e.Subject)" Title="Subject" Sortable="true" Width="300px" />
+
+                                        <PropertyColumn 
+                                            Property="@(e => e.ActionRequired)" 
+                                            Title="Action Required" 
+                                            Sortable="true" 
+                                            Width="220px" />
+                                        <PropertyColumn 
+                                            Property="@(e => e.Priority)" 
+                                            Title="Priority" 
+                                            Sortable="true" 
+                                            Width="100px" />
+                                         <!-- Categories Column (Fixed) -->
+                                        <PropertyColumn 
+                                            Property="@(e => string.Join(", ", e.Categories))" 
+                                            Title="Categories" 
+                                            Sortable="false" 
+                                            Width="200px" />
+                                        <!-- Actions Column -->
+                                        <TemplateColumn Title="Action" Width="150px">
+                                            <ChildContent Context="PureEmailViewBasicModel">
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="5">
+
+                                                    <!-- View Button -->
+                                                    <FluentButton 
+                                                        OnClick="@(() => OpenEmailDialog(PureEmailViewBasicModel))" 
+                                                        Appearance="Appearance.Stealth" 
+                                                        Size="Size.Small" 
+                                                        IconStart="@(new Icons.Regular.Size20.Eye())" 
+                                                        class="text-gray-500 hover:text-gray-700">
+                                                    </FluentButton>
+
+                                                    <!-- Delete Button -->
+                                                    <FluentButton 
+                                                        OnClick="@(() => DeleteEmail(PureEmailViewBasicModel))" 
+                                                        Appearance="Appearance.Stealth" 
+                                                        Size="Size.Small" 
+                                                        IconStart="@(new Icons.Regular.Size20.Delete())" 
+                                                        class="text-red-500 hover:text-red-700">
+                                                    </FluentButton>
+
+                                                </FluentStack>
+                                            </ChildContent>
+                                        </TemplateColumn>
+                                    </FluentDataGrid>
+                                </div>
+                            }
+                            else
+                            {
+                                <FluentLabel Typo="Typography.Body">No emails available</FluentLabel>
+                            }
+                        }
+
+
+<!-- Email Content Dialog -->
+@if (selectedEmail != null)
+{
+    <FluentDialog 
+        Id="emailContentDialog" 
+        Visible="true" 
+        OnDismiss="CloseEmailDialog" 
+        Style="width: 80vw; max-height: 80vh; overflow: auto;">
+        
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10" Padding="10">
+            <!-- Copy Button -->
+            <FluentButton 
+                Appearance="Appearance.Stealth" 
+                IconStart="@(new Icons.Regular.Size20.Clipboard())" 
+                OnClick="@(() => CopyEmailToClipboard())"
+                AriaLabel="Copy Email">
+            </FluentButton>
+            
+            <!-- Dismiss Button -->
+            <FluentButton 
+                Appearance="Appearance.Stealth" 
+                IconStart="@(new Icons.Regular.Size20.Dismiss())" 
+                OnClick="@CloseEmailDialog" 
+                AriaLabel="Close Dialog">
+            </FluentButton>
+        </FluentStack>
+        
+        <div style="padding: 10px;">
+            <h3>@selectedEmail.Subject</h3>
+            
+            <p><strong>From:</strong> @selectedEmail.From.Name (@selectedEmail.From.EmailAddress)</p>
+            <p><strong>To:</strong> @(selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any() 
+                ? string.Join(", ", selectedEmail.ToRecipients.Select(r => $"{r.Name} <{r.EmailAddress}>".Trim())) 
+                : "No recipients")</p>
+            <p><strong>Received:</strong> @(DateTimeOffset.TryParse(selectedEmail.ReceivedDateTime, out var dt) 
+                ? dt.ToLocalTime().ToString("g") 
+                : "N/A")</p>
+            
+            <!-- Action Required -->
+            <p><strong>Action Required:</strong> @(selectedEmail.ActionRequired)</p>
+            
+            <!-- Priority -->
+            <p><strong>Priority:</strong> @selectedEmail.Priority</p>
+            
+            <!-- Categories -->
+            <p><strong>Categories:</strong> @(selectedEmail.Categories != null && selectedEmail.Categories.Any() 
+                ? string.Join(", ", selectedEmail.Categories) 
+                : "None")</p>
+
+            
+            <!-- Email Body -->
+            <div style="margin-top: 20px;">
+                <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
+                    @if (!string.IsNullOrEmpty(selectedEmail.BodyContent))
+                    {
+                        @if (selectedEmail.BodyContentType == "Html")
+                        {
+                            @((MarkupString)selectedEmail.BodyContent)
+                        }
+                        else
+                        {
+                            @selectedEmail.BodyContent
+                        }
                     }
+                    else
+                    {
+                        <em>No content available</em>
+                    }
+                </pre>
+            </div>
+        </div>
+    </FluentDialog>
+}
+
                 </Content>
             </FluentTab>
 
@@ -366,24 +475,90 @@ else if (user != null)
                                 
                                 <!-- Event Subject Column -->
                                 <PropertyColumn 
-                                    Property="@(e => e.Subject)"
+                                    Property="@(e => e.Subject ?? "No Subject")"
                                     Title="Event" 
                                     Sortable="true" 
                                     Width="250px" />
                                 
                                 <!-- Start Date Column -->
                                 <PropertyColumn 
-                                    Property="@(e => e.StartDateTimeFormatted)"
+                                    Property="@(e => e.StartDateTimeFormatted ?? "N/A")"
                                     Title="Start" 
                                     Sortable="true" 
                                     Width="150px" />
                                 
                                 <!-- End Date Column -->
                                 <PropertyColumn 
-                                    Property="@(e => e.EndDateTimeFormatted)"
+                                    Property="@(e => e.EndDateTimeFormatted ?? "N/A")"
                                     Title="End" 
                                     Sortable="true" 
                                     Width="150px" />
+                                
+                                <PropertyColumn 
+                                    Property="@(e => e.Location.DisplayName  ?? "N/A")"
+                                    Title="Location" 
+                                    Sortable="true" 
+                                    Width="150px" />
+
+                                
+                                <!-- Attendees Column 
+                                <PropertyColumn 
+                                    Property="@(e => e.AttendeesDisplay)"
+                                    Title="Attendees" 
+                                    Sortable="true" 
+                                    Width="200px" />
+                                    -->
+                                
+                                <!-- BodyPreview Column 
+                                <PropertyColumn 
+                                    Property="@(e => e.BodyPreview ?? "No Preview")"
+                                    Title="Preview" 
+                                    Sortable="false" 
+                                    Width="300px" />
+                                -->
+                                <!-- WebLink Column -->
+                                <TemplateColumn 
+                                    Title="Link" 
+                                    Width="150px">
+                                    <ChildContent Context="eventViewModel">
+                                        @if (!string.IsNullOrEmpty(eventViewModel.WebLink))
+                                        {
+                                            <a href="@eventViewModel.WebLink" target="_blank" rel="noopener noreferrer">View in Outlook</a>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </ChildContent>
+                                </TemplateColumn>
+                                
+                                <!-- Importance Column -->
+                                <PropertyColumn 
+                                    Property="@(e => GetImportanceText(e.Importance))"
+                                    Title="Importance" 
+                                    Sortable="true" 
+                                    Width="100px" />
+                                
+                                <!-- IsAllDay Column -->
+                                <PropertyColumn 
+                                    Property="@(e => e.IsAllDay ? "Yes" : "No")"
+                                    Title="All Day" 
+                                    Sortable="true" 
+                                    Width="80px" />
+                                
+                                <!-- IsCancelled Column -->
+                                <PropertyColumn 
+                                    Property="@(e => e.IsCancelled ? "Yes" : "No")"
+                                    Title="Cancelled" 
+                                    Sortable="true" 
+                                    Width="100px" />
+                                
+                                <!-- Categories Column -->
+                                <PropertyColumn 
+                                    Property="@(e => string.Join(", ", e.Categories))"
+                                    Title="Categories" 
+                                    Sortable="true" 
+                                    Width="200px" />
                                 
                                 <!-- Actions Column -->
                                 <TemplateColumn 
@@ -400,9 +575,9 @@ else if (user != null)
                                                 class="text-gray-500 hover:text-gray-700">
                                                 View
                                             </FluentButton>
-                                            <!-- Delete Event Button -->
+                                            <!-- Delete Event Button with Confirmation -->
                                             <FluentButton 
-                                                OnClick="() => DeleteEventAsync(eventViewModel.Id)" 
+                                                OnClick="@(() => OpenConfirmModal(eventViewModel.Id))" 
                                                 Appearance="Appearance.Stealth" 
                                                 Size="Size.Small"
                                                 IconStart="@(new Icons.Regular.Size20.Delete())"
@@ -420,97 +595,89 @@ else if (user != null)
                     {
                         <p>No events available</p>
                     }
-                        <!-- Event Details Dialog -->
-@if (selectedEvent != null)
-{
-    <FluentDialog 
-        Visible="true" 
-        OnDismiss="CloseEventDetailsDialog" 
-        Class="dialog-container">
-        
-        <!-- Wrapper Div for Flex Layout -->
-        <div class="dialog-wrapper">
-            
-            <!-- Scrollable Content Area -->
-            <div class="dialog-content">
-                <h3>@selectedEvent.Subject</h3>
-                
-                <!-- Event Subject -->
-                <p><strong>Event Subject:</strong> @selectedEvent.Subject</p>
-                
-                <!-- Event Start Date/Time -->
-                <p><strong>Start Date:</strong> @selectedEvent.StartDateTimeFormatted.Split(' ')[0]</p>
-                <p><strong>Start Time:</strong> @selectedEvent.StartDateTimeFormatted.Split(' ')[1]</p>
-                
-                <!-- Event End Date/Time -->
-                <p><strong>End Date:</strong> @selectedEvent.EndDateTimeFormatted.Split(' ')[0]</p>
-                <p><strong>End Time:</strong> @selectedEvent.EndDateTimeFormatted.Split(' ')[1]</p>
-                
-                <!-- Event Location -->
-                <p><strong>Location:</strong> @(!string.IsNullOrWhiteSpace(selectedEvent.Location) ? selectedEvent.Location : "N/A")</p>
-                
-                <!-- Event Attendees -->
-                <p><strong>Attendees:</strong></p>
-                <ul>
-                    @if (selectedEvent.Attendees != null && selectedEvent.Attendees.Any() && selectedEvent.Attendees[0] != "No attendees")
+                    <!-- Event Details Dialog -->
+                    @if (selectedEvent != null)
                     {
-                        @foreach (var attendee in selectedEvent.Attendees)
-                        {
-                            <li>@attendee</li>
-                        }
-                    }
-                    else
-                    {
-                        <li>No attendees</li>
-                    }
-                </ul>
+                        <FluentDialog 
+                            Visible="true" 
+                            OnDismiss="CloseEventDetailsDialog" 
+                            Class="dialog-container">
+                            
+                            <!-- Wrapper Div for Flex Layout -->
+                            <div class="dialog-wrapper">
+                                
+                                <!-- Scrollable Content Area -->
+                                <div class="dialog-content">
+                                    <h3>@selectedEvent.Subject</h3>
+                                    
+                                    <!-- Event Subject -->
+                                    <p><strong>Event Subject:</strong> @(!string.IsNullOrWhiteSpace(selectedEvent.Subject) ? selectedEvent.Subject : "N/A")</p>
+                                    
+                                    <!-- Event Start Date/Time -->
+                                    <p><strong>Start Date:</strong> @FormatDate(selectedEvent.StartDateTime, "d")</p>
+                                    <p><strong>Start Time:</strong> @FormatDate(selectedEvent.StartDateTime, "t")</p>
+                                    
+                                    <!-- Event End Date/Time -->
+                                    <p><strong>End Date:</strong> @FormatDate(selectedEvent.EndDateTime, "d")</p>
+                                    <p><strong>End Time:</strong> @FormatDate(selectedEvent.EndDateTime, "t")</p>
+                                    
+                                    <!-- Event Location -->
+                                    <p>
+                                        <strong>Location:</strong> 
+                                        @(!string.IsNullOrWhiteSpace(selectedEvent.Location?.DisplayName) 
+                                            ? selectedEvent.Location.DisplayName 
+                                            : "N/A")
+                                    </p>
+                                    
+                                    <!-- Event Attendees -->
+                                    <p><strong>Attendees:</strong></p>
+                                    <ul>
+                                        @if (selectedEvent.Attendees != null && selectedEvent.Attendees.Any())
+                                        {
+                                            @foreach (var attendee in selectedEvent.Attendees)
+                                            {
+                                                <li>@(attendee.EmailAddress?.Name ?? attendee.EmailAddress?.Address ?? "Unknown Attendee")</li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li>No attendees</li>
+                                        }
+                                    </ul>
+                                    
+                                    <!-- Display Event Categories -->
+                                    <p><strong>Categories:</strong> 
+                                        @if (selectedEvent.Categories != null && selectedEvent.Categories.Any())
+                                        {
+                                            @string.Join(", ", selectedEvent.Categories)
+                                        }
+                                        else
+                                        {
+                                            <span>No categories</span>
+                                        }
+                                    </p>
 
-                <!-- Display Recurrence Pattern if available -->
-                <p><strong>Recurrence:</strong> 
-                    @if (selectedEvent.OriginalEvent.Recurrence != null)
-                    {
-                        @selectedEvent.OriginalEvent.Recurrence.Pattern.Type.ToString()
+                                    <!-- Display Event Description -->
+                                    <p><strong>Body Preview:</strong></p>
+                                    <div style="white-space: normal; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd;">
+                                        @((MarkupString)(!string.IsNullOrWhiteSpace(selectedEvent.BodyPreview) ? selectedEvent.BodyPreview : "No Body Preview available"))
+                                    </div>
+                                </div>
+                                
+                                <!-- Fixed Footer with Close Button -->
+                                <div class="dialog-footer">
+                                    <FluentButton 
+                                        Appearance="Appearance.Stealth" 
+                                        IconStart="@(new Icons.Regular.Size20.Dismiss())" 
+                                        OnClick="@CloseEventDetailsDialog" 
+                                        class="text-gray-500 hover:text-gray-700">
+                                        Cancel
+                                    </FluentButton>
+                                </div>
+                            </div>
+                        </FluentDialog>
                     }
-                    else
-                    {
-                        <span>None</span>
-                    }
-                </p>
 
-                <!-- Display Event Categories -->
-                <p><strong>Categories:</strong> 
-                    @if (selectedEvent.OriginalEvent.Categories != null && selectedEvent.OriginalEvent.Categories.Any())
-                    {
-                        @string.Join(", ", selectedEvent.OriginalEvent.Categories)
-                    }
-                    else
-                    {
-                        <span>No categories</span>
-                    }
-                </p>
-
-                <!-- Display Event Description -->
-                <p><strong>Description:</strong></p>
-                <div style="white-space: normal; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd;">
-                    @((MarkupString)(!string.IsNullOrWhiteSpace(selectedEvent.Description) ? selectedEvent.Description : "No description available"))
-                </div>
-            </div>
-            
-            <!-- Fixed Footer with Close Button -->
-            <div class="dialog-footer">
-            <FluentButton 
-                Appearance="Appearance.Stealth" 
-                IconStart="@(new Icons.Regular.Size20.Dismiss())" 
-                OnClick="@CloseEventDetailsDialog" 
-                class="text-gray-500 hover:text-gray-700">
-                Cancel
-            </FluentButton>
-            </div>
-        </div>
-    </FluentDialog>
-}
-
-                        <!-- Event Creation Dialog -->
                         @if (isEventDialogVisible)
                         {
                             <FluentDialog Visible="true" OnDismiss="CloseNewEventDialog">
@@ -574,7 +741,7 @@ else if (user != null)
                                                         <InputText id="EventLocation" class="mt-1 block w-full rounded-lg" 
                                                                 @bind-Value="newEvent.Location.DisplayName" 
                                                                 data-smartpaste-description="The location of the event, either physical or virtual, such as 'Conference Room A' or 'Microsoft Teams Meeting'."
-                                                                style="width: 1200px; max-width: 600px;" />
+                                                                style="width: 600px; max-width: 600px;" />
                                                     </div>
 
                                                     <!-- Event Attendees -->
@@ -585,19 +752,20 @@ else if (user != null)
                                                                     data-smartpaste-description="A list of email addresses of people attending the event, separated by commas."
                                                                     Rows="5" 
                                                                     Placeholder="Enter attendee emails..." 
-                                                                    style="width: 1200px; max-width: 600px;" />
+                                                                    style="width: 600px; max-width: 600px;" />
                                                     </div>
 
                                                     <!-- Event Description -->
                                                     <div>
-                                                        <label for="EventDescriptionFromBody" class="block text-sm font-medium text-gray-700 mb-2">Event Description</label>
-                                                        <InputTextArea id="EventDescriptionFromBody" class="mt-1 block w-full rounded-lg" 
+                                                        <label for="EventDescription" class="block text-sm font-medium text-gray-700 mb-2">Event Description</label>
+                                                        <InputTextArea id="EventDescription" class="mt-1 block w-full rounded-lg" 
                                                                     @bind-Value="newEventBody" 
                                                                     data-smartpaste-description="A detailed description of the event or meeting, including the agenda or purpose."
                                                                     Rows="5" 
                                                                     Placeholder="Enter event description..." 
                                                                     style="width: 600px; max-width: 600px;" />
                                                     </div>
+
                                                 </FluentStack>
                                             </div>
 
@@ -628,8 +796,8 @@ else if (user != null)
                                     </FluentDialogActions>
                                 </FluentCard>
                             </FluentDialog>
-
                         }
+
                 </Content>
             </FluentTab>
             <!-- Contacts Tab -->
@@ -697,7 +865,6 @@ else if (user != null)
                                                 Size="Size.Small"
                                                 IconStart="@(new Icons.Regular.Size20.Edit())"
                                                 class="text-gray-500 hover:text-gray-700">
-                                                Edit
                                             </FluentButton>
                                             <FluentButton 
                                                 OnClick="() => DeleteContactAsync(contactViewModel.Id)" 
@@ -705,7 +872,6 @@ else if (user != null)
                                                 Size="Size.Small"
                                                 IconStart="@(new Icons.Regular.Size20.Delete())"
                                                 class="text-gray-500 hover:text-gray-700">
-                                                Delete
                                             </FluentButton>
                                         </FluentStack>
                                     </ChildContent>
@@ -846,30 +1012,35 @@ else
     private UserAccountInformation accountInfo;
     private List<GraphMessage> userMessages = new List<GraphMessage>();
     private CalendarEventsResult calendarEventsResult = new CalendarEventsResult();
+    private List<Event> calendarViewEventsResult;
     private List<EventViewModel> calendarEventsWithComputedProperties = new List<EventViewModel>();
-    private List<EmailViewModel> emailsWithComputedProperties = new List<EmailViewModel>();
+ 
+    private List<PureEmailViewBasicModel> emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
     private List<ContactViewModel> contactsWithComputedProperties = new List<ContactViewModel>();
     private ContactViewModel selectedContact;
     private ContactViewModel originalContact = new ContactViewModel(new Contact());
     private bool isContactDetailsDialogVisible = false;
 
     private bool isLoading = true;
+    private bool isMessagesLoading = false;
+    private bool isAIOrganizerLoading = false;
+
     private string error;
     private string userPhotoBase64;
     private string activeTabId = "Emails-tab";
-    private string response;
+    private string responseQuery;
     private string formattedResponse;
     private int calculatedHeight;
     private bool showResponse = false;
 
     private string userQuery = string.Empty;
 
-    // Changed from GraphMessage to EmailViewModel
-    private EmailViewModel selectedEmail;
+    private PureEmailViewBasicModel selectedEmail;
     // Changed from 'Event' to 'EventViewModel'
     private EventViewModel selectedEvent;
     private bool isInitialized = false;
     public bool Submitting { get; set; }
+    private string timeZoneInfo;
 
     protected override async Task OnInitializedAsync()
     {
@@ -880,68 +1051,211 @@ else
         }
     }
 
-    private async Task LoadUserDataAsync()
+private async Task LoadUserDataAsync()
+{
+    isLoading = true;  // Show loading state
+    error = null;
+    emailsWithComputedProperties.Clear();  // Clear previous data
+
+    try
     {
-        isLoading = true;
-        error = null;
+         // Call the GetUserTimeZone function and update the UI
+        timeZoneInfo = _timeFunctions.GetUserTimeZone();
+
+        // Trigger re-render to show the result
+        StateHasChanged();
+        user = await GraphService.GetCurrentUserProfileAsync();
+        accountInfo = await GraphService.GetUserAccountInformationAsync();
 
         try
         {
-            user = await GraphService.GetCurrentUserProfileAsync();
-            accountInfo = await GraphService.GetUserAccountInformationAsync();
-            userMessages = await GraphService.GetRecentMessagesAsync(20);
+            string input = "fetch latest 5 emails"; // Modify as per your application's logic
 
-            var startOfWeek = DateTime.Now;
-            var endOfWeek = startOfWeek.AddDays(7);
+            //string emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
 
+            string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
 
-            // Fetch calendar events
-            calendarEventsResult = await GraphService.GetCalendarEventsAsync(20, startOfWeek, endOfWeek); // Get the next 20 events
+            //input= "Tonights gonna be a good night! A good good night!";
+            //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
+            //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
+            
+            
+            input= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
+            string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(input);
+            Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
 
-            if (calendarEventsResult.Events != null && calendarEventsResult.Events.Any())
+            if (!string.IsNullOrWhiteSpace(emailsJson))
             {
-                calendarEventsWithComputedProperties = calendarEventsResult.Events.Select(e => new EventViewModel(e)).ToList();
+                // Deserialize using Newtonsoft.Json into EmailResult
+                var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+                if (emailList != null && emailList.Emails.Any())
+                {
+                    emailsWithComputedProperties = emailList.Emails;
+                }
+                else
+                {
+                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    error = "No emails found.";
+                }
             }
             else
             {
-                calendarEventsWithComputedProperties = new List<EventViewModel>();
+                emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                error = "Failed to retrieve emails.";
             }
-
-            // Create EmailViewModel list
-            emailsWithComputedProperties = userMessages.Select(m => new EmailViewModel(m)).ToList();
-
-            // Fetch the user's profile photo
-            var photoStream = await GraphService.GetUserPhotoAsync();
-            if (photoStream != null)
-            {
-                // Convert the photo stream to a Base64 string
-                using (var memoryStream = new MemoryStream())
-                {
-                    await photoStream.CopyToAsync(memoryStream);
-                    var photoBytes = memoryStream.ToArray();
-                    userPhotoBase64 = Convert.ToBase64String(photoBytes);
-                }
-            }
-            // Fetch contacts
-            var contacts = await GraphService.GetUserContactsAsync(50);
-            contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
-            
-            //response = await azureOpenAIHandler.SKTestAsync("programming");
-
         }
-        catch (AuthenticationRequiredException)
+        catch (JsonException jsonEx)
         {
-            RedirectToLogin();
+            error = $"Failed to parse messages: {jsonEx.Message}";
         }
         catch (Exception ex)
         {
-            error = $"Error loading user data: {ex.Message}";
+            error = $"Error loading emails: {ex.Message}";
+        }
+        finally
+        {
+            isSearch = false;
+        }
+
+        // Ensure the UI updates
+        StateHasChanged();
+
+        // Fetch the user's profile photo
+        var photoStream = await GraphService.GetUserPhotoAsync();
+        if (photoStream != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await photoStream.CopyToAsync(memoryStream);
+                userPhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
+
+        // Fetch contacts
+        var contacts = await GraphService.GetUserContactsAsync(50);
+        contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
+
+        await LoadCalendarEventsAsync();
+        
+    }
+    catch (AuthenticationRequiredException)
+    {
+        RedirectToLogin();
+    }
+    catch (Exception ex)
+    {
+        error = $"Error loading user data: {ex.Message}";
+    }
+    finally
+    {
+        isLoading = false;  // Hide loading state
+    }
+}
+private async Task LoadCalendarEventsAsync()
+    {
+        try
+        {
+            DateTime startOfWeek = GetStartOfWeek(DateTime.UtcNow);
+            DateTime endOfWeek = startOfWeek.AddDays(7);
+
+            Console.WriteLine($"Fetching calendar events from {startOfWeek:o} to {endOfWeek:o}");
+
+            List<EventViewModel> events = await GraphService.GetCalendarViewAsync(20, startOfWeek, endOfWeek);
+
+            if (events == null || !events.Any())
+            {
+                calendarEventsWithComputedProperties = new List<EventViewModel>();
+                Console.WriteLine("No events found. Initialized an empty list.");
+            }
+            else
+            {
+                // Filter out any null events to prevent exceptions
+                var validEvents = events.Where(e => e != null).ToList();
+
+                // Log the number of null events found (if any)
+                int nullEventsCount = events.Count - validEvents.Count;
+                if (nullEventsCount > 0)
+                {
+                    Console.WriteLine($"Found {nullEventsCount} null event(s) in the fetched data.");
+                }
+
+                // Assign the valid events to the calendarEventsWithComputedProperties
+                calendarEventsWithComputedProperties = validEvents;
+
+                Console.WriteLine($"Successfully loaded {calendarEventsWithComputedProperties.Count} event(s).");
+            }
+        }
+        catch (AuthenticationRequiredException authEx)
+        {
+            Console.WriteLine($"Authentication is required: {authEx.Message}");
+            // Optionally, redirect to login or prompt user
+        }
+        catch (InvalidOperationException invOpEx)
+        {
+            Console.WriteLine($"Invalid operation: {invOpEx.Message}");
+        }
+        catch (JsonException jsonEx)
+        {
+            Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
         }
         finally
         {
             isLoading = false;
         }
     }
+
+    private DateTime GetStartOfWeek(DateTime date)
+    {
+        // Assuming week starts on Monday
+        int diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+        return date.AddDays(-1 * diff).Date;
+    }
+
+    private int currentPage = 1;
+    private const int PageSize = 10;  // Load 10 messages per page
+
+ private async Task LoadMoreMessagesAsync()
+{
+    try
+    {
+        isMessagesLoading = true;
+        string input = "fetch latest 10 more emails";
+        //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
+        string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+
+        if (!string.IsNullOrWhiteSpace(emailsJson))
+        {
+            // Deserialize using Newtonsoft.Json
+            var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+
+            if (emailList != null && emailList.Emails.Any())
+            {
+                emailsWithComputedProperties.AddRange(emailList.Emails);
+            }
+        }
+
+        currentPage++;  // Move to next page
+    }
+    catch (Newtonsoft.Json.JsonException jsonEx)
+    {
+        error = $"Failed to parse messages: {jsonEx.Message}";
+    }
+    catch (Exception ex)
+    {
+        error = $"Error loading more messages: {ex.Message}";
+    }
+    finally
+    {
+        isMessagesLoading = false;
+    }
+}
+
 
     private void RedirectToLogin()
     {
@@ -1014,14 +1328,15 @@ else
     private List<OurNewsArticle> newsArticles = new List<OurNewsArticle>();
 
   
-
-
-  // Event handler for button click
-    private async Task OnButtonASAPNewsClicked()
+// Event handler for button click
+    private async Task OnButtonASAPTimeClicked()
     {
+
+        Console.WriteLine($"OnButtonASAPTimeClicked User Query: {userQuery}");
         if (string.IsNullOrWhiteSpace(userQuery))
         {
-            response = "Please enter a valid query.";
+            responseQuery = "Please enter a valid query.";
+            
             showResponse = false; // Ensure the card is hidden if the query is invalid
             return;
         }
@@ -1030,41 +1345,18 @@ else
         {
             Submitting = true;
             error = null;
-            response = string.Empty;
 
             // Call the Azure OpenAI handler with the user's query
-            var jsonResponse = await azureOpenAIHandler.ShowNewsAsync(userQuery);
+            Console.WriteLine($"call azureOpenAIHandler.GetASAPTime User Query: {userQuery}");
 
-            // Log the JSON response for debugging
-            Console.WriteLine($"JSON Response: {jsonResponse}");
-
-            // Deserialize JSON into NewsResponse object using Newtonsoft.Json
-            var newsResponse = JsonSerializer.Deserialize<NewsResponse>(jsonResponse);
-            if (newsResponse != null)
-            {
-                newsArticles = newsResponse.Articles;
-                showResponse = true;
-
-                response = $"Found {newsResponse.TotalResults} articles for your query.";
-            }
-            else
-            {
-                showResponse = true;
-                newsArticles = new List<OurNewsArticle>();
-                response = "No news articles found for your query.";
-            }
-        }
-        catch (Newtonsoft.Json.JsonException jsonEx)
-        {
-            response = $"Failed to parse news data: {jsonEx.Message}";
-            showResponse = true;
-            newsArticles = new List<OurNewsArticle>();
+            responseQuery = await azureOpenAIHandler.GetASAPTime(userQuery);
+            formattedResponse = Markdown.ToHtml(responseQuery);
+            showResponse = true; // Show the response card when a new response is received
         }
         catch (Exception ex)
         {
-            response = $"An error occurred while fetching news articles: {ex.Message}";
-            showResponse = true;
-            newsArticles = new List<OurNewsArticle>();
+            error = $"Error processing your request: {ex.Message}";
+            showResponse = false; // Hide the card in case of an error
         }
         finally
         {
@@ -1072,10 +1364,66 @@ else
         }
     }
 
+
+  // Event handler for button click
+   private async Task OnButtonASAPNewsClicked()
+{
+    if (string.IsNullOrWhiteSpace(userQuery))
+    {
+        responseQuery = "Please enter a valid query.";
+        showResponse = false; // Ensure the card is hidden if the query is invalid
+        return;
+    }
+
+    try
+    {
+        Submitting = true;
+        error = null;
+        responseQuery = string.Empty;
+
+        // Call the Azure OpenAI handler with the user's query
+        var jsonResponse = await azureOpenAIHandler.ShowNewsAsync(userQuery);
+
+        // Log the JSON response for debugging
+        Console.WriteLine($"JSON Response: {jsonResponse}");
+
+        var newsResponse = JsonConvert.DeserializeObject<NewsResponse>(jsonResponse);
+        if (newsResponse != null)
+        {
+            newsArticles = newsResponse.Articles;
+            showResponse = true;
+
+            responseQuery = $"Found {newsResponse.TotalResults} articles for your query.";
+        }
+        else
+        {
+            showResponse = true;
+            newsArticles = new List<OurNewsArticle>();
+            responseQuery = "No news articles found for your query.";
+        }
+    }
+    catch (Newtonsoft.Json.JsonException jsonEx)
+    {
+        responseQuery = $"Failed to parse news data: {jsonEx.Message}";
+        showResponse = true;
+        newsArticles = new List<OurNewsArticle>();
+    }
+    catch (Exception ex)
+    {
+        responseQuery = $"An error occurred while fetching news articles: {ex.Message}";
+        showResponse = true;
+        newsArticles = new List<OurNewsArticle>();
+    }
+    finally
+    {
+        Submitting = false;
+    }
+}
+
     protected override void OnParametersSet()
     {
         // Dynamically adjust height based on response length
-        calculatedHeight = CalculateHeight(response);
+        calculatedHeight = CalculateHeight(responseQuery);
     }
 
     private int CalculateHeight(string responseText)
@@ -1113,7 +1461,7 @@ else
     }
 
     // Email Selection Handler
-    private void OnSelectedEmailChanged(IEnumerable<EmailViewModel> selectedItems)
+    private void OnSelectedEmailChanged(IEnumerable<PureEmailViewBasicModel> selectedItems)
     {
         selectedEmail = selectedItems.FirstOrDefault();
     }
@@ -1145,7 +1493,7 @@ else
             string kqlQuery = await azureOpenAIHandler.GenerateKQLQuery(searchQuery);
 
             var searchResults = await GraphService.SearchMessagesAsync(searchQuery, 20);
-            emailsWithComputedProperties = searchResults.Select(m => new EmailViewModel(m)).ToList();
+            //emailsWithComputedProperties = searchResults.Select(m => new PureEmailViewBasicModel(m)).ToList();
         }
         catch (Exception ex)
         {
@@ -1156,7 +1504,7 @@ else
             isSearch = false;
         }
     }
-    private async Task ClearSearchAndReloadEmails()
+ private async Task ClearSearchAndReloadEmails()
     {
         // Clear the search query
         searchQuery = "";
@@ -1168,12 +1516,44 @@ else
         try
         {
             // Reload the original email list
-            var messages = await GraphService.GetRecentMessagesAsync(20); // Adjust the count as needed
-            emailsWithComputedProperties = messages.Select(m => new EmailViewModel(m)).ToList();
+            var messagesJson = await GraphService.GetRecentMessagesAsync(20); // Adjust the count as needed
+
+            if (!string.IsNullOrWhiteSpace(messagesJson))
+            {
+                // Deserialize using Newtonsoft.Json directly into a list of PureEmailViewBasicModel objects
+                var messages = JsonConvert.DeserializeObject<List<PureEmailViewBasicModel>>(messagesJson, new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Ignore
+                    // Add other settings as needed
+                });
+
+                if (messages != null && messages.Any())
+                {
+                    // Directly assign the deserialized messages
+                    emailsWithComputedProperties = messages;
+                }
+                else
+                {
+                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    error = "No emails found.";
+                }
+            }
+            else
+            {
+                emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                error = "Failed to retrieve emails.";
+            }
+        }
+        catch (Newtonsoft.Json.JsonException jsonEx)
+        {
+            error = $"Failed to parse messages: {jsonEx.Message}";
+            emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
         }
         catch (Exception ex)
         {
             error = $"Error loading emails: {ex.Message}";
+            emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
         }
         finally
         {
@@ -1183,7 +1563,7 @@ else
         // Ensure the UI updates
         StateHasChanged();
     }
- 
+
     // Event Selection Handler
     private void OnSelectedEventChanged(IEnumerable<EventViewModel> selectedItems)
     {
@@ -1196,10 +1576,12 @@ else
         selectedEvent = null;
     }
 
-    // Changed parameter type from 'GraphMessage' to 'EmailViewModel'
-    private void OpenEmailDialog(EmailViewModel emailViewModel)
+    private void OpenEmailDialog(PureEmailViewBasicModel PureEmailViewBasicModel)
     {
-        selectedEmail = emailViewModel;
+        Console.WriteLine($"OpenEmailDialog");
+
+        selectedEmail = PureEmailViewBasicModel;
+        Console.WriteLine($"Selected email: {selectedEmail?.Subject}");
     }
 
     // Changed parameter type from 'Event' to 'EventViewModel'
@@ -1207,11 +1589,11 @@ else
     {
         selectedEvent = evtViewModel;
     }
-    private async Task DeleteEventAsync(string eventId)
+   private async Task DeleteEventAsync(string eventId)
     {
         try
         {
-            // Confirm the deletion with the user
+            // Confirm the deletion with the user using JS confirm dialog
             var confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this event?");
             if (!confirmed)
             {
@@ -1221,13 +1603,20 @@ else
             // Call the GraphService to delete the event
             await GraphService.DeleteCalendarEventAsync(eventId);
 
-            // Remove the event from the UI
-            calendarEventsWithComputedProperties.RemoveAll(e => e.OriginalEvent.Id == eventId);
+            // Remove the event from the UI using the correct property
+            calendarEventsWithComputedProperties.RemoveAll(e => e.Id == eventId);
             StateHasChanged(); // Update the UI
+
+            // Optionally, log the successful deletion
+            Console.WriteLine($"Event with ID {eventId} deleted successfully.");
+
         }
         catch (Exception ex)
         {
+            // Replace Console.WriteLine with ILogger for better logging
             Console.WriteLine($"Error deleting event: {ex.Message}");
+
+            // Use JS alert to notify the user of the error
             await JS.InvokeVoidAsync("alert", $"Error deleting event: {ex.Message}");
         }
     }
@@ -1530,113 +1919,7 @@ private async Task DeleteContactAsync(string contactId)
         StateHasChanged();
     }
 }
-public class EmailViewModel
-{ 
-    public GraphMessage OriginalMessage { get; set; }
-    public string SenderName { get; set; }
-    public string Subject { get; set; }
-    public string ReceivedDateTimeFormatted { get; set; }
 
-    // Properties for Body Content and Content Type
-    public string BodyContent { get; set; }
-    public BodyType BodyContentType { get; set; }
-
-    // Exposed properties from OriginalMessage
-    public Recipient From => OriginalMessage.From;
-    public List<Recipient> ToRecipients => OriginalMessage.ToRecipients;
-    public DateTimeOffset? ReceivedDateTime => OriginalMessage.ReceivedDateTime;
-
-    // Event-Related Properties
-    public string EventTitle { get; set; } // Can be populated from email subject
-    public string EventDescription { get; set; } // Can be populated from email body
-    public DateTimeOffset? EventStartTime { get; set; } // Can use ReceivedDateTime or parsed from email content
-    public DateTimeOffset? EventEndTime { get; set; } // Start time + default duration
-    public List<string> EventAttendeesEmails { get; set; } // Extract attendees from the 'To' field
-
-    // Constructor to initialize the view model with email data
-    public EmailViewModel(GraphMessage message)
-    {
-        OriginalMessage = message;
-        SenderName = message.From?.EmailAddress?.Name ?? "Unknown";
-        Subject = message.Subject ?? "No Subject";
-        ReceivedDateTimeFormatted = message.ReceivedDateTime.HasValue
-            ? message.ReceivedDateTime.Value.ToLocalTime().ToString("g")
-            : "N/A";
-
-        // Initialize BodyContent and BodyContentType
-        BodyContent = message.Body?.Content ?? "";
-        BodyContentType = message.Body?.ContentType ?? BodyType.Text;
-
-        // Initialize event-related fields
-        EventTitle = message.Subject ?? "New Event";
-        EventDescription = message.Body?.Content ?? "";
-        EventStartTime = message.ReceivedDateTime; // Use the email's received time as the event start time by default
-        EventEndTime = EventStartTime?.AddMinutes(30); // Default event duration is 30 minutes
-        EventAttendeesEmails = message.ToRecipients?.Select(r => r.EmailAddress?.Address).ToList() ?? new List<string>();
-    }
-}
-
-
-
-// ViewModel for Events
-public class EventViewModel
-{
-    public Event OriginalEvent { get; set; }
-    public string Id => OriginalEvent?.Id; // Expose the Id of the original event
-    public string Subject { get; set; }
-    public string StartDateTimeFormatted { get; set; }
-    public string EndDateTimeFormatted { get; set; }
-    public string Location { get; set; }
-
-    // Parsed DateTimeOffset properties
-    public DateTimeOffset? StartDateTime { get; set; }
-    public DateTimeOffset? EndDateTime { get; set; }
-
-    // New properties for attendees and description
-    public List<string> Attendees { get; set; }
-    public string Description { get; set; }
-
-    public EventViewModel(Event evt)
-    {
-        OriginalEvent = evt;
-        Subject = evt.Subject ?? "No Subject";
-
-        // Attempt to parse Start.DateTime
-        if (DateTimeOffset.TryParse(evt.Start?.DateTime, out var startDt))
-        {
-            StartDateTime = startDt;
-            StartDateTimeFormatted = startDt.ToLocalTime().ToString("g");
-        }
-        else
-        {
-            StartDateTime = null;
-            StartDateTimeFormatted = "N/A";
-        }
-
-        // Attempt to parse End.DateTime
-        if (DateTimeOffset.TryParse(evt.End?.DateTime, out var endDt))
-        {
-            EndDateTime = endDt;
-            EndDateTimeFormatted = endDt.ToLocalTime().ToString("g");
-        }
-        else
-        {
-            EndDateTime = null;
-            EndDateTimeFormatted = "N/A";
-        }
-
-        // Add location information
-        Location = evt.Location?.DisplayName ?? "No location";
-
-        // Initialize attendees list
-        Attendees = evt.Attendees?.Select(a => 
-            a.EmailAddress?.Name ?? a.EmailAddress?.Address ?? "Unknown Attendee")
-            .ToList() ?? new List<string> { "No attendees" };
-
-        // Set description
-        Description = evt.Body?.Content ?? "No description available";
-    }
-}
 
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
@@ -1645,25 +1928,6 @@ public class EventViewModel
 }
 
 @code {
-
-    private bool IsFormValid()
-    {
-        // Check that Subject, StartDate, and EndDate are not empty, and are valid.
-        bool hasValidBasicFields = !string.IsNullOrWhiteSpace(newEvent.Subject) 
-                                && newEventStartDate.HasValue 
-                                && newEventEndDate.HasValue;
-
-        // Check that Location is not empty.
-        bool hasValidLocation = !string.IsNullOrWhiteSpace(newEvent.Location?.DisplayName);
-
-        // Check that there is at least one attendee entered.
-        bool hasValidAttendees = !string.IsNullOrWhiteSpace(attendeesInput) 
-                                && attendeesInput.Split(',').Any(email => !string.IsNullOrWhiteSpace(email.Trim()));
-
-        // Ensure all fields are valid.
-        return hasValidBasicFields && hasValidLocation && hasValidAttendees;
-    }
-
 
     private DateTime? newEventStartDate { get; set; } = DateTime.Now;
     private string newEventStartTime { get; set; } = DateTime.Now.ToString("HH:mm");
@@ -1769,10 +2033,101 @@ public class EventViewModel
     private string newEventBody { get; set; } = ""; // Store the body content
     private string attendeesInput { get; set; } = string.Empty; // Holds attendee emails input
 
+    private bool IsFormValid()
+    {
+        // Ensure newEvent is not null before proceeding
+        if (newEvent == null)
+        {
+            Console.WriteLine("Event object is null.");
+            return false;
+        }
+
+        // Validate Subject: it must not be empty
+        bool hasValidSubject = !string.IsNullOrWhiteSpace(newEvent.Subject);
+        if (!hasValidSubject)
+        {
+            Console.WriteLine("Subject is missing.");
+        }
+
+        // Validate StartDate and EndDate: they must have values
+        bool hasValidDates = newEventStartDate.HasValue && newEventEndDate.HasValue;
+        if (!hasValidDates)
+        {
+            Console.WriteLine("Start or End date is missing.");
+        }
+
+        // Ensure Start and End times are not empty and End time is after Start time
+        if (hasValidDates && (!string.IsNullOrWhiteSpace(selectedStartTime) && !string.IsNullOrWhiteSpace(selectedEndTime)))
+        {
+            if (DateTimeOffset.TryParse($"{newEventStartDate.Value:yyyy-MM-dd}T{selectedStartTime}", out var startDateTimeParsed) &&
+                DateTimeOffset.TryParse($"{newEventEndDate.Value:yyyy-MM-dd}T{selectedEndTime}", out var endDateTimeParsed))
+            {
+                if (endDateTimeParsed <= startDateTimeParsed)
+                {
+                    Console.WriteLine("End time must be after Start time.");
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid Start or End time format.");
+                return false;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Start time or End time is missing.");
+            return false;
+        }
+
+        // Validate Location: it must not be empty
+        bool hasValidLocation = !string.IsNullOrWhiteSpace(newEvent.Location?.DisplayName);
+        if (!hasValidLocation)
+        {
+            Console.WriteLine("Location is missing.");
+        }
+
+        // Validate Attendees: there must be at least one valid attendee
+        bool hasValidAttendees = !string.IsNullOrWhiteSpace(attendeesInput) &&
+                                attendeesInput.Split(',')
+                                            .Select(email => email.Trim())
+                                            .Any(email => !string.IsNullOrWhiteSpace(email));
+        if (!hasValidAttendees)
+        {
+            Console.WriteLine("At least one valid attendee is required.");
+        }
+
+        // Validate Body: it must not be empty
+        bool hasValidBody = !string.IsNullOrWhiteSpace(newEventBody);
+        if (!hasValidBody)
+        {
+            Console.WriteLine("Event description (Body) is missing.");
+        }
+
+        // Ensure all fields are valid
+        bool isValid = hasValidSubject && hasValidDates && hasValidLocation && hasValidAttendees && hasValidBody;
+        if (!isValid)
+        {
+            Console.WriteLine("Form validation failed. Please ensure all required fields are correctly filled.");
+        }
+
+        return isValid;
+    }
 private async Task SaveEventAsync()
 {
     try
     {
+        // Validate the form before proceeding
+        if (!IsFormValid())
+        {
+            error = "Please ensure all required fields are filled out correctly.";
+            Console.WriteLine(error);
+            return;
+        }
+
+        // Ensure newEvent is not null
+        newEvent ??= new Event();
+
         // Set the event subject
         newEvent.Subject = string.IsNullOrWhiteSpace(newEvent.Subject) ? "No Subject" : newEvent.Subject;
 
@@ -1788,6 +2143,24 @@ private async Task SaveEventAsync()
         {
             newEvent.End.DateTime = $"{newEventEndDate.Value:yyyy-MM-dd}T{selectedEndTime}";
             newEvent.End.TimeZone = TimeZoneInfo.Local.Id;
+        }
+
+        // Ensure the end time is after the start time
+        if (DateTimeOffset.TryParse(newEvent.Start.DateTime, out var startDateTimeParsed) &&
+            DateTimeOffset.TryParse(newEvent.End.DateTime, out var endDateTimeParsed))
+        {
+            if (endDateTimeParsed <= startDateTimeParsed)
+            {
+                error = "End time must be after the start time.";
+                Console.WriteLine(error);
+                return;
+            }
+        }
+        else
+        {
+            error = "Invalid date/time format.";
+            Console.WriteLine(error);
+            return;
         }
 
         // Set the location
@@ -1836,46 +2209,54 @@ private async Task SaveEventAsync()
             Console.WriteLine($"End: {result.CreatedEvent.End.DateTime} ({result.CreatedEvent.End.TimeZone})");
             Console.WriteLine($"Location: {result.CreatedEvent.Location?.DisplayName}");
             Console.WriteLine($"Attendees: {string.Join(", ", result.CreatedEvent.Attendees.Select(a => a.EmailAddress.Address))}");
-            Console.WriteLine($"Description: {result.CreatedEvent.Body?.Content}");
+            Console.WriteLine($"BodyPreview: {result.CreatedEvent.BodyPreview}");
 
             // Add the created event to the list with computed properties
-            calendarEventsWithComputedProperties.Add(new EventViewModel(result.CreatedEvent));
+            calendarEventsWithComputedProperties.Add(new EventViewModel
+            {
+                Id = result.CreatedEvent.Id,
+                Subject = result.CreatedEvent.Subject,
+                StartDateTimeFormatted = DateTimeOffset.Parse(result.CreatedEvent.Start.DateTime).ToLocalTime().ToString("g", CultureInfo.CurrentCulture),
+                EndDateTimeFormatted = DateTimeOffset.Parse(result.CreatedEvent.End.DateTime).ToLocalTime().ToString("g", CultureInfo.CurrentCulture),
+                Location = result.CreatedEvent.Location,
+                Attendees = result.CreatedEvent.Attendees,
+                BodyPreview = result.CreatedEvent.BodyPreview,
+                WebLink = result.CreatedEvent.WebLink
+            });
+
+            // Close the dialog and refresh the state
             CloseNewEventDialog();
             StateHasChanged();
         }
         else
         {
             error = result.ErrorMessage ?? "An error occurred while creating the event.";
+            Console.WriteLine(error);
         }
     }
     catch (Exception ex)
     {
         error = $"Error creating event: {ex.Message}";
+        Console.WriteLine(error);
     }
 }
-
-
 }
 @code {
     private async Task CopyEmailToClipboard()
     {
         // Ensure that email has valid From and To fields
-        var fromEmail = selectedEmail.From?.EmailAddress != null
-            ? $"{selectedEmail.From.EmailAddress.Name} <{selectedEmail.From.EmailAddress.Address}>"
-            : "Unknown Sender";
+        var fromEmail = $"{selectedEmail.From.Name} <{selectedEmail.From.EmailAddress}>";
 
         var toEmails = selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any()
-            ? string.Join(", ", selectedEmail.ToRecipients.Select(r => r.EmailAddress != null 
-                ? $"{r.EmailAddress.Name} <{r.EmailAddress.Address}>" 
-                : "Unknown Recipient"))
+            ? string.Join(", ", selectedEmail.ToRecipients.Select(r => $"{r.Name} <{r.EmailAddress}>"))
             : "No recipients";
 
         // Combine From and To for Attendees
         var attendees = fromEmail + (toEmails != "No recipients" ? $", {toEmails}" : "");
 
-        // Ensure that ReceivedDateTime is properly formatted
-        var receivedDateTime = selectedEmail.ReceivedDateTime?.ToLocalTime().ToString("g") ?? "N/A";
-
+        var receivedDateTime = DateTimeOffset.TryParse(selectedEmail.ReceivedDateTime, out var dt) 
+            ? dt.ToLocalTime().ToString("g") 
+            : "N/A";
         // Get the plain text version of the email body
         var bodyContent = string.IsNullOrEmpty(GetPlainText(selectedEmail))
             ? "No body content available."
@@ -1899,9 +2280,9 @@ private async Task SaveEventAsync()
 
 
     // Method to remove HTML tags from email body content
-    private string GetPlainText(EmailViewModel email)
+    private string GetPlainText(PureEmailViewBasicModel email)
     {
-        if (email.BodyContentType == BodyType.Html)
+        if (email.BodyContentType == "Html")
         {
             // Remove HTML comments
             var plainText = System.Text.RegularExpressions.Regex.Replace(email.BodyContent, "<!--.*?-->", string.Empty, System.Text.RegularExpressions.RegexOptions.Singleline);
@@ -1928,5 +2309,189 @@ private async Task SaveEventAsync()
     {
         // Use JavaScript to resize the textarea dynamically
         await JS.InvokeVoidAsync("autoResizeTextarea", "fluentTextArea");
+    }
+}
+
+@code {
+private async Task RefreshMessagesAsync()
+{
+    isMessagesLoading = true;  // Show loading state during refresh
+    error = null;
+
+    try
+    {
+        // Fetch the latest messages (adjust the count as needed)
+        string input = "fetch latest 5 emails";
+        //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
+        string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+
+            if (!string.IsNullOrWhiteSpace(emailsJson))
+            {
+                // Deserialize using Newtonsoft.Json into EmailResult
+                var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+                if (emailList != null && emailList.Emails.Any())
+                {
+                    emailsWithComputedProperties = emailList.Emails;
+                }
+                else
+                {
+                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    error = "No emails found.";
+                }
+            }
+            else
+            {
+                emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                error = "Failed to retrieve emails.";
+            }
+    }
+    catch (Newtonsoft.Json.JsonException jsonEx)
+    {
+        error = $"Failed to parse messages: {jsonEx.Message}";
+        emailsWithComputedProperties.Clear();
+    }
+    catch (Exception ex)
+    {
+        error = $"Error refreshing messages: {ex.Message}";
+        emailsWithComputedProperties.Clear();
+    }
+    finally
+    {
+        isMessagesLoading = false;  // Hide loading state
+    }
+
+    // Ensure the UI updates
+    StateHasChanged();
+}
+
+    private async Task DeleteEmail(PureEmailViewBasicModel PureEmailViewBasicModel)
+    {
+        if (PureEmailViewBasicModel == null || string.IsNullOrEmpty(PureEmailViewBasicModel.Id))
+        {
+            return;
+        }
+
+        bool confirmDelete = await ConfirmDeleteAsync(); // Optional: Ask user for confirmation before deletion
+
+        if (confirmDelete)
+        {
+            try
+            {
+                await GraphService.DeleteEmailMessageAsync(PureEmailViewBasicModel.Id);
+
+                // Remove the deleted email from the list and update the grid
+                emailsWithComputedProperties.Remove(PureEmailViewBasicModel);
+            }
+            catch (Exception ex)
+            {
+                // Handle or log the exception
+                Console.WriteLine($"Error deleting email: {ex.Message}");
+            }
+        }
+    }
+    private async Task<bool> ConfirmDeleteAsync()
+    {
+        // Wrap the string argument in an object array
+        return await JS.InvokeAsync<bool>("confirm", new object[] { "Are you sure you want to delete this email?" });
+    }
+
+
+}
+
+@code {
+
+private async Task AIOrganizerAsync()
+{
+    isAIOrganizerLoading = true;  // Show loading state during refresh
+    error = null;
+
+    try
+    {
+        // Fetch the latest messages (adjust the count as needed)
+        string input = "fetch latest 5 emails";
+        var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
+        //string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+
+            if (!string.IsNullOrWhiteSpace(emailsJson))
+            {
+                // Deserialize using Newtonsoft.Json into EmailResult
+                var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+                if (emailList != null && emailList.Emails.Any())
+                {
+                    emailsWithComputedProperties = emailList.Emails;
+                }
+                else
+                {
+                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    error = "No emails found.";
+                }
+            }
+            else
+            {
+                emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                error = "Failed to retrieve emails.";
+            }
+    }
+    catch (Newtonsoft.Json.JsonException jsonEx)
+    {
+        error = $"Failed to parse messages: {jsonEx.Message}";
+        emailsWithComputedProperties.Clear();
+    }
+    catch (Exception ex)
+    {
+        error = $"Error refreshing messages: {ex.Message}";
+        emailsWithComputedProperties.Clear();
+    }
+    finally
+    {
+        isAIOrganizerLoading = false;  // Hide loading state
+    }
+
+    // Ensure the UI updates
+    StateHasChanged();
+}
+
+}
+@code {
+       // Helper method to convert Importance int to text
+    private string GetImportanceText(EventImportance importance)
+    {
+        return importance switch
+        {
+            EventImportance.Low => "Low",
+            EventImportance.Normal => "Normal",
+            EventImportance.High => "High",
+            _ => "Unknown"
+        };
+    }
+    private string FormatReceivedDateTime(string receivedDateTime)
+    {
+        if (DateTime.TryParse(receivedDateTime, out var parsedDate))
+        {
+            return parsedDate.ToString("MM/dd/yyyy hh:mm tt");
+        }
+        return receivedDateTime; // Return original string if parsing fails
+    }
+
+       private void OpenConfirmModal(string eventId)
+    {
+        //eventIdToDelete = eventId;
+        //isConfirmModalOpen = true;
+    }
+
+    /// <summary>
+    /// Formats a nullable DateTimeOffset into a string based on the provided format.
+    /// Returns "N/A" if the date is null.
+    /// </summary>
+    /// <param name="date">The nullable DateTimeOffset to format.</param>
+    /// <param name="format">The format string (e.g., "d" for short date, "t" for short time).</param>
+    /// <returns>A formatted date string or "N/A".</returns>
+    private string FormatDate(DateTimeOffset? date, string format)
+    {
+        return date.HasValue 
+            ? date.Value.ToLocalTime().ToString(format, CultureInfo.CurrentCulture) 
+            : "N/A";
     }
 }

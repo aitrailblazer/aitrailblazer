@@ -4,11 +4,9 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 
 using System;
 using System.Web;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -22,8 +20,10 @@ using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
 
 using System.ComponentModel;
-using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Extensions;
+using Microsoft.TypeChat;
+using Microsoft.TypeChat.Schema;
+
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using aitrailblazer.net.Utilities;
@@ -60,8 +60,9 @@ namespace aitrailblazer.net.Services
         private readonly KernelFunctionStrategies _kernelFunctionStrategies;
         private readonly AgentConfigurationService _agentConfigurationService; // Add AgentConfigurationService
         private readonly ILogger<AzureOpenAIHandler> _logger;
-        private readonly KernelSetup _kernelSetup;
+        private readonly KernelAddPLugin _kernelAddPLugin;
         //private readonly WebSearchService _webSearchService;
+        private readonly TimeFunctions _timeFunctions;
 
 
         public AzureOpenAIHandler(
@@ -73,7 +74,8 @@ namespace aitrailblazer.net.Services
             KernelFunctionStrategies kernelFunctionStrategies,
             AgentConfigurationService agentConfigurationService,
             ILogger<AzureOpenAIHandler> logger,
-            KernelSetup kernelSetup)
+            KernelAddPLugin kernelAddPLugin,
+            TimeFunctions timeFunctions)
         {
             _parametersAzureService = parametersAzureService;
             _pluginService = pluginService;
@@ -83,7 +85,9 @@ namespace aitrailblazer.net.Services
             _kernelFunctionStrategies = kernelFunctionStrategies;
             _agentConfigurationService = agentConfigurationService;
             _logger = logger;
-            _kernelSetup = kernelSetup;
+            _kernelAddPLugin = kernelAddPLugin;
+            _timeFunctions = timeFunctions;
+
             //_webSearchService = webSearchService;
         }
 
@@ -2256,7 +2260,15 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             return date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday;
         }
 
-
+        /// <summary>
+        /// A plugin that returns the current time.
+        /// </summary>
+        public class TimeInformation
+        {
+            [KernelFunction]
+            [Description("Retrieves the current time in UTC.")]
+            public string GetCurrentUtcTime() => DateTime.UtcNow.ToString("R");
+        }
         public async Task<string> GetASAPTime(
             string input)
         {
@@ -2277,10 +2289,11 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 // Build the kernel
                 string modelId = "gpt-4o-mini";
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, 1024);
-                // kernelBuilder.Plugins.AddFromType<TimeInformation>();
+                kernelBuilder.Plugins.AddFromType<TimeInformation>();
                 Kernel kernel = kernelBuilder.Build();
+                
 
-                kernel = _kernelSetup.SetupKernelTimePlugin(kernel);
+                kernel = _kernelAddPLugin.KernelTimePlugin(kernel);
 
                 double temperature = 0.1;
                 double topP = 0.1;
@@ -2311,17 +2324,77 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 };
 
 
+
+                // Define the prompt
+                string prompt = @"
+You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to time and date information.
+
+You have access to the following functions:
+
+1. **Get current time and date** using the `get_current_time_ai` function.
+   - This function retrieves the current local date and time formatted for AI interactions.
+
+2. **Get today's date** using the `today_ai` function.
+   - This function retrieves today's date formatted for AI interactions.
+
+3. **Check if a given date is a business day** using the `is_business_day_ai` function.
+   - This function checks if a given date is a business day (Monday to Friday) and returns the result formatted for AI interactions.
+
+4. **Get the current day of the week** using the `get_day_of_week_ai` function.
+   - This function retrieves the current day of the week formatted for AI interactions.
+
+5. **Convert between time zones** using the `convert_between_time_zones_ai` function.
+   - This function converts a date and time from one time zone to another and returns the result formatted for AI interactions.
+
+6. **Create a specific date** using the `create_date_ai` function.
+   - This function creates a date from year, month, and day and returns the result formatted for AI interactions.
+
+7. **Create a specific time** using the `create_time_ai` function.
+   - This function creates a time from hour, minute, and second and returns the result formatted for AI interactions.
+
+8. **Create a date interval** using the `create_date_interval_ai` function.
+   - This function creates a date interval between two dates and returns the result formatted for AI interactions.
+
+9. **Format a date string** using the `date_string_ai` function.
+    - This function formats a date with a specified format and returns the result formatted for AI interactions.
+
+10. **Parse a date string** using the `from_date_string_ai` function.
+    - This function parses a date string with a specified format and returns the result formatted for AI interactions.
+
+11. **Calculate the difference between two dates in days** using the `date_difference_days_ai` function.
+    - This function calculates the difference between two dates in days and returns the result formatted for AI interactions.
+
+12. **Calculate the difference between two dates in hours** using the `date_difference_hours_ai` function.
+    - This function calculates the difference between two dates in hours and returns the result formatted for AI interactions.
+
+13. **Retrieve the local time for a specified time zone** using the `local_time_ai` function.
+    - This function retrieves the local time information for a specified time zone formatted for AI interactions.
+
+### Instructions:
+Based on the user's input, analyze the query and determine the most appropriate function to call. 
+- If the user asks for specific time or date information, select the relevant function (e.g., `get_current_time_ai`, `today_ai`).
+- For calculations such as date intervals, use the `create_date_interval_ai` or `date_difference_days_ai`.
+- Use the appropriate formatting or conversion functions if needed (e.g., `convert_between_time_zones_ai`, `date_string_ai`).
+
+After determining the function, execute it, and return the response in a well-formatted, AI-readable format.
+
+The current time is {{TimeInformation.GetCurrentUtcTime}}
+
+**User Input:** {{$Input}}
+
+**Chosen Action:**
+";
+
                 var arguments = new KernelArguments(executionSettings) 
                 { 
-                    //["Request"] = "Provide latest headlines" 
+                    ["Input"] = input
                 };
-
                 _logger.LogInformation("GetASAPTime kernel.InvokeAsync");
 
                 // Execute the kernel function
                 try
                 {
-                    var result = await kernel.InvokePromptAsync(input, arguments);
+                    var result = await kernel.InvokePromptAsync(prompt, arguments);
                     var response = result.GetValue<string>();
 
                     _logger.LogInformation($"GetASAPTime response: {response}");
@@ -2349,6 +2422,126 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 _logger.LogError(ex, $"GetASAPTime A critical error occurred");
                 return "A critical error occurred. Please contact support.";
 
+            }
+        }
+        public async Task<string> StruturedOutputTestAsync(string input)
+        {
+            //int maxTokens = 1024;
+
+            string modelId = "gpt-4o-mini"; 
+
+            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);;
+            TranslationSettings settings = new TranslationSettings
+                        {
+                            MaxTokens = 1000,
+                            Temperature = 0.1,
+                        };
+            JsonTranslator<SentimentResponse> _translator;
+    
+            _translator = new JsonTranslator<SentimentResponse>(
+                new LanguageModel(config));
+
+
+            //Prompt prompt = new Prompt();
+            //prompt.AppendInstruction("Help the user translate approximate date ranges into precise ones");
+            //prompt.Add(PromptLibrary.Now());
+            //prompt.AppendResponse("Give me a time range, like fortnight");
+            //prompt.Append("What is the date in a fortnight?");
+
+            //string classes = Json.Stringify(_classes);
+            //string fullRequest = $"Classify \"{request}\" using the following classification table:\n{classes}\n";
+
+            Prompt prompt = new Prompt();
+            prompt.Append(input);
+            //prompt.AppendInstruction("Help the user translate approximate date ranges into precise ones");
+            //var response = await lm.CompleteAsync(prompt, settings, CancellationToken.None);
+
+            SentimentResponse response = await _translator.TranslateAsync(
+                request: prompt,
+                preamble: null,
+                requestSettings: settings);
+
+            try
+            {
+                var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
+
+                _logger.LogInformation($"StruturedOutputTestAsync Generated search Result: {jsonResponse}");
+
+                return jsonResponse;
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Argument error: {ex.Message}");
+                return "An error occurred with the arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Invalid operation: {ex.Message}");
+                return "An invalid operation occurred during function execution. Please try again.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Unexpected error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again.";
+            }
+        }
+
+        public async Task<string> StruturedOutputCalendarAsync(string input)
+        {
+            //int maxTokens = 1024;
+
+            string modelId = "gpt-4o-mini"; 
+
+
+            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);;
+            TranslationSettings settings = new TranslationSettings
+                        {
+                            MaxTokens = 1000,
+                            Temperature = 0.1,
+                        };
+            JsonTranslator<Calendar.CalendarActions> _translator;
+
+            _translator = new JsonTranslator<Calendar.CalendarActions>(
+                new LanguageModel(config));
+
+            Prompt prompt = new Prompt();
+            prompt.Append(input);
+
+            Calendar.CalendarActions response = await _translator.TranslateAsync(
+                request: prompt,
+                preamble: null,
+                requestSettings: settings);
+
+            try
+            {
+                var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
+
+                _logger.LogInformation($"StruturedOutputCalendarAsync Generated search Result: {jsonResponse}");
+
+                return jsonResponse;
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputCalendarAsync Argument error: {ex.Message}");
+                return "An error occurred with the arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputCalendarAsync Invalid operation: {ex.Message}");
+                return "An invalid operation occurred during function execution. Please try again.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputCalendarAsync Unexpected error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again.";
             }
         }
 
@@ -2395,58 +2588,58 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             }
         }
 
- /// <summary>
-/// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
-/// then performs the web search and returns the search result content.
-/// </summary>
-/// <param name="input">The natural language description for the search.</param>
-/// <returns>The search result content as a string.</returns>
-public async Task<string> ShowNewsAsync(string input)
-{
-    const int maxTokens = 16000;
-    const string modelId = "gpt-4o"; // Ensure this is the correct model ID
-    const double temperature = 0.1;
-    const double topP = 0.1;
-    const int seed = 356;
-
-    _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
-
-    // Input validation
-    if (string.IsNullOrWhiteSpace(input))
-    {
-        _logger.LogWarning("Input cannot be null or empty.");
-        return "Invalid input. Please provide a valid search query.";
-    }
-
-    try
-    {
-        _logger.LogInformation("Building kernel and setting up news plugin.");
-        
-        // Build the kernel
-        IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-        Kernel kernel = kernelBuilder.Build();
-
-        // Setup the News plugin
-        kernel = _kernelSetup.AddNewsPlugin(kernel);
-
-        // Configure execution settings
-        var executionSettings = new OpenAIPromptExecutionSettings
+     /// <summary>
+        /// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
+        /// then performs the web search and returns the search result content.
+        /// </summary>
+        /// <param name="input">The natural language description for the search.</param>
+        /// <returns>The search result content as a JSON string.</returns>
+        public async Task<string> ShowNewsAsync(string input)
         {
-            Temperature = temperature,
-            TopP = topP,
-            MaxTokens = maxTokens,
-            Seed = seed,
-            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
-            ResponseFormat = typeof(NewsResponse) // Specify the expected response type
-        };
+            const int maxTokens = 16000;
+            const string modelId = "gpt-4o"; // Ensure this is the correct model ID
+            const double temperature = 0.1;
+            const double topP = 0.1;
+            const int seed = 356;
 
-        var arguments = new KernelArguments(executionSettings)
-        {
-            ["Input"] = input
-        };
+            _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
 
-        // Define the prompt
-        string prompt = @"
+            // Input validation
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                _logger.LogWarning("Input cannot be null or empty.");
+                return "Invalid input. Please provide a valid search query.";
+            }
+
+            try
+            {
+                _logger.LogInformation("Building kernel and setting up news plugin.");
+
+                // Build the kernel
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                Kernel kernel = kernelBuilder.Build();
+
+                // Setup the News plugin
+                kernel = _kernelAddPLugin.NewsPlugin(kernel);
+
+                // Configure execution settings
+                var executionSettings = new OpenAIPromptExecutionSettings
+                {
+                    Temperature = temperature,
+                    TopP = topP,
+                    MaxTokens = maxTokens,
+                    Seed = seed,
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+                    ResponseFormat = typeof(NewsResponse) // Specify the expected response type
+                };
+
+                var arguments = new KernelArguments(executionSettings)
+                {
+                    ["Input"] = input
+                };
+
+                // Define the prompt
+                string prompt = @"
 You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to news and content searches.
 
 You have access to the following functions:
@@ -2478,66 +2671,231 @@ After determining the function, execute it, and return the response in JSON form
 **Chosen Action:**
 ";
 
-        _logger.LogInformation("Executing kernel with provided input.");
+                _logger.LogInformation("Executing kernel with provided input.");
 
-        // Execute the kernel function
+                // Execute the kernel function
+                var result = await kernel.InvokePromptAsync(prompt, arguments);
+
+                if (result != null)
+                {
+                    string newsResponse = result.ToString();
+
+                    // Format the response with proper indentation using Newtonsoft.Json
+                    try
+                    {
+                        var newsResponseObj = JsonConvert.DeserializeObject<NewsResponse>(newsResponse);
+                        var jsonSettings = new JsonSerializerSettings
+                        {
+                            Formatting = Formatting.Indented,
+                            // Add converters if you have enum properties or other custom serialization needs
+                            // For example, to handle enums as strings:
+                            // Converters = { new StringEnumConverter() }
+                        };
+                        var formattedNewsResponse = JsonConvert.SerializeObject(newsResponseObj, jsonSettings);
+
+                        // Log the formatted response
+                        _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{FormattedNewsResponse}", formattedNewsResponse);
+
+                        return formattedNewsResponse;
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "Error while formatting the news response.");
+                        return newsResponse; // Return the raw response if formatting fails
+                    }
+                }
+                else
+                {
+                    _logger.LogError("ShowNewsAsync failed to generate a valid response.");
+                    return "No results were generated from the search.";
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Argument error: {Message}", ex.Message);
+                return "An error occurred with the input arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Invalid operation: {Message}", ex.Message);
+                return "An invalid operation occurred during execution. Please try again.";
+            }
+            catch (JsonException ex) // Handle Newtonsoft.Json.JsonException if needed
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync JSON error: {Message}", ex.Message);
+                return "An error occurred while processing the JSON data.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync encountered an unexpected error.");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again later.";
+            }
+            finally
+            {
+                _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
+            }
+        }
+    
+
+    /// <summary>
+    /// Represents the structure of the news response.
+    /// </summary>
+    public class NewsResponse
+    {
+        [JsonProperty("articles")]
+        public List<OurNewsArticle> Articles { get; set; } = new List<OurNewsArticle>();
+
+        [JsonProperty("totalResults")]
+        public int TotalResults { get; set; }
+    }
+
+    /// <summary>
+    /// Represents a single news article.
+    /// </summary>
+    public class OurNewsArticle
+    {
+        [JsonProperty("title")]
+        public string Title { get; set; } = string.Empty;
+
+        [JsonProperty("description")]
+        public string Description { get; set; } = string.Empty;
+
+        [JsonProperty("url")]
+        public string Url { get; set; } = string.Empty;
+
+        [JsonProperty("publishedAt")]
+        public DateTime PublishedAt { get; set; }
+
+        // Add other relevant properties as needed
+    }
+
+/// <summary>
+/// Generates a search query based on user input using GPT-4 and the registered EmailPlugin functions,
+/// then retrieves recent emails or performs email-related actions.
+/// </summary>
+/// <param name="input">The natural language description for the email query.</param>
+/// <returns>The email result content as a string.</returns>
+public async Task<string> ShowEmailsAsync(string input)
+{
+    const int maxTokens = 16000;
+    const string modelId = "gpt-4o"; // Ensure this is the correct model ID
+    const double temperature = 0.1;
+    const double topP = 0.1;
+    const int seed = 356;
+
+    _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync initiated.");
+
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        _logger.LogWarning("Input cannot be null or empty.");
+        return "Invalid input. Please provide a valid email query.";
+    }
+
+    try
+    {
+        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Building kernel and setting up email plugin.");
+
+        IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+        Kernel kernel = kernelBuilder.Build();
+
+        kernel = _kernelAddPLugin.AddEmailPlugin(kernel);
+
+        var executionSettings = new OpenAIPromptExecutionSettings
+        {
+            Temperature = temperature,
+            TopP = topP,
+            MaxTokens = maxTokens,
+            Seed = seed,
+            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+            ResponseFormat = typeof(PureEmailResult) // Updated to expect a list
+        };
+
+        var arguments = new KernelArguments(executionSettings)
+        {
+            ["Input"] = input
+        };
+
+        string prompt = @"
+You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to email handling.
+
+You have access to the following functions:
+
+1. **Retrieve recent email messages** using the `get_recent_messages_async_ai` function.
+   - This function fetches recent emails based on user-defined parameters (such as a count) and returns results in a structured JSON format optimized for AI responses.
+
+### Available Functions:
+- `get_recent_messages_async_ai`: Retrieve recent email messages based on user input.
+
+### Instructions:
+Based on the user's input, analyze the query and determine the most appropriate function to call. 
+- If the user asks for recent emails, use the `get_recent_messages_async_ai` function.
+
+After determining the function, execute it, and return the response in JSON format.
+
+analyze the subject and the body and fill out the Category field.
+
+analyze the subject and the body and fill out the Priority field:
+Based on the urgency or importance implied by the email content. For example, words like urgent, immediate, asap, or critical could assign higher priority.
+
+analyze the subject and the body and fill out the ActionRequired field:
+Determines if the email requires immediate action or follow-up, based on phrases like please respond, take action, complete by, or follow-up.
+**User Input:** {{$Input}}
+
+**Action:**";
+
+        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Executing kernel with provided input.");
+
         var result = await kernel.InvokePromptAsync(prompt, arguments);
 
         if (result != null)
         {
-            string newsResponse = result.ToString();
+            //AzureOpenAIHandler emailResponse  
+            string emailResponse = result.ToString();
+            _logger.LogInformation("AzureOpenAIHandler emailResponse\n{emailResponse}", emailResponse);
 
-            // Format the response with proper indentation
             try
             {
-                var newsResponseObj = System.Text.Json.JsonSerializer.Deserialize<NewsResponse>(newsResponse);
-                var formattedNewsResponse = System.Text.Json.JsonSerializer.Serialize(newsResponseObj, new System.Text.Json.JsonSerializerOptions
+                // Deserialize directly as a list of EmailViewBasicModel
+                var emailList = Newtonsoft.Json.JsonConvert.DeserializeObject<PureEmailResult>(emailResponse);
+
+                if (emailList != null && emailList.Emails.Any())
                 {
-                    WriteIndented = true
-                });
-
-                // Log the formatted response
-                _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{FormattedNewsResponse}", formattedNewsResponse);
-
-                return formattedNewsResponse;
+                    var formattedEmailResponse = Newtonsoft.Json.JsonConvert.SerializeObject(emailList, Newtonsoft.Json.Formatting.Indented);
+                    _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync generated email response successfully:\n{FormattedEmailResponse}", formattedEmailResponse);
+                    return formattedEmailResponse;
+                }
+                else
+                {
+                    _logger.LogWarning("AzureOpenAIHandler ShowEmailsAsync received an empty email list.");
+                    return "No emails were found based on the provided query.";
+                }
             }
-            catch (System.Text.Json.JsonException jsonEx)
+            catch (Newtonsoft.Json.JsonException jsonEx)
             {
-                _logger.LogError(jsonEx, "Error while formatting the news response.");
-                return newsResponse; // Return the raw response if formatting fails
+                _logger.LogError(jsonEx, "AzureOpenAIHandler ShowEmailsAsync Error while deserializing the email response.");
+                return emailResponse; // Return the raw response if deserialization fails
             }
         }
         else
         {
-            _logger.LogError("ShowNewsAsync failed to generate a valid response.");
-            return "No results were generated from the search.";
+            _logger.LogError("AzureOpenAIHandler ShowEmailsAsync failed to generate a valid response.");
+            return "No email results were generated.";
         }
-    }
-    catch (ArgumentException ex)
-    {
-        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Argument error: {Message}", ex.Message);
-        return "An error occurred with the input arguments. Please check your input and try again.";
-    }
-    catch (InvalidOperationException ex)
-    {
-        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Invalid operation: {Message}", ex.Message);
-        return "An invalid operation occurred during execution. Please try again.";
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync encountered an unexpected error.");
-        if (ex.InnerException != null)
-        {
-            _logger.LogError(ex.InnerException, "Inner Exception Details");
-        }
-        return "An unexpected error occurred during execution. Please try again later.";
+        _logger.LogError(ex, "AzureOpenAIHandler ShowEmailsAsync encountered an error.");
+        return $"An error occurred: {ex.Message}";
     }
     finally
     {
-        _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
+        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync completed.");
     }
 }
-
 
         /// <summary>
         /// Generates a KQL query based on a natural language input using GPT-4 and the registered KQL functions.
@@ -2563,7 +2921,7 @@ After determining the function, execute it, and return the response in JSON form
                 Kernel kernel = kernelBuilder.Build();
 
                 // Setup the KQL plugin
-                kernel = _kernelSetup.SetupKQLPlugin(kernel);
+                kernel = _kernelAddPLugin.KQLPlugin(kernel);
 
                 double temperature = 0.1;
                 double topP = 0.1;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System;
 using System.Web;
-using System.Text.Json.Nodes;
+
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -19,7 +19,7 @@ using Microsoft.SemanticKernel.Plugins.Web;
 using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
 using System.ComponentModel;
-using System.Text.Json.Serialization;
+
 using Microsoft.OpenApi.Extensions;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;

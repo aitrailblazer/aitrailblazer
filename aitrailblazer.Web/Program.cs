@@ -284,7 +284,7 @@ builder.Services.AddSingleton<BingNewsService>();
 //builder.Services.AddScoped<SearchUrlPlugin>();
 builder.Services.AddScoped<NewsFunctions>();
 
-builder.Services.AddScoped<KernelSetup>();
+builder.Services.AddScoped<KernelAddPLugin>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();

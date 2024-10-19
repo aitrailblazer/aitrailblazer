@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Globalization;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json; // Retained for Newtonsoft.Json usage
+using Newtonsoft.Json.Linq; // Added for JObject manipulations if needed
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
@@ -79,11 +80,11 @@ namespace aitrailblazer.net.Services
 
             if (options.Messages == null || !options.Messages.Any())
             {
-                _logger.LogError("Messages cannot be null or empty.");
-                throw new ArgumentException("Messages cannot be null or empty.");
+                _logger.LogError("GetChatResponseAsync Messages cannot be null or empty.");
+                throw new ArgumentException("GetChatResponseAsync Messages cannot be null or empty.");
             }
 
-            var chatPayload = JsonSerializer.Serialize(new
+            var chatPayload = JsonConvert.SerializeObject(new
             {
                 messages = options.Messages.Select(message => new
                 {
@@ -99,7 +100,7 @@ namespace aitrailblazer.net.Services
                 stream = false
             });
 
-            _logger.LogInformation($"Chat request payload: {chatPayload}");
+            _logger.LogInformation($"GetChatResponseAsync Chat request payload: {chatPayload}");
 
             try
             {
@@ -108,10 +109,10 @@ namespace aitrailblazer.net.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogInformation($"Received successful chat response: {responseContent}");
+                    _logger.LogInformation($"GetChatResponseAsync Received successful chat response: {responseContent}");
 
-                    var responseData = JsonSerializer.Deserialize<JsonElement>(responseContent);
-                    var result = responseData.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "No response received.";
+                    var responseData = JsonConvert.DeserializeObject<JObject>(responseContent);
+                    var result = responseData?["choices"]?[0]?["message"]?["content"]?.ToString() ?? "No response received.";
 
                     // Modify the result to use current time
                     result = AdjustEventTimes(result);
@@ -127,9 +128,19 @@ namespace aitrailblazer.net.Services
                     throw new HttpRequestException($"Chat request failed with status: {response.StatusCode}, {response.ReasonPhrase}. Error: {errorContent}");
                 }
             }
+            catch (HttpRequestException httpEx)
+            {
+                _logger.LogError(httpEx, "HTTP request error while handling chat request.");
+                throw;
+            }
+            catch (JsonException jsonEx)
+            {
+                _logger.LogError(jsonEx, "JSON error while processing chat response.");
+                throw;
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error handling chat request");
+                _logger.LogError(ex, "General error while handling chat request.");
                 throw;
             }
         }
@@ -142,7 +153,7 @@ namespace aitrailblazer.net.Services
             var lines = result.Split('\n').ToList();
 
             // Remove the lines for start and end dates
-            lines.RemoveAll(line => line.StartsWith("FIELD EventStartDateFromReceived^^^") || 
+            lines.RemoveAll(line => line.StartsWith("FIELD EventStartDateFromReceived^^^") ||
                                     line.StartsWith("FIELD EventEndDateFromReceived^^^"));
 
             // Adjust the times
@@ -152,7 +163,7 @@ namespace aitrailblazer.net.Services
                 {
                     // Parse the start time from the line
                     var startTimeString = lines[i].Split("^^^")[1];
-                    if (DateTime.TryParseExact(startTimeString, "HH:mm", null, System.Globalization.DateTimeStyles.None, out startDateTime))
+                    if (DateTime.TryParseExact(startTimeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDateTime))
                     {
                         // Add 30 minutes to get the end time
                         endDateTime = startDateTime.AddMinutes(30);
@@ -172,8 +183,6 @@ namespace aitrailblazer.net.Services
             return string.Join('\n', lines);
         }
 
-
-
         private DateTime RoundToNext30MinuteInterval(DateTime dateTime)
         {
             var minutes = dateTime.Minute;
@@ -181,10 +190,14 @@ namespace aitrailblazer.net.Services
             return dateTime.AddMinutes(adjustment).AddSeconds(-dateTime.Second);
         }
     }
+
     public class SmartPasteInference
     {
-        private static readonly JsonSerializerOptions jsonSerializerOptions
-            = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.None
+        };
 
         public class SmartPasteRequestData
         {
@@ -208,7 +221,7 @@ namespace aitrailblazer.net.Services
 
         public Task<SmartPasteResponseData> GetFormCompletionsAsync(IInferenceBackend inferenceBackend, string dataJson)
         {
-            var data = JsonSerializer.Deserialize<SmartPasteRequestData>(dataJson, jsonSerializerOptions)!;
+            var data = JsonConvert.DeserializeObject<SmartPasteRequestData>(dataJson, _jsonSerializerSettings)!;
             if (data.FormFields is null || data.FormFields.Length == 0 || string.IsNullOrEmpty(data.ClipboardContents))
             {
                 return Task.FromResult(new SmartPasteResponseData { BadRequest = true });

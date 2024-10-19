@@ -1,14 +1,16 @@
 {
-  "descriptionHash": "",
+  "descriptionHash": "CD8B0A757DAC52EE32EFCA3B71699856EE054FFF8980B483C6E7EC4C6D7A454EB62DC00346CD816D5E3EA6AD3BF78387E5FF6400D1232F552FB31EA2DA3693A4",
   "descriptionLocation": "OpenApi/Graph.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.11.1",
+  "kiotaVersion": "1.19.1",
   "clientClassName": "AITGraphApiClient",
+  "typeAccessModifier": "Public",
   "clientNamespaceName": "AITGraph.Sdk",
   "language": "CSharp",
   "usesBackingStore": false,
   "excludeBackwardCompatible": true,
   "includeAdditionalData": true,
+  "disableSSLValidation": false,
   "serializers": [
     "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
     "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
@@ -28,6 +30,7 @@
   ],
   "includePatterns": [
     "me/outlook/microsoft.graph.supportedTimeZones()",
+    "/me/mailboxSettings",
     "/me/messages",
     "/me/mailFolders",
     "/me/contacts",
@@ -36,8 +39,11 @@
     "/me/profile",
     "/me/profile/account",
     "/me/calendar",
+    "/me/calendarView",
     "/me/calendar/events",
-    "/me/calendar/calendarView"
+    "/me/calendar/calendarView",
+    "/me/outlook",
+    "/me/outlook/masterCategories"
   ],
   "excludePatterns": [],
   "disabledValidationRules": []

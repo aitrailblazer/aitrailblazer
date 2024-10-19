@@ -43,6 +43,7 @@
     <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.22.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Prompty" Version="1.22.0-alpha" />
     <PackageReference Include="Microsoft.SemanticKernel.Yaml" Version="1.22.0" />
+    <PackageReference Include="Microsoft.TypeChat" Version="0.1.240227.3-preview" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="SmartComponents.AspNetCore" Version="0.1.0-preview10148" />

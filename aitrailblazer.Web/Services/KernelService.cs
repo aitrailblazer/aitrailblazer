@@ -5,6 +5,8 @@ namespace aitrailblazer.net.Services
 
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Connectors.AzureAIInference;
+    using Microsoft.TypeChat;
+
 
     public class KernelService
     {
@@ -13,6 +15,20 @@ namespace aitrailblazer.net.Services
         public KernelService(ParametersAzureService parametersAzureService)
         {
             _parametersAzureService = parametersAzureService;
+        }
+
+        public OpenAIConfig CreateOpenAIConfig(string modelId)
+        {
+
+            OpenAIConfig config = new OpenAIConfig();
+
+            config.Azure = true;
+            config.Endpoint = _parametersAzureService.AzureOpenAIEndpoint03;
+            config.ApiKey = _parametersAzureService.AzureOpenAIKey03;
+            config.Model = modelId;
+
+            return config;
+
         }
 
         public IKernelBuilder CreateKernelBuilder(string modelId, int maxTokens)
@@ -33,13 +49,19 @@ namespace aitrailblazer.net.Services
 
             apiKey = _parametersAzureService.AzureOpenAIKey03;
             modelId = modelId;
-            Console.WriteLine($"Deployment Name: {deploymentName}");
-            Console.WriteLine($"Endpoint: {endpoint}");
+            //Console.WriteLine($"Deployment Name: {deploymentName}");
+            //Console.WriteLine($"Endpoint: {endpoint}");
             // https://aitrailblazereastus2.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-08-01-preview
-            Console.WriteLine($"endpointUri: {endpointUri}");
+            //Console.WriteLine($"endpointUri: {endpointUri}");
 
-            Console.WriteLine($"API Key: {apiKey}");
-            Console.WriteLine($"Model ID: {modelId}");
+            //Console.WriteLine($"API Key: {apiKey}");
+            //Console.WriteLine($"Model ID: {modelId}");
+
+              // Create HttpClient with custom headers and timeout
+            var httpClient = new HttpClient();
+            //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
+            httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
+
 
             kernelBuilder.AddAzureOpenAIChatCompletion(
                 deploymentName: deploymentName,
@@ -47,7 +69,7 @@ namespace aitrailblazer.net.Services
                 apiKey: apiKey,
                 modelId: modelId, // Optional name of the underlying model if the deployment name doesn't match the model name
                 //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
-                httpClient: new HttpClient() // Optional; if not provided, the HttpClient from the kernel will be used
+                httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
                 );
 
 

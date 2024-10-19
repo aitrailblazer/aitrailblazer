@@ -3,25 +3,28 @@ using Microsoft.SemanticKernel;
 using aitrailblazer.net.Services;
 using System;
 using System.Collections.Generic;
+using AITrailBlazer.Web.Services;
 
-public class KernelSetup
+public class KernelAddPLugin
 {
     private readonly TimeFunctions _timeFunctions;
     private readonly KQLFunctions _kqlFunctions;
     //private readonly SearchUrlPlugin _searchUrlPlugin;
     private readonly NewsFunctions _newsFunctions;
-    private readonly ILogger<KernelSetup> _logger;
+    private readonly AITGraphService _graphService;
+    private readonly ILogger<KernelAddPLugin> _logger;
 
-    public KernelSetup(TimeFunctions timeFunctions, NewsFunctions newsFunctions, KQLFunctions kqlFunctions,ILogger<KernelSetup> logger)
+    public KernelAddPLugin(TimeFunctions timeFunctions, NewsFunctions newsFunctions, KQLFunctions kqlFunctions, AITGraphService graphService,ILogger<KernelAddPLugin> logger)
     {
         _timeFunctions = timeFunctions;
         _kqlFunctions = kqlFunctions;
         //_searchUrlPlugin = searchUrlPlugin;
         _newsFunctions = newsFunctions;
+        _graphService = graphService;
         _logger = logger;
     }
 
-    public Kernel SetupKernelTimePlugin(Kernel kernel)
+    public Kernel KernelTimePlugin(Kernel kernel)
     {
         // Add date and time-related functions to the kernel
         kernel.Plugins.AddFromFunctions("time_plugin_ai",
@@ -38,11 +41,11 @@ public class KernelSetup
                         functionName: "today_ai",
                         description: "Retrieve today's date formatted for AI interactions."
                     ),
-                    KernelFunctionFactory.CreateFromMethod(
-                        method: new Func<string>(_timeFunctions.GetNowForAI),
-                        functionName: "now_ai",
-                        description: "Retrieve the current date without time component formatted for AI interactions."
-                    ),
+                    //KernelFunctionFactory.CreateFromMethod(
+                    //    method: new Func<string>(_timeFunctions.GetNowForAI),
+                    //    functionName: "now_ai",
+                    //    description: "Retrieve the current date without time component formatted for AI interactions."
+                    //),
                     KernelFunctionFactory.CreateFromMethod(
                         method: new Func<DateTime, string>(_timeFunctions.IsBusinessDayForAI),
                         functionName: "is_business_day_ai",
@@ -180,7 +183,7 @@ public class KernelSetup
     /// </summary>
     /// <param name="kernel">The Kernel instance to which the plugin will be added.</param>
     /// <returns>The Kernel instance with the KQL plugin registered.</returns>
-    public Kernel SetupKQLPlugin(Kernel kernel)
+    public Kernel KQLPlugin(Kernel kernel)
     {
         kernel.Plugins.AddFromFunctions("kql_plugin",
             new[]
@@ -323,7 +326,7 @@ public class KernelSetup
     /// </summary>
     /// <param name="kernel">The Kernel instance to which the plugin will be added.</param>
     /// <returns>The Kernel instance with the News plugin registered.</returns>
-    public Kernel AddNewsPlugin(Kernel kernel)
+    public Kernel NewsPlugin(Kernel kernel)
     {
         kernel.Plugins.AddFromFunctions("news_plugin",
             new[]
@@ -351,5 +354,27 @@ public class KernelSetup
         _logger.LogInformation("News plugin setup completed successfully.");
         return kernel;
     }
-    
+
+    /// <summary>
+    /// Sets up the Email plugin by registering all available email-related functions.
+    /// </summary>
+    /// <param name="kernel">The Kernel instance to which the plugin will be added.</param>
+    /// <param name="graphService">The AITGraphService instance to fetch email messages.</param>
+    /// <returns>The Kernel instance with the Email plugin registered.</returns>
+    public Kernel AddEmailPlugin(Kernel kernel)
+    {
+        kernel.Plugins.AddFromFunctions("email_plugin",
+            new[]
+            {
+                KernelFunctionFactory.CreateFromMethod(
+                    method: new Func<int, Task<string>>(_graphService.GetRecentMessagesAsync), 
+                    functionName: "get_recent_messages_async_ai",
+                    description: "Retrieves recent email messages for the authenticated user."
+                )
+            });
+
+        _logger.LogInformation("Email plugin setup completed successfully.");
+        return kernel;
+    }
+
 }

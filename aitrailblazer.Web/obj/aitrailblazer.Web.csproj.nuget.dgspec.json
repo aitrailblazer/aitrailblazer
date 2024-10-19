@@ -346,6 +346,10 @@
               "target": "Package",
               "version": "[1.22.0, )"
             },
+            "Microsoft.TypeChat": {
+              "target": "Package",
+              "version": "[0.1.240227.3-preview, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"

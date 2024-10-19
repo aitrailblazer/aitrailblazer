@@ -22,6 +22,7 @@ kiota generate -l CSharp \
     --namespace-name AITGraph.Sdk \
     --class-name AITGraphApiClient \
     --include-path "me/outlook/microsoft.graph.supportedTimeZones()" \
+    --include-path "/me/mailboxSettings" \
     --include-path "/me/messages" \
     --include-path "/me/mailFolders" \
     --include-path "/me/contacts" \
@@ -30,10 +31,14 @@ kiota generate -l CSharp \
     --include-path "/me/profile" \
     --include-path "/me/profile/account" \
     --include-path "/me/calendar" \
+    --include-path "/me/calendarView" \
     --include-path "/me/calendar/events" \
     --include-path "/me/calendar/calendarView"  \
+    --include-path "/me/outlook"  \
+    --include-path "/me/outlook/masterCategories"  \
     --exclude-backward-compatible \
     --openapi ./AITGraph.Sdk/OpenApi/Graph.json
+
 
 ###
 
