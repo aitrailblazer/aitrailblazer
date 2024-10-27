@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class PromptyTemplateService
     {

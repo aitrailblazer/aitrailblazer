@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq; // Added for JObject manipulations if needed
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Processing;
-using aitrailblazer.net.Services;
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Services;
+using AITrailblazer.net.Models;
 using System.IO;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     /// <summary>
     /// Represents the parameters used across various functionalities.

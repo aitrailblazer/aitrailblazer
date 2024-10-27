@@ -15,13 +15,13 @@ using CognitiveServices.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq; // Added for JObject manipulations if needed
-using aitrailblazer.net.Services; // Assuming this is the namespace where ParametersAzureService is located
+using AITrailblazer.net.Services; // Assuming this is the namespace where ParametersAzureService is located
 using System.Net.Http; // Retained for HttpClient
-using OurNewsArticle = aitrailblazer.net.Models.NewsArticle;
+using OurNewsArticle = AITrailblazer.net.Models.NewsArticle;
 using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle;
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Models;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class BingNewsService
     {

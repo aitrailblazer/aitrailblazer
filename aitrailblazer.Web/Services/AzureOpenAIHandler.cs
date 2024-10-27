@@ -9,9 +9,9 @@ using System;
 using System.Web;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.TemplateEngine;
-using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Microsoft.SemanticKernel.Plugins.OpenApi.Extensions;
 using Microsoft.SemanticKernel.ChatCompletion;
@@ -24,8 +24,6 @@ using Microsoft.OpenApi.Extensions;
 using Microsoft.TypeChat;
 using Microsoft.TypeChat.Schema;
 
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using aitrailblazer.net.Utilities;
 using Microsoft.Extensions.Logging;
 using Kernel = Microsoft.SemanticKernel.Kernel;
@@ -43,10 +41,10 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Models;
 using OpenAI.Chat;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
 
     public class AzureOpenAIHandler
@@ -64,6 +62,8 @@ namespace aitrailblazer.net.Services
         //private readonly WebSearchService _webSearchService;
         private readonly TimeFunctions _timeFunctions;
 
+        // Intent-function map
+        private readonly Dictionary<string, Func<string, Task<string>>> _intentFunctionMap;
 
         public AzureOpenAIHandler(
             ParametersAzureService parametersAzureService,
@@ -87,7 +87,15 @@ namespace aitrailblazer.net.Services
             _logger = logger;
             _kernelAddPLugin = kernelAddPLugin;
             _timeFunctions = timeFunctions;
-
+            
+            // Initialize the intent-function mapping
+            _intentFunctionMap = new Dictionary<string, Func<string, Task<string>>>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "TimePlugin", async (input) => await GetASAPTime(input) },
+                { "NewsPlugin", async (input) => await ShowNewsAsync(input) },
+                { "CalendarPlugin", async (input) => await StruturedOutputCalendarAsync(input) }
+                // Add more intent-function mappings here as needed
+            };
             //_webSearchService = webSearchService;
         }
 
@@ -861,6 +869,7 @@ namespace aitrailblazer.net.Services
             // Ensure the title doesn't exceed the maximum length
             return title.Length > 1000 ? title[..1000] : title;
         }
+
         public async Task<string> GenerateAIClearNoteAsync(
             string userInput,
             string panelInput)
@@ -892,6 +901,7 @@ namespace aitrailblazer.net.Services
 
             return result;
         }
+ 
         public string SanitizeTitle(string title)
         {
             // Replace hyphens and other unwanted characters with spaces
@@ -1120,7 +1130,7 @@ private async Task<string> RephraseQuestionAsync(string question)
         Rephrased Query:
     """;
 
-    var rephraseFunction = kernel.CreateFunctionFromPrompt(RephrasePrompt, new OpenAIPromptExecutionSettings
+    var rephraseFunction = kernel.CreateFunctionFromPrompt(RephrasePrompt, new AzureOpenAIPromptExecutionSettings
     {
         Temperature = 0.7,
         TopP = 0.9,
@@ -1228,7 +1238,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
         Answer:
     """;
 
-    var executionSettings = new OpenAIPromptExecutionSettings
+    var executionSettings = new AzureOpenAIPromptExecutionSettings
     {
         Temperature = 0.1,
         TopP = 0.1,
@@ -1286,7 +1296,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 kernel.Plugins.Add(plugin);
 
                 // Set up prompt execution settings
-                OpenAIPromptExecutionSettings settings = new OpenAIPromptExecutionSettings
+                AzureOpenAIPromptExecutionSettings settings = new AzureOpenAIPromptExecutionSettings
                 {
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 };
@@ -1472,7 +1482,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 var maxTokensStr = maxTokens.ToString() + " tokens";
 
                 // Enable automatic function calling
-                var executionSettings = new OpenAIPromptExecutionSettings
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
                 {
                     Temperature = temperature,
                     TopP = topP,
@@ -1576,7 +1586,8 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             // Replace spaces with underscores to create a valid filename
             return cleanedText.Replace(' ', '_');
         }
-        public async Task<string> GetIntent(string input, string masterTextSetting)
+
+        public async Task<string> GetIntentPrompty(string input, string masterTextSetting)
         {
             int maxTokens = 16;
             string modelId = "gpt-4o-mini";
@@ -1594,7 +1605,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             int seed = 356;
 
             // Enable automatic function calling
-            var executionSettings = new OpenAIPromptExecutionSettings
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
             {
                 /// <summary>
                 /// Temperature controls the randomness of the completion.
@@ -1734,6 +1745,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 "",
                 "");
             _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
+            // Create few-shot examples
 
             // Act
             var kernelFunction = new Kernel().CreateFunctionFromPrompty(promptyTemplate);
@@ -1778,6 +1790,214 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             }
 
         }
+        
+        public async Task<string> GetIntent(string input)
+        {
+            int maxTokens = 16;
+            string modelId = "gpt-4o-mini";
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+
+            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+            Kernel kernel = kernelBuilder.Build();
+            var pluginPath = _pluginService.GetPluginsPath();
+            pluginPath = pluginPath + "/" + "GetIntent" + ".yaml";
+            _logger.LogInformation($"Prompty file path: {pluginPath}");
+            double temperature = 0.2;
+            double topP = 0.2;
+            int seed = 356;
+
+            // Enable automatic function calling
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
+            {
+                /// <summary>
+                /// Temperature controls the randomness of the completion.
+                /// The higher the temperature, the more random the completion.
+                /// Default is 1.0.
+                /// </summary>
+                Temperature = temperature,
+                /// <summary>
+                /// TopP
+                /// TopP controls the diversity of the completion.
+                /// The higher the TopP, the more diverse the completion.
+                /// Default is 1.0.
+                /// </summary>
+                TopP = topP,
+                /// <summary>
+                PresencePenalty = temperature,
+                /// Number between -2.0 and 2.0. Positive values penalize new tokens
+                /// based on whether they appear in the text so far, increasing the
+                /// model's likelihood to talk about new topics.
+                /// </summary>
+                /// 
+                /// <summary>
+                FrequencyPenalty = temperature,
+                /// Number between -2.0 and 2.0. Positive values penalize new tokens
+                /// based on their existing frequency in the text so far, decreasing
+                /// the model's likelihood to repeat the same line verbatim.
+                /// </summary>
+                /// 
+                /// <summary>
+                /// MaxTokens
+                /// The maximum number of tokens to generate in the completion.
+                /// </summary>
+                MaxTokens = maxTokens,
+
+                /// <summary>
+                /// StopSequences
+                /// Sequences where the completion will stop generating further tokens.
+                /// </summary>
+                /// 
+                /// <summary>
+                /// ResultsPerPrompt
+                /// How many completions to generate for each prompt. Default is 1.
+                /// Note: Because this parameter generates many completions, it can quickly consume your token quota.
+                /// Use carefully and ensure that you have reasonable settings for max_tokens and stop.
+                /// </summary>
+                /// <summary>
+                Seed = seed,
+                /// If specified, the system will make a best effort to sample deterministically such that repeated requests with the
+                /// same seed and parameters should return the same result. Determinism is not guaranteed.
+                /// </summary>
+                /// 
+                /// <summary>
+                /// Gets or sets the response format to use for the completion.
+                /// </summary>
+                /// <remarks>
+                /// Possible values are: "json_object", "text", <see cref="ChatCompletionsResponseFormat"/> object.
+                /// </remarks>
+                ///  [Experimental("SKEXP0010")]
+                /// 
+                /// <summary>
+                /// ChatSystemPrompt
+                /// The system prompt to use when generating text using a chat model.
+                /// Defaults to "Assistant is a large language model."
+                /// </summary>
+                ///     
+                /// <summary>
+                /// TokenSelectionBiases
+                /// Modify the likelihood of specified tokens appearing in the completion.
+                /// </summary>
+                /// 
+                /// <summary>
+                /// ToolCallBehavior
+                /// Gets or sets the behavior for how tool calls are handled.
+                /// </summary>
+                /// <remarks>
+                /// <list type="bullet">
+                /// <item>To disable all tool calling, set the property to null (the default).</item>
+                /// <item>
+                /// To request that the model use a specific function, set the property to an instance returned
+                /// from <see cref="ToolCallBehavior.RequireFunction"/>.
+                /// </item>
+                /// <item>
+                /// To allow the model to request one of any number of functions, set the property to an
+                /// instance returned from <see cref="ToolCallBehavior.EnableFunctions"/>, called with
+                /// a list of the functions available.
+                /// </item>
+                /// <item>
+                /// To allow the model to request one of any of the functions in the supplied <see cref="Kernel"/>,
+                /// set the property to <see cref="ToolCallBehavior.EnableKernelFunctions"/> if the client should simply
+                /// send the information about the functions and not handle the response in any special manner, or
+                /// <see cref="ToolCallBehavior.AutoInvokeKernelFunctions"/> if the client should attempt to automatically
+                /// invoke the function and send the result back to the service.
+                /// </item>
+                /// </list>
+                /// For all options where an instance is provided, auto-invoke behavior may be selected. If the service
+                /// sends a request for a function call, if auto-invoke has been requested, the client will attempt to
+                /// resolve that function from the functions available in the <see cref="Kernel"/>, and if found, rather
+                /// than returning the response back to the caller, it will handle the request automatically, invoking
+                /// the function, and sending back the result. The intermediate messages will be retained in the
+                /// <see cref="ChatHistory"/> if an instance was provided.
+                /// </remarks>
+                /// ToolCallBehavior
+
+                // Enable planning
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+
+                /// <summary>
+                /// User
+                /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse
+                /// </summary>
+                /// 
+
+                /// <summary>
+                /// Logprobs
+                /// Whether to return log probabilities of the output tokens or not.
+                /// If true, returns the log probabilities of each output token returned in the `content` of `message`.
+                /// </summary>
+                ///     [Experimental("SKEXP0010")]
+
+                /// <summary>
+                /// An integer specifying the number of most likely tokens to return at each token position, each with an associated log probability.
+                /// </summary>
+                ///     [Experimental("SKEXP0010")]
+
+            };
+
+            var yamlTemplate = await File.ReadAllTextAsync(pluginPath);
+            List<string> choices = ["ContinueConversation", "EndConversation"];
+
+            // Load few-shot examples
+            var fewShotExamples = ChatIntentExamples.Examples;
+
+            // Act
+            // Create handlebars template for intent
+            // <IntentFunction>
+            var getIntent = kernel.CreateFunctionFromPrompt(
+                new()
+                {
+                    Template = yamlTemplate,
+                    TemplateFormat = "handlebars"
+                },
+                new HandlebarsPromptTemplateFactory()
+            );
+            // </IntentFunction>
+
+            //_logger.LogInformation($"Kernel function created from prompty file: {kernelFunction.Name}");
+            //_logger.LogInformation($"Kernel function description: {kernelFunction.Description}");
+            //_logger.LogInformation($"Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+
+            //input = masterTextSetting + " " + input;
+            _logger.LogInformation($"GetIntent input {input}");
+            var arguments = new KernelArguments(executionSettings)
+            {
+                //["input"] = input,
+                { "request", input },
+                { "choices", choices },
+                { "fewShotExamples", fewShotExamples},
+            };
+            _logger.LogInformation($"kernel.InvokeAsync ");
+
+
+            try
+            {
+                var result = await kernel.InvokeAsync(getIntent, arguments);
+
+                _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                return result.GetValue<string>();
+
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle argument exceptions, which may occur if arguments are incorrect
+                _logger.LogInformation($"Argument error: {ex.Message}");
+                return "Please try again";
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Handle invalid operation exceptions, which may occur if the kernel function is not valid
+                _logger.LogInformation($"Invalid operation: {ex.Message}");
+                return "Please try again";
+            }
+            catch (Exception ex)
+            {
+                // Handle any other exceptions that may occur
+                _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
+                return "Please try again";
+            }
+
+        }
+
         public async Task<string> AgentWithPromptyAsync(
             string AgentFeature,
             string masterTextSetting,
@@ -1936,7 +2156,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
 
             // Enable automatic function calling
-            var executionSettings = new OpenAIPromptExecutionSettings
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
             {
                 /// <summary>
                 /// Temperature controls the randomness of the completion.
@@ -2269,6 +2489,8 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             [Description("Retrieves the current time in UTC.")]
             public string GetCurrentUtcTime() => DateTime.UtcNow.ToString("R");
         }
+
+        
         public async Task<string> GetASAPTime(
             string input)
         {
@@ -2289,11 +2511,11 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 // Build the kernel
                 string modelId = "gpt-4o-mini";
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, 1024);
-                kernelBuilder.Plugins.AddFromType<TimeInformation>();
+                //kernelBuilder.Plugins.AddFromType<TimeInformation>();
                 Kernel kernel = kernelBuilder.Build();
                 
 
-                kernel = _kernelAddPLugin.KernelTimePlugin(kernel);
+                kernel = _kernelAddPLugin.TimePlugin(kernel);
 
                 double temperature = 0.1;
                 double topP = 0.1;
@@ -2323,71 +2545,31 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 };
 
+                // **Retrieve the time zone information**
+                string timeZoneInfo;
+                try
+                {
+                    timeZoneInfo = _timeFunctions.GetUserTimeZone();
+                    _logger.LogInformation($"Retrieved time zone info: {timeZoneInfo}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error retrieving time zone information.");
+                    timeZoneInfo = "Time zone information could not be retrieved.";
+                }
 
-
-                // Define the prompt
-                string prompt = @"
+string prompt = $@"
 You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to time and date information.
 
-You have access to the following functions:
+{timeZoneInfo}
 
-1. **Get current time and date** using the `get_current_time_ai` function.
-   - This function retrieves the current local date and time formatted for AI interactions.
-
-2. **Get today's date** using the `today_ai` function.
-   - This function retrieves today's date formatted for AI interactions.
-
-3. **Check if a given date is a business day** using the `is_business_day_ai` function.
-   - This function checks if a given date is a business day (Monday to Friday) and returns the result formatted for AI interactions.
-
-4. **Get the current day of the week** using the `get_day_of_week_ai` function.
-   - This function retrieves the current day of the week formatted for AI interactions.
-
-5. **Convert between time zones** using the `convert_between_time_zones_ai` function.
-   - This function converts a date and time from one time zone to another and returns the result formatted for AI interactions.
-
-6. **Create a specific date** using the `create_date_ai` function.
-   - This function creates a date from year, month, and day and returns the result formatted for AI interactions.
-
-7. **Create a specific time** using the `create_time_ai` function.
-   - This function creates a time from hour, minute, and second and returns the result formatted for AI interactions.
-
-8. **Create a date interval** using the `create_date_interval_ai` function.
-   - This function creates a date interval between two dates and returns the result formatted for AI interactions.
-
-9. **Format a date string** using the `date_string_ai` function.
-    - This function formats a date with a specified format and returns the result formatted for AI interactions.
-
-10. **Parse a date string** using the `from_date_string_ai` function.
-    - This function parses a date string with a specified format and returns the result formatted for AI interactions.
-
-11. **Calculate the difference between two dates in days** using the `date_difference_days_ai` function.
-    - This function calculates the difference between two dates in days and returns the result formatted for AI interactions.
-
-12. **Calculate the difference between two dates in hours** using the `date_difference_hours_ai` function.
-    - This function calculates the difference between two dates in hours and returns the result formatted for AI interactions.
-
-13. **Retrieve the local time for a specified time zone** using the `local_time_ai` function.
-    - This function retrieves the local time information for a specified time zone formatted for AI interactions.
-
-### Instructions:
-Based on the user's input, analyze the query and determine the most appropriate function to call. 
-- If the user asks for specific time or date information, select the relevant function (e.g., `get_current_time_ai`, `today_ai`).
-- For calculations such as date intervals, use the `create_date_interval_ai` or `date_difference_days_ai`.
-- Use the appropriate formatting or conversion functions if needed (e.g., `convert_between_time_zones_ai`, `date_string_ai`).
-
-After determining the function, execute it, and return the response in a well-formatted, AI-readable format.
-
-The current time is {{TimeInformation.GetCurrentUtcTime}}
-
-**User Input:** {{$Input}}
-
-**Chosen Action:**
+**User Input:** {input}
 ";
 
                 var arguments = new KernelArguments(executionSettings) 
                 { 
-                    ["Input"] = input
+                    //["Input"] = input,
+                    //["TimeZoneInfo"] = timeZoneInfo
                 };
                 _logger.LogInformation("GetASAPTime kernel.InvokeAsync");
 
@@ -2399,7 +2581,19 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
 
                     _logger.LogInformation($"GetASAPTime response: {response}");
 
-                    return response;
+               
+                    string responseResult = await StructuredOutputByClassAsync<DateTimeOperationsResponseStructured>(response);
+                    if (responseResult != null)
+                    {
+                        _logger.LogInformation("GetASAPTime generated news response successfully:\n{responseResult}", responseResult);
+
+                        return responseResult;
+                    }
+                    else
+                    {
+                        _logger.LogError("GetASAPTime failed to generate a valid response.");
+                        return "ERROR";
+                    }
                 }
                 catch (ArgumentException ex)
                 {
@@ -2490,6 +2684,61 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
             }
         }
 
+        public async Task<string> StructuredOutputByClassAsync<TClass>(string input)
+        {
+            string modelId = "gpt-4o-mini"; 
+
+            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);
+            TranslationSettings settings = new TranslationSettings
+            {
+                MaxTokens = 1000,
+                Temperature = 0.1,
+            };
+
+            // Create a JsonTranslator for the given class type
+            JsonTranslator<TClass> _translator = new JsonTranslator<TClass>(
+                new LanguageModel(config));
+
+            Prompt prompt = new Prompt();
+            prompt.Append(input);
+
+            try
+            {
+                // Use the translator to process the input and return the result as the given type
+                TClass response = await _translator.TranslateAsync(
+                    request: prompt,
+                    preamble: null,
+                    requestSettings: settings);
+
+                // Convert the response to a JSON string
+                var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
+
+                _logger.LogInformation($"StructuredOutputByClassAsync Generated search Result: {jsonResponse}");
+
+                return jsonResponse;
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, $"StructuredOutputByClassAsync Argument error: {ex.Message}");
+                return "An error occurred with the arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, $"StructuredOutputByClassAsync Invalid operation: {ex.Message}");
+                return "An invalid operation occurred during function execution. Please try again.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"StructuredOutputByClassAsync Unexpected error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again.";
+            }
+        }
+
+
         public async Task<string> StruturedOutputCalendarAsync(string input)
         {
             //int maxTokens = 1024;
@@ -2503,15 +2752,15 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
                             MaxTokens = 1000,
                             Temperature = 0.1,
                         };
-            JsonTranslator<Calendar.CalendarActions> _translator;
+            JsonTranslator<Calendar.CalendarActionsStructured> _translator;
 
-            _translator = new JsonTranslator<Calendar.CalendarActions>(
+            _translator = new JsonTranslator<Calendar.CalendarActionsStructured>(
                 new LanguageModel(config));
 
             Prompt prompt = new Prompt();
             prompt.Append(input);
 
-            Calendar.CalendarActions response = await _translator.TranslateAsync(
+            Calendar.CalendarActionsStructured response = await _translator.TranslateAsync(
                 request: prompt,
                 preamble: null,
                 requestSettings: settings);
@@ -2588,7 +2837,65 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
             }
         }
 
-     /// <summary>
+
+   /// <summary>
+        /// Processes the user query by recognizing intents and invoking corresponding functions.
+        /// </summary>
+        /// <param name="userQuery">The user's input query.</param>
+        /// <returns>A response string combining results from the invoked functions.</returns>
+        public async Task<string> HandleUserQueryAsync(string userQuery)
+        {
+            // Recognize intents from the user query
+            string responseQuery = await GetIntent(userQuery);
+
+            if (string.IsNullOrWhiteSpace(responseQuery))
+            {
+                return "I'm sorry, I didn't understand that. Could you please rephrase?";
+            }
+
+            // Split intents by comma and semicolon, trim whitespace, and filter out empty entries
+            var intents = responseQuery.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                       .Select(intent => intent.Trim())
+                                       .Where(intent => !string.IsNullOrEmpty(intent))
+                                       .Distinct(StringComparer.OrdinalIgnoreCase)
+                                       .ToList();
+
+            if (!intents.Any())
+            {
+                return "I'm sorry, I couldn't identify any intent in your query.";
+            }
+
+            // Initialize a list to hold responses from each intent
+            var responses = new List<string>();
+
+            foreach (var intent in intents)
+            {
+                if (_intentFunctionMap.TryGetValue(intent, out var function))
+                {
+                    try
+                    {
+                        // Execute the function associated with the intent and pass the original userQuery
+                        var result = await function(userQuery);
+                        responses.Add(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception (implement logging as needed)
+                        _logger.LogError($"Error executing intent '{intent}': {ex.Message}");
+                        responses.Add($"I'm sorry, there was an error processing the intent '{intent}'.");
+                    }
+                }
+                else
+                {
+                    responses.Add($"I'm sorry, I don't have functionality for the intent '{intent}'.");
+                }
+            }
+
+            // Combine all responses into a single reply
+            return string.Join("\n\n", responses);
+        }
+
+        /// <summary>
         /// Generates a search URL based on a natural language input using GPT-4 and the registered SearchUrlPlugin functions,
         /// then performs the web search and returns the search result content.
         /// </summary>
@@ -2597,7 +2904,7 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
         public async Task<string> ShowNewsAsync(string input)
         {
             const int maxTokens = 16000;
-            const string modelId = "gpt-4o"; // Ensure this is the correct model ID
+            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
             const double temperature = 0.1;
             const double topP = 0.1;
             const int seed = 356;
@@ -2623,14 +2930,13 @@ The current time is {{TimeInformation.GetCurrentUtcTime}}
                 kernel = _kernelAddPLugin.NewsPlugin(kernel);
 
                 // Configure execution settings
-                var executionSettings = new OpenAIPromptExecutionSettings
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
                 {
                     Temperature = temperature,
                     TopP = topP,
                     MaxTokens = maxTokens,
                     Seed = seed,
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
-                    ResponseFormat = typeof(NewsResponse) // Specify the expected response type
                 };
 
                 var arguments = new KernelArguments(executionSettings)
@@ -2675,34 +2981,139 @@ After determining the function, execute it, and return the response in JSON form
 
                 // Execute the kernel function
                 var result = await kernel.InvokePromptAsync(prompt, arguments);
+                string response = result.ToString();
 
-                if (result != null)
+                string responseResult = await StructuredOutputByClassAsync<NewsResponseStructured>(response);
+                if (responseResult != null)
                 {
-                    string newsResponse = result.ToString();
+                    _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
 
-                    // Format the response with proper indentation using Newtonsoft.Json
-                    try
-                    {
-                        var newsResponseObj = JsonConvert.DeserializeObject<NewsResponse>(newsResponse);
-                        var jsonSettings = new JsonSerializerSettings
-                        {
-                            Formatting = Formatting.Indented,
-                            // Add converters if you have enum properties or other custom serialization needs
-                            // For example, to handle enums as strings:
-                            // Converters = { new StringEnumConverter() }
-                        };
-                        var formattedNewsResponse = JsonConvert.SerializeObject(newsResponseObj, jsonSettings);
+                    return responseResult;
+                }
+                else
+                {
+                    _logger.LogError("ShowNewsAsync failed to generate a valid response.");
+                    return "No results were generated from the search.";
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Argument error: {Message}", ex.Message);
+                return "An error occurred with the input arguments. Please check your input and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync Invalid operation: {Message}", ex.Message);
+                return "An invalid operation occurred during execution. Please try again.";
+            }
+            catch (JsonException ex) // Handle Newtonsoft.Json.JsonException if needed
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync JSON error: {Message}", ex.Message);
+                return "An error occurred while processing the JSON data.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AzureOpenAIHandler ShowNewsAsync encountered an unexpected error.");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "An unexpected error occurred during execution. Please try again later.";
+            }
+            finally
+            {
+                _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
+            }
+        }
+    
+       public async Task<string> CalendarAsync(string input)
+        {
+            const int maxTokens = 16000;
+            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            const double temperature = 0.1;
+            const double topP = 0.1;
+            const int seed = 356;
 
-                        // Log the formatted response
-                        _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{FormattedNewsResponse}", formattedNewsResponse);
+            _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
 
-                        return formattedNewsResponse;
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        _logger.LogError(jsonEx, "Error while formatting the news response.");
-                        return newsResponse; // Return the raw response if formatting fails
-                    }
+            // Input validation
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                _logger.LogWarning("Input cannot be null or empty.");
+                return "Invalid input. Please provide a valid search query.";
+            }
+
+            try
+            {
+                _logger.LogInformation("Building kernel and setting up news plugin.");
+
+                // Build the kernel
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                Kernel kernel = kernelBuilder.Build();
+
+                // Setup the News plugin
+                kernel = _kernelAddPLugin.NewsPlugin(kernel);
+
+                // Configure execution settings
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
+                {
+                    Temperature = temperature,
+                    TopP = topP,
+                    MaxTokens = maxTokens,
+                    Seed = seed,
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+                };
+
+                var arguments = new KernelArguments(executionSettings)
+                {
+                    ["Input"] = input
+                };
+
+                // Define the prompt
+                string prompt = @"
+You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to news and content searches.
+
+You have access to the following functions:
+
+1. **Search for news articles** using the `search_news_async_ai` function.
+   - This function searches for specific news articles based on a user-defined query and returns results in a structured JSON format.
+
+2. **Retrieve trending news topics** using the `get_trending_topics_ai` function.
+   - This function retrieves trending and popular news topics from Bing News and returns results in a structured JSON format.
+
+3. **Retrieve today's top news articles** using the `get_headline_news_ai` function.
+   - This function fetches top news articles across all categories from Bing News and returns results in a structured JSON format.
+
+### Available Functions:
+- `search_news_async_ai`: Search for specific news articles based on user input.
+- `get_trending_topics_ai`: Retrieve trending and popular news topics.
+- `get_headline_news_ai`: Fetch today's top news articles across all categories.
+
+### Instructions:
+Based on the user's input, analyze the query and determine the most appropriate function to call. 
+- If the user asks for specific news articles on a certain topic, use the `search_news_async_ai` function.
+- If the user is looking for trending topics or general popular news, use the `get_trending_topics_ai` function.
+- If the user requests top news or headline news, use the `get_headline_news_ai` function.
+
+After determining the function, execute it, and return the response in JSON format.
+
+**User Input:** {{$Input}}
+
+**Chosen Action:**
+";
+
+                _logger.LogInformation("Executing kernel with provided input.");
+
+                // Execute the kernel function
+                var result = await kernel.InvokePromptAsync(prompt, arguments);
+                string response = result.ToString();
+
+                string responseResult = await StructuredOutputByClassAsync<NewsResponseStructured>(response);
+                if (responseResult != null)
+                {
+                    _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
+
+                    return responseResult;
                 }
                 else
                 {
@@ -2782,7 +3193,7 @@ After determining the function, execute it, and return the response in JSON form
 public async Task<string> ShowEmailsAsync(string input)
 {
     const int maxTokens = 16000;
-    const string modelId = "gpt-4o"; // Ensure this is the correct model ID
+    const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
     const double temperature = 0.1;
     const double topP = 0.1;
     const int seed = 356;
@@ -2804,7 +3215,7 @@ public async Task<string> ShowEmailsAsync(string input)
 
         kernel = _kernelAddPLugin.AddEmailPlugin(kernel);
 
-        var executionSettings = new OpenAIPromptExecutionSettings
+        var executionSettings = new AzureOpenAIPromptExecutionSettings
         {
             Temperature = temperature,
             TopP = topP,

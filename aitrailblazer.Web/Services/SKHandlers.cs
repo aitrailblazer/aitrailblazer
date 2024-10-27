@@ -9,7 +9,7 @@ using System.Web;
 
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.TemplateEngine;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
@@ -41,7 +41,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
 
     public class SKHandler

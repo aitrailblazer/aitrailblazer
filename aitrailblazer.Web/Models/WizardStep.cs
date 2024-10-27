@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
-namespace aitrailblazer.net.Models
+namespace AITrailblazer.net.Models
 {
     public class WizardStep
     {

@@ -20,10 +20,9 @@ using Microsoft.Kiota.Abstractions.Serialization;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
 using System.IO; // For StreamReader
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Models;
 using System.Globalization;
-namespace AITrailBlazer.Web.Services
-
+namespace AITrailblazer.net.Services
 {
 
     public class AITGraphService
@@ -93,7 +92,11 @@ namespace AITrailBlazer.Web.Services
                     requestConfiguration.QueryParameters.Expand = new[]
                     {
                 GetExpandQueryParameterType.Names,
+                GetExpandQueryParameterType.Addresses,
                 GetExpandQueryParameterType.Emails,
+                GetExpandQueryParameterType.Phones,
+                GetExpandQueryParameterType.Languages,
+                GetExpandQueryParameterType.Positions,
                 GetExpandQueryParameterType.Skills,
                 GetExpandQueryParameterType.EducationalActivities
                     };
@@ -130,7 +133,7 @@ namespace AITrailBlazer.Web.Services
                 throw;
             }
         }
-        
+
         public async Task<Stream> GetUserPhotoAsync()
         {
             try
@@ -177,7 +180,52 @@ namespace AITrailBlazer.Web.Services
                 return null;
             }
         }
+        public async Task<MailboxSettings> GetMailboxSettingsAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Attempting to fetch mailbox settings");
 
+                if (_requestAdapter == null)
+                {
+                    var client = GraphClient;
+                }
+
+                var requestUrl = $"{_requestAdapter.BaseUrl}/me/mailboxSettings";
+
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.GET,
+                    UrlTemplate = requestUrl,
+                    PathParameters = new Dictionary<string, object>()
+                };
+
+                requestInfo.Headers.Add("Accept", "application/json");
+
+                var response = await _requestAdapter.SendAsync<MailboxSettings>(
+                    requestInfo,
+                    MailboxSettings.CreateFromDiscriminatorValue,
+                    errorMapping: null,
+                    cancellationToken: CancellationToken.None
+                );
+
+                if (response != null)
+                {
+                    _logger.LogInformation($"Mailbox settings fetched successfully, {requestUrl}");
+                    return response;
+                }
+                else
+                {
+                    _logger.LogWarning("Mailbox settings not found");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching mailbox settings.");
+                return null;
+            }
+        }
 
         public async Task<UserAccountInformation?> GetUserAccountInformationAsync()
         {
@@ -911,23 +959,51 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
             public string? ErrorMessage { get; set; }
         }
 
-        public async Task<List<EventViewModel>> GetCalendarViewAsync(int maxEvents = 10, DateTime? startDateTime = null, DateTime? endDateTime = null)
+        public async Task<List<EventViewModel>> GetCalendarViewAsync(int maxEvents = 10, string startDateTime = null, string endDateTime = null)
         {
             try
             {
                 _logger.LogInformation($"GetCalendarViewAsync: Starting to fetch up to {maxEvents} calendar events");
 
-                startDateTime ??= DateTime.UtcNow;
-                endDateTime ??= startDateTime.Value.AddDays(30);
+                DateTime startDateTimeParsed;
+                DateTime endDateTimeParsed;
 
-                _logger.LogInformation($"GetCalendarViewAsync: Date range - Start: {startDateTime.Value:o}, End: {endDateTime.Value:o}");
+                // Parse startDateTime
+                if (string.IsNullOrWhiteSpace(startDateTime))
+                {
+                    startDateTimeParsed = DateTime.UtcNow;
+                }
+                else if (!DateTime.TryParse(startDateTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out startDateTimeParsed))
+                {
+                    _logger.LogError($"Invalid startDateTime format: {startDateTime}");
+                    throw new ArgumentException($"Invalid startDateTime format: {startDateTime}");
+                }
+
+                // Parse endDateTime
+                if (string.IsNullOrWhiteSpace(endDateTime))
+                {
+                    endDateTimeParsed = startDateTimeParsed.AddDays(30);
+                }
+                else if (!DateTime.TryParse(endDateTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out endDateTimeParsed))
+                {
+                    _logger.LogError($"Invalid endDateTime format: {endDateTime}");
+                    throw new ArgumentException($"Invalid endDateTime format: {endDateTime}");
+                }
+
+                // Ensure endDateTime is after startDateTime
+                if (endDateTimeParsed <= startDateTimeParsed)
+                {
+                    _logger.LogError("endDateTime must be after startDateTime");
+                    throw new ArgumentException("endDateTime must be after startDateTime");
+                }
+
+                _logger.LogInformation($"GetCalendarViewAsync: Date range - Start: {startDateTimeParsed:o}, End: {endDateTimeParsed:o}");
 
                 var eventsResponse = await _graphClient.Me.CalendarView.GetAsync(requestConfiguration =>
                 {
-                    requestConfiguration.QueryParameters.StartDateTime = startDateTime.Value.ToString("o");
-                    requestConfiguration.QueryParameters.EndDateTime = endDateTime.Value.ToString("o");
+                    requestConfiguration.QueryParameters.StartDateTime = startDateTimeParsed.ToString("o");
+                    requestConfiguration.QueryParameters.EndDateTime = endDateTimeParsed.ToString("o");
                     requestConfiguration.QueryParameters.Top = maxEvents;
-                    //requestConfiguration.QueryParameters.Orderby = new[] { AITGraph.Sdk.Me.CalendarView.GetOrderbyQueryParameterType.Start };
                     requestConfiguration.QueryParameters.Orderby = new[] { AITGraph.Sdk.Me.CalendarView.GetOrderbyQueryParameterType.CreatedDateTime };
                     requestConfiguration.QueryParameters.Select = new[]
                     {
@@ -1289,43 +1365,78 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
             }
         }
 
-        public async Task<List<Message>> SearchMessagesAsync(string searchQuery, int count = 10)
+        public async Task<string> SearchMessagesAsync(string searchQuery, int count = 10)
         {
             try
             {
                 _logger.LogInformation($"Attempting to search messages with query: {searchQuery}");
 
-                // Ensure the search query is properly formatted
+                // Format the search query
                 string formattedQuery = $"\"{searchQuery.Replace("\"", "\\\"")}\"";
 
                 var messagesResponse = await GraphClient.Me.Messages.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Search = formattedQuery;
                     requestConfiguration.QueryParameters.Top = count;
-
-                    // Replace string literals with enum members
                     requestConfiguration.QueryParameters.Select = new[]
                     {
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Subject,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.From,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.ToRecipients,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.CcRecipients,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.BccRecipients,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.ReceivedDateTime,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.SentDateTime,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.HasAttachments,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Importance,
-                AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Body
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Id,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Subject,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.From,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.ToRecipients,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.CcRecipients,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.BccRecipients,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.ReceivedDateTime,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Body,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.HasAttachments,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Importance,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.Categories,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.IsRead,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.InternetMessageId,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.ConversationId,
+                        AITGraph.Sdk.Me.Messages.GetSelectQueryParameterType.WebLink
                     };
                 });
 
                 _logger.LogInformation($"Successfully fetched {messagesResponse?.Value?.Count ?? 0} messages matching the search query");
-                return messagesResponse?.Value?.ToList() ?? new List<Message>();
+
+                var basicModelList = messagesResponse.Value?
+                    .Select(message => new PureEmailViewBasicModel
+                    {
+                        Id = message.Id,
+                        Subject = message.Subject,
+                        From = message.From != null ? new PureRecipientInfo { Name = message.From.EmailAddress.Name, EmailAddress = message.From.EmailAddress.Address } : null,
+                        ToRecipients = message.ToRecipients?.Select(r => new PureRecipientInfo { Name = r.EmailAddress.Name, EmailAddress = r.EmailAddress.Address }).ToList(),
+                        CcRecipients = message.CcRecipients?.Select(r => new PureRecipientInfo { Name = r.EmailAddress.Name, EmailAddress = r.EmailAddress.Address }).ToList(),
+                        BccRecipients = message.BccRecipients?.Select(r => new PureRecipientInfo { Name = r.EmailAddress.Name, EmailAddress = r.EmailAddress.Address }).ToList(),
+                        ReceivedDateTime = message.ReceivedDateTime?.ToString("o"),
+                        BodyContent = message.Body?.Content,
+                        BodyContentType = "text",//message.Body?.ContentType,
+                        HasAttachments = message.HasAttachments ?? false,
+                        Importance = message.Importance.ToString(),
+                        Categories = message.Categories?.ToList(),
+                        IsRead = message.IsRead ?? false,
+                        InternetMessageId = message.InternetMessageId,
+                        ConversationId = message.ConversationId,
+                        WebLink = message.WebLink
+                    })
+                    .ToList();
+
+                // Serialize to JSON
+                var jsonResponse = JsonConvert.SerializeObject(basicModelList, new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented,
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                _logger.LogInformation($"SearchMessagesAsync jsonResponse: {jsonResponse}");
+
+                return jsonResponse;
             }
-            catch (AITGraph.Sdk.Models.ODataErrors.ODataError odataError)
+            catch (JsonException jsonEx)
             {
-                _logger.LogError(odataError, $"OData error occurred while searching messages with query: {searchQuery}. Error: {odataError.Error?.Message}");
-                throw;
+                _logger.LogError(jsonEx, "JSON Serialization/Deserialization error occurred during search.");
+                throw new InvalidOperationException("Failed to serialize messages to JSON.", jsonEx);
             }
             catch (Exception ex)
             {
@@ -1333,6 +1444,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                 throw;
             }
         }
+
         public async Task DeleteCalendarEventAsync(string eventId)
         {
             try

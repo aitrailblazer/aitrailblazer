@@ -1,4 +1,6 @@
-namespace aitrailblazer.net.Services
+
+
+namespace AITrailblazer.net.Services
 {
 #pragma warning disable CS8602 // memory is initialized before usage
 #pragma warning disable CS0162 // unreachable code is managed via boolean settings
@@ -6,6 +8,7 @@ namespace aitrailblazer.net.Services
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Connectors.AzureAIInference;
     using Microsoft.TypeChat;
+    
 
 
     public class KernelService
@@ -71,7 +74,14 @@ namespace aitrailblazer.net.Services
                 //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
                 httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
                 );
-
+            kernelBuilder.AddAzureOpenAITextEmbeddingGeneration(
+                deploymentName: "text-embedding-3-large",
+                endpoint: endpoint,
+                apiKey: apiKey,
+                modelId: "text-embedding-3-large", // Optional name of the underlying model if the deployment name doesn't match the model name
+                //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
+                );
 
             //kernelBuilder.AddAzureAIInferenceChatCompletion(
             //    endpoint: endpointUri,

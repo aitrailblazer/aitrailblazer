@@ -52,3 +52,16 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/obj/Debug/net9.0/aitrailblazer.AppHost.pdb
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/obj/Debug/net9.0/aitrailblazer.AppHost.genruntimeconfig.cache
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/obj/Debug/net9.0/ref/aitrailblazer.AppHost.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Azure.AI.OpenAI.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Azure.Core.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.Bcl.HashCode.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.Extensions.VectorData.Abstractions.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.SemanticKernel.Abstractions.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/Microsoft.SemanticKernel.Core.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/OpenAI.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/System.ClientModel.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/System.Memory.Data.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/bin/Debug/net9.0/System.Numerics.Tensors.dll

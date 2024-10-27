@@ -4,11 +4,11 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using aitrailblazer.net.Services;
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Services;
+using AITrailblazer.net.Models;
 using Microsoft.Extensions.Logging;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     /// <summary>
     /// Provides functionality to execute chat sessions between a copywriter, an editor, and an art director.

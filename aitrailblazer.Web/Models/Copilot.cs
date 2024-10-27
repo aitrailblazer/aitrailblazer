@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace aitrailblazer.net.Models
+namespace AITrailblazer.net.Models
 {
     /// <summary>
     /// Represents a customized copilot as part of an order

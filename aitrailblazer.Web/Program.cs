@@ -11,20 +11,22 @@ using Microsoft.Identity.Client;
 using SmartComponents;
 using SmartComponents.Inference;
 using SmartComponents.StaticAssets.Inference;
+
+using Cosmos.Copilot.Options;
+using Cosmos.Copilot.Services;
+
 using AITGraph.Sdk;
 using AITGraph.Sdk.Me.Profile;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server;
-using aitrailblazer.net.Services;
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Services;
+using AITrailblazer.net.Models;
 using aitrailblazer.Web;
 using aitrailblazer.Web.Components;
-using AITrailBlazer.Web.Services;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.JSInterop;
-using aitrailblazer.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Key Vault Configuration
@@ -70,6 +72,19 @@ string maxEmbeddingTokens = secretClient.GetSecret("MaxEmbeddingTokens").Value.V
 string azureOpenAIDALLEEndpoint01 = secretClient.GetSecret("AzureOpenAIDALLEEndpoint01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEEndpoint01") ?? string.Empty;
 string azureOpenAIDALLEKey01 = secretClient.GetSecret("AzureOpenAIDALLEKey01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEKey01") ?? string.Empty;
 string azureOpenAIDALLEModelName01 = secretClient.GetSecret("AzureOpenAIDALLEModelName01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEModelName01") ?? string.Empty;
+
+string azureCosmosDbEndpointUri ="https://aitrailblazer-asap.documents.azure.com:443/";
+string databaseId = "asapdb";//"ToDoList";
+
+string chatContainerName ="chat";
+string cacheContainerName ="cache";
+string productContainerName= "products";
+string organizerContainerName= "organizer";
+
+string productDataSourceURI = "https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-vectorized/product-text-3-large-1536.json";
+
+string cacheSimilarityScore = "0.90";
+string productMaxResults = "10";
 
 // 1. Retrieve required permissions from Key Vault or fallback to configuration
 var graphScopesString = secretClient.GetSecret("DownstreamApi-Scopes").Value.Value ?? builder.Configuration.GetSection("DownstreamApi:Scopes").Value;
@@ -152,6 +167,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient();
 builder.Services.AddFluentUIComponents();
+
+builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews()
@@ -210,6 +227,76 @@ var parametersAzureService = new ParametersAzureService
 
 builder.Services.AddSingleton(parametersAzureService);
 
+builder.Services.AddSingleton<CosmosDbService>((provider) =>
+{
+    var cosmosDbOptions = provider.GetRequiredService<IOptions<CosmosDb>>();
+    if (cosmosDbOptions is null)
+    {
+        throw new ArgumentException($"{nameof(IOptions<CosmosDb>)} was not resolved through dependency injection.");
+    }
+    else
+    {
+        var logger = provider.GetRequiredService<ILogger<CosmosDbService>>(); // Retrieve the logger
+
+        return new CosmosDbService(
+            endpoint: azureCosmosDbEndpointUri ?? string.Empty,
+            databaseName: databaseId ?? string.Empty,
+            chatContainerName: chatContainerName ?? string.Empty,
+            cacheContainerName: cacheContainerName ?? string.Empty,
+            productContainerName: productContainerName ?? string.Empty,
+            organizerContainerName: organizerContainerName ?? string.Empty,
+            productDataSourceURI: productDataSourceURI ?? string.Empty,
+            logger: logger // Pass the logger to the constructor
+        );
+    }
+});
+
+
+// Register AzureOpenAIHandler as scoped if it depends on request-specific data
+builder.Services.AddScoped<AzureOpenAIHandler>();
+
+builder.Services.AddScoped<SemanticKernelService>((provider) =>
+{
+    var logger = provider.GetRequiredService<ILogger<SemanticKernelService>>(); // Resolve logger
+    var azureOpenAIHandler = provider.GetRequiredService<AzureOpenAIHandler>();
+
+    var semanticKernelOptions = provider.GetRequiredService<IOptions<OpenAi>>().Value;
+    if (semanticKernelOptions == null)
+    {
+        throw new ArgumentException($"{nameof(IOptions<OpenAi>)} was not resolved through dependency injection.");
+    }
+
+    return new SemanticKernelService(
+            endpoint: azureOpenAIEndpoint03 ?? String.Empty,
+            completionDeploymentName: azureOpenAIModelName02 ?? String.Empty,
+            embeddingDeploymentName: azureEmbeddingsModelName03 ?? String.Empty,
+            apiKey: azureOpenAIKey03 ?? String.Empty,
+            azureOpenAIHandler: azureOpenAIHandler,
+            logger: logger
+    );
+});
+
+
+// Register ChatService as scoped
+builder.Services.AddScoped<ChatService>((provider) =>
+{
+    var chatOptions = provider.GetRequiredService<IOptions<Chat>>()?.Value 
+                      ?? throw new ArgumentException($"{nameof(IOptions<Chat>)} was not resolved through dependency injection.");
+    var cosmosDbService = provider.GetRequiredService<CosmosDbService>();
+    var semanticKernelService = provider.GetRequiredService<SemanticKernelService>();
+    var azureOpenAIHandler = provider.GetRequiredService<AzureOpenAIHandler>();
+    var logger = provider.GetRequiredService<ILogger<ChatService>>();
+
+    return new ChatService(
+        cosmosDbService: cosmosDbService,
+        semanticKernelService: semanticKernelService,
+        azureOpenAIHandler: azureOpenAIHandler,
+        maxConversationTokens: chatOptions.MaxConversationTokens,
+        cacheSimilarityScore: chatOptions.CacheSimilarityScore,
+        productMaxResults: chatOptions.ProductMaxResults,
+        logger: logger
+    );
+});
 //builder.Services.AddSingleton<SmartPasteInference, MyFormSmartPasteInference>();
 
 // Register the SmartPasteInferenceFactory as Scoped
@@ -261,7 +348,6 @@ builder.Services.AddScoped<AITGraphService>(sp =>
     var tokenAcquisition = sp.GetRequiredService<ITokenAcquisition>();
     return new AITGraphService(consentHandler, logger, tokenAcquisition, graphScopes);
 });
-builder.Services.AddScoped<AzureOpenAIHandler>();
 
 builder.Services.AddScoped<MasterTextSettingsService>();
 builder.Services.AddScoped<CreativitySettingsService>();
@@ -271,10 +357,20 @@ builder.Services.AddScoped<RelationSettingsService>();
 builder.Services.AddScoped<TokenLabelService>();
 
 // Register Services
-builder.Services.AddScoped<TimeZoneService>();
+builder.Services.AddScoped<UserIDsService>();
 builder.Services.AddScoped<TimeFunctions>();
 builder.Services.AddScoped<KQLFunctions>();
 builder.Services.AddScoped<SKHandler>();
+
+
+builder.Services.AddScoped<MasterTextSettingsService>();
+builder.Services.AddScoped<CreativitySettingsService>();
+builder.Services.AddScoped<WritingStyleService>();
+builder.Services.AddScoped<ReadingLevelService>();
+builder.Services.AddScoped<RelationSettingsService>();
+builder.Services.AddScoped<TokenLabelService>();
+builder.Services.AddScoped<AICopilotDescriptionService>();
+builder.Services.AddScoped<AICopilotSettingsService>();
 
 //builder.Services.AddScoped<WebSearchService>();
 // Register BingNewsService as a singleton or scoped service
@@ -311,6 +407,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseAntiforgery();

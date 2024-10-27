@@ -10,9 +10,9 @@ using SmartComponents.Inference;
 using SmartComponents.Infrastructure;
 using SmartComponents.StaticAssets.Inference;
 using Microsoft.Extensions.Logging;
-using aitrailblazer.net.Services;
+using AITrailblazer.net.Services;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class MyFormSmartPasteInference : SmartPasteInference
     {

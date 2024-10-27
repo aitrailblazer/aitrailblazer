@@ -1,0 +1,91 @@
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"
+    VerticalGap="1" Style="border: 1px dotted var(--accent-fill-rest)" Width="940px">
+    <FluentLabel Typo="Typography.Body">
+        <b>Settings:</b>
+    </FluentLabel>
+    <FluentLabel Typo="Typography.Body">
+        @MasterTextSetting |
+    </FluentLabel>
+
+    <FluentLabel Typo="Typography.Body">
+        @ChatSetting |
+    </FluentLabel>
+
+    @if (!string.IsNullOrEmpty(WritingStyleVal))
+    {
+        <FluentLabel Typo="Typography.Body">
+            @WritingStyleVal |
+        </FluentLabel>
+    }
+
+    @if (!string.IsNullOrEmpty(AudienceLevelVal))
+    {
+        <FluentLabel Typo="Typography.Body">
+            @AudienceLevelVal |
+        </FluentLabel>
+    }
+
+
+    <FluentLabel Typo="Typography.Body">
+        @ResponseLengthVal |
+    </FluentLabel>
+
+    <FluentLabel Typo="Typography.Body">
+        @CreativeAdjustmentsVal |
+    </FluentLabel>
+
+    @if (!string.IsNullOrEmpty(RelationSettingsVal))
+    {
+        <FluentLabel Typo="Typography.Body">
+            @RelationSettingsVal |
+        </FluentLabel>
+    }
+
+    @if (!string.IsNullOrEmpty(ResponseStyleVal))
+    {
+        <FluentLabel Typo="Typography.Body">
+            @ResponseStyleVal |
+        </FluentLabel>
+    }
+</FluentStack>
+
+@code {
+
+
+    [Parameter]
+    public string FeatureName { get; set; }
+    [Parameter]
+    public string MasterTextSetting { get; set; }
+
+    [Parameter]
+    public string ChatSetting { get; set; }
+
+
+
+    [Parameter]
+    public string WritingStyleVal { get; set; } = "";
+
+
+    [Parameter]
+    public string AudienceLevelVal { get; set; } = "";
+
+    [Parameter]
+    public string ResponseLengthVal { get; set; } = "";
+
+    [Parameter]
+    public string CreativeAdjustmentsVal { get; set; } = "";
+
+    [Parameter]
+    public string ResponseStyleVal { get; set; } = "";
+
+
+    [Parameter]
+    public string RelationSettingsVal { get; set; } = "";
+
+    [Parameter]
+    public string ImageSetting { get; set; } = "";
+    private string LocalStorageKey => $"{FeatureName}_DynamicAIStatus";
+
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+}

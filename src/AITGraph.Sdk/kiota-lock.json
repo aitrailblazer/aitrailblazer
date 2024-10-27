@@ -1,0 +1,37 @@
+{
+  "descriptionHash": "2857A742D5C5F7174897E3B4DBC6A7B10229360B718A571B6107257802C05423CA613FBE301D33FAE880267448273008756042C1E26538D118B50B6524D3F15F",
+  "descriptionLocation": "../../AITGraph.Sdk/OpenApi/Graph.json",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.19.1",
+  "clientClassName": "AITGraphApiClient",
+  "typeAccessModifier": "Public",
+  "clientNamespaceName": "AITGraph.Sdk",
+  "language": "CSharp",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": true,
+  "includeAdditionalData": true,
+  "disableSSLValidation": false,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Form.FormSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Multipart.MultipartSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Text.TextParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Form.FormParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain;q=0.9",
+    "application/x-www-form-urlencoded;q=0.2",
+    "multipart/form-data;q=0.1"
+  ],
+  "includePatterns": [
+    "/me/mailboxSettings",
+    "/me/profile"
+  ],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}

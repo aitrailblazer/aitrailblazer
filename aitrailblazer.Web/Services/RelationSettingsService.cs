@@ -1,4 +1,4 @@
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class RelationSettingsService
     {

@@ -32,6 +32,26 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/ChatPane.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L0NoYXRQYW5lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/Components/Confirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L0NvbXBvbmVudHMvQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/Components/Input.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L0NvbXBvbmVudHMvSW5wdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L0luZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L05hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,8 +60,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/AIContent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BSUNvbnRlbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/ChatPaneSplitter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9DaGF0UGFuZVNwbGl0dGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/DynamicAIMode.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EeW5hbWljQUlNb2RlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/DynamicAIStatus.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EeW5hbWljQUlTdGF0dXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/DynamicInputField.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EeW5hbWljSW5wdXRGaWVsZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/DynamicMasterTextSettings.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EeW5hbWljTWFzdGVyVGV4dFNldHRpbmdzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/Error.razor]
@@ -62,4 +106,12 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Chat/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9DaGF0L19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

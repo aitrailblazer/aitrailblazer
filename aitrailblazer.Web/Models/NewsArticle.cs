@@ -1,5 +1,19 @@
-namespace aitrailblazer.net.Models
+namespace AITrailblazer.net.Models
 {
+    public class NewsResponse
+    {
+        // The original query made by the user
+        public string Query { get; set; }
+        
+        // Total number of news articles retrieved
+        public int TotalResults { get; set; }
+        
+        // List of news articles retrieved from the search
+        public List<NewsArticle> Articles { get; set; }
+        
+        // The date the news was fetched, for logging and reference purposes
+        //public DateTime FetchedAt { get; set; }
+    }
     public class NewsArticle
     {
         // Name of the news article
@@ -24,18 +38,5 @@ namespace aitrailblazer.net.Models
         public string Category { get; set; }
     }
     
-    public class NewsResponse
-    {
-        // The original query made by the user
-        public string Query { get; set; }
-        
-        // Total number of news articles retrieved
-        public int TotalResults { get; set; }
-        
-        // List of news articles retrieved from the search
-        public List<NewsArticle> Articles { get; set; }
-        
-        // The date the news was fetched, for logging and reference purposes
-        //public DateTime FetchedAt { get; set; }
-    }
+
 }

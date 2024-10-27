@@ -39,7 +39,15 @@ kiota generate -l CSharp \
     --exclude-backward-compatible \
     --openapi ./AITGraph.Sdk/OpenApi/Graph.json
 
-
+kiota generate -l CSharp \
+    --log-level trace \
+    --output ./AITGraph.Sdk \
+    --namespace-name AITGraph.Sdk \
+    --class-name AITGraphApiClient \
+    --include-path "/me/mailboxSettings" \
+    --include-path "/me/profile" \
+    --exclude-backward-compatible \
+    --openapi ../AITGraph.Sdk/OpenApi/Graph.json
 ###
 
 kiota search apisguru::microsoft.com

@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[8.2.1, )",
               "autoReferenced": true
+            },
+            "Microsoft.SemanticKernel.Connectors.AzureOpenAI": {
+              "target": "Package",
+              "version": "[1.25.0, )"
             }
           },
           "imports": [

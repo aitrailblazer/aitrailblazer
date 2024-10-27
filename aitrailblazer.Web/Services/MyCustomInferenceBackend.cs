@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SmartComponents.StaticAssets.Inference;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class MyCustomInferenceBackend : IInferenceBackend
     {

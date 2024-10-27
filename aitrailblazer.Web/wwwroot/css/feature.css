@@ -73,6 +73,56 @@ body, html, .container, .fixed-top-nav, .chat-pane-container {
   margin: 0;
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
+/* User.razor.css */
+
+.user-profile-container {
+  display: flex;
+  justify-content: left; /* Centers the card horizontally */
+  padding: 5px; /* Adds padding around the card */
+}
+
+.user-profile-card {
+  background-color: #FFFFFF;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card-content {
+  padding: 5px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-name {
+  font-size: 1.5rem; /* Adjusted font size for better readability */
+  font-weight: bold;
+  color: #333333; /* Darker color for contrast */
+}
+
+.card-divider {
+  margin: 15px 0; /* Spacing around the divider */
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Even spacing between items */
+}
+
+.value-text {
+  font-weight: normal;
+  color: #555555; /* Softer color for values */
+}
+
+.welcome-message {
+  color: #777777; /* Gray color for the welcome message */
+  margin-top: 10px;
+}
 
 .session-option {
   display: flex;

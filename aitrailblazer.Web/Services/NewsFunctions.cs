@@ -4,18 +4,17 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using aitrailblazer.Web.Services;
 using CognitiveServices.Sdk.News;
 using CognitiveServices.Sdk.News.Search;
 using CognitiveServices.Sdk.News.Trendingtopics;
 using CognitiveServices.Sdk.Models;
-using aitrailblazer.net.Models; // For NewsArticle and NewsResponse
+using AITrailblazer.net.Models; // For NewsArticle and NewsResponse
 using SearchSdk = CognitiveServices.Sdk.News.Search;
 using TrendingSdk = CognitiveServices.Sdk.News.Trendingtopics;
-using OurNewsArticle = aitrailblazer.net.Models.NewsArticle;
+using OurNewsArticle = AITrailblazer.net.Models.NewsArticle;
 using ExternalNewsArticle = CognitiveServices.Sdk.Models.NewsArticle;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class NewsFunctions
     {

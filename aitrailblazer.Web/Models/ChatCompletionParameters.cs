@@ -1,4 +1,4 @@
-namespace aitrailblazer.net.Models
+namespace AITrailblazer.net.Models
 {
     public class ChatCompletionParameters
     {

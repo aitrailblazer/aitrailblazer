@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-@using aitrailblazer.Web.Services
-@inject TimeZoneService TimeZoneService
+@using AITrailblazer.net.Services
+@inject UserIDsService UserIDsService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <StatefulReconnection />
 
@@ -38,23 +39,15 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_timeZoneFetched)
+        if (!_timeZoneFetched)
         {
-            _timeZoneFetched = true;
-            try
-            {
-                var userTimeZone = await TimeZoneService.GetTimeZoneAsync();
-                Console.WriteLine($"User's Time Zone: {userTimeZone}");
-                // Additional logic based on user's time zone can be added here
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
 
-                // If the time zone affects the UI, consider invoking StateHasChanged()
-                // to refresh the component's state
-                // StateHasChanged();
-            }
-            catch (Exception ex)
+            if (user.Identity != null && user.Identity.IsAuthenticated)
             {
-                Console.Error.WriteLine($"Error retrieving time zone: {ex.Message}");
-                // Handle the error gracefully, possibly defaulting to UTC
+                await UserIDsService.GetTimeZoneAsync();
+                _timeZoneFetched = true;
             }
         }
     }

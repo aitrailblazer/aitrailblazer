@@ -1,0 +1,1821 @@
+@page "/AIContent"
+@rendermode InteractiveServer
+
+@attribute [Authorize]
+
+@using Markdig
+@using System.Text
+@using AITrailblazer.net.Services
+@using AITrailblazer.net.Models
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Identity.Web
+@using AITGraph.Sdk.Models
+@using System.Diagnostics;
+@using Newtonsoft.Json;
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Authorization
+@using Azure.AI.OpenAI;
+@using SmartComponents
+@using System.ComponentModel.DataAnnotations
+@using GraphMessage = AITGraph.Sdk.Models.Message
+
+@using Microsoft.AspNetCore.Components.Web
+
+@inject ILogger<User> Logger
+@inject PluginService PluginService
+@inject NavigationManager NavigationManager
+@inject AITGraphService graphService
+@inject IJSRuntime jsRuntime
+@inject AzureOpenAIHandler azureOpenAIHandler
+@inject TimeFunctions _timeFunctions
+@inject UserIDsService UserIDsService
+
+
+<IsInteractiveIndicator />
+<PageTitle>@FeatureNameProject</PageTitle>
+
+@if (currentUserIdentityID == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange" Class="top-tabs-font-size">
+        <FluentTab Id="Workspace-id" Icon="@(new Icons.Regular.Size24.Briefcase())">
+            <Header>
+                Workspace
+            </Header>
+            <Content>
+
+                <ChatPaneSplitter 
+                    @ref="@ChatPaneSplitterRef" 
+                    FeatureNameProject="@FeatureNameProject"
+                    FeatureUserFriendlyName="@FeatureUserFriendlyName" 
+                    FeatureDescription="@FeatureDescription" 
+                    ShowLEFTPane="@showLEFTPane"
+                    ShowINPUTPane="@showINPUTPane"
+                    OnFeatureNameChanged="@UpdateCurrentFeatureName"
+                    SelectedFile="@SelectedFile" 
+                    SelectedFileContent="@SelectedFileContent" 
+                    OnClearReference="ClearSelectedFileAndContent"
+                    currentUserIdentityID="@currentUserIdentityID"
+                    userEmail="@userEmail"
+                    displayName="@displayName"
+                    timeZoneInfo="@timeZoneInfo"
+
+                />
+
+            </Content>
+        </FluentTab>
+
+        <FluentTab Id="MicrosoftGraph-id" Icon="@(new Icons.Regular.Size24.Globe())">
+            <Header>
+                 Organizer
+            </Header>
+            <Content>
+                @if (!isMicrosoftGraphLoaded)
+                {
+                    <p><em>Loading Microsoft Graph data...</em></p>
+                }
+                else
+                {
+                    <!--
+                    <UserDetails 
+                    UserId="user.Id" 
+                    User="user" 
+                    UserPhotoBase64="@userPhotoBase64" 
+                    UserMessages="@userMessages"
+                    DriveItems="@driveItems" 
+                    DisplayName="@displayName" 
+                    CurrentUserIdentityID="@currentUserIdentityID"
+                    FeatureNameProject="@FeatureNameProject" 
+                    FeatureName="@FeatureName" 
+                    FeatureName1="@FeatureName1"
+                    FeatureName2="@FeatureName2" 
+                    FeatureName3="@FeatureName3" 
+                    Pagination="pagination" 
+                    Contacts=@contacts/>
+                    -->
+                }
+            </Content>
+        </FluentTab>
+
+        <FluentTab Id="VectorizedDB-id" Icon="@(new Icons.Regular.Size24.BookDatabase())">
+            <Header>
+                My Knowledge Base
+            </Header>
+            <Content>
+    <FluentTabs @bind-ActiveTabId="@activeid1" OnTabChange="HandleOnTabChange1" Class="top-tabs-font-size">
+        <FluentTab Id="Import-id" Icon="@(new Icons.Regular.Size24.Briefcase())">
+            <Header>
+                Import
+            </Header>
+            <Content>
+                <HTMLCard FeatureNameProject="@FeatureNameImport" FeatureUserFriendlyName="@FeatureNameImportFriendlyName"
+                FeatureDescription="@FeatureNameImportDescription"  FeatureDescriptionColor="black"/>
+
+<!--
+                <FluentCard MinimalStyle="true" Height="240px" Width="840px" Style="border: 1px solid var(--accent-fill-rest); padding: 20px;" Class="fluent-card-user-details-min-size ">
+                        <div style="position: relative; width: 100%;">
+                            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"
+                                VerticalGap="1" Style="border: 1px dotted var(--accent-fill-rest); position: relative; padding-right: 50px;">
+                                
+                                <FluentLabel Typo="Typography.Body">@fileViewName</FluentLabel>
+                                @if (string.IsNullOrEmpty(fileViewName)) {
+                                    <FluentTextArea Typo="Typography.Body" @bind-Value="@inputPrompt"  Placeholder="@placeholder"
+                                        style="width: 100%; max-height: 200px; overflow-y: auto;" Class="card-splitter alert alert-primary content-splitter-font-size"
+                                        Appearance="FluentInputAppearance.Filled" Autofocus="@Autofocus" Minlength="@MinLength"
+                                        MaxLength="@MaxLength" Rows="@Rows" id="fluentTextArea" />
+                                } else {
+                                    <DynamicInputField FeatureName=@DBKey 
+                                    Value="@userInput" ValueChanged="@((value) => { 
+                                            userInput = value; 
+                                            StateHasChanged(); // Ensure state is updated
+                                        })" OnSubmit="@HandleInputSubmit" 
+                                        Placeholder="@placeholder"
+                                        Rows="10" MinLength="6" MaxLength="16384" 
+                                        Autofocus="@Autofocus" Submitting="@submittingInput" />
+                                }
+
+                            </FluentStack>
+                        </div>
+                </FluentCard>
+-->
+                @if (!string.IsNullOrEmpty(HtmlContent))
+                {
+                    <HTMLCard FeatureNameProject="Summary" FeatureUserFriendlyName=@fileViewName
+                        FeatureDescription="@HtmlContent"  FeatureDescriptionColor="green"/>
+                }
+
+                <FluentCard MinimalStyle="true" Height="100%" Width="840px" Style="border: 1px solid var(--accent-fill-rest); padding: 20px;; overflow-y: auto;" Class="fluent-card-user-details-min-size ">
+
+
+                @if (submitting)
+                {
+                    <FluentLabel Typo="Typography.Body">Vectorizing and summarizing...</FluentLabel>
+
+                    <FluentProgress Class="progress-upload-top" style="color: var(--themePrimary);"></FluentProgress>
+                }
+                <FluentInputFile Id="my-file-uploader"
+                                Mode="InputFileMode.SaveToTemporaryFolder"
+                                DragDropZoneVisible="true"
+                                Multiple="true"
+                                AnchorId="MyUploadBuffer"
+                                MaximumFileCount="10"
+                                MaximumFileSize="@(100 * 1024)" 
+                                
+                                Accept=".json, .txt, .html, .md"
+                                @bind-ProgressPercent="@ProgressPercent"
+                                OnCompleted="@OnCompletedAsync"
+                                Style="height: 300px; width: 840px; border: 1px dashed var(--accent-fill-rest);" > 
+                    <ChildContent>
+                        <label for="my-file-uploader">
+                            <FluentIcon Value="@(new @Icons.Regular.Size24.ArrowUpload())" />
+                        </label>
+
+                        <div>
+                            Drag files here you wish to upload,
+                            or <label for="my-file-uploader">browse</label>
+                            for them<span style="color: red;">*</span>.
+                            <br />
+                            <em>Maximum of 10 files allowed.</em>
+                        </div>
+                    </ChildContent>
+                </FluentInputFile>
+                <FluentProgress Visible="@(progressPercent > 0)" Min="0" Max="100" Value="@progressPercent" />
+                <FluentLabel Alignment="HorizontalAlignment.Center">
+                    @progressTitle
+                </FluentLabel>
+
+                <FluentButton Appearance="Appearance.Accent" Id="MyUploadBuffer">
+                    Upload files
+                </FluentButton>
+                    @if (Files.Any())
+                    {
+                        <FluentCard 
+                            Style="padding: 16px; max-height: 90vh; overflow-y: auto; background-color: #f7f7f7; width: 100%; max-width: 840px; margin: 0 auto;">
+                            
+                            <FluentText Typo="Typography.H2" Style="margin-bottom: 16px;">
+                                Uploaded Files
+                            </FluentText>
+                            
+                            <FluentList SelectionMode="ListSelectionMode.None">
+                                @foreach (var file in Files)
+                                {
+                                    <FluentListItem Style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #e1e1e1;">
+                                        
+                                        <!-- File Icon -->
+                                        <FluentIcon 
+                                            Value="@GetFileIcon(file.ContentType, file.Name)" 
+                                            Size="IconSize.Size24" 
+                                            Style="margin-right: 16px; color: #605e5c;" 
+                                            />
+                                        
+                                        <!-- File Details -->
+                                        <div style="flex-grow: 1;">
+                                            <FluentText Typo="Typography.BodySemibold" Style="color: #323130;">
+                                                @file.Name
+                                            </FluentText>
+                                            <FluentText Typo="Typography.Body" Style="color: #605e5c;">
+                                                @($"{Decimal.Divide(file.Size, 1024):N} KB • {@file.ContentType}")
+                                            </FluentText>
+                                        </div>
+                                        
+
+                                    </FluentListItem>
+                                }
+                            </FluentList>
+                        </FluentCard>
+                    }
+                </FluentCard>
+
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <div style="color: red;">
+                        @ErrorMessage
+                    </div>
+                }
+
+            </Content>
+            </FluentTab>
+            <FluentTab Id="ImportedFiles-id" Icon="@(new Icons.Regular.Size24.Briefcase())">
+            <Header>
+                Imported Files
+            </Header>
+            <Content>
+                <FluentCard Height="100%" Width="840px" class="folder-card">
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <FluentText Typo="Typography.Body" class="error-message">
+                        @ErrorMessage
+                    </FluentText>
+                }
+
+                @if (SelectedFolder == null)
+                {
+                    @if (SelectedFile?.FileName != null)
+                    {
+                        <FluentText Typo="Typography.Body" Style="margin-bottom: 8px;">
+                            Reference: <b>@SelectedFile.FileName</b>
+                        </FluentText>
+                    }
+                    <FluentList style="display: flex; flex-direction: column; max-height: 400px; overflow-y: auto;">
+                        @foreach (var folder in Folders)
+                        {
+                            <FluentListItem style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
+                        <div style="display: flex; align-items: center;">
+                                <FluentButton 
+                                    Appearance="Appearance.Stealth" 
+                                    class="folder-button"
+                                    @onclick="() => LoadFilesInFolder(folder)"
+                                    >
+                                    
+                                    <!-- Folder Icon -->
+                                    <FluentIcon 
+                                        Value="@(new Icons.Regular.Size24.Folder())" 
+                                        Size="IconSize.Size24" 
+                                        class="folder-icon" 
+                                         />
+                                    
+                                    <!-- Folder Name -->
+                                    <FluentText Typo="Typography.BodySemibold" class="folder-name">
+                                        @folder
+                                    </FluentText>
+                                </FluentButton>
+                        </div>
+                            </FluentListItem>
+                        }
+                    </FluentList>
+                }
+                else
+                {
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <FluentButton 
+                            Appearance="Appearance.Stealth" 
+                            IconStart="@(new Icons.Regular.Size20.ArrowStepBack())" 
+                            @onclick="GoBackToFolders"
+                            
+                            Style="margin-right: 12px;">
+                        </FluentButton>
+                        
+                        <FluentText Typo="Typography.H4" Style="color: #323130;">
+                            @SelectedFolder
+                        </FluentText>
+                    </div>
+                    
+                    @if (DisplayedFiles.Any())
+                    {
+                        <FluentDataGrid Items="@DisplayedFiles.AsQueryable()" ShowHover="true" TGridItem="FileItemRow">
+                            <!-- Select Column for single selection -->
+                            <SelectColumn TGridItem="FileItemRow" SelectMode="DataGridSelectMode.Single"
+                                        SelectedItemsChanged="OnSelectedFileChanged" />
+
+                            <!-- File Name Column with sorting -->
+                            <PropertyColumn Property="@(f => f.FileName ?? "No Name")" Title="File Name" Sortable="true" />
+
+                            <!-- Size (KB) Column with sorting -->
+                            <PropertyColumn Property="@(f => f.SizeInKB)" Title="Size (KB)" Sortable="true" />
+                        </FluentDataGrid>
+
+
+
+                    }
+                    else
+                    {
+                        <FluentText Typo="Typography.Body" Style="color: #605e5c;">
+                            No files available in this folder.
+                        </FluentText>
+                    }
+                }
+
+                </FluentCard>
+                        <!-- Display file content dialog or other actions -->
+                        @if (IsFileContentDialogOpen)
+                        {
+                            <FluentDialog @bind-Visible="IsFileContentDialogOpen">
+                            <FluentCard MinimalStyle="true" Width="400px" Style="border: 1px solid var(--accent-fill-rest); padding: 0px;">
+
+                                <FluentDialogHeader>
+                                    <h2>@SelectedFile?.FileName</h2>
+                                </FluentDialogHeader>
+                                <FluentDialogBody>
+                                    @if (!string.IsNullOrEmpty(SelectedFileContent))
+                                    {
+                                        <FluentLabel Typo="Typography.Body" Class="content-splitter-font-size" 
+                                            style="width: 100%; height: 400px; overflow-y: auto;">
+                                            @((MarkupString)Markdown.ToHtml(SelectedFileContent))
+                                        </FluentLabel>
+                                    }
+                                    else
+                                    {
+                                        <p>No content available or file is empty.</p>
+                                    }
+                                </FluentDialogBody>
+                                <FluentDialogFooter>
+                                    <FluentButton @onclick="() => IsFileContentDialogOpen = false">Close</FluentButton>
+                                </FluentDialogFooter>
+                            </FluentCard>
+                            </FluentDialog>
+                        }
+
+                        @if (!string.IsNullOrEmpty(ErrorMessage))
+                        {
+                            <div class="error-message">@ErrorMessage</div>
+                        }
+            </Content>
+            </FluentTab>        
+    </FluentTabs>
+  
+            </Content>
+        </FluentTab>
+
+        <FluentTab Id="Help-id" Icon="@(new Icons.Regular.Size24.QuestionCircle())">
+            <Header>
+                Help
+            </Header>
+            <Content>
+                <FluentTabs>
+                    <FluentTab Id="Description-id">
+                        <Header>
+                            Description
+                        </Header>
+                        <Content>
+                            @if (!isMarkdownDescriptionLoaded)
+                            {
+                                <p><em>Loading description content...</em></p>
+                            }
+                            else
+                            {
+                                <FluentCard MinimalStyle="true" Height="auto" Width="840px" Style="border: 1px solid var(--accent-fill-rest); overflow-y: auto; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                    <FluentMarkdownRenderer MarkdownContent="@markdownContentDescription" />
+                                </FluentCard>
+                            }
+                        </Content>
+                    </FluentTab>
+
+                    <FluentTab Id="Wizard-id">
+                        <Header>
+                            Step by step
+                        </Header>
+                        <Content>
+                            @if (!isMarkdownHelpLoaded)
+                            {
+                                <p><em>Loading help content...</em></p>
+                            }
+                            else
+                            {
+                                <MarkdownWizard MarkdownContent="@markdownContentHelpStepByStep" />
+                            }
+                        </Content>
+                    </FluentTab>
+                </FluentTabs>
+            </Content>
+        </FluentTab>
+    </FluentTabs>
+}
+
+@code {
+    private string DBKey = null;
+    public bool showLEFTPane { get; set; } = true;
+    public bool showINPUTPane { get; set; } = true;
+    private string FeatureNameImportDescription = "Streamline your workflow effortlessly with our seamless file import feature! Import files up to 512KB with ease. If a file with the same name exists, it will be automatically replaced, ensuring your data stays organized. Upload once, and enjoy unlimited access to perform questions and summaries as many times as you like. Supported formats include .json, .txt, .html, .md, .pdf. Start optimizing your workflow today!";
+
+    private string FeatureNameProject = "AIContent";
+    private string FeatureName = "";
+    private string FeatureName1 = "";
+    private string FeatureName2 = "";
+    private string FeatureName3 = "";
+    public string CurrentFeatureName { get; set; } = "AIWritingAssistant";
+    private string FeatureUserFriendlyName = "Content";
+    private string FeatureDescription = "Create unique content tailored to specific topics, styles, and audience understanding levels.";
+
+    private string? currentUserIdentityID;
+    private Profile profile;
+    private UserAccountInformation accountInfo;
+    private string? displayName;
+    private string userEmail = "konstantine@aitrailblazer.com";
+    private string userFullName;
+    private string userPhoneNumer;
+    private string userLanguage;
+    private string userAddress;
+    private string userPrincipalJson = "default-principal";
+    private ChatPaneSplitter? ChatPaneSplitterRef;
+    private bool isLoading = true;
+    private bool isMessagesLoading = false;
+    private bool isAIOrganizerLoading = false;    private bool isSearch = false;
+
+    FluentInputFileEventArgs[] Files = Array.Empty<FluentInputFileEventArgs>();
+
+    private string FeatureNameImport = "Import";
+    private string FeatureNameImportFriendlyName = "File import";
+    private string HtmlContent { get; set; }
+    public int MinLength { get; set; } = 16;
+    public int MaxLength { get; set; } = 1024;
+    public int Rows { get; set; } = 24;
+
+    string? fileViewName = null;
+    string userInput = "";
+    string inputPrompt = "";
+    string placeholder = "Enter your prompt here";
+    private Stopwatch _timer;
+
+    private string pluginPath;
+    private string markdownContentDescription;
+    private string markdownContentHelpStepByStep;
+    public bool Autofocus { get; set; } = true;
+
+    private bool isInitialized = false;
+
+    private string timeZoneInfo;
+
+    private string userTimeZone;
+    private DateTime userLocalTime;
+    private bool isMicrosoftGraphLoaded = false;
+    private bool isMarkdownDescriptionLoaded = false;
+    private bool isMarkdownHelpLoaded = false;
+
+    private IEnumerable<EmailViewModel> emails;
+    string? activeid = "Workspace-id";
+    string currenttab = "Workspace-id";
+    string? activeid1 = "Import-id";
+
+    private string error;
+
+    private string? userPhotoBase64;
+    private List<GraphMessage> userMessages = new List<GraphMessage>();
+    //private IEnumerable<Microsoft.Graph.Models.DriveItem> driveItems = Enumerable.Empty<Microsoft.Graph.Models.DriveItem>();
+    
+    private CalendarEventsResult calendarEventsResult = new CalendarEventsResult();
+    private List<Event> calendarViewEventsResult;
+    private List<EventViewModel> calendarEventsWithComputedProperties = new List<EventViewModel>();
+ 
+    //private IEnumerable<Microsoft.Graph.Models.Contact>? contacts = Enumerable.Empty<Microsoft.Graph.Models.Contact>();
+    private List<PureEmailViewBasicModel> emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+    private List<ContactViewModel> contactsWithComputedProperties = new List<ContactViewModel>();
+    private ContactViewModel selectedContact;
+    private ContactViewModel originalContact = new ContactViewModel(new Contact());
+
+    
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!isInitialized)
+        {
+            await LoadUserDataAsync();
+            isInitialized = true;
+        }
+    }
+    private async Task LoadUserDataAsync()
+    {
+        isLoading = true;  // Show loading state
+        error = null;
+        emailsWithComputedProperties.Clear();  // Clear previous data
+
+        try
+        {
+            // Call the GetUserTimeZone function and update the UI
+            timeZoneInfo = _timeFunctions.GetUserTimeZone();
+
+            // Trigger re-render to show the result
+            profile = await graphService.GetCurrentUserProfileAsync();
+            accountInfo = await graphService.GetUserAccountInformationAsync();
+            
+            currentUserIdentityID = accountInfo?.Id;
+            userEmail = GetUserEmail();
+            userFullName = GetUserFullName();  
+            displayName = userFullName;
+
+            //userPhoneNumer = GetUserPhoneNumber();
+
+            //userLanguage = GetUserLanguage();
+
+            //userAddress = GetUserAddress();
+
+            /*
+            try
+            {
+                string input = "fetch latest 5 emails"; // Modify as per your application's logic
+
+                //string emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
+
+                string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+
+
+
+                if (!string.IsNullOrWhiteSpace(emailsJson))
+                {
+                    // Deserialize using Newtonsoft.Json into EmailResult
+                    var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+                    if (emailList != null && emailList.Emails.Any())
+                    {
+                        emailsWithComputedProperties = emailList.Emails;
+                    }
+                    else
+                    {
+                        emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                        error = "No emails found.";
+                    }
+                }
+                else
+                {
+                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    error = "Failed to retrieve emails.";
+                }
+            }
+            catch (JsonException jsonEx)
+            {
+                error = $"Failed to parse messages: {jsonEx.Message}";
+            }
+            catch (Exception ex)
+            {
+                error = $"Error loading emails: {ex.Message}";
+            }
+            finally
+            {
+                isSearch = false;
+            }
+
+            */
+
+            // Ensure the UI updates
+            StateHasChanged();
+
+            // Fetch the user's profile photo
+            var photoStream = await graphService.GetUserPhotoAsync();
+            if (photoStream != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await photoStream.CopyToAsync(memoryStream);
+                    userPhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                }
+            }
+
+            // Fetch contacts
+            //var contacts = await graphService.GetUserContactsAsync(50);
+            //contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
+
+            //await LoadCalendarEventsAsync();
+
+            //var mailboxSettings = await graphService.GetMailboxSettingsAsync();
+            //if (mailboxSettings != null)
+            //{
+            //    Console.WriteLine($"Time Zone: {mailboxSettings.TimeZone}");
+            //    Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
+            //    Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
+                
+                // Accessing other properties
+            //    Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
+                
+            //    if (mailboxSettings.AutomaticRepliesSetting != null)
+            //    {
+            //        Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
+            //        Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
+                    // Add more properties as needed
+            //    }
+                
+            //    if (mailboxSettings.Language != null)
+            //    {
+            //        Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
+            //        Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
+            //    }
+                
+            //    if (mailboxSettings.WorkingHours != null)
+            //    {
+            //        Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
+            //        Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
+            //        Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
+            //    }
+                
+            //    Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
+            ///    Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
+            //    Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
+            //}
+            //userTimeZone = await TimeZoneService.GetTimeZoneAsync();
+
+            //timeZoneInfo = _timeFunctions.GetUserTimeZone();
+
+            // Get the current UTC time
+            //DateTime utcNow = DateTime.UtcNow;
+
+            // Convert to user's local time
+            //userLocalTime = await TimeZoneService.ConvertToUserTimeZoneAsync(utcNow);
+
+            //input= "Tonights gonna be a good night! A good good night!";
+            //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
+            //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
+            
+            //string inputStr= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
+            //string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(inputStr);
+            //Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
+
+            ///inputStr= "What will the date be in 5 days?";
+            //response = await azureOpenAIHandler.GetIntent(inputStr);
+            //Console.WriteLine($"LoadUserDataAsync GetIntent JSON Response: {response}");
+
+
+        }
+        catch (AuthenticationRequiredException)
+        {
+            RedirectToLogin();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error loading user data: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;  // Hide loading state
+        }
+    }
+    
+    private async Task LoadCalendarEventsAsync()
+    {
+        try
+        {
+           DateTime startOfWeek = GetStartOfWeek(DateTime.UtcNow);
+        DateTime endOfWeek = startOfWeek.AddDays(7);
+
+            // Convert DateTime to ISO 8601 string format
+            string startOfWeekString = startOfWeek.ToString("o");
+            string endOfWeekString = endOfWeek.ToString("o");
+
+            Console.WriteLine($"Fetching calendar events from {startOfWeekString} to {endOfWeekString}");
+
+            // Call the method with string parameters
+            List<EventViewModel> events = await graphService.GetCalendarViewAsync(20, startOfWeekString, endOfWeekString);
+                
+            if (events == null || !events.Any())
+            {
+                calendarEventsWithComputedProperties = new List<EventViewModel>();
+                Console.WriteLine("No events found. Initialized an empty list.");
+            }
+            else
+            {
+                // Filter out any null events to prevent exceptions
+                var validEvents = events.Where(e => e != null).ToList();
+
+                // Log the number of null events found (if any)
+                int nullEventsCount = events.Count - validEvents.Count;
+                if (nullEventsCount > 0)
+                {
+                    Console.WriteLine($"Found {nullEventsCount} null event(s) in the fetched data.");
+                }
+
+                // Assign the valid events to the calendarEventsWithComputedProperties
+                calendarEventsWithComputedProperties = validEvents;
+
+                Console.WriteLine($"Successfully loaded {calendarEventsWithComputedProperties.Count} event(s).");
+            }
+        }
+        catch (AuthenticationRequiredException authEx)
+        {
+            Console.WriteLine($"Authentication is required: {authEx.Message}");
+            // Optionally, redirect to login or prompt user
+        }
+        catch (InvalidOperationException invOpEx)
+        {
+            Console.WriteLine($"Invalid operation: {invOpEx.Message}");
+        }
+        catch (JsonException jsonEx)
+        {
+            Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private DateTime GetStartOfWeek(DateTime date)
+    {
+        // Assuming week starts on Monday
+        int diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+        return date.AddDays(-1 * diff).Date;
+    }
+
+    private int currentPage = 1;
+    private const int PageSize = 10;  // Load 10 messages per page
+
+ private async Task LoadMoreMessagesAsync()
+{
+    try
+    {
+        isMessagesLoading = true;
+        string input = "fetch latest 10 more emails";
+        //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
+        string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+
+        if (!string.IsNullOrWhiteSpace(emailsJson))
+        {
+            // Deserialize using Newtonsoft.Json
+            var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
+
+
+            if (emailList != null && emailList.Emails.Any())
+            {
+                emailsWithComputedProperties.AddRange(emailList.Emails);
+            }
+        }
+
+        currentPage++;  // Move to next page
+    }
+    catch (Newtonsoft.Json.JsonException jsonEx)
+    {
+        error = $"Failed to parse messages: {jsonEx.Message}";
+    }
+    catch (Exception ex)
+    {
+        error = $"Error loading more messages: {ex.Message}";
+    }
+    finally
+    {
+        isMessagesLoading = false;
+    }
+}
+
+
+/*
+    protected override async Task OnInitializedAsync()
+    {
+        if (!isInitialized)
+        {
+            try
+            {
+                user = await graphService.GetCurrentUserProfileAsync();
+                if (!string.IsNullOrEmpty(user?.Id))
+                {
+                    currentUserIdentityID = user.Id;
+                    displayName = user.DisplayName;
+
+                    // Try to get the user's email address from the "Mail" property
+                    if (!string.IsNullOrEmpty(user.Mail))
+                    {
+                        userEmail = user.Mail;
+                    }
+                    // Fallback to UserPrincipalName if Mail is not set
+                    else if (!string.IsNullOrEmpty(user.UserPrincipalName))
+                    {
+                        userEmail = user.UserPrincipalName;
+                    }
+                    // User ID: 8f22704e-0396-4263-84a7-63310d3f39e7, Display Name: Constantine
+                    Console.WriteLine($"User ID: {currentUserIdentityID}, Display Name: {displayName}, Email: {userEmail}");
+                }
+                await LoadUploadedFilesAsync();
+                isInitialized = true;
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                // Log the exception and redirect to the login page
+                Logger.LogInformation(ex, "User challenge occurred while loading the profile. Redirecting to login.");
+                
+                var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+                Logger.LogInformation($"Redirecting to login page with return URL: {returnUrl}");
+
+                Navigation.NavigateTo($"MicrosoftIdentity/Account/SignIn?returnUrl={Uri.EscapeDataString("/" + returnUrl)}", true);
+                                    
+            }            
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "An error occurred while initializing the component.");
+            }
+        }
+    }
+*/
+    private async Task HandleOnTabChange(FluentTab tab)
+    {
+        currenttab = tab.Id;
+        Console.WriteLine($"Tab changed to {tab.Id}");
+
+        if (tab.Id == "MicrosoftGraph-id" && !isMicrosoftGraphLoaded)
+        {
+            //await LoadMicrosoftGraphData();
+        }
+        //currenttab = tab.Id;
+        Console.WriteLine($"AIContent HandleOnTabChange Tab changed to {tab.Id}");
+        if (tab.Id == "Workspace-id")
+        {
+            if (!string.IsNullOrEmpty(SelectedFileContent))
+            {
+                ChatPaneSplitterRef?.TriggerParseOntologyTree(SelectedFileContent);
+                Console.WriteLine($"HandleOnTabChange called ParseOntologyTreeMarkdown with content: {SelectedFileContent}");
+            }
+            else
+            {
+                Console.WriteLine("SelectedFileContent is null or empty");
+            }
+        }
+        if (tab.Id == "Help-id")
+        {
+            if (!isMarkdownDescriptionLoaded)
+            {
+                await LoadMarkdownDescriptionContent();
+            }
+
+            if (!isMarkdownHelpLoaded)
+            {
+                await LoadMarkdownHelpContent();
+            }
+        }
+    }
+    private async Task HandleOnTabChange1(FluentTab tab)
+    {
+
+    }
+    /*
+    private async Task LoadMicrosoftGraphData()
+    {
+        try
+        {
+            // Ensure the user is authenticated and retrieve the token
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userPrincipal = authState.User;
+
+            if (userPrincipal.Identity.IsAuthenticated)
+            {
+   
+                // Fetch user profile information and Microsoft Graph data
+                user = await graphService.GetCurrentUserProfileAsync();
+                userPhotoBase64 = await graphService.GetUserPhotoAsync();
+
+                // Fetch user messages
+                userMessages = await graphService.GetUserMessagesAsync(currentUserIdentityID);
+
+                // Fetch user's drive items
+                driveItems = await graphService.GetUserDriveItemsAsync();
+                
+                contacts = await graphService.GetContactsAsync();
+
+                // Set flag to true after successful data load
+                isMicrosoftGraphLoaded = true;
+            }
+            else
+            {
+                // User is not authenticated, redirect to login page
+                await RedirectToLogin();
+            }
+        }
+        catch (MicrosoftIdentityWebChallengeUserException ex)
+        {
+            Logger.LogError(ex, "User challenge occurred while loading Microsoft Graph data.");
+            await RedirectToLogin();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.LogError(ex, "Unauthorized access. Attempting to refresh token.");
+            await RedirectToLogin();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading Microsoft Graph data.");
+        }
+    }
+    */
+    private void RedirectToLogin()
+    {
+        var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
+    }
+
+    private async Task LoadMarkdownDescriptionContent()
+    {
+        try
+        {
+            var basePluginPath = PluginService.GetPluginsPath();
+            var descriptionFilePath = Path.Combine(basePluginPath, $"{CurrentFeatureName}_Description.md");
+
+            if (File.Exists(descriptionFilePath))
+            {
+                markdownContentDescription = await File.ReadAllTextAsync(descriptionFilePath);
+            }
+
+            isMarkdownDescriptionLoaded = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading markdown description content.");
+            markdownContentDescription = "Error loading description content.";
+        }
+    }
+
+    private async Task LoadMarkdownHelpContent()
+    {
+        try
+        {
+            var basePluginPath = PluginService.GetPluginsPath();
+            var helpFilePath = Path.Combine(basePluginPath, $"{CurrentFeatureName}_Help_StepByStep.md");
+
+            if (File.Exists(helpFilePath))
+            {
+                markdownContentHelpStepByStep = await File.ReadAllTextAsync(helpFilePath);
+            }
+
+            isMarkdownHelpLoaded = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading help content.");
+            markdownContentHelpStepByStep = "Error loading Help StepByStep content.";
+        }
+    }
+
+    public async Task UpdateCurrentFeatureName(string newFeatureName)
+    {
+        CurrentFeatureName = newFeatureName;
+        await LoadMarkdownDescriptionContent();
+        await LoadMarkdownHelpContent();
+    }
+}
+@code {
+    string[] projects =
+    [
+        "Sales intranet",
+        "Customer portal",
+        "Mobile app",
+        "Mobile app (v2 beta)",
+        "PowerEye Security",
+    ];
+
+    Component[] components =
+    [
+        new("backup", "Backup/restore"),
+        new("ui", "User interface"),
+        new("webhooks", "Web hooks"),
+        new("llm", "Language models"),
+        new("offline", "Offline support"),
+        new("windows", "Windows"),
+        new("mac", "Mac"),
+        new("linux", "Linux"),
+        new("build", "Build system"),
+        new("perf", "Performance"),
+        new("security", "Security"),
+    ];
+
+    record Component(string Id, string Name);
+}
+
+@code {
+
+        private Dictionary<string, List<FileItemRow>> FolderFiles = new();
+        private List<string> Folders = new();
+        private List<FileItemRow> DisplayedFiles = new();
+        private string SelectedFolder = null;
+        private string ErrorMessage = string.Empty;
+
+        // Variables for File Content Display
+        private FileItemRow SelectedFile = null;
+        private string SelectedFileContent = string.Empty;
+        private void ClearSelectedFileAndContent()
+        {
+            SelectedFile = null;
+            SelectedFileContent = string.Empty;
+            Console.WriteLine("SelectedFile and SelectedFileContent cleared in AIContent.razor");
+        }
+
+        private bool IsFileContentDialogOpen = false;
+        private async Task LoadUploadedFilesAsync()
+        {
+            try
+            {
+                var manager = azureOpenAIHandler.BlobStorageManagerCreate();
+                string directory = FeatureNameProject + "FileInput";
+                string userId = currentUserIdentityID;
+                string destination = $"{userId}-{directory}/";
+
+                var blobs = await manager.ListBlobsAsync(destination);
+
+                // Group by folder and collect files
+                FolderFiles = blobs
+                    .Where(blob => !blob.Name.EndsWith("/Input")) // Exclude 'Input' blobs
+                    .Select(blob =>
+                    {
+                        // Strip out the destination prefix
+                        string relativePath = blob.Name.Replace(destination, "");
+
+                        // Split the remaining path into folder and file parts
+                        var parts = relativePath.Split('/');
+                        string folder = parts.Length > 1 ? parts[0] : "Default";
+                        string fileName = parts.Last();
+
+                        return new FileItemRow
+                        {
+                            Folder = folder,
+                            FileName = fileName,
+                            SizeInKB = blob.Properties.ContentLength.HasValue
+                                ? (long)(blob.Properties.ContentLength.Value / 1024.0)
+                                : 0,
+                        };
+                    })
+                    .GroupBy(f => f.Folder)
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                // Populate Folders for the initial view
+                Folders = FolderFiles.Keys.ToList();
+                Console.WriteLine($"Loaded {Folders.Count} folders.");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Error loading files: {ex.Message}";
+            }
+        }
+
+    private void LoadFilesInFolder(string folder)
+    {
+        // Set the selected folder and load the files in that folder
+        SelectedFolder = folder;
+        Console.WriteLine($"Selected Folder: {SelectedFolder}");
+
+        if (FolderFiles.TryGetValue(folder, out var files))
+        {
+            DisplayedFiles = files;
+            Console.WriteLine($"Loaded {files.Count} files in folder '{folder}'.");
+        }
+        else
+        {
+            // Handle the case where the folder is not found
+            DisplayedFiles = new List<FileItemRow>();
+            Console.Error.WriteLine($"Folder '{folder}' not found in FolderFiles.");
+        }
+
+        // Force UI to re-render
+        StateHasChanged();
+    }
+
+    private void GoBackToFolders()
+    {
+        // Reset the view to show folders again
+        SelectedFolder = null;
+        DisplayedFiles = new List<FileItemRow>();
+        Console.WriteLine("Navigated back to Folders view.");
+
+        // Force UI to re-render
+        StateHasChanged();
+    }
+    private async Task OpenFileContentAsync(FileItemRow file)
+    {
+        try
+        {
+            SelectedFile = file;
+            // AITrailblazer_AIAssistantSettings.md
+
+            // Opening file content for AITrailblazer...
+            Console.WriteLine($"OpenFileContentAsync Opening file content for {SelectedFolder}...");
+            // Selected file: AITrailblazer_AIAssistantSettings.md
+            Console.WriteLine($"OpenFileContentAsync Selected file: {SelectedFile.FileName}");
+            // Attempting to read blob at path: 
+            // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md
+            // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md/AITrailblazer_AIAssistantSettings.md
+            SelectedFileContent = await azureOpenAIHandler.ReadBlobContentAsync(
+                currentUserIdentityID,
+                FeatureNameProject + "FileInput",
+                SelectedFolder,
+                SelectedFile.FileName + "/" + SelectedFile.FileName
+            );
+            //Console.WriteLine($"OpenFileContentAsync SelectedFileContent: {SelectedFileContent}");
+
+            if (string.IsNullOrEmpty(SelectedFileContent))
+            {
+                ErrorMessage = "File content is empty or could not be retrieved.";
+            }
+            else
+            {
+                ErrorMessage = string.Empty;
+
+                IsFileContentDialogOpen = true;
+                StateHasChanged();  // Force UI re-render
+                Console.WriteLine($"OpenFileContentAsync IsFileContentDialogOpen: {IsFileContentDialogOpen}");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error loading file content: {ex.Message}";
+            Console.Error.WriteLine(ErrorMessage);
+            IsFileContentDialogOpen = false;
+            StateHasChanged();  // Force UI re-render
+            Console.WriteLine($"OpenFileContentAsync Error loading file content IsFileContentDialogOpen: {IsFileContentDialogOpen}");
+        }
+    }
+    private void OnSelectedFileChanged(IEnumerable<FileItemRow> selectedFiles)
+    {
+        var selectedFile = selectedFiles.FirstOrDefault();
+        if (selectedFile != null)
+        {
+            SelectedFile = selectedFile;
+            Console.WriteLine($"OnSelectedFileChanged Selected file: {selectedFile.FileName}");
+            // AITrailblazer_AIAssistantSettings.md
+            OpenFileContentAsync(selectedFile);
+        }
+    }
+
+    private void CloseFileContentDialog()
+    {
+        IsFileContentDialogOpen = false;
+        SelectedFile = null;
+        SelectedFileContent = string.Empty;
+        ErrorMessage = string.Empty;
+    }
+    private void DownloadFile(FileItemRow file)
+    {
+        // TODO: Implement actual download logic
+        Console.WriteLine($"Downloading {file.FileName}...");
+    }
+    private void DeleteFile(FileItemRow file)
+    {
+        // TODO: Implement actual deletion logic
+        Console.WriteLine($"Deleting {file.FileName}...");
+        //DisplayedFiles.Remove(file);
+
+        // Optionally, update FolderFiles if necessary
+        //if (FolderFiles.ContainsKey(file.Folder))
+        //{
+            //FolderFiles[file.Folder].Remove(file);
+        //    Console.WriteLine($"Removed {file.FileName} from FolderFiles[{file.Folder}].");
+        //}
+
+        // Force UI to re-render
+        StateHasChanged();
+    }
+}
+
+@code {
+    public class CustomFileItem
+    {
+        public string Name { get; set; }
+        public long Size { get; set; }
+        public string ContentType { get; set; }
+    }
+
+    private async Task<string> HandleInputSubmit()
+    {
+        this._timer = new Stopwatch();
+        this._timer.Restart();
+
+        if (userInput.Trim() != "")
+        {
+            submittingInput = true;
+            Console.WriteLine($"HandleInputSubmit userInput {userInput}");
+            var userID   = currentUserIdentityID;
+            var manager = azureOpenAIHandler.BlobStorageManagerCreate();
+            string fileName = fileViewName;
+
+            string directory = FeatureNameProject+"FileInput"; // Directory structure in which the blob will be stored
+            string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
+            string blobName = $"ChatSession-{fileName}-{currentTime}"; // Name of the blob to be created            string contentName = "Input"; // Name of the content to be stored in the blob
+
+            
+            string contentName = "Input"; // Name of the content to be stored in the blob
+            string content = userInput;
+            var jsonParameters = new
+            {
+                Input = input,
+            };
+            string jsonContent = JsonConvert.SerializeObject(jsonParameters, Formatting.Indented);
+
+            // Call the UploadStringToBlobAsync method
+            await manager.UploadStringToBlobAsync(
+                currentUserIdentityID, 
+                directory, 
+                blobName, 
+                contentName,
+                content);
+
+            string PanelInput = "";
+            //string input;
+            string masterTextSetting = "Content";
+            string responseLengthVal = "8192";
+            string creativeAdjustmentsVal = "Analytical";
+            string audienceLevelVal = "";
+            string writingStyleVal = "";
+            string relationSettingsVal = "";
+            string responseStyleVal = "";
+
+            // should be empty to use the caching directly
+            string encodedData = "";
+
+            string Feature ="AIImportFilesQuery";
+            /*
+
+            var response = await azureOpenAIHandler.GenerateGeminiWithPrompty(
+                PanelInput,
+                Feature,
+                userInput,
+                fileName,
+                encodedData,
+                masterTextSetting,
+                responseLengthVal,
+                creativeAdjustmentsVal,
+                audienceLevelVal,
+                writingStyleVal,
+                relationSettingsVal,
+                responseStyleVal);
+
+                contentName = "Output"; // Name of the content to be stored in the blob
+                content = response;
+
+                // Call the UploadStringToBlobAsync method
+                await manager.UploadStringToBlobAsync(
+                    currentUserIdentityID, 
+                    directory, 
+                    blobName, 
+                    contentName,
+                    content);  
+
+            submittingInput = false;
+            HtmlContent = Markdown.ToHtml(response);
+            */
+            this._timer.Stop();
+            Console.WriteLine($"Time: {this._timer.ElapsedMilliseconds / 1000} secs");
+
+        }
+        return "";
+    }
+    private async Task OnCompletedAsync(IEnumerable<FluentInputFileEventArgs> files)
+    {
+
+        this._timer = new Stopwatch();
+        this._timer.Restart();
+    
+        fileViewName = null;
+        Files = files.ToArray();
+        Console.WriteLine($"OnCompletedAsync: {"hello"}"); 
+        // Clear any previous error messages
+        ErrorMessage = string.Empty;
+        MarkdownContentFile = string.Empty;
+        <!-- ".pdf", ".docx", ".xlsx", ".pptx", ".jpg", ".jpeg", ".png" -->
+        var allowedExtensions = new HashSet<string>
+        {
+            ".json", ".txt", ".html", ".md"
+        };
+        <!--
+        var imageExtensions = new HashSet<string>
+        {
+            ".pdf", ".docx", ".xlsx", ".pptx", 
+            ".jpg", ".jpeg", ".png"
+        };
+        -->
+        foreach (var file in Files)
+        {
+            // Get the file extension
+            var fileExtension = Path.GetExtension(file.Name).ToLowerInvariant();
+
+            // Validate file extension
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                ErrorMessage = "Invalid file type. Only .json, .txt, .html, or .md files are allowed.";
+                continue;
+            }
+            //try
+            //{
+                var filePath = file.LocalFile?.FullName;
+                Console.WriteLine($"filePath: {filePath}");
+                if (filePath != null)
+                {
+                    submitting = true;
+                    var AITHelpID   = "AITrailblazer";
+                    var userID   = currentUserIdentityID;
+
+                    //Console.WriteLine($"fileContent: {fileContent}");
+                    Console.WriteLine($"file.Name: {file.Name}");
+
+                    /*
+                    indexName = $"{currentUserIdentityID}-{"Documents"}";
+                    if (file.Name.StartsWith("AITrailblazer_"))
+                    {
+                        userID   = AITHelpID;
+                        indexName = $"{AITHelpID}-{"Ontology"}";
+                        // AITrailblazer_help
+                       if (!string.IsNullOrEmpty(tags))
+                        {
+                            tags = "AITrailblazer_help," + tags;
+                        }
+                        else
+                        {
+                            tags = "AITrailblazer_help";
+                        }
+                    }
+
+                    if (imageExtensions.Contains(fileExtension))
+                    {
+                        // Read the PDF file into a MemoryStream
+                        //using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                        using var memoryStream = new MemoryStream();
+                        using Stream fileStream = File.OpenRead(filePath);
+                        await fileStream.CopyToAsync(memoryStream);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+
+                        // Process PDF file as MemoryStream
+                        MarkdownContentFile = await HandleInputFileInMemory(
+                            userID, 
+                            indexName, 
+                            memoryStream, 
+                            file.Name, 
+                            fileExtension, 
+                            tags);
+                        MarkdownContentFile = AddNewLinesAfterEveryLine(MarkdownContentFile);
+                    }
+                    else
+                    {
+                        */
+                        // Process text files
+                        //using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                        //using var reader = new StreamReader(stream);
+                        //var fileContent = await reader.ReadToEndAsync();
+                        //MarkdownContentFile = await HandleInputTextInMemory(
+                        //    userID, 
+                        //    indexName, 
+                        //    file.Name, 
+                        //    fileExtension, 
+                        //    fileContent, 
+                        //    tags);
+                        // Define parameters for the upload
+
+                        var input = inputPrompt;
+                        if (input == "")
+                        {
+                        input = @"summarize effectively, ensuring clarity and conciseness.";
+                        }
+                        Console.WriteLine($"OnCompletedAsync input {input}");
+
+                        var manager = azureOpenAIHandler.BlobStorageManagerCreate();
+                        
+                        string directory = FeatureNameProject+"FileInput"; // Directory structure in which the blob will be stored
+
+                        // Extract subdirectory from filename
+                        string[] parts = file.Name.Split('_');
+                        string subdirectory = parts.Length > 1 ? parts[0] : "Default";
+
+                        string blobName = $"{subdirectory}/{file.Name}";
+
+                        string contentName = "Input"; // Name of the content to be stored in the blob
+                        string content = input;
+                        var jsonParameters = new
+                        {
+                            Input = input,
+                        };
+                        string jsonContent = JsonConvert.SerializeObject(jsonParameters, Formatting.Indented);
+
+                        // Call the UploadStringToBlobAsync method
+                        await manager.UploadStringToBlobAsync(
+                            currentUserIdentityID, 
+                            directory, 
+                            blobName, 
+                            contentName,
+                            content);
+                        
+                        // Open the file stream for reading
+                        await using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
+                        string fileName = file.Name;
+                        // Upload the file stream to Azure Blob Storage
+                        await manager.UploadBlobFromStreamAsync(
+                            currentUserIdentityID, 
+                            directory, 
+                            blobName,
+                            fileName, 
+                            fs);
+
+                        string PanelInput = "Summarizes effectively, ensuring clarity and conciseness.";
+                        //string input;
+                        string masterTextSetting = "Content";
+                        string responseLengthVal = "8192";
+                        string creativeAdjustmentsVal = "Analytical";
+                        string audienceLevelVal = "";
+                        string writingStyleVal = "";
+                        string relationSettingsVal = "";
+                        string responseStyleVal = "";
+
+                        var fileContent = await manager.ReadBlobContentAsync(
+                            currentUserIdentityID, 
+                            directory, 
+                            blobName,
+                            file.Name);
+
+                        //Console.WriteLine($"fileContent: {fileContent}");
+                        /*
+                        string encodedData = EncodeToBase64(fileContent); 
+                        if (!IsBase64String(encodedData))
+                        {
+                            Console.WriteLine("EncodedInlineData is not a valid base64 string.");
+                        } else {
+                            string Feature = "AIImportFiles";//"AIImportFiles"; AIClearNote
+                            var response = await azureOpenAIHandler.GenerateGeminiWithPrompty(
+                                PanelInput,
+                                Feature,
+                                input,
+                                fileName,
+                                encodedData,
+                                masterTextSetting,
+                                responseLengthVal,
+                                creativeAdjustmentsVal,
+                                audienceLevelVal,
+                                writingStyleVal,
+                                relationSettingsVal,
+                                responseStyleVal);
+                            
+                            blobName = file.Name; // Name of the blob to be created
+                            contentName = "Output"; // Name of the content to be stored in the blob
+                            content = response;
+
+                            // Call the UploadStringToBlobAsync method
+                            await manager.UploadStringToBlobAsync(
+                                currentUserIdentityID, 
+                                directory, 
+                                blobName, 
+                                contentName,
+                                content);  
+                                
+                                fileViewName = fileName;
+
+                            HtmlContent = Markdown.ToHtml(response);
+
+                        }
+                         */
+
+                        this._timer.Stop();
+                        Console.WriteLine($"Time: {this._timer.ElapsedMilliseconds / 1000} secs");
+                    }
+
+                    //Console.WriteLine($"MarkdownContentFile: {MarkdownContentFile}");
+                    // Convert Markdown to HTML
+                    //HtmlContent = Markdown.ToHtml(MarkdownContentFile);
+
+                    tags = "";
+
+                    //Console.WriteLine($"HtmlContent: {HtmlContent}");
+                    submitting = false;
+                //}
+            //}
+            //catch (Exception ex)
+            //{
+            //    ErrorMessage = $"Error reading file: {ex.Message}";
+            //}        
+        }
+        bool IsBase64String(string s)
+        {
+            s = s.Trim();
+            return (s.Length % 4 == 0) && Regex.IsMatch(s, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None);
+        }
+         string EncodeToBase64(string data)
+        {
+            // Convert the string to bytes
+            var bytes = Encoding.UTF8.GetBytes(data);
+            // Convert bytes to Base64 string
+            return Convert.ToBase64String(bytes);
+        }
+        string AddNewLinesAfterEveryLine(string markdownContentDescription)
+        {
+            // Split the content into lines
+            var lines = markdownContentDescription.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            
+            // Use StringBuilder for efficient string manipulation
+            var stringBuilder = new StringBuilder();
+            
+            foreach (var line in lines)
+            {
+                // Append the line and add a newline after each line
+                stringBuilder.AppendLine(line);
+                stringBuilder.AppendLine(); // Adds an extra newline
+            }
+            
+            // Convert the StringBuilder to a string and return it
+            return stringBuilder.ToString();
+        }
+    }
+
+
+}
+
+@code
+{
+    int ProgressPercent = 0;
+     int? progressPercent;
+    string? progressTitle="Upload Progress";
+    private string MarkdownContentFile="";
+
+    string? input = "";
+
+    string? tags = "";
+ 
+    private bool submitting = false;
+
+    private bool submittingInput = false;
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+    string? indexName = "";
+
+}
+
+
+@code {
+    // Dictionary for file extension to icon mapping
+    private readonly Dictionary<string, Func<Icon>> extensionIconMap = new Dictionary<string, Func<Icon>>
+    {
+        { ".jpg", () => new Icons.Regular.Size24.Image() },
+        { ".jpeg", () => new Icons.Regular.Size24.Image() },
+        { ".png", () => new Icons.Regular.Size24.Image() },
+        { ".gif", () => new Icons.Regular.Size24.Image() },
+        { ".bmp", () => new Icons.Regular.Size24.Image() },
+        { ".svg", () => new Icons.Regular.Size24.Image() },
+        { ".pdf", () => new Icons.Regular.Size24.DocumentPdf() },
+        { ".doc", () => new Icons.Regular.Size24.Document() },
+        { ".docx", () => new Icons.Regular.Size24.Document() },
+        { ".txt", () => new Icons.Regular.Size24.Document() },
+        { ".xls", () => new Icons.Regular.Size24.DocumentData() },
+        { ".xlsx", () => new Icons.Regular.Size24.DocumentData() },
+        { ".ppt", () => new Icons.Regular.Size24.DocumentData() },
+        { ".pptx", () => new Icons.Regular.Size24.DocumentData() },
+        { ".mp4", () => new Icons.Regular.Size24.Video() },
+        { ".avi", () => new Icons.Regular.Size24.Video() },
+        { ".mov", () => new Icons.Regular.Size24.Video() },
+        { ".mp3", () => new Icons.Regular.Size24.Document() }, // Fallback as "Audio" icon is unavailable
+        { ".wav", () => new Icons.Regular.Size24.Document() }, // Fallback as "Audio" icon is unavailable
+        { ".zip", () => new Icons.Regular.Size24.FolderZip() },
+        { ".rar", () => new Icons.Regular.Size24.FolderZip() },
+        { ".7z", () => new Icons.Regular.Size24.FolderZip() },
+        { ".json", () => new Icons.Regular.Size24.DocumentData() },
+        { ".xml", () => new Icons.Regular.Size24.DocumentData() },
+        { ".js", () => new Icons.Regular.Size24.Javascript() },
+        { ".css", () => new Icons.Regular.Size24.DocumentCss() },
+        // Add more file extension mappings as needed
+    };
+
+    // Dictionary for content type to icon mapping
+    private readonly Dictionary<string, Func<Icon>> contentTypeIconMap = new Dictionary<string, Func<Icon>>
+    {
+        { "image/", () => new Icons.Regular.Size24.Image() },
+        { "application/pdf", () => new Icons.Regular.Size24.DocumentPdf() },
+        { "application/javascript", () => new Icons.Regular.Size24.Javascript() },
+        { "text/javascript", () => new Icons.Regular.Size24.Javascript() },
+        { "application/x-javascript", () => new Icons.Regular.Size24.Javascript() },
+        { "text/css", () => new Icons.Regular.Size24.DocumentCss() },
+        { "video/", () => new Icons.Regular.Size24.Video() },
+        { "application/zip", () => new Icons.Regular.Size24.FolderZip() },
+        { "application/x-rar-compressed", () => new Icons.Regular.Size24.FolderZip() },
+        { "application/x-7z-compressed", () => new Icons.Regular.Size24.FolderZip() },
+        { "application/vnd", () => new Icons.Regular.Size24.DocumentData() }, // For various Microsoft Office formats
+        // Add more content type mappings as needed
+    };
+
+    private Icon GetFileIcon(string contentType, string fileName)
+    {
+        // Check if contentType is available and map accordingly
+        if (!string.IsNullOrWhiteSpace(contentType))
+        {
+            foreach (var kvp in contentTypeIconMap)
+            {
+                if (kvp.Key.EndsWith("/")) // For wildcard types like image/*
+                {
+                    if (contentType.StartsWith(kvp.Key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return kvp.Value();
+                    }
+                }
+                else
+                {
+                    if (string.Equals(contentType, kvp.Key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return kvp.Value();
+                    }
+                }
+            }
+        }
+
+        // Fallback to file extension if contentType mapping is not found
+        if (!string.IsNullOrWhiteSpace(fileName))
+        {
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            if (extensionIconMap.TryGetValue(extension, out var iconFunc))
+            {
+                return iconFunc();
+            }
+        }
+
+        // Default icon if no match is found
+        return new Icons.Regular.Size24.Document();
+    }
+
+    // Example methods for download and delete actions
+    private async Task DownloadFile(FileModel file)
+    {
+        try
+        {
+            // Implement download logic here
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions and provide user feedback
+            Console.Error.WriteLine($"Error downloading file {file.Name}: {ex.Message}");
+            // Optionally, show a notification to the user
+        }
+    }
+
+    private async Task DeleteFile(FileModel file)
+    {
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions and provide user feedback
+            Console.Error.WriteLine($"Error deleting file {file.Name}: {ex.Message}");
+            // Optionally, show a notification to the user
+        }
+    }
+
+    // Example FileModel
+    public class FileModel
+    {
+        public string Name { get; set; }
+        public long Size { get; set; }
+        public string ContentType { get; set; }
+    }
+
+}
+
+@code{
+    private string GetUserEmail()
+    {
+        // Try to get the user's primary email from the Emails list
+        if (profile?.Emails != null && profile.Emails.Any())
+        {
+            var primaryEmail = profile.Emails.FirstOrDefault();
+            if (primaryEmail != null)
+            {
+                return primaryEmail.Address ?? accountInfo?.UserPrincipalName ?? "";
+            }
+        }
+        // As a fallback, return accountInfo?.UserPrincipalName or an empty string
+        return accountInfo?.UserPrincipalName ?? "";
+    }
+    
+    private string GetUserFullName()
+    {
+        // Try to get the user's full name from the Names list
+        if (profile?.Names != null && profile.Names.Any())
+        {
+            var primaryName = profile.Names.FirstOrDefault();
+            if (primaryName != null)
+            {
+                string firstName = primaryName.First ?? "";
+                string lastName = primaryName.Last ?? "";
+                if (!string.IsNullOrWhiteSpace(firstName) || !string.IsNullOrWhiteSpace(lastName))
+                {
+                    return $"{firstName} {lastName}".Trim();
+                }
+                else if (!string.IsNullOrWhiteSpace(primaryName.DisplayName))
+                {
+                    return primaryName.DisplayName;
+                }
+            }
+        }
+
+        // As a fallback, return accountInfo?.UserPrincipalName or "User"
+        return accountInfo?.UserPrincipalName ?? "User";
+    }
+      private string GetUserPhoneNumber()
+    {
+        // Try to get the user's primary phone number from the Phones list
+        if (profile?.Phones != null && profile.Phones.Any())
+        {
+            // Look for the mobile phone number first
+            var mobilePhone = profile.Phones.FirstOrDefault(phone => phone.Type == PhoneType.Mobile);
+            if (mobilePhone != null && !string.IsNullOrWhiteSpace(mobilePhone.Number))
+            {
+                return mobilePhone.Number;
+            }
+
+            // If no mobile phone, get any available phone number
+            var primaryPhone = profile.Phones.FirstOrDefault();
+            if (primaryPhone != null && !string.IsNullOrWhiteSpace(primaryPhone.Number))
+            {
+                return primaryPhone.Number;
+            }
+        }
+
+        // As a fallback, return an empty string or a default message
+        return "";
+    }
+      private string GetUserAddress()
+    {
+        // Try to get the user's current position from the Positions list
+        if (profile?.Positions != null && profile.Positions.Any())
+        {
+            // Look for the current position where IsCurrent is true
+            var currentPosition = profile.Positions.FirstOrDefault(position => position.IsCurrent == true);
+
+            if (currentPosition != null && currentPosition.Detail?.Company?.Address != null)
+            {
+                var address = currentPosition.Detail.Company.Address;
+
+                // Extract address components
+                string street = address.Street ?? "";
+                string city = address.City ?? "";
+                string state = address.State ?? "";
+                string postalCode = address.PostalCode ?? "";
+                string countryOrRegion = address.CountryOrRegion ?? "";
+
+                // Build the full address string
+                var addressParts = new List<string> { street, city, state, postalCode, countryOrRegion };
+                var fullAddress = string.Join(", ", addressParts.Where(part => !string.IsNullOrWhiteSpace(part)));
+
+                if (!string.IsNullOrWhiteSpace(fullAddress))
+                {
+                    return fullAddress;
+                }
+            }
+        }
+
+        // As a fallback, return a default message or an empty string
+        return "Address not specified";
+    }
+      private string GetUserLanguage()
+    {
+        // Try to get the user's primary language from the Languages list
+        if (profile?.Languages != null && profile.Languages.Any())
+        {
+            var primaryLanguage = profile.Languages.FirstOrDefault();
+            if (primaryLanguage != null)
+            {
+                string displayName = primaryLanguage.DisplayName ?? "";
+                string tag = primaryLanguage.Tag ?? "";
+
+                if (!string.IsNullOrWhiteSpace(displayName))
+                {
+                    return displayName;
+                }
+                else if (!string.IsNullOrWhiteSpace(tag))
+                {
+                    return tag;
+                }
+            }
+        }
+
+        // As a fallback, return a default message or an empty string
+        return "Language not specified";
+    }
+
+
+    private string ParseAndFormatDateTime(string? dateTimeString)
+    {
+        if (string.IsNullOrEmpty(dateTimeString))
+            return "N/A";
+
+        if (DateTime.TryParse(dateTimeString, out DateTime dateTime))
+        {
+            return dateTime.ToLocalTime().ToString("g");
+        }
+
+        return dateTimeString; // Return the original string if parsing fails
+    }
+}

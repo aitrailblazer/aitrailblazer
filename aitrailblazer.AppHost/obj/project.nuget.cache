@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LM8pNFMhiAU=",
+  "dgSpecHash": "MYucizcBFlM=",
   "success": true,
   "projectFilePath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.AppHost/aitrailblazer.AppHost.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,8 @@
     "/Users/constantinevassilev02/.nuget/packages/aspire.hosting/8.2.1/aspire.hosting.8.2.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/aspire.hosting.apphost/8.2.1/aspire.hosting.apphost.8.2.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm64/8.2.1/aspire.hosting.orchestration.osx-arm64.8.2.1.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/azure.ai.openai/2.1.0-beta.1/azure.ai.openai.2.1.0-beta.1.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/azure.core/1.43.0/azure.core.1.43.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/fractions/7.3.0/fractions.7.3.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/google.protobuf/3.28.0/google.protobuf.3.28.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/grpc.aspnetcore/2.65.0/grpc.aspnetcore.2.65.0.nupkg.sha512",
@@ -21,6 +23,8 @@
     "/Users/constantinevassilev02/.nuget/packages/identitymodel/5.2.0/identitymodel.5.2.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/identitymodel.oidcclient/5.2.1/identitymodel.oidcclient.5.2.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/kubernetesclient/14.0.9/kubernetesclient.14.0.9.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.bcl.asyncinterfaces/8.0.0/microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.bcl.hashcode/1.1.1/microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.configuration/8.0.0/microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.configuration.binder/8.0.2/microsoft.extensions.configuration.binder.8.0.2.nupkg.sha512",
@@ -49,28 +53,29 @@
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.options.configurationextensions/8.0.0/microsoft.extensions.options.configurationextensions.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.vectordata.abstractions/9.0.0-preview.1.24523.1/microsoft.extensions.vectordata.abstractions.9.0.0-preview.1.24523.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.identitymodel.abstractions/7.1.2/microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.identitymodel.jsonwebtokens/7.1.2/microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.identitymodel.logging/7.1.2/microsoft.identitymodel.logging.7.1.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.identitymodel.tokens/7.1.2/microsoft.identitymodel.tokens.7.1.2.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.abstractions/1.25.0/microsoft.semantickernel.abstractions.1.25.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.connectors.azureopenai/1.25.0/microsoft.semantickernel.connectors.azureopenai.1.25.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.connectors.openai/1.25.0/microsoft.semantickernel.connectors.openai.1.25.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.semantickernel.core/1.25.0/microsoft.semantickernel.core.1.25.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/openai/2.1.0-beta.1/openai.2.1.0-beta.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/polly.core/8.4.1/polly.core.8.4.1.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/system.diagnostics.diagnosticsource/8.0.0/system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.clientmodel/1.1.0/system.clientmodel.1.1.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.diagnostics.diagnosticsource/8.0.1/system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.diagnostics.eventlog/8.0.0/system.diagnostics.eventlog.8.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/system.identitymodel.tokens.jwt/7.1.2/system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512",
-    "/Users/constantinevassilev02/.nuget/packages/system.text.json/8.0.4/system.text.json.8.0.4.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.memory.data/1.0.2/system.memory.data.1.0.2.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.numerics.tensors/8.0.0/system.numerics.tensors.8.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.text.json/8.0.5/system.text.json.8.0.5.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/yamldotnet/16.0.0/yamldotnet.16.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Text.Json' 8.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
-      "libraryId": "System.Text.Json",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "logs": []
 }

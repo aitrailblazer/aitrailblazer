@@ -1,4 +1,4 @@
-using aitrailblazer.net.Models;
+using AITrailblazer.net.Models;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Agents.Chat;
@@ -9,14 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+
 using Microsoft.SemanticKernel.TemplateEngine;
 using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
 
 
 #pragma warning disable SKEXP0110
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     /// <summary>
     /// Service responsible for executing chat interactions between agents using Microsoft Semantic Kernel.
@@ -254,7 +256,7 @@ namespace aitrailblazer.net.Services
         /// <returns>The created kernel arguments.</returns>
         private KernelArguments CreateKernelArguments(double temperature, double topP, int maxTokens, int seed = 356)
         {
-            var executionSettings = new OpenAIPromptExecutionSettings
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
             {
                 Temperature = temperature,
                 TopP = topP,

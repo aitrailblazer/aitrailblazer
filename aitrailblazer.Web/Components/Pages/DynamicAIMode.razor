@@ -1,0 +1,70 @@
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+            VerticalAlignment="@Vertical">
+            <!--
+            <FluentIcon Value="@(new Icons.Regular.Size24.ChatSparkle())" Color="@Color.Accent" Slot="start" />
+
+            <FluentLabel Typo="Typography.Body" class="status-font-size">Select AI Mode</FluentLabel>
+            -->
+                    </FluentStack>
+ 
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+            VerticalAlignment="@Vertical">
+
+            <FluentRadioGroup Required="true" Name="navigation" @bind-Value=CurrentSetting
+                @onchange="HandleChatSettingRadioChange" Style="border: 1px solid var(--accent-fill-rest)"
+                class="menu-font-size">
+                
+                <FluentRadio Id="ThreadFlow" Value=@("ThreadFlow")>Continuity Mode</FluentRadio>
+
+                <FluentTooltip Anchor="ThreadFlow" HideTooltipOnCursorLeave="true" 
+                MaxWidth="200px" Delay=300>Ideal for more complex discussions or tasks where the context from previous messages is important to the conversation. This mode helps when you need to build upon earlier interactions.
+                </FluentTooltip>                 
+        
+                <FluentRadio Id="OneShot" Value=@("OneShot")>Quick Assist</FluentRadio>  
+
+                <FluentTooltip Anchor="OneShot" HideTooltipOnCursorLeave="true" 
+                MaxWidth="200px" Delay=300>Quick Assist Use this mode for quick information or assistance without needing the context of past interactions. This is useful for standalone questions or tasks that don't require continuity.
+                </FluentTooltip> 
+
+                <FluentRadio Id="Workflow" Value=@("Workflow")>Workflow</FluentRadio>  
+                       <!--
+                <FluentTooltip Anchor="Pipeline" HideTooltipOnCursorLeave="true" 
+                MaxWidth="200px" Delay=300>Pipeline 
+                Use this mode to create a pipeline of agents.
+                </FluentTooltip> 
+                -->
+
+            </FluentRadioGroup>
+
+        </FluentStack>
+    </FluentStack>
+</FluentStack>
+<FluentTooltipProvider />
+@code {
+    [Parameter] public string FeatureName { get; set; } = "ChatModeSetting";
+    [Parameter] public string CurrentSetting { get; set; } = ""; // Default setting
+    [Parameter] public EventCallback<ChatSettings> OnChatSettingRadioChange { get; set; }
+
+    private bool isFirstRender = true;
+
+    private async Task HandleChatSettingRadioChange(ChangeEventArgs e)
+    {
+        CurrentSetting = e.Value.ToString();
+        bool isOneShot = CurrentSetting == "OneShot";
+
+        // Create an instance of ChatSettings
+        var settings = new ChatSettings
+        {
+            ChatSetting = CurrentSetting,
+            OneShotSetting = isOneShot
+        };
+
+        // Invoke the callback with the new ChatSettings instance
+        await OnChatSettingRadioChange.InvokeAsync(settings);
+    }
+
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+}

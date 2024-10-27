@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class PluginService
     {

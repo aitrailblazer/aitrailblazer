@@ -250,6 +250,10 @@
               "target": "Package",
               "version": "[1.11.67, )"
             },
+            "Humanizer": {
+              "target": "Package",
+              "version": "[2.14.1, )"
+            },
             "Markdig": {
               "target": "Package",
               "version": "[0.37.0, )"
@@ -257,6 +261,10 @@
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
               "version": "[9.0.0-rc.1.24452.1, )"
+            },
+            "Microsoft.Azure.Cosmos": {
+              "target": "Package",
+              "version": "[3.44.1, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
@@ -298,6 +306,10 @@
               "target": "Package",
               "version": "[1.13.1, )"
             },
+            "Microsoft.ML.Tokenizers": {
+              "target": "Package",
+              "version": "[0.21.1, )"
+            },
             "Microsoft.SemanticKernel": {
               "target": "Package",
               "version": "[1.22.0, )"
@@ -313,10 +325,6 @@
             "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
               "target": "Package",
               "version": "[1.22.0-beta, )"
-            },
-            "Microsoft.SemanticKernel.Connectors.OpenAI": {
-              "target": "Package",
-              "version": "[1.22.0, )"
             },
             "Microsoft.SemanticKernel.Plugins.Core": {
               "target": "Package",

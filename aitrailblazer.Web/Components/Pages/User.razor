@@ -2,32 +2,41 @@
 @rendermode InteractiveServer
 
 @attribute [Authorize]
+@using System
+@using System.Linq
 @using SmartComponents
+@using Markdig
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
 @using AITGraph.Sdk.Models
 
-@using AITrailBlazer.Web.Services
-@using aitrailblazer.net.Services
-@using aitrailblazer.net.Models
-@using aitrailblazer.net.Models; 
-@using NewsResponse = aitrailblazer.net.Models.NewsResponse
+@using AITrailblazer.net.Services
+@using AITrailblazer.net.Models
+@using NewsResponse = AITrailblazer.net.Models.NewsResponse
 @using Newtonsoft.Json <!-- Added for Newtonsoft.Json -->
-@using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
+@using OurNewsArticle = AITrailblazer.net.Models.NewsArticle
 @using System.Globalization
+@using GraphMessage = AITGraph.Sdk.Models.Message
 
-@using Markdig
-@inject AITGraphService GraphService
+@using Microsoft.AspNetCore.Components.Web
+
+@using Cosmos.Copilot.Services
+
+@inject ChatService chatService
+
+
+@inject AITGraphService graphService
 
 @inject NavigationManager NavigationManager
 @inject AzureOpenAIHandler azureOpenAIHandler
 @inject IJSRuntime JS
 @inject TimeFunctions _timeFunctions
+@inject UserIDsService UserIDsService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject CosmosDbService cosmosDbService
 
-@using GraphMessage = AITGraph.Sdk.Models.Message
 
-@using Microsoft.AspNetCore.Components.Web
 
 @if (isLoading)
 {
@@ -39,7 +48,7 @@ else if (error != null)
         @error
     </div>
 }
-else if (user != null)
+else if (profile != null)
 {
     <FluentCard MinimalStyle="true" Width="1280px" Height="840px" Style="border: 2px solid var(--accent-fill-rest); padding: 20px;" Class="fluent-card-user-details-size">
         <div style="display: flex; align-items: center;">
@@ -54,14 +63,51 @@ else if (user != null)
                     <span style="font-size: 50px; color: white;">👤</span>
                 </div>
             }
+<!-- User.razor -->
+<div class="user-profile-container">
+    <FluentCard MinimalStyle="false" Class="user-profile-card" Height="260px" Width="100%" MaxWidth="720px">
+        <div class="card-content">
 
-            <div>
-                <h2>Welcome, @GetUserFullName()!</h2>
-                <p>@GetUserEmail()</p>
-                <p style="color: gray;">We are glad to have you here.</p>
-                <p>@timeZoneInfo</p>
+            <FluentLabel Typo="Typography.H2" Class="user-name">
+                Welcome, @GetUserFullName()
+            </FluentLabel>
+            <FluentLabel Typo="Typography.Body" Class="welcome-message">
+                        We are glad to have you here.
 
+            </FluentLabel>
+            <FluentDivider Class="card-divider"></FluentDivider>
+            <div class="content-section">
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        ID: <span class="value-text">@currentUserTenantID / @currentUserIdentityID</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Email: <span class="value-text">@GetUserEmail()</span>
+                    </FluentTextBlock>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Time Zone: <span class="value-text">@userTimeZone</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Local Time: <span class="value-text">@userLocalTime</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Language: <span class="value-text">@GetUserLanguage()</span>
+                    </FluentTextBlock>                
+                </FluentStack>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Phone: <span class="value-text">@GetUserPhoneNumber()</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Address: <span class="value-text">@GetUserAddress()</span>
+                    </FluentTextBlock>
+
+                </FluentStack>
             </div>
+        </div>
+    </FluentCard>
+</div>
+
         </div>
 
         <!-- Input Section for Azure OpenAI Query -->
@@ -110,10 +156,6 @@ else if (user != null)
         </div>
 @if (showResponse)
 {
-    @if (!string.IsNullOrEmpty(responseQuery))
-    {
-        <div class="alert alert-info">@responseQuery</div>
-    }
     @if (showResponse && !string.IsNullOrEmpty(responseQuery))
     {
         <FluentCard MinimalStyle="false" Class="response-card" Width="720px" 
@@ -236,7 +278,7 @@ else if (user != null)
                             aria-label="Search Emails">
                             Search
                         </FluentButton>
-
+                        <!--
                         @if (!string.IsNullOrWhiteSpace(searchQuery))
                         {
                             <FluentButton 
@@ -247,6 +289,7 @@ else if (user != null)
                                 Clear Search
                             </FluentButton>
                         }
+                        -->
                         </FluentStack>
 
                     </FluentStack>
@@ -354,80 +397,91 @@ else if (user != null)
                             }
                         }
 
-
-<!-- Email Content Dialog -->
-@if (selectedEmail != null)
-{
-    <FluentDialog 
-        Id="emailContentDialog" 
-        Visible="true" 
-        OnDismiss="CloseEmailDialog" 
-        Style="width: 80vw; max-height: 80vh; overflow: auto;">
-        
-        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10" Padding="10">
-            <!-- Copy Button -->
-            <FluentButton 
-                Appearance="Appearance.Stealth" 
-                IconStart="@(new Icons.Regular.Size20.Clipboard())" 
-                OnClick="@(() => CopyEmailToClipboard())"
-                AriaLabel="Copy Email">
-            </FluentButton>
-            
-            <!-- Dismiss Button -->
-            <FluentButton 
-                Appearance="Appearance.Stealth" 
-                IconStart="@(new Icons.Regular.Size20.Dismiss())" 
-                OnClick="@CloseEmailDialog" 
-                AriaLabel="Close Dialog">
-            </FluentButton>
-        </FluentStack>
-        
-        <div style="padding: 10px;">
-            <h3>@selectedEmail.Subject</h3>
-            
-            <p><strong>From:</strong> @selectedEmail.From.Name (@selectedEmail.From.EmailAddress)</p>
-            <p><strong>To:</strong> @(selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any() 
-                ? string.Join(", ", selectedEmail.ToRecipients.Select(r => $"{r.Name} <{r.EmailAddress}>".Trim())) 
-                : "No recipients")</p>
-            <p><strong>Received:</strong> @(DateTimeOffset.TryParse(selectedEmail.ReceivedDateTime, out var dt) 
-                ? dt.ToLocalTime().ToString("g") 
-                : "N/A")</p>
-            
-            <!-- Action Required -->
-            <p><strong>Action Required:</strong> @(selectedEmail.ActionRequired)</p>
-            
-            <!-- Priority -->
-            <p><strong>Priority:</strong> @selectedEmail.Priority</p>
-            
-            <!-- Categories -->
-            <p><strong>Categories:</strong> @(selectedEmail.Categories != null && selectedEmail.Categories.Any() 
-                ? string.Join(", ", selectedEmail.Categories) 
-                : "None")</p>
-
-            
-            <!-- Email Body -->
-            <div style="margin-top: 20px;">
-                <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
-                    @if (!string.IsNullOrEmpty(selectedEmail.BodyContent))
-                    {
-                        @if (selectedEmail.BodyContentType == "Html")
+                        <!-- Email Content Dialog -->
+                        @if (selectedEmail != null)
                         {
-                            @((MarkupString)selectedEmail.BodyContent)
+                            <FluentDialog 
+                                Id="emailContentDialog" 
+                                Visible="true" 
+                                OnDismiss="CloseEmailDialog" 
+                                Style="width: 80vw; max-height: 80vh; overflow: auto;">
+                                
+                                <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10" Padding="10">
+                                    <FluentStack Orientation="Orientation.Vertical" HorizontalGap="10" Padding="10">
+                                        <!-- Save Button -->
+                                        @if (isMessageSaving)
+                                        {
+                                            <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                                            <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                                        }
+                                        <FluentButton 
+                                            Appearance="Appearance.Accent" 
+                                            IconStart="@(new Icons.Regular.Size20.NotepadSparkle())" 
+                                            OnClick="@(() => SaveEmailToDatabase())"
+                                            AriaLabel="Save Email to Database"
+                                            Id="SaveEmailToDB">Save to AI database 
+                                        </FluentButton>
+                                        <FluentTooltip Anchor="SaveEmailToDB" HideTooltipOnCursorLeave="true" MaxWidth="200px"
+                                            Delay=300>Save this email to your AI database. 
+                                        </FluentTooltip>
+                                    </FluentStack>
+
+                                    <!-- Copy Button -->
+                                    <FluentButton 
+                                        Appearance="Appearance.Stealth" 
+                                        IconStart="@(new Icons.Regular.Size20.Clipboard())" 
+                                        OnClick="@(() => CopyEmailToClipboard())"
+                                        AriaLabel="Copy Email">
+                                    </FluentButton>
+                                    
+                                    <!-- Dismiss Button -->
+                                    <FluentButton 
+                                        Appearance="Appearance.Stealth" 
+                                        IconStart="@(new Icons.Regular.Size20.Dismiss())" 
+                                        OnClick="@CloseEmailDialog" 
+                                        AriaLabel="Close Dialog">
+                                    </FluentButton>
+                                </FluentStack>
+                                
+                                <div style="padding: 10px;">
+                                    <h3>@selectedEmail.Subject</h3>
+                                    
+                                    <p><strong>From:</strong> @selectedEmail.From.Name (@selectedEmail.From.EmailAddress)</p>
+                                    <p><strong>To:</strong> @(selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any() 
+                                        ? string.Join(", ", selectedEmail.ToRecipients.Select(r => $"{r.Name} <{r.EmailAddress}>".Trim())) 
+                                        : "No recipients")</p>
+                                    <p><strong>Received:</strong> @(DateTimeOffset.TryParse(selectedEmail.ReceivedDateTime, out var dt) 
+                                        ? dt.ToLocalTime().ToString("g") 
+                                        : "N/A")</p>
+                                    
+                                    <!-- Action Required -->
+                                    <p><strong>Action Required:</strong> @(selectedEmail.ActionRequired)</p>
+                                    
+                                    <!-- Priority -->
+                                    <p><strong>Priority:</strong> @selectedEmail.Priority</p>
+                                    
+                                    <!-- Categories -->
+                                    <p><strong>Categories:</strong> @(selectedEmail.Categories != null && selectedEmail.Categories.Any() 
+                                        ? string.Join(", ", selectedEmail.Categories) 
+                                        : "None")</p>
+
+                                    
+                                    <!-- Email Body -->
+                                    <div style="margin-top: 20px;">
+                                        <pre style="white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; font-size: 16px; color: black;">
+                                            @if (!string.IsNullOrEmpty(selectedEmail.BodyContent))
+                                            {
+                                                @((MarkupString)selectedEmail.BodyContent)
+                                            }
+                                            else
+                                            {
+                                                <em>No content available</em>
+                                            }
+                                        </pre>
+                                    </div>
+                                </div>
+                            </FluentDialog>
                         }
-                        else
-                        {
-                            @selectedEmail.BodyContent
-                        }
-                    }
-                    else
-                    {
-                        <em>No content available</em>
-                    }
-                </pre>
-            </div>
-        </div>
-    </FluentDialog>
-}
 
                 </Content>
             </FluentTab>
@@ -573,7 +627,6 @@ else if (user != null)
                                                 Size="Size.Small"
                                                 IconStart="@(new Icons.Regular.Size20.Eye())"
                                                 class="text-gray-500 hover:text-gray-700">
-                                                View
                                             </FluentButton>
                                             <!-- Delete Event Button with Confirmation -->
                                             <FluentButton 
@@ -582,7 +635,6 @@ else if (user != null)
                                                 Size="Size.Small"
                                                 IconStart="@(new Icons.Regular.Size20.Delete())"
                                                 class="text-gray-500 hover:text-gray-700">
-                                                Delete
                                             </FluentButton>
                                         </FluentStack>
                                     </ChildContent>
@@ -1008,9 +1060,24 @@ else
     public int MaxLength { get; set; } = 1024;
     public int Rows { get; set; } = 1;
 
-    private Profile user;
+    private Profile profile;
     private UserAccountInformation accountInfo;
+    private string displayName = "";
+
+    private string currentUserTenantID;
+    private string currentUserIdentityID;
+
+    string principal;
+    private string userEmail;
+    private string userFullName;
+    private string userPhoneNumer;
+    private string userLanguage;
+    private string userAddress;
+    private string? Tenant;
+
+
     private List<GraphMessage> userMessages = new List<GraphMessage>();
+    
     private CalendarEventsResult calendarEventsResult = new CalendarEventsResult();
     private List<Event> calendarViewEventsResult;
     private List<EventViewModel> calendarEventsWithComputedProperties = new List<EventViewModel>();
@@ -1023,6 +1090,8 @@ else
 
     private bool isLoading = true;
     private bool isMessagesLoading = false;
+    private bool isMessageSaving = false;
+
     private bool isAIOrganizerLoading = false;
 
     private string error;
@@ -1042,6 +1111,9 @@ else
     public bool Submitting { get; set; }
     private string timeZoneInfo;
 
+    private string userTimeZone;
+    private DateTime userLocalTime;
+
     protected override async Task OnInitializedAsync()
     {
         if (!isInitialized)
@@ -1060,12 +1132,26 @@ private async Task LoadUserDataAsync()
     try
     {
          // Call the GetUserTimeZone function and update the UI
-        timeZoneInfo = _timeFunctions.GetUserTimeZone();
+        //timeZoneInfo = _timeFunctions.GetUserTimeZone();
 
         // Trigger re-render to show the result
-        StateHasChanged();
-        user = await GraphService.GetCurrentUserProfileAsync();
-        accountInfo = await GraphService.GetUserAccountInformationAsync();
+        profile = await graphService.GetCurrentUserProfileAsync();
+        accountInfo = await graphService.GetUserAccountInformationAsync();
+        
+        //currentUserIdentityID = accountInfo?.Id;
+
+         var (userId, tenantId) = await UserIDsService.GetUserIDs();
+        currentUserIdentityID = userId;
+        currentUserTenantID = tenantId;
+
+        userEmail = GetUserEmail();
+        userFullName = GetUserFullName();  
+
+        userPhoneNumer = GetUserPhoneNumber();
+
+        userLanguage = GetUserLanguage();
+
+        userAddress = GetUserAddress();
 
         try
         {
@@ -1073,16 +1159,9 @@ private async Task LoadUserDataAsync()
 
             //string emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
 
-            string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+            string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
 
-            //input= "Tonights gonna be a good night! A good good night!";
-            //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
-            //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
-            
-            
-            input= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
-            string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(input);
-            Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
+
 
             if (!string.IsNullOrWhiteSpace(emailsJson))
             {
@@ -1122,7 +1201,7 @@ private async Task LoadUserDataAsync()
         StateHasChanged();
 
         // Fetch the user's profile photo
-        var photoStream = await GraphService.GetUserPhotoAsync();
+        var photoStream = await graphService.GetUserPhotoAsync();
         if (photoStream != null)
         {
             using (var memoryStream = new MemoryStream())
@@ -1133,11 +1212,73 @@ private async Task LoadUserDataAsync()
         }
 
         // Fetch contacts
-        var contacts = await GraphService.GetUserContactsAsync(50);
+        var contacts = await graphService.GetUserContactsAsync(50);
         contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
 
         await LoadCalendarEventsAsync();
+
+        var mailboxSettings = await graphService.GetMailboxSettingsAsync();
+        if (mailboxSettings != null)
+        {
+            Console.WriteLine($"Time Zone: {mailboxSettings.TimeZone}");
+            Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
+            Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
+            
+            // Accessing other properties
+            Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
+            
+            if (mailboxSettings.AutomaticRepliesSetting != null)
+            {
+                Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
+                Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
+                // Add more properties as needed
+            }
+            
+            if (mailboxSettings.Language != null)
+            {
+                Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
+                Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
+            }
+            
+            if (mailboxSettings.WorkingHours != null)
+            {
+                Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
+                Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
+                Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
+            }
+            
+            Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
+            Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
+            Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
+        }
+        userTimeZone = await UserIDsService.GetTimeZoneAsync();
+        Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
+
+        timeZoneInfo = _timeFunctions.GetUserTimeZone();
+        Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
+
+        // Get the current UTC time
+        DateTime utcNow = DateTime.UtcNow;
+
+        // Convert to user's local time
+        userLocalTime = await UserIDsService.ConvertToUserTimeZoneAsync(utcNow);
+
+        //input= "Tonights gonna be a good night! A good good night!";
+        //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
+        //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
         
+        string inputStr= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
+        string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(inputStr);
+        Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
+
+        inputStr= "What will the date be in 5 days?";
+        response = await azureOpenAIHandler.GetIntent(inputStr);
+        Console.WriteLine($"LoadUserDataAsync GetIntent JSON Response: {response}");
+
+        //await chatService.TestAsync();
+        //await chatService.InitializeAsync(); // load products
+
+
     }
     catch (AuthenticationRequiredException)
     {
@@ -1152,17 +1293,22 @@ private async Task LoadUserDataAsync()
         isLoading = false;  // Hide loading state
     }
 }
-private async Task LoadCalendarEventsAsync()
+    private async Task LoadCalendarEventsAsync()
     {
         try
         {
-            DateTime startOfWeek = GetStartOfWeek(DateTime.UtcNow);
-            DateTime endOfWeek = startOfWeek.AddDays(7);
+           DateTime startOfWeek = GetStartOfWeek(DateTime.UtcNow);
+        DateTime endOfWeek = startOfWeek.AddDays(7);
 
-            Console.WriteLine($"Fetching calendar events from {startOfWeek:o} to {endOfWeek:o}");
+            // Convert DateTime to ISO 8601 string format
+            string startOfWeekString = startOfWeek.ToString("o");
+            string endOfWeekString = endOfWeek.ToString("o");
 
-            List<EventViewModel> events = await GraphService.GetCalendarViewAsync(20, startOfWeek, endOfWeek);
+            Console.WriteLine($"Fetching calendar events from {startOfWeekString} to {endOfWeekString}");
 
+            // Call the method with string parameters
+            List<EventViewModel> events = await graphService.GetCalendarViewAsync(20, startOfWeekString, endOfWeekString);
+                
             if (events == null || !events.Any())
             {
                 calendarEventsWithComputedProperties = new List<EventViewModel>();
@@ -1226,7 +1372,7 @@ private async Task LoadCalendarEventsAsync()
         isMessagesLoading = true;
         string input = "fetch latest 10 more emails";
         //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
-        string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+        string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
 
         if (!string.IsNullOrWhiteSpace(emailsJson))
         {
@@ -1259,16 +1405,27 @@ private async Task LoadCalendarEventsAsync()
 
     private void RedirectToLogin()
     {
-        var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
-        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        // Get the value of the "myParameter" query string parameter
+        Tenant = queryString["Tenant"];
+        Console.WriteLine($"Tenant: {Tenant}");
+   
+        // Log the returnUrl for debugging purposes
+        Console.WriteLine($"uri: {uri}");
+
+        // Navigate to the sign-in page with the encoded returnUrl
+        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={uri}", forceLoad: true);
     }
+
+
 
     private string GetUserFullName()
     {
         // Try to get the user's full name from the Names list
-        if (user?.Names != null && user.Names.Any())
+        if (profile?.Names != null && profile.Names.Any())
         {
-            var primaryName = user.Names.FirstOrDefault();
+            var primaryName = profile.Names.FirstOrDefault();
             if (primaryName != null)
             {
                 string firstName = primaryName.First ?? "";
@@ -1288,12 +1445,96 @@ private async Task LoadCalendarEventsAsync()
         return accountInfo?.UserPrincipalName ?? "User";
     }
 
+    private string GetUserPhoneNumber()
+    {
+        // Try to get the user's primary phone number from the Phones list
+        if (profile?.Phones != null && profile.Phones.Any())
+        {
+            // Look for the mobile phone number first
+            var mobilePhone = profile.Phones.FirstOrDefault(phone => phone.Type == PhoneType.Mobile);
+            if (mobilePhone != null && !string.IsNullOrWhiteSpace(mobilePhone.Number))
+            {
+                return mobilePhone.Number;
+            }
+
+            // If no mobile phone, get any available phone number
+            var primaryPhone = profile.Phones.FirstOrDefault();
+            if (primaryPhone != null && !string.IsNullOrWhiteSpace(primaryPhone.Number))
+            {
+                return primaryPhone.Number;
+            }
+        }
+
+        // As a fallback, return an empty string or a default message
+        return "";
+    }
+
+    private string GetUserAddress()
+    {
+        // Try to get the user's current position from the Positions list
+        if (profile?.Positions != null && profile.Positions.Any())
+        {
+            // Look for the current position where IsCurrent is true
+            var currentPosition = profile.Positions.FirstOrDefault(position => position.IsCurrent == true);
+
+            if (currentPosition != null && currentPosition.Detail?.Company?.Address != null)
+            {
+                var address = currentPosition.Detail.Company.Address;
+
+                // Extract address components
+                string street = address.Street ?? "";
+                string city = address.City ?? "";
+                string state = address.State ?? "";
+                string postalCode = address.PostalCode ?? "";
+                string countryOrRegion = address.CountryOrRegion ?? "";
+
+                // Build the full address string
+                var addressParts = new List<string> { street, city, state, postalCode, countryOrRegion };
+                var fullAddress = string.Join(", ", addressParts.Where(part => !string.IsNullOrWhiteSpace(part)));
+
+                if (!string.IsNullOrWhiteSpace(fullAddress))
+                {
+                    return fullAddress;
+                }
+            }
+        }
+
+        // As a fallback, return a default message or an empty string
+        return "Address not specified";
+    }
+
+    private string GetUserLanguage()
+    {
+        // Try to get the user's primary language from the Languages list
+        if (profile?.Languages != null && profile.Languages.Any())
+        {
+            var primaryLanguage = profile.Languages.FirstOrDefault();
+            if (primaryLanguage != null)
+            {
+                string displayName = primaryLanguage.DisplayName ?? "";
+                string tag = primaryLanguage.Tag ?? "";
+
+                if (!string.IsNullOrWhiteSpace(displayName))
+                {
+                    return displayName;
+                }
+                else if (!string.IsNullOrWhiteSpace(tag))
+                {
+                    return tag;
+                }
+            }
+        }
+
+        // As a fallback, return a default message or an empty string
+        return "Language not specified";
+    }
+
     private string GetUserEmail()
     {
         // Try to get the user's primary email from the Emails list
-        if (user?.Emails != null && user.Emails.Any())
+        if (profile?.Emails != null && profile.Emails.Any())
         {
-            var primaryEmail = user.Emails.FirstOrDefault();
+            var primaryEmail = profile.Emails.FirstOrDefault();
             if (primaryEmail != null)
             {
                 return primaryEmail.Address ?? accountInfo?.UserPrincipalName ?? "";
@@ -1316,7 +1557,7 @@ private async Task LoadCalendarEventsAsync()
         return dateTimeString; // Return the original string if parsing fails
     }
 
-    // @using OurNewsArticle = aitrailblazer.net.Models.NewsArticle
+    // @using OurNewsArticle = AITrailblazer.net.Models.NewsArticle
 
     // Event handler for handling input changes (optional)
     private void HandleInput(ChangeEventArgs e)
@@ -1328,7 +1569,7 @@ private async Task LoadCalendarEventsAsync()
     private List<OurNewsArticle> newsArticles = new List<OurNewsArticle>();
 
   
-// Event handler for button click
+    // Event handler for button click
     private async Task OnButtonASAPTimeClicked()
     {
 
@@ -1344,14 +1585,34 @@ private async Task LoadCalendarEventsAsync()
         try
         {
             Submitting = true;
+            showResponse = false;
             error = null;
 
             // Call the Azure OpenAI handler with the user's query
-            Console.WriteLine($"call azureOpenAIHandler.GetASAPTime User Query: {userQuery}");
+            Console.WriteLine($"call azureOpenAIHandler.HandleUserQueryAsync User Query: {userQuery}");
+            
+            //responseQuery = await azureOpenAIHandler.HandleUserQueryAsync(userQuery);
 
-            responseQuery = await azureOpenAIHandler.GetASAPTime(userQuery);
+            //responseQuery = await azureOpenAIHandler.GetASAPTime(userQuery);
+
+
+           string subject = "";
+            string promptText = userQuery;
+            string categoryId = "";
+
+            (responseQuery, subject) = await chatService.GetEmailCompletionAsync(
+                currentUserTenantID,
+                currentUserIdentityID,
+                categoryId,
+                promptText
+            );
             formattedResponse = Markdown.ToHtml(responseQuery);
+            // Dynamically adjust height based on response length
+            calculatedHeight = CalculateHeight(formattedResponse);
+
+            searchQuery = "subject: " + subject;
             showResponse = true; // Show the response card when a new response is received
+            await SearchEmails();
         }
         catch (Exception ex)
         {
@@ -1423,31 +1684,28 @@ private async Task LoadCalendarEventsAsync()
     protected override void OnParametersSet()
     {
         // Dynamically adjust height based on response length
-        calculatedHeight = CalculateHeight(responseQuery);
+        calculatedHeight = CalculateHeight(formattedResponse);
     }
 
     private int CalculateHeight(string responseText)
     {
-        const int minHeight = 200; // Minimum height for short responses
-        const int maxHeight = 500; // Maximum height for long responses
-        const int charLimitPerLine = 100; // Estimated characters that fit in one line
-        const int pixelsPerLine = 20; // Height in pixels for one line of text
+        const int minHeight = 200; // Minimum height for very short responses
+        const int maxHeight = 1000; // Increased max height for long responses
+        const int charLimitPerLine = 85; // Approximate character limit per line for 720px width
+        const int pixelsPerLine = 24; // Increase line height for readability
 
-        // If responseText is null or empty, return the minimum height
         if (string.IsNullOrEmpty(responseText))
         {
             return minHeight;
         }
 
-        // Calculate how many lines the response will take
-        int lineCount = (responseText.Length / charLimitPerLine) + 1;
+        int lineCount = (int)((responseText.Length / (double)charLimitPerLine) * 1.2) + 1;
+        int calculatedHeight = (lineCount * pixelsPerLine) + 80; // Additional padding
 
-        // Calculate the height based on the line count
-        int calculatedHeight = lineCount * pixelsPerLine + 50; // Extra space for padding and controls
-
-        // Clamp the height between min and max
         return Math.Clamp(calculatedHeight, minHeight, maxHeight);
     }
+
+
 
     // Event handler to close the response card
     private void CloseResponse()
@@ -1490,14 +1748,37 @@ private async Task LoadCalendarEventsAsync()
         try
         {
             // Generate KQL query from natural language input
-            string kqlQuery = await azureOpenAIHandler.GenerateKQLQuery(searchQuery);
+            //string kqlQuery = await azureOpenAIHandler.GenerateKQLQuery(searchQuery);
 
-            var searchResults = await GraphService.SearchMessagesAsync(searchQuery, 20);
-            //emailsWithComputedProperties = searchResults.Select(m => new PureEmailViewBasicModel(m)).ToList();
+            Console.WriteLine($"SearchEmails searchQuery: {searchQuery}");
+            var searchResultsJson = await graphService.SearchMessagesAsync(searchQuery, 20);
+            Console.WriteLine($"SearchEmails searchResultsJson: {searchResultsJson}");
+
+            if (!string.IsNullOrWhiteSpace(searchResultsJson))
+            {
+                // Deserialize the JSON response into a list of PureEmailViewBasicModel objects
+                emailsWithComputedProperties = JsonConvert.DeserializeObject<List<PureEmailViewBasicModel>>(searchResultsJson, new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                // Check if deserialization was successful
+                //if (emailsWithComputedProperties == null || !emailsWithComputedProperties.Any())
+                //{
+                //    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                    //error = "No messages found matching the search criteria.";
+                //}
+            }
+            else
+            {
+                //emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
+                //error = "Failed to retrieve search results.";
+            }
         }
         catch (Exception ex)
         {
-            error = $"Error searching emails: {ex.Message}";
+            //error = $"Error searching emails: {ex.Message}";
         }
         finally
         {
@@ -1516,7 +1797,7 @@ private async Task LoadCalendarEventsAsync()
         try
         {
             // Reload the original email list
-            var messagesJson = await GraphService.GetRecentMessagesAsync(20); // Adjust the count as needed
+            var messagesJson = await graphService.GetRecentMessagesAsync(20); // Adjust the count as needed
 
             if (!string.IsNullOrWhiteSpace(messagesJson))
             {
@@ -1600,8 +1881,7 @@ private async Task LoadCalendarEventsAsync()
                 return;
             }
 
-            // Call the GraphService to delete the event
-            await GraphService.DeleteCalendarEventAsync(eventId);
+            await graphService.DeleteCalendarEventAsync(eventId);
 
             // Remove the event from the UI using the correct property
             calendarEventsWithComputedProperties.RemoveAll(e => e.Id == eventId);
@@ -1649,131 +1929,7 @@ private async Task LoadCalendarEventsAsync()
                 !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.PostalCode) ||
                 !string.IsNullOrWhiteSpace(selectedContact.BusinessAddress.CountryOrRegion)));
     }
-    public class ContactViewModel
-{
-    public string Id { get; set; }
-    public Contact OriginalContact { get; set; }
-    public string DisplayName { get; set; }
-    public string GivenName { get; set; }
-    public string Surname { get; set; }
-    public string EmailAddress { get; set; }
-    public string EmailAddressesFormatted { get; set; }
-    public string MobilePhone { get; set; }
-    public string BusinessPhonesFormatted { get; set; }
-    public string HomePhonesFormatted { get; set; }
-    public string CompanyName { get; set; }
-    public string JobTitle { get; set; }
-    public string OfficeLocation { get; set; }
-    public string ImAddressesFormatted { get; set; }
-    public string BirthdayFormatted { get; set; }
-    public string NickName { get; set; }
-    public string MiddleName { get; set; }
-    public string PersonalNotes { get; set; }
-    public string SpouseName { get; set; }
-    public string Department { get; set; }
-    public string Manager { get; set; }
-    public string AssistantName { get; set; }
-    public string YomiGivenName { get; set; }
-    public string YomiSurname { get; set; }
-    public string YomiCompanyName { get; set; }
-    public PhysicalAddress BusinessAddress { get; set; }
-    public string BusinessAddressFormatted { get; set; }
-    public string HomeAddressFormatted { get; set; }
-    public string OtherAddressFormatted { get; set; }
-    public string Profession { get; set; }
-    public string Title { get; set; }
-    public string ChildrenFormatted { get; set; }
-    public string Gender { get; set; }
-
-    public ContactViewModel(Contact contact = null)
-    {
-        OriginalContact = contact ?? new Contact();
-        Id = contact?.Id ?? "";
-        DisplayName = contact?.DisplayName ?? "New Contact";
-        GivenName = contact?.GivenName ?? "";
-        Surname = contact?.Surname ?? "";
-        EmailAddressesFormatted = contact?.EmailAddresses != null && contact.EmailAddresses.Any()
-            ? string.Join(", ", contact.EmailAddresses.Select(e => e.Address))
-            : "";
-        EmailAddress = contact?.EmailAddresses != null && contact.EmailAddresses.Any()
-                    ? contact.EmailAddresses.First().Address
-                    : "";
-        if (contact?.Phones != null && contact.Phones.Any())
-        {
-            MobilePhone = contact.Phones
-                .FirstOrDefault(phone => phone.Type == PhoneType.Mobile)?.Number ?? "";
-            BusinessPhonesFormatted = string.Join(", ", contact.Phones
-                .Where(phone => phone.Type == PhoneType.Business)
-                .Select(phone => phone.Number));
-            HomePhonesFormatted = string.Join(", ", contact.Phones
-                .Where(phone => phone.Type == PhoneType.Home)
-                .Select(phone => phone.Number));
-        }
-        else
-        {
-            MobilePhone = "";
-            BusinessPhonesFormatted = "";
-            HomePhonesFormatted = "";
-        }
-
-        CompanyName = contact?.CompanyName ?? "";
-        JobTitle = contact?.JobTitle ?? "";
-        OfficeLocation = contact?.OfficeLocation ?? "";
-        ImAddressesFormatted = contact?.ImAddresses != null && contact.ImAddresses.Any()
-            ? string.Join(", ", contact.ImAddresses)
-            : "";
-        BirthdayFormatted = contact?.Birthday.HasValue == true
-            ? contact.Birthday.Value.ToLocalTime().ToString("d")
-            : "";
-        NickName = contact?.NickName ?? "";
-        MiddleName = contact?.MiddleName ?? "";
-        PersonalNotes = contact?.PersonalNotes ?? "";
-        SpouseName = contact?.SpouseName ?? "";
-        Department = contact?.Department ?? "";
-        Manager = contact?.Manager ?? "";
-        AssistantName = contact?.AssistantName ?? "";
-        YomiGivenName = contact?.YomiGivenName ?? "";
-        YomiSurname = contact?.YomiSurname ?? "";
-        YomiCompanyName = contact?.YomiCompanyName ?? "";
-
-        if (contact?.PostalAddresses != null && contact.PostalAddresses.Any())
-        {
-            BusinessAddress = contact.PostalAddresses
-                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Business);
-            BusinessAddressFormatted = GetAddressFormatted(BusinessAddress);
-            HomeAddressFormatted = GetAddressFormatted(contact.PostalAddresses
-                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Home));
-            OtherAddressFormatted = GetAddressFormatted(contact.PostalAddresses
-                .FirstOrDefault(addr => addr.Type == PhysicalAddressType.Other));
-        }
-        else
-        {
-            BusinessAddress = new PhysicalAddress();
-            BusinessAddressFormatted = "";
-            HomeAddressFormatted = "";
-            OtherAddressFormatted = "";
-        }
-
-        Profession = contact?.Profession ?? "";
-        Title = contact?.Title ?? "";
-        ChildrenFormatted = contact?.Children != null && contact.Children.Any()
-            ? string.Join(", ", contact.Children)
-            : "";
-        Gender = contact?.Gender ?? "";
-    }
-    private string GetAddressFormatted(PhysicalAddress address)
-    {
-        if (address == null) return "N/A";
-
-        var components = new List<string>
-        {
-            address.Street, address.City, address.State, address.PostalCode, address.CountryOrRegion
-        }.Where(c => !string.IsNullOrWhiteSpace(c));
-
-        return components.Any() ? string.Join(", ", components) : "N/A";
-    }
-}
-
+   
 private async Task SaveContactAsync()
 {
     try
@@ -1818,7 +1974,7 @@ private async Task SaveContactAsync()
                 }
             };
 
-            var newContact = await GraphService.AddContactAsync(contactToSave);
+            var newContact = await graphService.AddContactAsync(contactToSave);
             contactsWithComputedProperties.Add(new ContactViewModel(newContact));
         }
         else
@@ -1853,7 +2009,7 @@ private async Task SaveContactAsync()
                 }
             };
 
-            var updatedContact = await GraphService.UpdateContactAsync(selectedContact.Id, contactToSave);
+            var updatedContact = await graphService.UpdateContactAsync(selectedContact.Id, contactToSave);
             var index = contactsWithComputedProperties.FindIndex(c => c.Id == updatedContact.Id);
             if (index != -1)
             {
@@ -1905,7 +2061,7 @@ private async Task DeleteContactAsync(string contactId)
         isDeleting = true;
         StateHasChanged();
 
-        await GraphService.DeleteContactAsync(contactId);
+        await graphService.DeleteContactAsync(contactId);
         contactsWithComputedProperties.RemoveAll(c => c.Id == contactId);
     }
     catch (Exception ex)
@@ -2198,7 +2354,7 @@ private async Task SaveEventAsync()
         };
 
         // Call the service to create the event
-        var result = await GraphService.CreateCalendarEventAsync(newEvent);
+        var result = await graphService.CreateCalendarEventAsync(newEvent);
 
         if (result.CreatedEvent != null)
         {
@@ -2242,6 +2398,86 @@ private async Task SaveEventAsync()
 }
 }
 @code {
+    private async Task SaveEmailToDatabase()
+    {
+        isMessageSaving = true;
+
+        try
+        {
+            // Ensure that email has valid From and To fields
+            var fromEmail = selectedEmail.From != null 
+                ? $"{selectedEmail.From.Name} <{selectedEmail.From.EmailAddress}>"
+                : "Unknown sender";
+
+            var toEmails = selectedEmail.ToRecipients != null && selectedEmail.ToRecipients.Any()
+                ? string.Join(", ", selectedEmail.ToRecipients.Select(r => $"{r.Name} <{r.EmailAddress}>"))
+                : "No recipients";
+
+            // Combine From and To for Attendees
+            var attendees = fromEmail + (toEmails != "No recipients" ? $", {toEmails}" : "");
+
+            // Parse the Received DateTime
+            var receivedDateTime = DateTimeOffset.TryParse(selectedEmail.ReceivedDateTime, out var dt)
+                ? dt.ToLocalTime().ToString("g")
+                : "N/A";
+
+            // Get the plain text version of the email body
+            var bodyContent = string.IsNullOrEmpty(GetPlainText(selectedEmail))
+                ? "No body content available."
+                : GetPlainText(selectedEmail);
+
+            // Prepare the email message
+            var email = new EmailMessage(
+                tenantId: currentUserTenantID,
+                userId: currentUserIdentityID,
+                categoryIds:  new List<string> { "work", "important" }, // selectedEmail.CategoryIds ??
+                subject: selectedEmail.Subject ?? "No subject"
+            )
+            {
+                BodyContent = selectedEmail.BodyContent ?? bodyContent,
+                BodyContentText = bodyContent,
+                BodyContentType = selectedEmail.BodyContentType ?? "HTML",
+                HasAttachments = selectedEmail.HasAttachments,
+                Importance = selectedEmail.Importance ?? "Normal",
+                Priority = selectedEmail.Priority ?? "Normal",
+                IsRead = selectedEmail.IsRead,
+                ConversationId = selectedEmail.ConversationId ?? Guid.NewGuid().ToString(),
+                WebLink = selectedEmail.WebLink,
+                From = new EmailMessageRecipientInfo
+                {
+                    Name = selectedEmail.From?.Name ?? "Unknown",
+                    EmailAddress = selectedEmail.From?.EmailAddress ?? "unknown@example.com"
+                },
+                ToRecipients = selectedEmail.ToRecipients?.Select(r => new EmailMessageRecipientInfo { Name = r.Name, EmailAddress = r.EmailAddress }).ToList() ?? new List<EmailMessageRecipientInfo>(),
+                CcRecipients = selectedEmail.CcRecipients?.Select(r => new EmailMessageRecipientInfo { Name = r.Name, EmailAddress = r.EmailAddress }).ToList() ?? new List<EmailMessageRecipientInfo>(),
+                BccRecipients = selectedEmail.BccRecipients?.Select(r => new EmailMessageRecipientInfo { Name = r.Name, EmailAddress = r.EmailAddress }).ToList() ?? new List<EmailMessageRecipientInfo>(),
+                ReceivedDateTime = selectedEmail.ReceivedDateTime
+            };
+
+            // Call the upsert function to save the email
+            await chatService.UpsertEmailMessageAsync(
+                email);
+            Console.WriteLine("Email upserted successfully.");
+
+            await cosmosDbService.QueryEmailMessagesAsync(
+                currentUserTenantID,
+                currentUserIdentityID,
+                ""); // "" for all categories
+
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error upserting email: {ex.Message}");
+        }
+        finally
+        {
+            isMessageSaving = false;
+        }
+    }
+
+
+
     private async Task CopyEmailToClipboard()
     {
         // Ensure that email has valid From and To fields
@@ -2323,7 +2559,7 @@ private async Task RefreshMessagesAsync()
         // Fetch the latest messages (adjust the count as needed)
         string input = "fetch latest 5 emails";
         //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
-        string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+        string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
 
             if (!string.IsNullOrWhiteSpace(emailsJson))
             {
@@ -2378,7 +2614,7 @@ private async Task RefreshMessagesAsync()
         {
             try
             {
-                await GraphService.DeleteEmailMessageAsync(PureEmailViewBasicModel.Id);
+                await graphService.DeleteEmailMessageAsync(PureEmailViewBasicModel.Id);
 
                 // Remove the deleted email from the list and update the grid
                 emailsWithComputedProperties.Remove(PureEmailViewBasicModel);
@@ -2411,7 +2647,7 @@ private async Task AIOrganizerAsync()
         // Fetch the latest messages (adjust the count as needed)
         string input = "fetch latest 5 emails";
         var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
-        //string emailsJson = await GraphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
+        //string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
 
             if (!string.IsNullOrWhiteSpace(emailsJson))
             {

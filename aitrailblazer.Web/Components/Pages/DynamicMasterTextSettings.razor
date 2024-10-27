@@ -1,0 +1,81 @@
+@using AITrailblazer.net.Services
+@using AITrailblazer.net.Models
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+            VerticalAlignment="@Vertical">
+            <!--
+            <FluentIcon Value="@(new Icons.Regular.Size24.TaskListSquareRtl())" Color="@Color.Accent" Slot="start" />
+         
+            <FluentLabel Typo="Typography.Body" class="status-font-size">Tasks</FluentLabel>
+      
+               <FluentCheckbox Value="IsMyKnowledgeBaseChecked" ValueChanged="OnCheckStateChanged">Search My Knowledge Base</FluentCheckbox>
+                @if (IsMyKnowledgeBaseChecked)
+                {
+                    <FluentTextArea 
+                    Value="@Tags" 
+                    ValueChanged="@OnTagsChanged" 
+                    Appearance="FluentInputAppearance.Filled" 
+                    Placeholder="filename"></FluentTextArea>
+                }
+                -->
+        </FluentStack>
+
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+            VerticalAlignment="@Vertical" Width="500px">
+            <FluentRadioGroup Required="true" Name="MasterTextSettin" @bind-Value=CurrentSetting
+                @onchange="HandleMasterTextSettingRadioChange" Style="border: 1px solid var(--accent-fill-rest)"
+                class="menu-font-size">
+                <FluentRadio Id="Ask" Value=@("Ask")>Ask</FluentRadio>
+                <FluentTooltip Anchor="Ask" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Ask")
+                </FluentTooltip>
+                <FluentRadio Id="Correct" Value=@("Correct")>Correct</FluentRadio>
+                <FluentTooltip Anchor="Correct" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Correct")
+                </FluentTooltip>
+                <FluentRadio Id="Improve" Value=@("Improve")>Improve</FluentRadio>
+                <FluentTooltip Anchor="Improve" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Improve")
+                </FluentTooltip>
+                <FluentRadio Id="Content" Value=@("Content")>Content</FluentRadio>
+                <FluentTooltip Anchor="Content" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Content")
+                </FluentTooltip>
+                <FluentRadio Id="Help" Value=@("Help")>Help</FluentRadio>
+                <FluentTooltip Anchor="Help" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Help")
+                </FluentTooltip>                <!--
+                <FluentRadio Id="Image" Value=@("Image")>Image</FluentRadio>
+                -->
+            </FluentRadioGroup>
+        </FluentStack>
+    </FluentStack>
+</FluentStack>
+
+@code {
+    [Parameter] public string FeatureName { get; set; } = "MasterTextSetting";
+    [Parameter] public string CurrentSetting { get; set; } = ""; // Default setting
+    [Parameter] public string Tags { get; set; } = ""; // Default setting
+    [Parameter] public EventCallback<string> OnMasterTextSettingRadioChange { get; set; }
+    [Parameter] public EventCallback<bool> OnMyKnowledgeBaseCheckedChange { get; set; } 
+    [Parameter] public EventCallback<string> OnTagsChange { get; set; } // Add this
+    private bool IsMyKnowledgeBaseChecked { get; set; } = false;     
+    private async Task HandleMasterTextSettingRadioChange(ChangeEventArgs e)
+    {
+        CurrentSetting = e.Value.ToString();
+
+        // Invoke the callback with the new setting
+        await OnMasterTextSettingRadioChange.InvokeAsync(CurrentSetting);
+    }
+ 
+    private async Task OnCheckStateChanged(bool isChecked)
+    {
+        IsMyKnowledgeBaseChecked = isChecked;
+        await OnMyKnowledgeBaseCheckedChange.InvokeAsync(isChecked);
+    }
+    private async Task OnTagsChanged(string newTags)
+    {
+        Tags = newTags;
+        Console.WriteLine($"DynamicMasterTextSettings Tags: {Tags}");
+       await OnTagsChange.InvokeAsync(newTags); // Notify parent of the change
+    }
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+
+}

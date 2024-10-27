@@ -6,8 +6,18 @@ using Microsoft.TypeChat.Schema;
 namespace Calendar;
 
 [Comment("The following types define the structure of an object of type CalendarActions that represents a list of requested calendar actions")]
-public class CalendarActions
+public class CalendarActionsStructured
 {
+
+     public CalendarActionsStructured()
+    {
+        Name = "CalendarActionsStructured"; // Hardcoded name for recognition
+    }
+
+    [JsonPropertyName("name")]
+    [Comment("The name of the structured response for identifying the type of operation.")]
+    public string Name { get; }
+
     [JsonPropertyName("actions")]
     public Action[] Actions { get; set; }
 }

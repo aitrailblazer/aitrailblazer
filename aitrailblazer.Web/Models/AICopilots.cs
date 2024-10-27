@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.FluentUI.AspNetCore.Components;
 
-namespace aitrailblazer.net.Models
+namespace AITrailblazer.net.Models
 {
     public class ComponentModel
     {

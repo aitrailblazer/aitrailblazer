@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "uJx30BycEI485lJonzB0P6l2c69LcmdFnFsBok3Zt50=",
+  "Hash": "hDD+9KyKQ4dpDsi4OUAO/Hu1ScaI/rA+r1swxFAwBNw=",
   "Source": "aitrailblazer.Web",
   "BasePath": "_content/aitrailblazer.Web",
   "Mode": "Default",
@@ -920,12 +920,12 @@
       "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-5qr2vqyuqz.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-mju90ep2z3.gz",
       "SourceId": "aitrailblazer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/aitrailblazer.Web",
-      "RelativePath": "css/feature#[.{fingerprint=5qr2vqyuqz}]?.css.gz",
+      "RelativePath": "css/feature#[.{fingerprint=mju90ep2z3}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -934,8 +934,8 @@
       "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "876l2ywzej",
-      "Integrity": "pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs=",
+      "Fingerprint": "xmdrxhzo4b",
+      "Integrity": "N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css"
@@ -1900,8 +1900,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "5qr2vqyuqz",
-      "Integrity": "I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4=",
+      "Fingerprint": "mju90ep2z3",
+      "Integrity": "4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/css/feature.css"
@@ -10469,13 +10469,13 @@
       ]
     },
     {
-      "Route": "css/feature.5qr2vqyuqz.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-5qr2vqyuqz.gz",
+      "Route": "css/feature.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-mju90ep2z3.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000165892502"
+          "Quality": "0.000159489633"
         }
       ],
       "ResponseHeaders": [
@@ -10485,19 +10485,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6027"
+          "Value": "6269"
         },
         {
           "Name": "ETag",
-          "Value": "\"pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs=\""
+          "Value": "\"N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Encoding",
@@ -10513,26 +10513,18 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4=\""
+          "Value": "W/\"4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE=\""
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "5qr2vqyuqz"
-        },
-        {
-          "Name": "label",
-          "Value": "css/feature.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4="
+          "Value": "sha256-4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE="
         }
       ]
     },
     {
-      "Route": "css/feature.5qr2vqyuqz.css",
+      "Route": "css/feature.css",
       "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -10542,7 +10534,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "30277"
+          "Value": "31324"
         },
         {
           "Name": "Content-Type",
@@ -10550,11 +10542,156 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4=\""
+          "Value": "\"4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE="
+        }
+      ]
+    },
+    {
+      "Route": "css/feature.css.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-mju90ep2z3.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6269"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk="
+        }
+      ]
+    },
+    {
+      "Route": "css/feature.mju90ep2z3.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-mju90ep2z3.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000159489633"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6269"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mju90ep2z3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/feature.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE="
+        }
+      ]
+    },
+    {
+      "Route": "css/feature.mju90ep2z3.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31324"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10564,7 +10701,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5qr2vqyuqz"
+          "Value": "mju90ep2z3"
         },
         {
           "Name": "label",
@@ -10572,13 +10709,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4="
+          "Value": "sha256-4gqgPfbTWLYv6HpIr8FxFsQqpT+cHrAnQgh+PLDIofE="
         }
       ]
     },
     {
-      "Route": "css/feature.5qr2vqyuqz.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-5qr2vqyuqz.gz",
+      "Route": "css/feature.mju90ep2z3.css.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-mju90ep2z3.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -10587,7 +10724,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6027"
+          "Value": "6269"
         },
         {
           "Name": "Content-Type",
@@ -10595,11 +10732,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs=\""
+          "Value": "\"N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
+          "Value": "Sun, 20 Oct 2024 06:24:52 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10617,7 +10754,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5qr2vqyuqz"
+          "Value": "mju90ep2z3"
         },
         {
           "Name": "label",
@@ -10625,144 +10762,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs="
-        }
-      ]
-    },
-    {
-      "Route": "css/feature.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-5qr2vqyuqz.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000165892502"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6027"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4="
-        }
-      ]
-    },
-    {
-      "Route": "css/feature.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/css/feature.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "30277"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-I0CtNzXX9CrGBqszi6DB0YTKnBW/xcvi2CQqMztLID4="
-        }
-      ]
-    },
-    {
-      "Route": "css/feature.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-5qr2vqyuqz.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6027"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 13 Oct 2024 06:22:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-pNwKNsTkn6ky5qa3tJlsC4HKUgD4L2ZWk97q3NsVVZs="
+          "Value": "sha256-N63UkHWyxkuaHFtzVsaxuTsaBtD5lDUgd+oNXUJShpk="
         }
       ]
     },

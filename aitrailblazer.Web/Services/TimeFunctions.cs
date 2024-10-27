@@ -4,9 +4,8 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
-using aitrailblazer.Web.Services;
 
-namespace aitrailblazer.net.Services
+namespace AITrailblazer.net.Services
 {
     public class DateBounds
     {
@@ -24,14 +23,14 @@ namespace aitrailblazer.net.Services
 
     public class TimeFunctions
     {
-        private readonly TimeZoneService _timeZoneService;
+        private readonly UserIDsService _userIDsService;
         private readonly ILogger<TimeFunctions> _logger;
 
         public TimeFunctions(
-            TimeZoneService timeZoneService,
+            UserIDsService userIDsService,
             ILogger<TimeFunctions> logger)
         {
-            _timeZoneService = timeZoneService;
+            _userIDsService = userIDsService;
             _logger = logger;
         }
 
@@ -39,7 +38,7 @@ namespace aitrailblazer.net.Services
 
         public string GetUserTimeZone()
         {
-            string timeZoneId = _timeZoneService.GetTimeZone();
+            string timeZoneId = _userIDsService.GetTimeZone();
             TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
             DateTime localNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
             
@@ -57,7 +56,7 @@ namespace aitrailblazer.net.Services
 
         public DateTime ConvertToUserTimeZone(DateTime dateTime)
         {
-            return _timeZoneService.ConvertToUserTimeZone(dateTime);
+            return _userIDsService.ConvertToUserTimeZone(dateTime);
         }
 
         public TimeSpan StringToTimeSpan(string timeString)
@@ -116,7 +115,7 @@ namespace aitrailblazer.net.Services
 
         public DateTime CreateDate(int year, int month, int day)
         {
-            string userTimeZoneId = _timeZoneService.GetTimeZone();
+            string userTimeZoneId = _userIDsService.GetTimeZone();
             TimeZoneInfo userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(userTimeZoneId);
 
             // Create the date in the user's time zone
@@ -164,7 +163,7 @@ namespace aitrailblazer.net.Services
             DateTime parsedDate = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None);
 
             // Get the user's time zone
-            string userTimeZoneId = _timeZoneService.GetTimeZone();
+            string userTimeZoneId = _userIDsService.GetTimeZone();
             TimeZoneInfo userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(userTimeZoneId);
 
             // Specify that the parsed date is in the user's local time zone
@@ -246,7 +245,7 @@ namespace aitrailblazer.net.Services
 
         public string LocalTime(string timeZoneId = null)
         {
-            string effectiveTimeZoneId = timeZoneId ?? _timeZoneService.GetTimeZone();
+            string effectiveTimeZoneId = timeZoneId ?? _userIDsService.GetTimeZone();
 
             try
             {
@@ -461,6 +460,191 @@ namespace aitrailblazer.net.Services
             _logger.LogInformation($"Function 'median_date' called with {dates.Count} dates. Returning: {medianDate}");
             return medianDate;
         }
+        // Core function to get the date a week ago
+        public DateTime GetDateAWeekAgo()
+        {
+            DateTime today = GetToday();
+            DateTime dateAWeekAgo = today.AddDays(-7);
+            _logger.LogInformation($"Function 'GetDateAWeekAgo' called. Returning: {dateAWeekAgo}");
+            return dateAWeekAgo;
+        }
+
+        // Core function to get the day of the week for a given date
+        public string GetDayOfWeek(DateTime date)
+        {
+            DateTime userDate = ConvertToUserTimeZone(date);
+            string dayOfWeek = userDate.DayOfWeek.ToString();
+            _logger.LogInformation($"Function 'GetDayOfWeek' called with date: {userDate}. Returning: {dayOfWeek}");
+            return dayOfWeek;
+        }
+
+
+        // Core function to get the date with a specific offset
+        public DateTime GetDateWithOffset(int daysOffset)
+        {
+            DateTime today = GetToday();
+            DateTime offsetDate = today.AddDays(daysOffset);
+            _logger.LogInformation($"Function 'GetDateWithOffset' called with offset: {daysOffset}. Returning: {offsetDate}");
+            return offsetDate;
+        }
+
+
+        // New function to get the date of the next specified weekday
+        public DateTime GetNextWeekday(DayOfWeek day)
+        {
+            DateTime today = GetToday();
+            int daysToAdd = ((int)day - (int)today.DayOfWeek + 7) % 7;
+            if (daysToAdd == 0)
+                daysToAdd = 7; // Ensure we get the next occurrence, not today
+            DateTime nextWeekday = today.AddDays(daysToAdd);
+            _logger.LogInformation($"Function 'GetNextWeekday' called with day: {day}. Returning: {nextWeekday}");
+            return nextWeekday;
+        }
+// New function to get the date with a week offset
+        public DateTime GetDateWithWeekOffset(int weeksOffset)
+        {
+            DateTime today = GetToday();
+            DateTime offsetDate = today.AddDays(weeksOffset * 7);
+            _logger.LogInformation($"Function 'GetDateWithWeekOffset' called with weeksOffset: {weeksOffset}. Returning: {offsetDate}");
+            return offsetDate;
+        }
+
+        // New function to get the date with a month offset
+        public DateTime GetDateWithMonthOffset(int monthsOffset)
+        {
+            DateTime today = GetToday();
+            DateTime offsetDate = today.AddMonths(monthsOffset);
+            _logger.LogInformation($"Function 'GetDateWithMonthOffset' called with monthsOffset: {monthsOffset}. Returning: {offsetDate}");
+            return offsetDate;
+        }
+
+        // New function to get tomorrow's date
+        public DateTime GetTomorrow()
+        {
+            DateTime today = GetToday();
+            DateTime tomorrow = today.AddDays(1);
+            _logger.LogInformation($"Function 'GetTomorrow' called. Returning: {tomorrow}");
+            return tomorrow;
+        }
+
+        // New function to get yesterday's date
+        public DateTime GetYesterday()
+        {
+            DateTime today = GetToday();
+            DateTime yesterday = today.AddDays(-1);
+            _logger.LogInformation($"Function 'GetYesterday' called. Returning: {yesterday}");
+            return yesterday;
+        }
+
+        // New function to calculate date difference in weeks
+        public double DateDifferenceWeeks(DateTime start, DateTime end)
+        {
+            DateTime userStart = ConvertToUserTimeZone(start);
+            DateTime userEnd = ConvertToUserTimeZone(end);
+            double totalWeeks = (userEnd - userStart).TotalDays / 7;
+            _logger.LogInformation($"Function 'DateDifferenceWeeks' called with start: {userStart}, end: {userEnd}. Returning: {totalWeeks} weeks");
+            return totalWeeks;
+        }
+
+        // New function to calculate date difference in months
+        public int DateDifferenceMonths(DateTime start, DateTime end)
+        {
+            DateTime userStart = ConvertToUserTimeZone(start);
+            DateTime userEnd = ConvertToUserTimeZone(end);
+
+            int months = ((userEnd.Year - userStart.Year) * 12) + userEnd.Month - userStart.Month;
+
+            if (userEnd.Day < userStart.Day)
+                months--;
+
+            _logger.LogInformation($"Function 'DateDifferenceMonths' called with start: {userStart}, end: {userEnd}. Returning: {months} months");
+            return months;
+        }
+
+        // New function to calculate date difference in years
+        public int DateDifferenceYears(DateTime start, DateTime end)
+        {
+            DateTime userStart = ConvertToUserTimeZone(start);
+            DateTime userEnd = ConvertToUserTimeZone(end);
+
+            int years = userEnd.Year - userStart.Year;
+
+            if (userEnd.Month < userStart.Month || (userEnd.Month == userStart.Month && userEnd.Day < userStart.Day))
+                years--;
+
+            _logger.LogInformation($"Function 'DateDifferenceYears' called with start: {userStart}, end: {userEnd}. Returning: {years} years");
+            return years;
+        }
+
+
+        // Core function to parse relative date expressions without external packages
+        public DateTime? ParseRelativeDate(string expression)
+        {
+            // Basic implementation using standard .NET libraries
+            DateTime today = GetToday();
+            expression = expression.ToLowerInvariant();
+
+            if (expression == "today")
+            {
+                return today;
+            }
+            else if (expression == "tomorrow")
+            {
+                return today.AddDays(1);
+            }
+            else if (expression == "yesterday")
+            {
+                return today.AddDays(-1);
+            }
+            else if (expression.StartsWith("next "))
+            {
+                string dayName = expression.Substring(5).Trim();
+                if (Enum.TryParse<DayOfWeek>(dayName, true, out DayOfWeek dayOfWeek))
+                {
+                    return GetNextWeekday(dayOfWeek);
+                }
+            }
+            else if (expression.StartsWith("last "))
+            {
+                string dayName = expression.Substring(5).Trim();
+                if (Enum.TryParse<DayOfWeek>(dayName, true, out DayOfWeek dayOfWeek))
+                {
+                    return GetPreviousWeekday(dayOfWeek);
+                }
+            }
+            else if (expression.EndsWith(" days ago"))
+            {
+                string numberPart = expression.Substring(0, expression.Length - 9).Trim();
+                if (int.TryParse(numberPart, out int days))
+                {
+                    return today.AddDays(-days);
+                }
+            }
+            else if (expression.EndsWith(" days from now"))
+            {
+                string numberPart = expression.Substring(0, expression.Length - 13).Trim();
+                if (int.TryParse(numberPart, out int days))
+                {
+                    return today.AddDays(days);
+                }
+            }
+            // Additional parsing logic can be added here
+            _logger.LogWarning($"Function 'ParseRelativeDate' could not parse expression: '{expression}'.");
+            return null;
+        }
+
+        // Core function to get the previous occurrence of a specified weekday
+        public DateTime GetPreviousWeekday(DayOfWeek day)
+        {
+            DateTime today = GetToday();
+            int daysToSubtract = ((int)today.DayOfWeek - (int)day + 7) % 7;
+            if (daysToSubtract == 0)
+                daysToSubtract = 7; // Ensure we get the previous occurrence, not today
+            DateTime previousWeekday = today.AddDays(-daysToSubtract);
+            _logger.LogInformation($"Function 'GetPreviousWeekday' called with day: {day}. Returning: {previousWeekday}");
+            return previousWeekday;
+        }
+
 
         #endregion
 
@@ -903,9 +1087,178 @@ namespace aitrailblazer.net.Services
             }
         }
 
-        // ======== Newly Added AI-Exposed Wrapper Functions End Here ========
+        /// <summary>
+        /// Wrapper function to expose GetDateAWeekAgo for AI interactions with StopSequence "\n\n".
+        /// </summary>
+        /// <returns>Formatted date a week ago string with StopSequence.</returns>
+        public string GetDateAWeekAgoForAI()
+        {
+            DateTime dateAWeekAgo = GetDateAWeekAgo();
+            string formattedDate = dateAWeekAgo.ToString("yyyy-MM-dd");
+            string aiReadyOutput = $"The date a week ago was {formattedDate}.\n\n"; // "\n\n" as StopSequence
+            _logger.LogInformation($"Function 'GetDateAWeekAgoForAI' called. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
 
+        /// <summary>
+        /// Wrapper function to expose GetDayOfWeekForDate for AI interactions with StopSequence "\n\n".
+        /// </summary>
+        /// <param name="date">Date to get the day of the week for.</param>
+        /// <returns>Formatted day of the week string with StopSequence.</returns>
+        public string GetDayOfWeekForDateForAI(DateTime date)
+        {
+            string dayOfWeek = GetDayOfWeek(date);
+            string aiReadyOutput = $"The day of the week for {date:yyyy-MM-dd} was {dayOfWeek}.\n\n"; // "\n\n" as StopSequence
+            _logger.LogInformation($"Function 'GetDayOfWeekForDateForAI' called with date: {date}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        /// <summary>
+        /// Wrapper function to expose GetDateWithOffset for AI interactions with StopSequence "\n\n".
+        /// </summary>
+        /// <param name="daysOffset">Number of days to offset from today.</param>
+        /// <returns>Formatted date with offset string with StopSequence.</returns>
+        public string GetDateWithOffsetForAI(int daysOffset)
+        {
+            DateTime offsetDate = GetDateWithOffset(daysOffset);
+            string formattedDate = offsetDate.ToString("yyyy-MM-dd");
+
+            // Determine direction and absolute offset
+            string direction = daysOffset >= 0 ? "from today" : "before today";
+            int absOffset = Math.Abs(daysOffset);
+            string dayWord = absOffset == 1 ? "day" : "days";
+
+            // Prepare AI-ready output
+            string aiReadyOutput = $"The date {absOffset} {dayWord} {direction} is {formattedDate}.\n\n"; // "\n\n" as StopSequence
+            _logger.LogInformation($"Function 'GetDateWithOffsetForAI' called with offset: {daysOffset}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        /// <summary>
+        /// Wrapper function to expose GetNextWeekday for AI interactions with StopSequence "\n\n".
+        /// </summary>
+        /// <param name="dayName">Name of the day of the week (e.g., "Monday", "Thursday").</param>
+        /// <returns>Formatted date of the next specified weekday with StopSequence.</returns>
+        public string GetNextWeekdayForAI(string dayName)
+        {
+            if (Enum.TryParse<DayOfWeek>(dayName, true, out DayOfWeek dayOfWeek))
+            {
+                DateTime nextWeekday = GetNextWeekday(dayOfWeek);
+                string formattedDate = nextWeekday.ToString("yyyy-MM-dd");
+                string aiReadyOutput = $"The next {dayName} is on {formattedDate}.\n\n"; // "\n\n" as StopSequence
+                _logger.LogInformation($"Function 'GetNextWeekdayForAI' called with dayName: {dayName}. Returning: {aiReadyOutput}");
+                return aiReadyOutput;
+            }
+            else
+            {
+                string error = $"Error: '{dayName}' is not a valid day of the week.";
+                _logger.LogError($"Function 'GetNextWeekdayForAI' error: {error}");
+                return $"{error}\n\n"; // "\n\n" as StopSequence
+            }
+        }
+  // Wrapper function to expose GetDateWithWeekOffset for AI interactions
+        public string GetDateWithWeekOffsetForAI(int weeksOffset)
+        {
+            DateTime offsetDate = GetDateWithWeekOffset(weeksOffset);
+            string formattedDate = offsetDate.ToString("yyyy-MM-dd");
+            string direction = weeksOffset >= 0 ? "from today" : "before today";
+            int absOffset = Math.Abs(weeksOffset);
+            string weekWord = absOffset == 1 ? "week" : "weeks";
+            string aiReadyOutput = $"The date {absOffset} {weekWord} {direction} is {formattedDate}.\n\n";
+            _logger.LogInformation($"Function 'GetDateWithWeekOffsetForAI' called with weeksOffset: {weeksOffset}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose GetDateWithMonthOffset for AI interactions
+        public string GetDateWithMonthOffsetForAI(int monthsOffset)
+        {
+            DateTime offsetDate = GetDateWithMonthOffset(monthsOffset);
+            string formattedDate = offsetDate.ToString("yyyy-MM-dd");
+            string direction = monthsOffset >= 0 ? "from today" : "before today";
+            int absOffset = Math.Abs(monthsOffset);
+            string monthWord = absOffset == 1 ? "month" : "months";
+            string aiReadyOutput = $"The date {absOffset} {monthWord} {direction} is {formattedDate}.\n\n";
+            _logger.LogInformation($"Function 'GetDateWithMonthOffsetForAI' called with monthsOffset: {monthsOffset}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose GetTomorrow for AI interactions
+        public string GetTomorrowForAI()
+        {
+            DateTime tomorrow = GetTomorrow();
+            string formattedDate = tomorrow.ToString("yyyy-MM-dd");
+            string aiReadyOutput = $"Tomorrow's date is {formattedDate}.\n\n";
+            _logger.LogInformation($"Function 'GetTomorrowForAI' called. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose GetYesterday for AI interactions
+        public string GetYesterdayForAI()
+        {
+            DateTime yesterday = GetYesterday();
+            string formattedDate = yesterday.ToString("yyyy-MM-dd");
+            string aiReadyOutput = $"Yesterday's date was {formattedDate}.\n\n";
+            _logger.LogInformation($"Function 'GetYesterdayForAI' called. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose DateDifferenceWeeks for AI interactions
+        public string DateDifferenceWeeksForAI(DateTime start, DateTime end)
+        {
+            double weeksDifference = DateDifferenceWeeks(start, end);
+            string aiReadyOutput = $"The difference between the two dates is {weeksDifference} weeks.\n\n";
+            _logger.LogInformation($"Function 'DateDifferenceWeeksForAI' called with start: {start}, end: {end}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose DateDifferenceMonths for AI interactions
+        public string DateDifferenceMonthsForAI(DateTime start, DateTime end)
+        {
+            int monthsDifference = DateDifferenceMonths(start, end);
+            string aiReadyOutput = $"The difference between the two dates is {monthsDifference} months.\n\n";
+            _logger.LogInformation($"Function 'DateDifferenceMonthsForAI' called with start: {start}, end: {end}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose DateDifferenceYears for AI interactions
+        public string DateDifferenceYearsForAI(DateTime start, DateTime end)
+        {
+            int yearsDifference = DateDifferenceYears(start, end);
+            string aiReadyOutput = $"The difference between the two dates is {yearsDifference} years.\n\n";
+            _logger.LogInformation($"Function 'DateDifferenceYearsForAI' called with start: {start}, end: {end}. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Uncommented and updated GetNowForAI function
+        public string GetNowForAI()
+        {
+            DateTime now = GetNow();
+            string formattedNow = now.ToString("yyyy-MM-dd HH:mm:ss");
+            string aiReadyOutput = $"The current date and time is {formattedNow}.\n\n";
+            _logger.LogInformation($"Function 'GetNowForAI' called. Returning: {aiReadyOutput}");
+            return aiReadyOutput;
+        }
+
+        // Wrapper function to expose ParseRelativeDate for AI interactions
+        public string ParseRelativeDateForAI(string expression)
+        {
+            DateTime? date = ParseRelativeDate(expression);
+            if (date.HasValue)
+            {
+                string formattedDate = date.Value.ToString("yyyy-MM-dd");
+                string aiReadyOutput = $"The date for '{expression}' is {formattedDate}.\n\n";
+                _logger.LogInformation($"Function 'ParseRelativeDateForAI' called with expression: '{expression}'. Returning: {aiReadyOutput}");
+                return aiReadyOutput;
+            }
+            else
+            {
+                string error = $"Could not parse the date expression '{expression}'.";
+                _logger.LogError($"Function 'ParseRelativeDateForAI' error: {error}");
+                return $"{error}\n\n";
+            }
+        }
         #endregion
 
      }
+     
 }

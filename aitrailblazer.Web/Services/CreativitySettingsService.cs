@@ -1,6 +1,6 @@
 using System;
 
-namespace aitrailblazer.net.Services;
+namespace AITrailblazer.net.Services;
 public class CreativitySettingsService
 {
 
