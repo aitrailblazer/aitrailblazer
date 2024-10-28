@@ -345,7 +345,7 @@ else if (profile != null)
                                         <PropertyColumn Property="@(e => FormatReceivedDateTime(e.ReceivedDateTime))" Title="Received" Sortable="true" Width="150px" />
                                         <!-- Subject Column -->
                                         <PropertyColumn Property="@(e => e.Subject)" Title="Subject" Sortable="true" Width="300px" />
-
+                                        <!-- Action Required Column 
                                         <PropertyColumn 
                                             Property="@(e => e.ActionRequired)" 
                                             Title="Action Required" 
@@ -356,13 +356,12 @@ else if (profile != null)
                                             Title="Priority" 
                                             Sortable="true" 
                                             Width="100px" />
-                                         <!-- Categories Column (Fixed) -->
                                         <PropertyColumn 
                                             Property="@(e => string.Join(", ", e.Categories))" 
                                             Title="Categories" 
                                             Sortable="false" 
                                             Width="200px" />
-                                        <!-- Actions Column -->
+                                            -->
                                         <TemplateColumn Title="Action" Width="150px">
                                             <ChildContent Context="PureEmailViewBasicModel">
                                                 <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="5">
