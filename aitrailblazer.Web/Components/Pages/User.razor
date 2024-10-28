@@ -65,7 +65,7 @@ else if (profile != null)
             }
 <!-- User.razor -->
 <div class="user-profile-container">
-    <FluentCard MinimalStyle="false" Class="user-profile-card" Height="260px" Width="100%" MaxWidth="720px">
+    <FluentCard MinimalStyle="false" Class="user-profile-card" Height="180px" Width="100%" MaxWidth="720px">
         <div class="card-content">
 
             <FluentLabel Typo="Typography.H2" Class="user-name">
@@ -78,9 +78,11 @@ else if (profile != null)
             <FluentDivider Class="card-divider"></FluentDivider>
             <div class="content-section">
                 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
+                    <!--
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         ID: <span class="value-text">@currentUserTenantID / @currentUserIdentityID</span>
                     </FluentTextBlock>
+                    --> 
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         Email: <span class="value-text">@GetUserEmail()</span>
                     </FluentTextBlock>
@@ -95,13 +97,14 @@ else if (profile != null)
                         Language: <span class="value-text">@GetUserLanguage()</span>
                     </FluentTextBlock>                
                 </FluentStack>
+                <!--
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         Phone: <span class="value-text">@GetUserPhoneNumber()</span>
                     </FluentTextBlock>
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         Address: <span class="value-text">@GetUserAddress()</span>
                     </FluentTextBlock>
-
+                -->
                 </FluentStack>
             </div>
         </div>
@@ -250,6 +253,7 @@ else if (profile != null)
                     <FluentLabel Typo="Typography.Body" Appearance="Appearance.Stealth" Color="@Color.Neutral">
                         Access and manage your Outlook emails directly from this tab.
                     </FluentLabel>
+                    <!--
                     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
                         <FluentTextArea 
                             Typo="Typography.Body" 
@@ -265,34 +269,32 @@ else if (profile != null)
                             Rows="@Rows" />
                         <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
 
-                        @if (isSearch)
-                        {
-                            <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
-                            <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
-                        }
-                        <FluentButton 
-                            OnClick="@SearchEmails" 
-                            Appearance="Appearance.Accent"
-                            Disabled="@string.IsNullOrWhiteSpace(searchQuery)"
-                            IconStart="@(new Icons.Regular.Size20.Search())"
-                            aria-label="Search Emails">
-                            Search
-                        </FluentButton>
-                        <!--
-                        @if (!string.IsNullOrWhiteSpace(searchQuery))
-                        {
+                            @if (isSearch)
+                            {
+                                <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
+                                <FluentProgress Class="progress-top" style="color: var(--themePrimary);"></FluentProgress>
+                            }
                             <FluentButton 
-                                OnClick="@ClearSearchAndReloadEmails" 
-                                Appearance="Appearance.Lightweight"
-                                IconStart="@(new Icons.Regular.Size20.Delete())"
-                                aria-label="Clear Search">
-                                Clear Search
+                                OnClick="@SearchEmails" 
+                                Appearance="Appearance.Accent"
+                                Disabled="@string.IsNullOrWhiteSpace(searchQuery)"
+                                IconStart="@(new Icons.Regular.Size20.Search())"
+                                aria-label="Search Emails">
+                                Search
                             </FluentButton>
-                        }
-                        -->
+                            @if (!string.IsNullOrWhiteSpace(searchQuery))
+                            {
+                                <FluentButton 
+                                    OnClick="@ClearSearchAndReloadEmails" 
+                                    Appearance="Appearance.Lightweight"
+                                    IconStart="@(new Icons.Regular.Size20.Delete())"
+                                    aria-label="Clear Search">
+                                    Clear Search
+                                </FluentButton>
+                            }
                         </FluentStack>
-
                     </FluentStack>
+                    -->
                         @if (isMessagesLoading)
                         {
                             <FluentLabel Typo="Typography.Body">Please wait...</FluentLabel>
