@@ -43,7 +43,8 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using AITrailblazer.net.Models;
 using OpenAI.Chat;
-
+using Cosmos.Copilot.Services;
+using Cosmos.Copilot.Models;
 namespace AITrailblazer.net.Services
 {
 
@@ -61,7 +62,7 @@ namespace AITrailblazer.net.Services
         private readonly KernelAddPLugin _kernelAddPLugin;
         //private readonly WebSearchService _webSearchService;
         private readonly TimeFunctions _timeFunctions;
-
+        private readonly ChatService _chatService;
         // Intent-function map
         private readonly Dictionary<string, Func<string, Task<string>>> _intentFunctionMap;
 
@@ -75,7 +76,8 @@ namespace AITrailblazer.net.Services
             AgentConfigurationService agentConfigurationService,
             ILogger<AzureOpenAIHandler> logger,
             KernelAddPLugin kernelAddPLugin,
-            TimeFunctions timeFunctions)
+            TimeFunctions timeFunctions,
+            ChatService chatService)
         {
             _parametersAzureService = parametersAzureService;
             _pluginService = pluginService;
@@ -87,7 +89,8 @@ namespace AITrailblazer.net.Services
             _logger = logger;
             _kernelAddPLugin = kernelAddPLugin;
             _timeFunctions = timeFunctions;
-            
+            _chatService = chatService;
+
             // Initialize the intent-function mapping
             _intentFunctionMap = new Dictionary<string, Func<string, Task<string>>>(StringComparer.OrdinalIgnoreCase)
             {
@@ -401,43 +404,113 @@ namespace AITrailblazer.net.Services
 
             return response;
         }
-
         public async Task<string> HandleSubmitAsync(
-        bool isNewSession,
-        bool isMyKnowledgeBaseChecked,
-        string currentUserIdentityID,
-        string featureNameWorkflowName,
-        string featureNameProject,
-        string panelInput,
-        string userInput,
-        string tags,
-        string masterTextSetting,
-        string responseLengthVal,
-        string creativeAdjustmentsVal,
-        string audienceLevelVal,
-        string writingStyleVal,
-        string relationSettingsVal,
-        string responseStyleVal,
-        string existingSessionTitle)
+            bool isNewSession,
+            bool isMyKnowledgeBaseChecked,
+            string currentUserTenantID,
+            string currentUserIdentityID,
+            string featureNameWorkflowName,
+            string featureNameProject,
+            string panelInput,
+            string userInput,
+            string tags,
+            string masterTextSetting,
+            string responseLengthVal,
+            string creativeAdjustmentsVal,
+            string audienceLevelVal,
+            string writingStyleVal,
+            string relationSettingsVal,
+            string responseStyleVal,
+            string existingSessionTitle,
+            string existingSessionId)
         {
-            _timer = new Stopwatch();
-            _timer.Restart();
+            var timer = Stopwatch.StartNew();
+            _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingSessionId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+                existingSessionId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+
             if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
             {
+                _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
+                    currentUserIdentityID, currentUserTenantID);
                 return "Panel Input and User Input cannot both be empty.";
             }
 
-            var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-            // Extract content from URLs in panelInput
-            var webPageContentService = new WebPageContentExtractionService(new HttpClient());
-            panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
-            _logger.LogInformation($"HandleSubmitAsync panelInput: {panelInput}");
-            if (featureNameProject == "AIMessageOptimizer")
+            try
             {
-                var response = await HandleSubmitAsyncWriterReviewer(
-                    isNewSession,
-                    isMyKnowledgeBaseChecked,
-                    currentUserIdentityID,
+                var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
+                _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
+
+                // Extract content from URLs in panelInput
+                var webPageContentService = new WebPageContentExtractionService(new HttpClient());
+                panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
+                _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
+
+                if (featureNameProject == "AIMessageOptimizer")
+                {
+                    _logger.LogDebug("Handling submission for AIMessageOptimizer.");
+                    var response = await HandleSubmitAsyncWriterReviewer(
+                        isNewSession,
+                        isMyKnowledgeBaseChecked,
+                        currentUserIdentityID,
+                        featureNameWorkflowName,
+                        featureNameProject,
+                        panelInput,
+                        userInput,
+                        tags,
+                        masterTextSetting,
+                        responseLengthVal,
+                        creativeAdjustmentsVal,
+                        audienceLevelVal,
+                        writingStyleVal,
+                        relationSettingsVal,
+                        responseStyleVal,
+                        existingSessionTitle);
+                    _logger.LogInformation("Submission handled by WriterReviewer for AIMessageOptimizer. User: {UserIdentityID}", currentUserIdentityID);
+                    return response;
+                }
+                else if (agentSettings != null)
+                {
+                    _logger.LogInformation("Handling submission with WriterEditorReviewer for Project: {FeatureNameProject}", featureNameProject);
+                    var response = await HandleSubmitAsyncWriterEditorReviewer(
+                        isNewSession,
+                        isMyKnowledgeBaseChecked,
+                        currentUserIdentityID,
+                        featureNameWorkflowName,
+                        featureNameProject,
+                        panelInput,
+                        userInput,
+                        tags,
+                        masterTextSetting,
+                        responseLengthVal,
+                        creativeAdjustmentsVal,
+                        audienceLevelVal,
+                        writingStyleVal,
+                        relationSettingsVal,
+                        responseStyleVal,
+                        existingSessionTitle);
+                    _logger.LogInformation("Submission handled by WriterEditorReviewer for Project: {FeatureNameProject}. User: {UserIdentityID}",
+                        featureNameProject, currentUserIdentityID);
+                    return response;
+                }
+
+                //var manager = BlobStorageManagerCreate();
+                //_logger.LogDebug("BlobStorageManager created successfully.");
+
+                string cleanedUserInput = CleanInput(userInput);
+                string cleanedPanelInput = CleanInput(panelInput);
+                _logger.LogInformation("User input and panel input cleaned.");
+
+                // Generate or use existing session title
+                string title = string.IsNullOrWhiteSpace(existingSessionTitle)
+                    ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
+                    : existingSessionTitle;
+                _logger.LogInformation("Session title determined: {Title}", title);
+
+                string inputRequest = $"{userInput}\n\n{panelInput}";
+                string cleanedRequestResponseTitle = CleanAndShortenRequestResponseTitle(inputRequest);
+
+                // Create JSON content for the request
+                var requestContent = CreateJsonContent(
                     featureNameWorkflowName,
                     featureNameProject,
                     panelInput,
@@ -449,162 +522,143 @@ namespace AITrailblazer.net.Services
                     audienceLevelVal,
                     writingStyleVal,
                     relationSettingsVal,
-                    responseStyleVal,
-                    existingSessionTitle);
-                return response;
-            }
-            else if (agentSettings != null)
-            {
-                var response = await HandleSubmitAsyncWriterEditorReviewer(
-                    isNewSession,
-                    isMyKnowledgeBaseChecked,
-                    currentUserIdentityID,
-                    featureNameWorkflowName,
+                    responseStyleVal);
+                _logger.LogInformation("JSON request content created.");
+
+                //string requestTitle = $"{featureNameWorkflowName}-{featureNameProject}-{cleanedRequestResponseTitle}";
+                string requestTitle = cleanedRequestResponseTitle;
+                _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
+
+                SessionChat session;
+
+                if (isNewSession)
+                {
+                    _logger.LogInformation("Creating a new chat session. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                    try
+                    {
+                        session = await _chatService.CreateNewSessionChatAsync(
+                            tenantId: currentUserTenantID,
+                            userId: currentUserIdentityID,
+                            title: requestTitle
+                        );
+                        _logger.LogInformation("New chat session created successfully. SessionId: {SessionId}, Title: {Title}", session.Id, title);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to create a new chat session. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                        throw; // Re-throw the exception to be handled upstream
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation("Retrieving existing session by ID. SessionId: {SessionId}, User: {UserIdentityID}", existingSessionId, currentUserIdentityID);
+                    session = await _chatService.GetSessionAsync(
+                        tenantId: currentUserTenantID,
+                        userId: currentUserIdentityID,
+                        sessionId: existingSessionId
+                    );
+
+                    if (session == null)
+                    {
+                        _logger.LogError("Session retrieval failed. Session ID: {Title}, User: {UserIdentityID} does not exist.", title, currentUserIdentityID);
+                        throw new InvalidOperationException($"Session with ID {title} does not exist.");
+                    }
+
+                    _logger.LogInformation("Continuing existing session. SessionId: {SessionId}", session.Id);
+                }
+
+
+                // Enhance inputs with citations and generate response
+                _logger.LogInformation("Enhancing inputs with citations.");
+                var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                _logger.LogInformation("Generating response with Prompty.");
+                var responseOutput = await GenerateWithPromptyAsync(
                     featureNameProject,
-                    panelInput,
-                    userInput,
-                    tags,
+                    enhancedInputs.EnhancedPanelInput,
+                    enhancedInputs.EnhancedUserInput,
                     masterTextSetting,
                     responseLengthVal,
                     creativeAdjustmentsVal,
                     audienceLevelVal,
                     writingStyleVal,
                     relationSettingsVal,
-                    responseStyleVal,
-                    existingSessionTitle);
-                return response;
+                    responseStyleVal);
+
+                // Append citations if available
+                if (enhancedInputs.AllCitations.Any())
+                {
+                    var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                    responseOutput += $"\n\nReferences:\n{citationsText}";
+                    _logger.LogInformation("Citations appended to the response.");
+                }
+
+                // Generate the completed message
+                var completedChatMessage = new Cosmos.Copilot.Models.Message(
+                    sessionId: session.SessionId,               // sessionId
+                    tenantId: currentUserTenantID,              // tenantId
+                    userId: currentUserIdentityID,              // userId
+                    title: requestTitle,                        // title
+                    prompt: panelInput,                         // prompt
+                    promptTokens: 0,                            // promptTokens
+                    userInput: userInput,                       // userInput
+                    userInputTokens: 0,                         // userInputTokens
+                    output: responseOutput,                     // output
+                    outputTokens: 0,                            // outputTokens
+                    cacheHit: false,                            // cacheHit
+                    masterTextSetting: masterTextSetting,       // masterTextSetting
+                    writingStyleVal: writingStyleVal,           // writingStyleVal
+                    audienceLevelVal: audienceLevelVal,         // audienceLevelVal
+                    responseLengthVal: responseLengthVal,       // responseLengthVal
+                    creativeAdjustmentsVal: creativeAdjustmentsVal, // creativeAdjustmentsVal
+                    relationSettingsVal: relationSettingsVal,   // relationSettingsVal
+                    responseStyleVal: responseStyleVal          // responseStyleVal
+                );
+
+                _logger.LogInformation("Updating session and message. SessionId: {SessionId}", session.SessionId);
+
+                // Corrected method name and variable
+                await _chatService.UpsertSessionAndMessageAsync(
+                    tenantId: currentUserTenantID,
+                    userId: currentUserIdentityID,
+                    sessionId: session.SessionId,           // Use SessionId instead of SessionChatId
+                    chatMessage: completedChatMessage        // Pass the correct variable
+                );
+                _logger.LogInformation("Chat message persisted with new completion. SessionId: {SessionId}", session.SessionId);
+
+                timer.Stop();
+                _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
+                    timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
+
+                return responseOutput;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
+                    currentUserIdentityID, currentUserTenantID);
+                throw;
+            }
+        }
 
-            var manager = BlobStorageManagerCreate();
-            string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
-
-            string cleaneduserInput = userInput
-                .Replace(":", string.Empty)
-                .Replace(".", string.Empty)
-                .Replace("\n", string.Empty)
-                .Replace("\r", string.Empty);
-
-            string cleanedpanelInput = panelInput
-                .Replace(":", string.Empty)
-                .Replace(".", string.Empty)
-                .Replace("\n", string.Empty)
-                .Replace("\r", string.Empty);
-
-            // Generate or use existing session title
-            string title = string.IsNullOrWhiteSpace(existingSessionTitle)
-                ? await GenerateTitleAsync(cleaneduserInput, cleanedpanelInput)
-                : existingSessionTitle;
-
-
-            // 54a15dce-218d-4889-842f-4709a86704ed-AIWritingAssistant
-            //  ChatSession-20240826-172027-ASAP Streamlining Customer Requirements and Accelerating Code Creation
-            //      Request-20240826-172027.json
-            //      Response-20240826-172027.json
-
-            // NEW
-            // 54a15dce-218d-4889-842f-4709a86704ed-Sessions
-            //  ChatSession-20240826-172027-ASAP Streamlining Customer Requirements and Accelerating Code Creation
-            //      Request-20240826-172027-Writing-AIWritingAssistant-input 1234.json
-            //      Response-20240826-172027-Writing-AIWritingAssistant-input 1234.json
-            //      Request-20240826-172028-CodeAndDocumentation-AISoftwareDocGen-input 1234.json
-            //      Response-20240826-172028-CodeAndDocumentation-AISoftwareDocGen-input 1234.json
-
-            // featureNameWorkflowName = "Writing"
-            // featureNameProject = "AIWritingAssistant"
-            string directory = "Sessions";//featureNameProject;
-            // var input = userInput + "\n\n" + panelInput;
-            string inputRequestResponseTitle = userInput + "\n\n" + panelInput;
-            // Remove slashes and then clean the input
-            string cleanedRequestResponseTitle = inputRequestResponseTitle
-                .Replace(":", "_")            // Replace colon with underscore
+        /// <summary>
+        /// Cleans and shortens the request-response title to meet formatting requirements.
+        /// </summary>
+        private string CleanAndShortenRequestResponseTitle(string inputRequest)
+        {
+            string cleaned = inputRequest
+                .Replace(":", " ")            // Replace colon with underscore
                 .Replace("/", string.Empty)   // Remove all occurrences of "/"
-                .Replace(".", "_")            // Replace period with underscore
+                .Replace(".", " ")            // Replace period with underscore
                 .Replace("\n", string.Empty)  // Remove all newlines
                 .Replace("\r", string.Empty); // Handle Windows-style line endings
 
             // Further clean whitespace
-            cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
+            cleaned = string.Concat(cleaned.Where(c => !char.IsWhiteSpace(c) || c == ' '));
 
             // Limit the cleaned string to 32 characters
-            string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
-
-            _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
-
-            string sessionDirectory = isNewSession
-                ? $"ChatSession-{currentTime}-{title}"  // create a new session
-                : $"ChatSession-{title}";               // use previous title to continue the session
-
-
-            //string featureNameWorkflowName,
-            //string featureNameProject,
-            _logger.LogInformation($"HandleSubmitAsync sessionDirectory: {sessionDirectory}");
-
-            // Create JSON content for the request
-            var requestContent = CreateJsonContent(
-                featureNameWorkflowName,
-                featureNameProject,
-                panelInput,
-                userInput,
-                tags,
-                masterTextSetting,
-                responseLengthVal,
-                creativeAdjustmentsVal,
-                audienceLevelVal,
-                writingStyleVal,
-                relationSettingsVal,
-                responseStyleVal);
-
-            // Upload request content to blob storage
-            //      Request-20240826-172027-Writing-AIWritingAssistant-input 1234.json
-            //      Response-20240826-172027-Writing-AIWritingAssistant-input 1234.json
-
-            string requestFileName = $"Request-{currentTime}-{featureNameWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
-            await manager.UploadStringToBlobAsync(
-                currentUserIdentityID,
-                directory,
-                sessionDirectory,
-                requestFileName,
-                requestContent);
-
-            _logger.LogInformation("HandleSubmitAsync GenerateWithPrompty:");
-
-            // Enhance inputs with citations and generate response
-            var enhancedInputs = await EnhanceInputsWithCitationsAsync(
-                panelInput,
-                userInput);
-            var responseOutput = await GenerateWithPromptyAsync(
-                featureNameProject,
-                enhancedInputs.EnhancedPanelInput,
-                enhancedInputs.EnhancedUserInput,
-                masterTextSetting,
-                responseLengthVal,
-                creativeAdjustmentsVal,
-                audienceLevelVal,
-                writingStyleVal,
-                relationSettingsVal,
-                responseStyleVal);
-
-            // Append citations if available
-            if (enhancedInputs.AllCitations.Any())
-            {
-                var citationsText = FormatCitations(enhancedInputs.AllCitations);
-                responseOutput += $"\n\nReferences:\n{citationsText}";
-            }
-
-            // Upload response content to blob storage
-            string responseFileName = $"Response-{currentTime}-{featureNameWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
-            await manager.UploadStringToBlobAsync(
-                currentUserIdentityID,
-                directory,
-                sessionDirectory,
-                responseFileName,
-                responseOutput);
-
-            _timer.Stop();
-            _logger.LogInformation($"Time: {_timer.ElapsedMilliseconds / 1000} secs");
-
-            return responseOutput;
+            return new string(cleaned.Take(64).ToArray());
         }
+
         private async Task<string> ReplaceUrlsWithContentAsync(string input, WebPageContentExtractionService webPageContentService)
         {
             var urlPattern = @"https?://[^\s]+";
@@ -622,6 +676,15 @@ namespace AITrailblazer.net.Services
 
             return input;
         }
+
+        private string CleanInput(string input)
+        {
+            return input
+                .Replace(":", string.Empty)
+                .Replace(".", string.Empty)
+                .Replace("\n", string.Empty)
+                .Replace("\r", string.Empty);
+        }
         public async Task<string> ReadBlobContentAsync(
             string userId,
             string directory,
@@ -636,27 +699,67 @@ namespace AITrailblazer.net.Services
                 fileName);
         }
 
-        public async Task<List<Session>> LoadSessionsAsync(
+        /*
+                public async Task<List<Session>> LoadSessionsAsync(
+                    string userId,
+                    string featureNameWorkflowName)
+                {
+                    var manager = BlobStorageManagerCreate();
+
+                    var sessionTitles = await manager.ListSessionsAsync(
+                        userId,
+                        featureNameWorkflowName);
+
+                    // Convert the session titles (strings) into Session objects
+                    var sessions = sessionTitles.Select(title => new Session
+                    { 
+                        Name = title, // Set the Name property
+                        Id = $"{userId}-{featureNameWorkflowName}/ChatSession-{title}" // Set the Id property
+                    }).ToList();
+
+                    //_logger.LogInformation($"Loaded {sessions.Count} sessions.");
+
+                    return sessions;
+                }
+        */
+        public async Task<List<Cosmos.Copilot.Models.SessionChat>> LoadSessionsAsync(
+            string tenantId,
             string userId,
-            string featureWorkflowName)
+            string featureNameWorkflowName)
         {
-            var manager = BlobStorageManagerCreate();
 
-            var sessionTitles = await manager.ListSessionsAsync(
-                userId,
-                featureWorkflowName);
-
-            // Convert the session titles (strings) into Session objects
-            var sessions = sessionTitles.Select(title => new Session
-            {
-                Name = title, // Set the Name property
-                Id = $"{userId}-{featureWorkflowName}/ChatSession-{title}" // Set the Id property
-            }).ToList();
-
-            //_logger.LogInformation($"Loaded {sessions.Count} sessions.");
+            var sessions = await _chatService.GetAllChatSessionsAsync(
+                tenantId,
+                userId
+            );
 
             return sessions;
         }
+
+        public async Task<Cosmos.Copilot.Models.Message> GetMessageByIdAsync(string messageId)
+        {
+            _logger.LogInformation("GetMessageByIdAsync: Retrieving message with ID: {MessageId}", messageId);
+            try
+            {
+                var message = await _chatService.GetMessageByIdAsync(messageId);
+
+                if (message == null)
+                {
+                    _logger.LogWarning("Message not found with ID: {MessageId}", messageId);
+                    return null;
+                }
+
+                _logger.LogInformation("Message retrieved with ID: {MessageId}", messageId);
+                return message;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to retrieve message with ID: {MessageId}", messageId);
+                throw;
+            }
+        }
+
+
         private string GetUserFriendlyTimestamp(DateTime timestamp)
         {
             var timeSpan = DateTime.UtcNow - timestamp;
@@ -675,7 +778,7 @@ namespace AITrailblazer.net.Services
             return timestamp.ToString("MMMM dd, yyyy");
         }
 
-        // CurrentSession.Id
+        /*
         public async Task<List<ITreeViewItem>> LoadSessionMessagesAsync(string sessionId)
         {
             var manager = BlobStorageManagerCreate();
@@ -762,6 +865,139 @@ namespace AITrailblazer.net.Services
 
             return items;
         }
+        */
+        /*
+        public async Task<List<ITreeViewItem>> LoadSessionMessagesAsyncOLD(string tenantId, string userId, string sessionId)
+        {
+            var items = new List<ITreeViewItem>();
+
+            try
+            {
+                // Retrieve messages for the session from ChatService
+                var messages = await _chatService.GetChatSessionMessagesAsync(tenantId, userId, sessionId);
+
+                if (messages == null || !messages.Any())
+                {
+                    _logger.LogInformation($"No messages found for session: {sessionId}");
+                    return items; // Return an empty list if no messages are found
+                }
+
+                // Group messages by timestamp derived from their ID for chronological order (if needed)
+                var groupedMessages = messages.GroupBy(message =>
+                {
+                    // Assuming message.Id is formatted with a timestamp or unique identifier
+                    var timestampIndex = message.Id.IndexOf('-') + 1;
+                    if (timestampIndex + 15 <= message.Id.Length) // Ensure the timestamp exists and is within bounds
+                    {
+                        return message.Id.Substring(timestampIndex, 15); // Extract timestamp safely
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Invalid timestamp format in message ID: {message.Id}");
+                        return null;
+                    }
+                })
+                .Where(group => group.Key != null) // Remove any groups where the key is null due to invalid timestamps
+                .ToList();
+
+                // Process each message group
+                foreach (var group in groupedMessages)
+                {
+                    try
+                    {
+                        // Get the first request and response messages if they exist
+                        var requestMessage = group.FirstOrDefault(m => m.Prompt != null);
+                        var responseMessage = group.FirstOrDefault(m => m.Output != null);
+
+                        if (requestMessage == null)
+                        {
+                            _logger.LogInformation($"Request message not found for group: {group.Key}");
+                            continue; // Skip if no request message is found
+                        }
+
+                        if (responseMessage == null)
+                        {
+                            _logger.LogInformation($"Response message not found for group: {group.Key}");
+                            continue; // Skip if no response message is found
+                        }
+
+                        // Create a user-friendly text for the TreeView item
+                        var userFriendlyText = $"{requestMessage.Title}";
+
+                        // Create a combined ID for the TreeView item using both request and response message IDs
+                        var combinedId = $"{sessionId}|{requestMessage.Id}|{responseMessage.Id}";
+
+                        // Add a new TreeViewItem for this message group
+                        items.Add(new TreeViewItem
+                        {
+                            Text = userFriendlyText,
+                            Id = combinedId
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation($"Error processing group {group.Key}: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Error loading session messages for session: {sessionId}, Error: {ex.Message}");
+            }
+
+            return items;
+        }
+        */
+
+        public async Task<List<ITreeViewItem>> LoadSessionMessagesAsync(string tenantId, string userId, string sessionId)
+        {
+            var items = new List<ITreeViewItem>();
+
+            try
+            {
+                // Retrieve messages for the session from ChatService
+                var messages = await _chatService.GetChatSessionMessagesAsync(tenantId, userId, sessionId);
+
+                if (messages == null || !messages.Any())
+                {
+                    _logger.LogInformation($"No messages found for session: {sessionId}");
+                    return items; // Return an empty list if no messages are found
+                }
+
+                // Sort messages by timestamp for chronological order
+                var sortedMessages = messages.OrderBy(m => m.TimeStamp).ToList();
+
+                // Process each message and add to the items list
+                foreach (var message in sortedMessages)
+                {
+                    try
+                    {
+                        // Create a user-friendly title for the TreeView item
+                        var userFriendlyText = $"{message.Title} - {message.TimeStamp:yyyy-MM-dd HH:mm:ss}";
+
+                        // Create a unique ID for the TreeView item using the message ID
+                        var combinedId = $"{sessionId}|{message.Id}";
+
+                        // Add a new TreeViewItem with just the title
+                        items.Add(new TreeViewItem
+                        {
+                            Text = userFriendlyText,
+                            Id = combinedId
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation($"Error processing message {message.Id}: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Error loading session messages for session: {sessionId}, Error: {ex.Message}");
+            }
+
+            return items;
+        }
 
         public string CreatePipeDelimitedString(string requestBlob)
         {
@@ -815,6 +1051,30 @@ namespace AITrailblazer.net.Services
             return string.Join("|", pipeDelimitedStrings);
         }
 
+        public async Task DeleteChatSessionAsync(
+            string tenantId,
+            string userId,
+            string sessionId)
+        {
+            // Delete the session and its messages from Cosmos DB
+            await _chatService.DeleteChatSessionAsync(tenantId, userId, sessionId);
+
+            _logger.LogInformation($"Deleted session and its messages in Cosmos DB for Session ID: {sessionId}");
+        }
+
+        public async Task DeleteMessageAsync(
+        string tenantId,
+        string userId,
+        string sessionId,
+        string messageId)
+        {
+            // Delete the specific message in Cosmos DB
+            await _chatService.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
+
+            _logger.LogInformation($"Deleted message in Cosmos DB for Message ID: {messageId} within Session ID: {sessionId}");
+        }
+
+        /*
 
         public async Task DeleteSessionDirectoryAsync(
             string userId,
@@ -830,6 +1090,7 @@ namespace AITrailblazer.net.Services
 
             _logger.LogInformation($"Deleted session directory: {directoryPrefix}");
         }
+        */
         // Method to delete specific input and output blobs within a session
         public async Task DeleteBlobItemsAsync(
             string userId,
@@ -901,7 +1162,7 @@ namespace AITrailblazer.net.Services
 
             return result;
         }
- 
+
         public string SanitizeTitle(string title)
         {
             // Replace hyphens and other unwanted characters with spaces
@@ -1094,109 +1355,109 @@ namespace AITrailblazer.net.Services
             return manager;
         }
 
-public async Task<string> BingTextSearchAsync(string question)
-{
-    string modelId = "gpt-4o-mini";
-    int maxTokens = 256;
+        public async Task<string> BingTextSearchAsync(string question)
+        {
+            string modelId = "gpt-4o-mini";
+            int maxTokens = 256;
 
-    // Initialize the kernel with modelId and maxTokens
-    IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-    Kernel kernel = kernelBuilder.Build();
+            // Initialize the kernel with modelId and maxTokens
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            Kernel kernel = kernelBuilder.Build();
 
-    // Step 1: Rephrase the question
-    string rephrasedQuestion = await RephraseQuestionAsync(question);
-    _logger.LogInformation($"BingTextSearchAsync: Rephrased question: {rephrasedQuestion}");
+            // Step 1: Rephrase the question
+            string rephrasedQuestion = await RephraseQuestionAsync(question);
+            _logger.LogInformation($"BingTextSearchAsync: Rephrased question: {rephrasedQuestion}");
 
-    // Step 2: Fetch Bing search results
-    string bingInformation = await FetchBingSearchResultsWithRetryAsync(kernel, question, 3);
+            // Step 2: Fetch Bing search results
+            string bingInformation = await FetchBingSearchResultsWithRetryAsync(kernel, question, 3);
 
-    // Step 3: Generate the final answer using the semantic function
-    return await GenerateAnswerAsync(kernel, question, rephrasedQuestion, maxTokens);
-}
+            // Step 3: Generate the final answer using the semantic function
+            return await GenerateAnswerAsync(kernel, question, rephrasedQuestion, maxTokens);
+        }
 
-// Function to rephrase the question using AI
-private async Task<string> RephraseQuestionAsync(string question)
-{
-     string modelId = "gpt-4o-mini";
-    int maxTokens = 256;
+        // Function to rephrase the question using AI
+        private async Task<string> RephraseQuestionAsync(string question)
+        {
+            string modelId = "gpt-4o-mini";
+            int maxTokens = 256;
 
-    // Initialize the kernel with modelId and maxTokens
-    IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-    Kernel kernel = kernelBuilder.Build();
-    const string RephrasePrompt = """
+            // Initialize the kernel with modelId and maxTokens
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            Kernel kernel = kernelBuilder.Build();
+            const string RephrasePrompt = """
         Rephrase the following question to make it more suitable for a search engine query:
         
         Question: "{{ $query }}"
         Rephrased Query:
     """;
 
-    var rephraseFunction = kernel.CreateFunctionFromPrompt(RephrasePrompt, new AzureOpenAIPromptExecutionSettings
-    {
-        Temperature = 0.7,
-        TopP = 0.9,
-        MaxTokens = 50
-    });
-
-    try
-    {
-        var rephraseResult = await kernel.InvokeAsync(rephraseFunction, new KernelArguments { ["query"] = question });
-        return rephraseResult.GetValue<string>()?.Trim() ?? question; // Fallback to original if rephrasing fails
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError($"RephraseQuestionAsync: Error while rephrasing the question. {ex.Message}");
-        return question; // Fallback to the original question
-    }
-}
-
-// Function to fetch Bing search results with retry logic
-private async Task<string> FetchBingSearchResultsWithRetryAsync(Kernel kernel, string query, int maxRetries)
-{
-    string searchPluginName = "bing";
-    var bingConnector = new BingConnector(_parametersAzureService.BingSearchApiKey);
-    var bing = new WebSearchEnginePlugin(bingConnector);
-    
-    kernel.ImportPluginFromObject(bing, searchPluginName);
-    
-
-    int attempt = 0;
-    while (attempt < maxRetries)
-    {
-        try
-        {
-            _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} - Fetching information from Bing...");
-            var function = kernel.Plugins[searchPluginName]["search"];
-            var searchResult = await kernel.InvokeAsync(function, new() { ["query"] = query });
-
-            var bingInformation = searchResult.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(bingInformation))
+            var rephraseFunction = kernel.CreateFunctionFromPrompt(RephrasePrompt, new AzureOpenAIPromptExecutionSettings
             {
-                throw new Exception("Failed to get a valid response from the web search engine.");
+                Temperature = 0.7,
+                TopP = 0.9,
+                MaxTokens = 50
+            });
+
+            try
+            {
+                var rephraseResult = await kernel.InvokeAsync(rephraseFunction, new KernelArguments { ["query"] = question });
+                return rephraseResult.GetValue<string>()?.Trim() ?? question; // Fallback to original if rephrasing fails
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"RephraseQuestionAsync: Error while rephrasing the question. {ex.Message}");
+                return question; // Fallback to the original question
+            }
+        }
+
+        // Function to fetch Bing search results with retry logic
+        private async Task<string> FetchBingSearchResultsWithRetryAsync(Kernel kernel, string query, int maxRetries)
+        {
+            string searchPluginName = "bing";
+            var bingConnector = new BingConnector(_parametersAzureService.BingSearchApiKey);
+            var bing = new WebSearchEnginePlugin(bingConnector);
+
+            kernel.ImportPluginFromObject(bing, searchPluginName);
+
+
+            int attempt = 0;
+            while (attempt < maxRetries)
+            {
+                try
+                {
+                    _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} - Fetching information from Bing...");
+                    var function = kernel.Plugins[searchPluginName]["search"];
+                    var searchResult = await kernel.InvokeAsync(function, new() { ["query"] = query });
+
+                    var bingInformation = searchResult.GetValue<string>();
+                    if (string.IsNullOrWhiteSpace(bingInformation))
+                    {
+                        throw new Exception("Failed to get a valid response from the web search engine.");
+                    }
+
+                    _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Information found from Bing: {bingInformation}");
+                    return bingInformation;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} failed. {ex.Message}");
+                    attempt++;
+                    if (attempt >= maxRetries)
+                    {
+                        _logger.LogError("FetchBingSearchResultsWithRetryAsync: Max retries reached. Could not fetch information from Bing.");
+                        throw new Exception("Failed to get a response from the web search engine after multiple attempts.");
+                    }
+                    await Task.Delay(1000); // Wait before retrying
+                }
             }
 
-            _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Information found from Bing: {bingInformation}");
-            return bingInformation;
+            throw new Exception("FetchBingSearchResultsWithRetryAsync: Unexpected failure. This line should not be reached.");
         }
-        catch (Exception ex)
+
+        // Function to generate the final answer
+        private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, string bingInformation, int maxTokens)
         {
-            _logger.LogWarning($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} failed. {ex.Message}");
-            attempt++;
-            if (attempt >= maxRetries)
-            {
-                _logger.LogError("FetchBingSearchResultsWithRetryAsync: Max retries reached. Could not fetch information from Bing.");
-                throw new Exception("Failed to get a response from the web search engine after multiple attempts.");
-            }
-            await Task.Delay(1000); // Wait before retrying
-        }
-    }
-
-    throw new Exception("FetchBingSearchResultsWithRetryAsync: Unexpected failure. This line should not be reached.");
-}
-
-// Function to generate the final answer
-private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, string bingInformation, int maxTokens)
-{
-    const string SemanticFunction = """
+            const string SemanticFunction = """
         Answer questions based on the facts and the information provided. If you do not have enough information to confidently answer the question, use the available search command to find the necessary details.
 
         Always perform a search to gather the latest information and use it to enhance your answer.
@@ -1238,35 +1499,35 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
         Answer:
     """;
 
-    var executionSettings = new AzureOpenAIPromptExecutionSettings
-    {
-        Temperature = 0.1,
-        TopP = 0.1,
-        MaxTokens = maxTokens,
-        ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
-    };
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
+            {
+                Temperature = 0.1,
+                TopP = 0.1,
+                MaxTokens = maxTokens,
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+            };
 
-    var oracle = kernel.CreateFunctionFromPrompt(SemanticFunction, executionSettings);
+            var oracle = kernel.CreateFunctionFromPrompt(SemanticFunction, executionSettings);
 
-    var arguments = new KernelArguments
-    {
-        ["query"] = query,
-        ["externalInformation"] = bingInformation
-    };
+            var arguments = new KernelArguments
+            {
+                ["query"] = query,
+                ["externalInformation"] = bingInformation
+            };
 
-    try
-    {
-        var finalAnswer = await kernel.InvokeAsync(oracle, arguments);
-        var result = finalAnswer.GetValue<string>();
-        _logger.LogInformation($"GenerateAnswerAsync: Final Answer: {result}");
-        return result;
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError($"GenerateAnswerAsync: Error generating the final answer. {ex.Message}");
-        return "An error occurred while generating the final answer. Please try again.";
-    }
-}
+            try
+            {
+                var finalAnswer = await kernel.InvokeAsync(oracle, arguments);
+                var result = finalAnswer.GetValue<string>();
+                _logger.LogInformation($"GenerateAnswerAsync: Final Answer: {result}");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GenerateAnswerAsync: Error generating the final answer. {ex.Message}");
+                return "An error occurred while generating the final answer. Please try again.";
+            }
+        }
 
         public async Task RunImportPluginFromApiManifestAsync(string modelId, int maxTokens)
         {
@@ -1790,7 +2051,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             }
 
         }
-        
+
         public async Task<string> GetIntent(string input)
         {
             int maxTokens = 16;
@@ -2490,7 +2751,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
             public string GetCurrentUtcTime() => DateTime.UtcNow.ToString("R");
         }
 
-        
+
         public async Task<string> GetASAPTime(
             string input)
         {
@@ -2513,7 +2774,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, 1024);
                 //kernelBuilder.Plugins.AddFromType<TimeInformation>();
                 Kernel kernel = kernelBuilder.Build();
-                
+
 
                 kernel = _kernelAddPLugin.TimePlugin(kernel);
 
@@ -2558,7 +2819,7 @@ private async Task<string> GenerateAnswerAsync(Kernel kernel, string query, stri
                     timeZoneInfo = "Time zone information could not be retrieved.";
                 }
 
-string prompt = $@"
+                string prompt = $@"
 You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to time and date information.
 
 {timeZoneInfo}
@@ -2566,8 +2827,8 @@ You are a highly capable AI assistant designed to perform various actions based 
 **User Input:** {input}
 ";
 
-                var arguments = new KernelArguments(executionSettings) 
-                { 
+                var arguments = new KernelArguments(executionSettings)
+                {
                     //["Input"] = input,
                     //["TimeZoneInfo"] = timeZoneInfo
                 };
@@ -2581,7 +2842,7 @@ You are a highly capable AI assistant designed to perform various actions based 
 
                     _logger.LogInformation($"GetASAPTime response: {response}");
 
-               
+
                     string responseResult = await StructuredOutputByClassAsync<DateTimeOperationsResponseStructured>(response);
                     if (responseResult != null)
                     {
@@ -2622,16 +2883,16 @@ You are a highly capable AI assistant designed to perform various actions based 
         {
             //int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini"; 
+            string modelId = "gpt-4o-mini";
 
-            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);;
+            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId); ;
             TranslationSettings settings = new TranslationSettings
-                        {
-                            MaxTokens = 1000,
-                            Temperature = 0.1,
-                        };
+            {
+                MaxTokens = 1000,
+                Temperature = 0.1,
+            };
             JsonTranslator<SentimentResponse> _translator;
-    
+
             _translator = new JsonTranslator<SentimentResponse>(
                 new LanguageModel(config));
 
@@ -2686,7 +2947,7 @@ You are a highly capable AI assistant designed to perform various actions based 
 
         public async Task<string> StructuredOutputByClassAsync<TClass>(string input)
         {
-            string modelId = "gpt-4o-mini"; 
+            string modelId = "gpt-4o-mini";
 
             OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);
             TranslationSettings settings = new TranslationSettings
@@ -2743,15 +3004,15 @@ You are a highly capable AI assistant designed to perform various actions based 
         {
             //int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini"; 
+            string modelId = "gpt-4o-mini";
 
 
-            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);;
+            OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId); ;
             TranslationSettings settings = new TranslationSettings
-                        {
-                            MaxTokens = 1000,
-                            Temperature = 0.1,
-                        };
+            {
+                MaxTokens = 1000,
+                Temperature = 0.1,
+            };
             JsonTranslator<Calendar.CalendarActionsStructured> _translator;
 
             _translator = new JsonTranslator<Calendar.CalendarActionsStructured>(
@@ -2838,7 +3099,7 @@ You are a highly capable AI assistant designed to perform various actions based 
         }
 
 
-   /// <summary>
+        /// <summary>
         /// Processes the user query by recognizing intents and invoking corresponding functions.
         /// </summary>
         /// <param name="userQuery">The user's input query.</param>
@@ -3025,8 +3286,8 @@ After determining the function, execute it, and return the response in JSON form
                 _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
             }
         }
-    
-       public async Task<string> CalendarAsync(string input)
+
+        public async Task<string> CalendarAsync(string input)
         {
             const int maxTokens = 16000;
             const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
@@ -3150,87 +3411,87 @@ After determining the function, execute it, and return the response in JSON form
                 _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync completed.");
             }
         }
-    
 
-    /// <summary>
-    /// Represents the structure of the news response.
-    /// </summary>
-    public class NewsResponse
-    {
-        [JsonProperty("articles")]
-        public List<OurNewsArticle> Articles { get; set; } = new List<OurNewsArticle>();
 
-        [JsonProperty("totalResults")]
-        public int TotalResults { get; set; }
-    }
-
-    /// <summary>
-    /// Represents a single news article.
-    /// </summary>
-    public class OurNewsArticle
-    {
-        [JsonProperty("title")]
-        public string Title { get; set; } = string.Empty;
-
-        [JsonProperty("description")]
-        public string Description { get; set; } = string.Empty;
-
-        [JsonProperty("url")]
-        public string Url { get; set; } = string.Empty;
-
-        [JsonProperty("publishedAt")]
-        public DateTime PublishedAt { get; set; }
-
-        // Add other relevant properties as needed
-    }
-
-/// <summary>
-/// Generates a search query based on user input using GPT-4 and the registered EmailPlugin functions,
-/// then retrieves recent emails or performs email-related actions.
-/// </summary>
-/// <param name="input">The natural language description for the email query.</param>
-/// <returns>The email result content as a string.</returns>
-public async Task<string> ShowEmailsAsync(string input)
-{
-    const int maxTokens = 16000;
-    const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
-    const double temperature = 0.1;
-    const double topP = 0.1;
-    const int seed = 356;
-
-    _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync initiated.");
-
-    if (string.IsNullOrWhiteSpace(input))
-    {
-        _logger.LogWarning("Input cannot be null or empty.");
-        return "Invalid input. Please provide a valid email query.";
-    }
-
-    try
-    {
-        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Building kernel and setting up email plugin.");
-
-        IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-        Kernel kernel = kernelBuilder.Build();
-
-        kernel = _kernelAddPLugin.AddEmailPlugin(kernel);
-
-        var executionSettings = new AzureOpenAIPromptExecutionSettings
+        /// <summary>
+        /// Represents the structure of the news response.
+        /// </summary>
+        public class NewsResponse
         {
-            Temperature = temperature,
-            TopP = topP,
-            MaxTokens = maxTokens,
-            Seed = seed,
-            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
-            ResponseFormat = typeof(PureEmailResult) // Updated to expect a list
-        };
+            [JsonProperty("articles")]
+            public List<OurNewsArticle> Articles { get; set; } = new List<OurNewsArticle>();
 
-        var arguments = new KernelArguments(executionSettings)
+            [JsonProperty("totalResults")]
+            public int TotalResults { get; set; }
+        }
+
+        /// <summary>
+        /// Represents a single news article.
+        /// </summary>
+        public class OurNewsArticle
         {
-            ["Input"] = input
-        };
+            [JsonProperty("title")]
+            public string Title { get; set; } = string.Empty;
 
-        string prompt = @"
+            [JsonProperty("description")]
+            public string Description { get; set; } = string.Empty;
+
+            [JsonProperty("url")]
+            public string Url { get; set; } = string.Empty;
+
+            [JsonProperty("publishedAt")]
+            public DateTime PublishedAt { get; set; }
+
+            // Add other relevant properties as needed
+        }
+
+        /// <summary>
+        /// Generates a search query based on user input using GPT-4 and the registered EmailPlugin functions,
+        /// then retrieves recent emails or performs email-related actions.
+        /// </summary>
+        /// <param name="input">The natural language description for the email query.</param>
+        /// <returns>The email result content as a string.</returns>
+        public async Task<string> ShowEmailsAsync(string input)
+        {
+            const int maxTokens = 16000;
+            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            const double temperature = 0.1;
+            const double topP = 0.1;
+            const int seed = 356;
+
+            _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync initiated.");
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                _logger.LogWarning("Input cannot be null or empty.");
+                return "Invalid input. Please provide a valid email query.";
+            }
+
+            try
+            {
+                _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Building kernel and setting up email plugin.");
+
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                Kernel kernel = kernelBuilder.Build();
+
+                kernel = _kernelAddPLugin.AddEmailPlugin(kernel);
+
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
+                {
+                    Temperature = temperature,
+                    TopP = topP,
+                    MaxTokens = maxTokens,
+                    Seed = seed,
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+                    ResponseFormat = typeof(PureEmailResult) // Updated to expect a list
+                };
+
+                var arguments = new KernelArguments(executionSettings)
+                {
+                    ["Input"] = input
+                };
+
+                string prompt = @"
 You are a highly capable AI assistant designed to perform various actions based on user input, specifically related to email handling.
 
 You have access to the following functions:
@@ -3258,55 +3519,55 @@ Determines if the email requires immediate action or follow-up, based on phrases
 
 **Action:**";
 
-        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Executing kernel with provided input.");
+                _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Executing kernel with provided input.");
 
-        var result = await kernel.InvokePromptAsync(prompt, arguments);
+                var result = await kernel.InvokePromptAsync(prompt, arguments);
 
-        if (result != null)
-        {
-            //AzureOpenAIHandler emailResponse  
-            string emailResponse = result.ToString();
-            _logger.LogInformation("AzureOpenAIHandler emailResponse\n{emailResponse}", emailResponse);
-
-            try
-            {
-                // Deserialize directly as a list of EmailViewBasicModel
-                var emailList = Newtonsoft.Json.JsonConvert.DeserializeObject<PureEmailResult>(emailResponse);
-
-                if (emailList != null && emailList.Emails.Any())
+                if (result != null)
                 {
-                    var formattedEmailResponse = Newtonsoft.Json.JsonConvert.SerializeObject(emailList, Newtonsoft.Json.Formatting.Indented);
-                    _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync generated email response successfully:\n{FormattedEmailResponse}", formattedEmailResponse);
-                    return formattedEmailResponse;
+                    //AzureOpenAIHandler emailResponse  
+                    string emailResponse = result.ToString();
+                    _logger.LogInformation("AzureOpenAIHandler emailResponse\n{emailResponse}", emailResponse);
+
+                    try
+                    {
+                        // Deserialize directly as a list of EmailViewBasicModel
+                        var emailList = Newtonsoft.Json.JsonConvert.DeserializeObject<PureEmailResult>(emailResponse);
+
+                        if (emailList != null && emailList.Emails.Any())
+                        {
+                            var formattedEmailResponse = Newtonsoft.Json.JsonConvert.SerializeObject(emailList, Newtonsoft.Json.Formatting.Indented);
+                            _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync generated email response successfully:\n{FormattedEmailResponse}", formattedEmailResponse);
+                            return formattedEmailResponse;
+                        }
+                        else
+                        {
+                            _logger.LogWarning("AzureOpenAIHandler ShowEmailsAsync received an empty email list.");
+                            return "No emails were found based on the provided query.";
+                        }
+                    }
+                    catch (Newtonsoft.Json.JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "AzureOpenAIHandler ShowEmailsAsync Error while deserializing the email response.");
+                        return emailResponse; // Return the raw response if deserialization fails
+                    }
                 }
                 else
                 {
-                    _logger.LogWarning("AzureOpenAIHandler ShowEmailsAsync received an empty email list.");
-                    return "No emails were found based on the provided query.";
+                    _logger.LogError("AzureOpenAIHandler ShowEmailsAsync failed to generate a valid response.");
+                    return "No email results were generated.";
                 }
             }
-            catch (Newtonsoft.Json.JsonException jsonEx)
+            catch (Exception ex)
             {
-                _logger.LogError(jsonEx, "AzureOpenAIHandler ShowEmailsAsync Error while deserializing the email response.");
-                return emailResponse; // Return the raw response if deserialization fails
+                _logger.LogError(ex, "AzureOpenAIHandler ShowEmailsAsync encountered an error.");
+                return $"An error occurred: {ex.Message}";
+            }
+            finally
+            {
+                _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync completed.");
             }
         }
-        else
-        {
-            _logger.LogError("AzureOpenAIHandler ShowEmailsAsync failed to generate a valid response.");
-            return "No email results were generated.";
-        }
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "AzureOpenAIHandler ShowEmailsAsync encountered an error.");
-        return $"An error occurred: {ex.Message}";
-    }
-    finally
-    {
-        _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync completed.");
-    }
-}
 
         /// <summary>
         /// Generates a KQL query based on a natural language input using GPT-4 and the registered KQL functions.
@@ -3349,9 +3610,9 @@ Determines if the email requires immediate action or follow-up, based on phrases
                     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
                 };
 
-                var arguments = new KernelArguments(executionSettings) 
-                { 
-                    ["Input"] = input 
+                var arguments = new KernelArguments(executionSettings)
+                {
+                    ["Input"] = input
                 };
 
                 // Define the prompt with explicit instructions and available KQL functions

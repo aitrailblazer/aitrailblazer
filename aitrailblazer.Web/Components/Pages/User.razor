@@ -1141,7 +1141,7 @@ private async Task LoadUserDataAsync()
         
         //currentUserIdentityID = accountInfo?.Id;
 
-         var (userId, tenantId) = await UserIDsService.GetUserIDs();
+        var (userId, tenantId) = await UserIDsService.GetUserIDsAsync();
         currentUserIdentityID = userId;
         currentUserTenantID = tenantId;
 
@@ -2456,8 +2456,13 @@ private async Task SaveEventAsync()
             };
 
             // Call the upsert function to save the email
-            await chatService.UpsertEmailMessageAsync(
-                email);
+             await cosmosDbService.UpsertEmailMessageAsync(
+                    email.TenantId,
+                    email.UserId,
+                    email.CategoryIds,
+                    email.Subject,
+                    email
+                );
             Console.WriteLine("Email upserted successfully.");
 
             await cosmosDbService.QueryEmailMessagesAsync(

@@ -252,13 +252,10 @@ builder.Services.AddSingleton<CosmosDbService>((provider) =>
 });
 
 
-// Register AzureOpenAIHandler as scoped if it depends on request-specific data
-builder.Services.AddScoped<AzureOpenAIHandler>();
 
 builder.Services.AddScoped<SemanticKernelService>((provider) =>
 {
     var logger = provider.GetRequiredService<ILogger<SemanticKernelService>>(); // Resolve logger
-    var azureOpenAIHandler = provider.GetRequiredService<AzureOpenAIHandler>();
 
     var semanticKernelOptions = provider.GetRequiredService<IOptions<OpenAi>>().Value;
     if (semanticKernelOptions == null)
@@ -271,32 +268,31 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
             completionDeploymentName: azureOpenAIModelName02 ?? String.Empty,
             embeddingDeploymentName: azureEmbeddingsModelName03 ?? String.Empty,
             apiKey: azureOpenAIKey03 ?? String.Empty,
-            azureOpenAIHandler: azureOpenAIHandler,
             logger: logger
     );
 });
 
 
-// Register ChatService as scoped
 builder.Services.AddScoped<ChatService>((provider) =>
 {
     var chatOptions = provider.GetRequiredService<IOptions<Chat>>()?.Value 
                       ?? throw new ArgumentException($"{nameof(IOptions<Chat>)} was not resolved through dependency injection.");
     var cosmosDbService = provider.GetRequiredService<CosmosDbService>();
     var semanticKernelService = provider.GetRequiredService<SemanticKernelService>();
-    var azureOpenAIHandler = provider.GetRequiredService<AzureOpenAIHandler>();
     var logger = provider.GetRequiredService<ILogger<ChatService>>();
 
     return new ChatService(
         cosmosDbService: cosmosDbService,
         semanticKernelService: semanticKernelService,
-        azureOpenAIHandler: azureOpenAIHandler,
         maxConversationTokens: chatOptions.MaxConversationTokens,
         cacheSimilarityScore: chatOptions.CacheSimilarityScore,
         productMaxResults: chatOptions.ProductMaxResults,
         logger: logger
     );
 });
+
+builder.Services.AddScoped<AzureOpenAIHandler>();
+
 //builder.Services.AddSingleton<SmartPasteInference, MyFormSmartPasteInference>();
 
 // Register the SmartPasteInferenceFactory as Scoped

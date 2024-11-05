@@ -60,10 +60,14 @@ else
                     SelectedFile="@SelectedFile" 
                     SelectedFileContent="@SelectedFileContent" 
                     OnClearReference="ClearSelectedFileAndContent"
+                    currentUserTenantID="@currentUserTenantID"
                     currentUserIdentityID="@currentUserIdentityID"
                     userEmail="@userEmail"
                     displayName="@displayName"
                     timeZoneInfo="@timeZoneInfo"
+                    userTimeZone="@userTimeZone"
+                    userLocalTime="@userLocalTime"
+                    userLanguage="@userLanguage"
 
                 />
 
@@ -430,8 +434,8 @@ else
     public string CurrentFeatureName { get; set; } = "AIWritingAssistant";
     private string FeatureUserFriendlyName = "Content";
     private string FeatureDescription = "Create unique content tailored to specific topics, styles, and audience understanding levels.";
-
-    private string? currentUserIdentityID;
+    private string currentUserTenantID;
+    private string currentUserIdentityID;
     private Profile profile;
     private UserAccountInformation accountInfo;
     private string? displayName;
@@ -472,6 +476,7 @@ else
 
     private string userTimeZone;
     private DateTime userLocalTime;
+
     private bool isMicrosoftGraphLoaded = false;
     private bool isMarkdownDescriptionLoaded = false;
     private bool isMarkdownHelpLoaded = false;
@@ -516,17 +521,32 @@ else
 
         try
         {
-            // Call the GetUserTimeZone function and update the UI
-            timeZoneInfo = _timeFunctions.GetUserTimeZone();
-
+     
             // Trigger re-render to show the result
             profile = await graphService.GetCurrentUserProfileAsync();
             accountInfo = await graphService.GetUserAccountInformationAsync();
             
-            currentUserIdentityID = accountInfo?.Id;
+            var (userId, tenantId) = await UserIDsService.GetUserIDsAsync();
+            currentUserIdentityID = userId;
+            currentUserTenantID = tenantId;
+            
+            userTimeZone = await UserIDsService.GetTimeZoneAsync();
+            Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
+
+            timeZoneInfo = _timeFunctions.GetUserTimeZone();
+            Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
+            
+            // Get the current UTC time
+            DateTime utcNow = DateTime.UtcNow;
+
+            // Convert to user's local time
+            userLocalTime = await UserIDsService.ConvertToUserTimeZoneAsync(utcNow);
+            
+            userLanguage = GetUserLanguage();
+
             userEmail = GetUserEmail();
             userFullName = GetUserFullName();  
-            displayName = userFullName;
+            //displayName = userFullName;
 
             //userPhoneNumer = GetUserPhoneNumber();
 
@@ -672,8 +692,7 @@ else
             isLoading = false;  // Hide loading state
         }
     }
-    
-    private async Task LoadCalendarEventsAsync()
+     private async Task LoadCalendarEventsAsync()
     {
         try
         {

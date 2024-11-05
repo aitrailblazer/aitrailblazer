@@ -102,6 +102,10 @@ public class BlobStorageManager
             Console.WriteLine($"Error uploading blob from content: {ex.Message}");
         }
     }
+
+    //  asapmemory-aitrailblazer-net / 8f22704e-0396-4263-84a7-63310d3f39e7-Sessions / ChatSession-20241009-205531-Creating Calendar Events from Emails A Step by Step Guide
+    //                                 8f22704e-0396-4263-84a7-63310d3f39e7-Sessions / ChatSession-20241009-205531-Creating Calendar Events from Emails A Step by Step Guide/Request-20241009-205531-Writing-AIWritingAssistant-create step by step for creating.json
+
     public async Task UploadStringToBlobAsync(
         string userId,
         string directory,

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using AITrailblazer.net.Services;
+using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
+using Microsoft.Azure.Cosmos;
+using System.Diagnostics;
 
 namespace Cosmos.Copilot.Services
 {
@@ -18,14 +21,12 @@ namespace Cosmos.Copilot.Services
         private readonly double _cacheSimilarityScore;
         private readonly int _productMaxResults;
         private readonly int _emailMaxResults;
-        private readonly AzureOpenAIHandler _azureOpenAIHandler; // Injected AzureOpenAIHandler
 
         private readonly ILogger<ChatService> _logger; // Logger instance
 
         public ChatService(
             CosmosDbService cosmosDbService,
             SemanticKernelService semanticKernelService,
-            AzureOpenAIHandler azureOpenAIHandler,
             string maxConversationTokens,
             string cacheSimilarityScore,
             string productMaxResults,
@@ -33,8 +34,7 @@ namespace Cosmos.Copilot.Services
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
             _semanticKernelService = semanticKernelService ?? throw new ArgumentNullException(nameof(semanticKernelService));
-            _azureOpenAIHandler = azureOpenAIHandler ?? throw new ArgumentNullException(nameof(azureOpenAIHandler));
-      
+
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             if (!Int32.TryParse(maxConversationTokens, out _maxConversationTokens))
@@ -78,60 +78,6 @@ namespace Cosmos.Copilot.Services
             }
         }
 
-        /// <summary>
-        /// Test method for ChatService.
-        /// </summary>
-        public async Task TestAsync()
-        {
-            _logger.LogInformation("Executing TestAsync method.");
-            try
-            {
-                await _cosmosDbService.TestAsync();
-                _logger.LogInformation("TestAsync executed successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred during TestAsync execution.");
-                throw;
-            }
-        }
-
-        public async Task UpsertEmailMessageAsync(EmailMessage email)
-        {
-            _logger.LogInformation("Upserting email message for TenantId={TenantId}, UserId={UserId}.", email.TenantId, email.UserId);
-
-            try
-            {
-
-                // Generate AI Clear Note for the email
-                email.KeyPoints = await _azureOpenAIHandler.GenerateAIKeyPointsWizardAsync(email.BodyContentText, email.Subject);
-                _logger.LogInformation($"Email summary (KeyPoints) generated.{email.KeyPoints}");
-
-                email.BodyContent = ""; // Clear the body content to save space
-                // Serialize EmailMessage to JSON for embedding generation
-                var serializedEmail = JsonConvert.SerializeObject(email);
-
-                // Generate embedding vectors from serialized JSON
-                var vectors = await _semanticKernelService.GetEmbeddingsAsync(serializedEmail);
-                email.Vectors = vectors;
-
-                // Upsert the email message with key points and vectors in Cosmos DB
-                await _cosmosDbService.UpsertEmailMessageAsync(
-                    email.TenantId,
-                    email.UserId,
-                    email.CategoryIds,
-                    email.Subject,
-                    email
-                );
-
-                _logger.LogInformation("Email message upserted with Id={EmailId}.", email.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to upsert email message for TenantId={TenantId}, UserId={UserId}.", email.TenantId, email.UserId);
-                throw;
-            }
-        }
 
         /// <summary>
         /// Retrieves all chat sessions for a user.
@@ -153,6 +99,24 @@ namespace Cosmos.Copilot.Services
         }
 
         /// <summary>
+        /// Retrieves a single message by its unique identifier.
+        /// </summary>
+        /// <param name="messageId">The unique identifier of the message.</param>
+        /// <returns>The Message object if found; otherwise, null.</returns>
+        public async Task<Message> GetMessageByIdAsync(string messageId)
+        {
+            _logger.LogInformation("GetMessageByIdAsync: Retrieving message with ID: {MessageId}", messageId);
+            try
+            {
+                return await _cosmosDbService.GetMessageByIdAsync(messageId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to retrieve message with ID: {MessageId}", messageId);
+                throw;
+            }
+        }
+        /// <summary>
         /// Retrieves chat messages for a specific session.
         /// </summary>
         public async Task<List<Message>> GetChatSessionMessagesAsync(string tenantId, string userId, string? sessionId)
@@ -164,8 +128,11 @@ namespace Cosmos.Copilot.Services
                 ArgumentNullException.ThrowIfNull(userId);
                 ArgumentNullException.ThrowIfNull(sessionId);
 
-                var messages = await _cosmosDbService.GetSessionMessagesAsync(tenantId, userId, sessionId);
-                _logger.LogInformation("Retrieved {Count} messages for SessionId={SessionId}.", messages.Count, sessionId);
+                var messages = await _cosmosDbService.GetSessionMessagesAsync(
+                    tenantId,
+                    userId,
+                    sessionId);
+                _logger.LogInformation("GetChatSessionMessagesAsync Retrieved {Count} messages for SessionId={SessionId}.", messages.Count, sessionId);
                 return messages;
             }
             catch (Exception ex)
@@ -176,40 +143,122 @@ namespace Cosmos.Copilot.Services
         }
 
         /// <summary>
-        /// Creates a new chat session for a user.
+        /// Creates a new chat session.
         /// </summary>
-        public async Task<SessionChat> CreateNewChatSessionAsync(string tenantId, string userId)
+        /// <param name="tenantId">Tenant identifier.</param>
+        /// <param name="userId">User identifier.</param>
+        /// <param name="title">Title of the session.</param>
+        /// <returns>The created SessionChat object.</returns>
+        public async Task<SessionChat> CreateNewSessionChatAsync(
+            string tenantId,
+            string userId,
+            string title)
         {
-            _logger.LogInformation("Creating new chat session for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
+            _logger.LogInformation("CreateNewSessionChatAsync started for TenantId={TenantId}, UserId={UserId}, Title={Title}.", tenantId, userId, title);
+
             try
             {
-                var session = new SessionChat(tenantId, userId);
-                await _cosmosDbService.InsertSessionAsync(tenantId, userId, session);
-                _logger.LogInformation("New chat session created with SessionId={SessionId}.", session.SessionId);
+                // Create a new SessionChat instance, which generates a unique Id
+                var session = new SessionChat(
+                    tenantId: tenantId,
+                    userId: userId,
+                    title: title
+                );
+                // Ensure that the session timestamp is fully initialized
+                session.TimeStamp = DateTime.UtcNow;
+
+                _logger.LogDebug("CreateNewSessionChatAsync SessionChat instance created with Id={sessionId}.", session.SessionId);
+
+                // Insert the new session into Cosmos DB
+                await _cosmosDbService.InsertSessionChatAsync(tenantId, userId, session);
+                _logger.LogInformation("CreateNewSessionChatAsync: New chat session successfully inserted into Cosmos DB. SessionId={sessionId}, TenantId={TenantId}, UserId={UserId}, Title={Title}.",
+                    session.SessionId, tenantId, userId, title);
+
                 return session;
+            }
+            catch (CosmosException cosmosEx)
+            {
+                // Handle specific Cosmos DB exceptions if necessary
+                _logger.LogError(cosmosEx, "Cosmos DB error while creating new chat session. TenantId={TenantId}, UserId={UserId}, Title={Title}. StatusCode={StatusCode}, Message={Message}.",
+                    tenantId, userId, title, cosmosEx.StatusCode, cosmosEx.Message);
+                throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to create new chat session for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
+                _logger.LogError(ex, "Unexpected error occurred while creating new chat session. TenantId={TenantId}, UserId={UserId}, Title={Title}.",
+                    tenantId, userId, title);
                 throw;
             }
         }
 
         /// <summary>
-        /// Renames an existing chat session.
+        /// Updates an existing SessionChat in Cosmos DB.
         /// </summary>
-        public async Task RenameChatSessionAsync(string tenantId, string userId, string? sessionId, string newChatSessionName)
+        /// <param name="session">SessionChat object to update.</param>
+        /// <param name="tenantId">Tenant identifier.</param>
+        /// <param name="userId">User identifier.</param>
+        /// <param name="title">Title of the session.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task UpdateSessionAsync(
+            string partitionKey,
+            SessionChat session)
         {
-            _logger.LogInformation("Renaming chat session SessionId={SessionId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", sessionId, newChatSessionName, tenantId, userId);
+            _logger.LogInformation("Updating session with ID: {Id}", session.Id);
             try
             {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                await _cosmosDbService.UpdateSessionAsync(
+                    partitionKey,
+                    session
+                );
+                _logger.LogInformation("Updated session with ID: {Id}.", session.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating session with ID: {Id}.", session.Id);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Renames an existing chat session.
+        /// </summary>
+        public async Task RenameChatSessionAsync(
+            string tenantId,
+            string userId,
+            string sessionId,
+            string newChatSessionName)
+        {
+            string partitionKey = $"{tenantId}|{userId}|{sessionId}";
+            _logger.LogInformation("Renaming chat session SessionId={SessionId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", sessionId, newChatSessionName, tenantId, userId);
 
-                var session = await _cosmosDbService.GetSessionAsync(tenantId, userId, sessionId);
-                session.Name = newChatSessionName;
-                await _cosmosDbService.UpdateSessionAsync(tenantId, userId, session);
+            try
+            {
+                // Validate input parameters
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
+                ArgumentNullException.ThrowIfNull(newChatSessionName, nameof(newChatSessionName));
+
+                // Retrieve the existing session
+                var session = await _cosmosDbService.GetSessionAsync(
+                    tenantId,
+                    userId,
+                    sessionId);
+
+                if (session == null)
+                {
+                    _logger.LogWarning("Chat session with SessionId={SessionId} not found for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                    throw new KeyNotFoundException($"Chat session with SessionId={sessionId} not found.");
+                }
+
+                // Use the Rename method to update the session name
+                session.Rename(newChatSessionName);
+
+                // Update the session in the database
+                await _cosmosDbService.UpdateSessionAsync(
+                    partitionKey,
+                    session
+                );
+
                 _logger.LogInformation("Chat session SessionId={SessionId} renamed to '{NewName}'.", sessionId, newChatSessionName);
             }
             catch (Exception ex)
@@ -220,9 +269,41 @@ namespace Cosmos.Copilot.Services
         }
 
         /// <summary>
+        /// Deletes a specific message within a chat session.
+        /// </summary>
+        /// <param name="tenantId">Tenant identifier.</param>
+        /// <param name="userId">User identifier.</param>
+        /// <param name="sessionId">Session Chat identifier.</param>
+        /// <param name="messageId">Message identifier to delete.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task DeleteMessageAsync(string tenantId, string userId, string sessionId, string messageId)
+        {
+            _logger.LogInformation("Deleting message with ID: {MessageId} in session: {SessionId} for TenantId={TenantId}, UserId={UserId}.", messageId, sessionId, tenantId, userId);
+            try
+            {
+                // Validate input parameters
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
+                ArgumentNullException.ThrowIfNull(messageId, nameof(messageId));
+
+                // Call the CosmosDbService to delete the message
+                await _cosmosDbService.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
+
+                _logger.LogInformation("Message with ID: {MessageId} deleted successfully in session: {SessionId}.", messageId, sessionId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to delete message with ID: {MessageId} in session: {SessionId} for TenantId={TenantId}, UserId={UserId}.", messageId, sessionId, tenantId, userId);
+                throw;
+            }
+        }
+
+
+        /// <summary>
         /// Deletes a chat session and its messages.
         /// </summary>
-        public async Task DeleteChatSessionAsync(string tenantId, string userId, string? sessionId)
+        public async Task DeleteChatSessionAsync(string tenantId, string userId, string sessionId)
         {
             _logger.LogInformation("Deleting chat session SessionId={SessionId} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
             try
@@ -242,135 +323,10 @@ namespace Cosmos.Copilot.Services
         }
 
         /// <summary>
-        /// Retrieves a chat completion based on user prompt.
-        /// </summary>
-        public async Task<Message> GetChatCompletionAsync(
-            string tenantId, 
-            string userId, 
-            string? sessionId, 
-            string promptText)
-        {
-            _logger.LogInformation("Generating chat completion for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
-            try
-            {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
-
-                // Create a message object for the new User Prompt and calculate the tokens for the prompt
-                var chatMessage = await CreateChatMessageAsync(tenantId, userId, sessionId, promptText);
-                _logger.LogDebug("Chat message created with MessageId={MessageId}.", chatMessage.Id);
-
-                // Grab context window from the conversation history up to the maximum configured tokens
-                var contextWindow = await GetChatSessionContextWindow(tenantId, userId, sessionId);
-                _logger.LogDebug("Context window retrieved with {Count} messages.", contextWindow.Count);
-
-                // Perform a cache search to see if this prompt has already been used in the same context window as this conversation
-                var (cachePrompts, cacheVectors, cacheResponse) = await GetCacheAsync(contextWindow);
-                _logger.LogDebug("Cache search completed. CacheHit={CacheHit}.", !string.IsNullOrEmpty(cacheResponse));
-
-                if (!string.IsNullOrEmpty(cacheResponse))
-                {
-                    _logger.LogInformation("Cache hit found for the prompt. Using cached completion.");
-                    chatMessage.CacheHit = true;
-                    chatMessage.Completion = cacheResponse;
-                    chatMessage.CompletionTokens = 0;
-
-                    // Persist the prompt/completion, update the session tokens
-                    await UpdateSessionAndMessage(tenantId, userId, sessionId, chatMessage);
-                    _logger.LogInformation("Chat message persisted with cached completion.");
-                    return chatMessage;
-                }
-                else
-                {
-                    _logger.LogInformation("Cache miss. Generating new completion using Semantic Kernel.");
-
-                    // Generate embeddings for the user prompt
-                    var promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
-                    _logger.LogDebug("Embeddings generated for the prompt.");
-
-                    // Perform RAG (Retrieval-Augmented Generation) pattern completions
-                    var products = await _cosmosDbService.SearchProductsAsync(promptVectors, _productMaxResults);
-                    _logger.LogDebug("Retrieved {Count} products for RAG completion.", products.Count);
-
-                    (chatMessage.Completion, chatMessage.CompletionTokens) = await _semanticKernelService.GetRagCompletionAsync(
-                        sessionId, 
-                        contextWindow, 
-                        products);
-                    _logger.LogInformation("Completion generated using Semantic Kernel.");
-
-                    // Cache the prompts in the current context window and their vectors with the generated completion
-                    await CachePutAsync(cachePrompts, cacheVectors, chatMessage.Completion);
-                    _logger.LogInformation("Cached the new completion.");
-                }
-
-                // Persist the prompt/completion, update the session tokens
-                await UpdateSessionAndMessage(tenantId, userId, sessionId, chatMessage);
-                _logger.LogInformation("Chat message persisted with new completion.");
-
-                return chatMessage;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while generating chat completion for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves a completion based on a user prompt for an email context, with optional categoryId and context window.
-        /// </summary>
-        public async Task<(string completion, string? subject)> GetEmailCompletionAsync(
-            string tenantId, 
-            string userId, 
-            string categoryId, 
-            string promptText, 
-            List<EmailMessage>? contextWindow = null)
-        {
-            // Adjusted logging syntax to remove argument issues
-            _logger.LogInformation("Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
-
-            try
-            {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-
-                // Initialize contextWindow as an empty list if not provided
-                contextWindow ??= new List<EmailMessage>();
-
-                // Generate embeddings for the user prompt
-                float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
-                _logger.LogDebug("Embeddings generated for the prompt.");
-
-                // Search for similar email messages using embeddings
-                var similarEmails = await _cosmosDbService.SearchEmailsAsync(promptVectors, tenantId, userId, categoryId, _emailMaxResults);
-                _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
-                _logger.LogInformation($"SearchEmailsAsync {similarEmails}",similarEmails);
-
-                // Extract the subject of the top email, if available
-                string? subject = similarEmails.FirstOrDefault()?.Subject;
-
-                // Cretae summary for the email
-                (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagEmailCompletionAsync(
-                    categoryId: categoryId ?? "", // Use "general" if categoryId is null
-                    contextWindow: contextWindow, 
-                    contextData: similarEmails,
-                    useChatHistory: false);
-
-                _logger.LogInformation("Completion generated using Semantic Kernel.");
-
-                return (generatedCompletion, subject);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Retrieves the context window for the current conversation.
         /// </summary>
+        /// 
+        /*
         private async Task<List<Message>> GetChatSessionContextWindow(string tenantId, string userId, string sessionId)
         {
             _logger.LogDebug("Fetching context window for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
@@ -406,100 +362,124 @@ namespace Cosmos.Copilot.Services
                 throw;
             }
         }
+        */
 
-        /// <summary>
-        /// Summarizes the chat session to generate a relevant name.
-        /// </summary>
-        public async Task<string> SummarizeChatSessionNameAsync(string tenantId, string userId, string? sessionId)
+
+        public async Task<SessionChat> GetSessionAsync(
+           string tenantId,
+           string userId,
+           string sessionId)
         {
-            _logger.LogInformation("Summarizing chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+            _logger.LogInformation("Retrieving session with ID: {Id} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
             try
             {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                // Call the non-generic GetSessionAsync method from CosmosDbService
+                SessionChat session = await _cosmosDbService.GetSessionAsync(tenantId, userId, sessionId);
 
-                // Get the messages for the session
-                var messages = await _cosmosDbService.GetSessionMessagesAsync(tenantId, userId, sessionId);
-                _logger.LogDebug("Retrieved {Count} messages for summarization.", messages.Count);
+                if (session == null)
+                {
+                    _logger.LogWarning("Session with ID {Id} does not exist.", sessionId);
+                    return null;
+                }
 
-                // Create a conversation string from the messages
-                var conversationText = string.Join(" ", messages.Select(m => $"{m.Prompt} {m.Completion}"));
-                _logger.LogDebug("Conversation text prepared for summarization.");
-
-                // Send to OpenAI to summarize the conversation
-                var completionText = await _semanticKernelService.SummarizeConversationAsync(conversationText);
-                _logger.LogInformation("Summarization completed with summary: '{Summary}'.", completionText);
-
-                await RenameChatSessionAsync(tenantId, userId, sessionId, completionText);
-                _logger.LogInformation("Chat session renamed based on summarization.");
-
-                return completionText;
+                _logger.LogInformation("Retrieved session with ID: {Id}.", session.Id);
+                return session;
             }
+
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to summarize chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                _logger.LogError(ex, "Error retrieving session with ID: {Id} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
                 throw;
             }
         }
 
-        /// <summary>
-        /// Creates a new chat message with the user prompt.
-        /// </summary>
-        private async Task<Message> CreateChatMessageAsync(string tenantId, string userId, string sessionId, string promptText)
+        public async Task UpsertSessionAndMessageAsync(
+           string tenantId,
+           string userId,
+           string sessionId,
+           Message chatMessage)
         {
-            _logger.LogDebug("Creating chat message for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, Prompt='{Prompt}'.", tenantId, userId, sessionId, promptText);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var correlationId = Guid.NewGuid();
+
+            _logger.LogDebug("UpsertSessionAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}.",
+                correlationId, tenantId, userId, sessionId, chatMessage.Id);
+
             try
             {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                // Validate input parameters
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
+                ArgumentNullException.ThrowIfNull(chatMessage, nameof(chatMessage));
 
-                // Calculate tokens for the user prompt message.
-                int promptTokens = GetTokens(promptText);
-                _logger.LogDebug("Prompt tokens calculated: {PromptTokens}.", promptTokens);
+                // Retrieve the current session from the database
+                _logger.LogDebug("Retrieving session from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.",
+                    correlationId, tenantId, userId, sessionId);
 
-                // Create a new message object.
-                var chatMessage = new Message(tenantId, userId, sessionId, promptTokens, promptText, "");
+                var session = await _cosmosDbService.GetSessionAsync(
+                    tenantId,
+                    userId,
+                    sessionId);
 
-                // Insert the message into Cosmos DB
-                await _cosmosDbService.InsertMessageAsync(tenantId, userId, chatMessage);
-                _logger.LogInformation("Chat message inserted with MessageId={MessageId}.", chatMessage.Id);
+                if (session == null)
+                {
+                    _logger.LogWarning("Session not found. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.",
+                        correlationId, tenantId, userId, sessionId);
+                    throw new KeyNotFoundException($"Session with ID {sessionId} does not exist.");
+                }
 
-                return chatMessage;
+                // Set the session timestamp first
+                //session.TimeStamp = DateTime.UtcNow;
+
+                // Set the message timestamp slightly later
+                chatMessage.TimeStamp = session.TimeStamp.AddMilliseconds(1);
+
+                // Add the message to the session
+                session.AddMessage(chatMessage);
+
+                _logger.LogDebug("Session tokens updated. CorrelationId={CorrelationId}, SessionId={SessionId}, NewTotalTokens={NewTotalTokens}.",
+                    correlationId, sessionId, session.Tokens);
+
+                // Prepare items for batch upsert
+                var itemsToUpsert = new object[]
+                {
+                    session,      // Upsert the updated session
+                    chatMessage   // Upsert the new message
+                };
+
+                _logger.LogDebug("Performing transactional batch upsert. CorrelationId={CorrelationId}, SessionId={SessionId}, MessageId={MessageId}.",
+                    correlationId, sessionId, chatMessage.Id);
+
+                await _cosmosDbService.UpsertSessionBatchAsync(
+                    tenantId,
+                    userId,
+                    sessionId,
+                    itemsToUpsert
+                );
+
+                _logger.LogInformation("Session and message upserted successfully. CorrelationId={CorrelationId}, SessionId={SessionId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                    correlationId, sessionId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
+            }
+            catch (CosmosException cosmosEx)
+            {
+                stopwatch.Stop();
+                _logger.LogError(cosmosEx, "Cosmos DB error while upserting session and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}, StatusCode={StatusCode}, Message={Message}.",
+                    correlationId, tenantId, userId, sessionId, chatMessage.Id, cosmosEx.StatusCode, cosmosEx.Message);
+                throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to create chat message for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
+                stopwatch.Stop();
+                _logger.LogError(ex, "Unexpected error while upserting session and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                    correlationId, tenantId, userId, sessionId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Updates the chat session and message in the database.
-        /// </summary>
-        private async Task UpdateSessionAndMessage(string tenantId, string userId, string sessionId, Message chatMessage)
-        {
-            _logger.LogDebug("Updating session and message for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}.", tenantId, userId, sessionId, chatMessage.Id);
-            try
+            finally
             {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
-
-                // Update the tokens used in the session
-                var session = await _cosmosDbService.GetSessionAsync(tenantId, userId, sessionId);
-                session.Tokens += chatMessage.PromptTokens + chatMessage.CompletionTokens;
-                _logger.LogDebug("Session tokens updated. New total tokens: {Tokens}.", session.Tokens);
-
-                // Insert new message and Update session in a transaction
-                await _cosmosDbService.UpsertSessionBatchAsync(tenantId, userId, session, chatMessage);
-                _logger.LogInformation("Session and message updated successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to update session and message for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}.", tenantId, userId, sessionId, chatMessage.Id);
-                throw;
+                stopwatch.Stop();
+                _logger.LogDebug("UpsertSessionAndMessageAsync completed. CorrelationId={CorrelationId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                    correlationId, stopwatch.ElapsedMilliseconds);
             }
         }
 
@@ -584,5 +564,128 @@ namespace Cosmos.Copilot.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retrieves a completion based on a user prompt for an email context, with optional categoryId and context window.
+        /// </summary>
+        public async Task<(string completion, string? subject)> GetEmailCompletionAsync(
+            string tenantId,
+            string userId,
+            string categoryId,
+            string promptText,
+            List<EmailMessage>? contextWindow = null)
+        {
+            // Adjusted logging syntax to remove argument issues
+            _logger.LogInformation("Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+
+            try
+            {
+                ArgumentNullException.ThrowIfNull(tenantId);
+                ArgumentNullException.ThrowIfNull(userId);
+
+                // Initialize contextWindow as an empty list if not provided
+                contextWindow ??= new List<EmailMessage>();
+
+                // Generate embeddings for the user prompt
+                float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
+                _logger.LogDebug("Embeddings generated for the prompt.");
+
+                // Search for similar email messages using embeddings
+                var similarEmails = await _cosmosDbService.SearchEmailsAsync(promptVectors, tenantId, userId, categoryId, _emailMaxResults);
+                _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
+                _logger.LogInformation($"SearchEmailsAsync {similarEmails}", similarEmails);
+
+                // Extract the subject of the top email, if available
+                string? subject = similarEmails.FirstOrDefault()?.Subject;
+
+                // Create summary for the email
+                (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagEmailCompletionAsync(
+                    categoryId: categoryId ?? "", // Use "general" if categoryId is null
+                    contextWindow: contextWindow,
+                    contextData: similarEmails,
+                    useChatHistory: false);
+
+                _logger.LogInformation("Completion generated using Semantic Kernel.");
+
+                return (generatedCompletion, subject);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Summarizes the chat session to generate a relevant name.
+        /// </summary>
+        public async Task<string> SummarizeChatSessionNameAsync(string tenantId, string userId, string? sessionId)
+        {
+            _logger.LogInformation("Summarizing chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+            try
+            {
+                ArgumentNullException.ThrowIfNull(tenantId);
+                ArgumentNullException.ThrowIfNull(userId);
+                ArgumentNullException.ThrowIfNull(sessionId);
+
+                // Get the messages for the session
+                var messages = await _cosmosDbService.GetSessionMessagesAsync(tenantId, userId, sessionId);
+                _logger.LogDebug("Retrieved {Count} messages for summarization.", messages.Count);
+
+                // Create a conversation string from the messages
+                var conversationText = string.Join(" ", messages.Select(m => $"{m.Prompt} {m.Output}"));
+                _logger.LogDebug("Conversation text prepared for summarization.");
+
+                // Send to OpenAI to summarize the conversation
+                var completionText = await _semanticKernelService.SummarizeConversationAsync(conversationText);
+                _logger.LogInformation("Summarization completed with summary: '{Summary}'.", completionText);
+
+                await RenameChatSessionAsync(tenantId, userId, sessionId, completionText);
+                _logger.LogInformation("Chat session renamed based on summarization.");
+
+                return completionText;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to summarize chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Sanitizes the prompt text to prevent logging sensitive information.
+        /// </summary>
+        /// <param name="promptText">The original prompt text.</param>
+        /// <returns>A sanitized version of the prompt text.</returns>
+        private string SanitizePromptText(string promptText)
+        {
+            // Implement sanitization logic as needed.
+            // For example, truncate the text or remove sensitive keywords.
+            // Here, we'll simply truncate to the first 100 characters for logging purposes.
+            if (promptText.Length > 100)
+            {
+                return promptText.Substring(0, 100) + "...";
+            }
+            return promptText;
+        }
+        /// <summary>
+        /// Test method for ChatService.
+        /// </summary>
+        public async Task TestAsync()
+        {
+            _logger.LogInformation("Executing TestAsync method.");
+            try
+            {
+                await _cosmosDbService.TestAsync();
+                _logger.LogInformation("TestAsync executed successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred during TestAsync execution.");
+                throw;
+            }
+        }
+
+
     }
 }

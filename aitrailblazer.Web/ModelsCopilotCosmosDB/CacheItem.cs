@@ -10,13 +10,13 @@ public record CacheItem
     public float[] Vectors { get; set; }
     public string Prompts { get; set; }
 
-    public string Completion { get; set; }
+    public string Output { get; set; }
 
-    public CacheItem(float[] vectors, string prompts, string completion)
+    public CacheItem(float[] vectors, string prompts, string output)
     {
         Id = Guid.NewGuid().ToString();
         Vectors = vectors;
         Prompts = prompts;
-        Completion = completion;
+        Output = output;
     }
 }

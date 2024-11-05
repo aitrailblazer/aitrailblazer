@@ -28,16 +28,519 @@
 @inject AgentConfigurationService _agentConfigurationService
 @inject IJSRuntime JSRuntime
 @implements IAsyncDisposable
-@displayName
-@userEmail
-@timeZoneInfo
-@currentUserIdentityID
+                    <!--
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        ID: <span class="value-text">@currentUserTenantID / @currentUserIdentityID</span>
+                    </FluentTextBlock>
+                    --> 
+
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
+                    <FluentTextBlock Typo="Typography.Body">
+                        Email: <span class="value-text">@userEmail</span>
+                    </FluentTextBlock>                    
+                    <FluentTextBlock Typo="Typography.Body">
+                        Time Zone: <span class="value-text">@userTimeZone</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.Body">
+                        Local Time: <span class="value-text">@userLocalTime</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.Body">
+                        Language: <span class="value-text">@userLanguage</span>
+                    </FluentTextBlock>                
+                </FluentStack>
+                <!--
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Phone: <span class="value-text">@GetUserPhoneNumber()</span>
+                    </FluentTextBlock>
+                    <FluentTextBlock Typo="Typography.BodyStrong">
+                        Address: <span class="value-text">@GetUserAddress()</span>
+                    </FluentTextBlock>
+                -->
+
 <FluentTabs @bind-ActiveTabId="@activeid1" OnTabChange="HandleOnMainTabChange" Class="top-tabs-font-size">
     <FluentTab Id="Work-id">
         <Header>
             Work
         </Header>
-           <Content>
+            <Content>
+                <div @ref="containerDiv" class="splitter-container">
+                    <FluentMultiSplitter>
+                        <!-- LEFT Pane BEGIN -->
+                        @if (showLEFTPane)  {
+                            <FluentMultiSplitterPane Size="@LeftPaneSize" Min="0" Max="40%" Collapsible="true">
+                                <div style="display: flex; height: 100%; position: relative;">
+                                    @if (!isLeftPaneCollapsed) {
+                                        <FluentCard MinimalStyle="true" Width="@FluentCardWidth"  Height="100%"  style="padding: 0px; max-height: 90vh; overflow-y: auto; background-color: #f7f7f7;">
+                                        
+                                            <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange" Class="top-tabs-font-size">
+                                                <FluentTab Id="ConversationalMemory-id" Icon="@(new Icons.Regular.Size24.ChatMultiple())">
+                                                    <Header>
+                                                        Sessions
+                                                    </Header>
+                                                    <Content>
+                                                            <FluentCard MinimalStyle="true" Width="calc(100% - 1px)" Height="100%">
+                                                                <FluentLabel Typo="Typography.Body">Conversation Memory</FluentLabel>
+                                                                <FluentButton Id="NewSession" IconEnd="@(new Icons.Regular.Size16.Add())" Title="New Session" OnClick="@StartNewSession" />
+                                                                <FluentTooltip Anchor="NewSession" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                    Start a new session. Enter a new context and prompt to begin a new conversation.
+                                                                </FluentTooltip>
+                                                                @if (ItemsSessions != null && ItemsSessions.Any())
+                                                                {
+                                                                    <FluentTreeView Items="@ItemsSessions" @bind-SelectedItem="@currentSelectedTreeItemMessages" OnSelectedChange="@HandleSelectedSessionItemChanged" OnExpandedAsync="OnExpandedAsync" Class="session-tree-font-size">
+
+                                                                    </FluentTreeView>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <FluentLabel Typo="Typography.Body">No sessions found.</FluentLabel>
+                                                                }
+
+                                                            </FluentCard>
+                                                    </Content>
+                                                </FluentTab>
+                                                <!--
+                                                <FluentTab Id="Github-id" >
+                                                    <Header>
+                                                        <i class="fab fa-github"></i> 
+                                                            <span style="margin-left: 8px;">GitHub</span>
+                                                    </Header>
+                                                    <Content>
+                                                        <ReposList GetPanelOutput="GetPanelOutput" 
+                                                            OnFileContentLoaded="@HandleFileContentLoaded"
+                                                            OnIssueContentLoaded="@HandleIssueContentLoaded" />
+                                            
+                                                    </Content>
+                                                </FluentTab>
+                                                -->
+                                            </FluentTabs>
+                                        </FluentCard>
+                                    }
+                                    <FluentButton IconEnd="@(isLeftPaneCollapsed ? new Icons.Regular.Size24.ChevronRight() : new Icons.Regular.Size24.ChevronLeft())"
+                                    OnClick="@ToggleLeftPane"
+                                    Style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); height: 40px; width: 40px; z-index: 1;" />
+
+                                </div>
+                            </FluentMultiSplitterPane>
+                        }
+                        <!-- LEFT Pane END -->
+
+                        <!-- MIDDLE Pane BEGIN -->
+                        <FluentMultiSplitterPane  Size="@MiddlePaneSize" Min="30%" Collapsible="false">
+                            <FluentLabel Typo="Typography.Subject">
+                                    <b>@CurrentFeatureName</b>
+                                </FluentLabel>
+                    <!--
+                                @if (currentSelectedTreeItemOntology != null)
+                                {
+                                    <FluentLabel Typo="Typography.Subject">
+                                        Reference: <b>@currentSelectedTreeItemOntology.Text</b>
+                                    </FluentLabel>
+                                }
+                                
+                    -->
+                                @if (SelectedFile != null)
+                                {
+                                    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical">
+                                    <FluentLabel Typo="Typography.Subject">
+                                        Reference: <b>@SelectedFile.FileName</b>
+                                    </FluentLabel>
+                                    @if (currentSelectedOntologyTitle != null)
+                                    {
+                                        <FluentLabel Typo="Typography.Subject">
+                                            Chapter: <b>@currentSelectedOntologyTitle</b>
+                                        </FluentLabel>
+                                    }
+                                    <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Reference"
+                                                OnClick="ClearReference" /> 
+                                    </FluentStack>
+                                }
+
+                            <FluentMultiSplitter Orientation="Orientation.Vertical" Style="border: 1px solid var(--middle-fill-rest);">
+                                <div class="current-session">
+                                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical">
+                                        @if (sessionSelectedName != null)
+                                        {
+                                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
+                                                <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSession(currentChatSessionId))" />
+                                                <FluentLabel Typo="Typography.Subject"><b>Current Session: </b>@sessionSelectedName</FluentLabel>
+                                            </FluentStack>
+                                        }
+                                        else
+                                        {
+                                            <span class="no-session">Start a new session. Enter a new context and prompt to begin a new conversation.</span>
+                                        }
+                                        
+                                        @if (sessionSelectedItemName != null)
+                                        {
+                                              <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
+                                                <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
+                                                <FluentLabel Typo="Typography.Subject"><b>Current Chat: </b>@sessionSelectedItemName</FluentLabel>
+                                            </FluentStack>
+                                        }
+                                        else
+                                        {
+                                            <span class="no-session">Start a new session. Enter a new context and prompt to begin a new conversation.</span>
+                                        }
+                                        </FluentStack>
+                                </div>
+                                <FluentMultiSplitterPane Size="70%" Min="20%" Max="80%" Collapsible="false">
+                                    <FluentMultiSplitter Orientation="Orientation.Horizontal" >
+                                    <!-- INPUT Pane BEGIN -->
+                    
+                                        @if (showINPUTPane)
+                                        {
+                                        <FluentMultiSplitterPane Min="10%" Max="90%" Collapsible="false" Style="border: 2px solid var(--input-fill-rest);">
+                                            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical">
+
+                                        @if (!string.IsNullOrEmpty(PanelInput))
+                                        {
+                                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical">
+
+                                            <FluentSwitch @bind-Value="isHtmlView">Show HTML View</FluentSwitch>
+                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
+                                                OnClick="ClearPanelInput" /> 
+                                            </FluentStack>
+                                        }
+                                                <FluentCard MinimalStyle="false" Width="100%" Height="100%">
+                                                    <FluentLabel Typo="Typography.Subject">@RequestFeatureNameWorkflowName | @RequestFeatureNameProject</FluentLabel>
+                                                    <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
+                                                        @if (isHtmlView)
+                                                        {
+                                                            <FluentLabel Typo="Typography.Body" Class="content-splitter-font-size" 
+                                                                style="width: 100%; height: 400px; overflow-y: auto;">
+                                                                @((MarkupString)ConvertMarkdownToHtml(PanelInput))
+                                                            </FluentLabel>
+                                                        }
+                                                        else
+                                                        {
+                                                            <FluentTextArea Placeholder=@PlaceholderInputText Label="Context:"
+                                                                Typo="Typography.Body" @bind-Value="@PanelInput"
+                                                                Class="content-splitter-font-size"
+                                                                style="width: 100%;height: 100%;" Rows="@Rows" />
+                                                        }
+                                                    </div>
+                                                </FluentCard>
+
+                                                </FluentStack>
+
+                                            </FluentMultiSplitterPane>
+                                        }
+                                        <!-- INPUT Pane END -->
+                                        <!-- OUTPUT Pane BEGIN -->
+                                        <FluentMultiSplitterPane Min="20%" Collapsible="false" Style="border: 2px solid var(--output-fill-rest);">
+                                        <!-- Switch to Show/Hide FluentAccordion -->
+                                        @if (!string.IsNullOrEmpty(PanelOutput))
+                                        {
+                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Copy to Input"
+                                                Loading="@loadingOutput2"
+                                                OnClick="CopyOutputToInput" />
+
+                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                                Loading="@loadingOutput1"
+                                                OnClick="CopyToClipboard" />
+                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Output"
+                                                OnClick="ClearPanelOutput" />                    
+                                        }
+                                            <FluentLabel Typo="Typography.Subject">
+                                            </FluentLabel>
+                                            @if (agentSettings != null)
+                                            {
+                                            <!-- List of Authors with Tooltips -->
+                                            <div style="margin-bottom: 10px;">
+                                                <strong>AI Agents:</strong>
+                                                <ul style="list-style-type:none; padding: 0;">
+                                                    @if (!string.IsNullOrEmpty(agentSettings.WriterRoleName))
+                                                    {
+                                                        <li>
+                                                            <span id="author-Writer">
+                                                                <FluentIcon Value="@(new Icons.Regular.Size20.PenSparkle())" Color="@Color.Accent" Slot="start" />
+                                                                <span style="color:#1a73e8; font-size:17px;">
+                                                                    @agentSettings.WriterRoleName
+                                                                </span>
+                                                            </span>
+                                                            @if (!string.IsNullOrEmpty(agentSettings.WriterRoleDescription))
+                                                            {
+                                                                <FluentTooltip Anchor="author-Writer" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                    @agentSettings.WriterRoleDescription
+                                                                </FluentTooltip>
+                                                            }
+                                                        </li>
+                                                    }
+
+                                                    @if (!string.IsNullOrEmpty(agentSettings.EditorRoleName))
+                                                    {
+                                                        <li>
+                                                            <span id="author-Editor">
+                                                                <FluentIcon Value="@(new Icons.Regular.Size20.Edit())" Color="@Color.Warning" Slot="start" />
+                                                                <span style="color:#f39c12; font-size:17px;">
+                                                                    @agentSettings.EditorRoleName
+                                                                </span>
+                                                            </span>
+                                                            @if (!string.IsNullOrEmpty(agentSettings.EditorRoleDescription))
+                                                            {
+                                                                <FluentTooltip Anchor="author-Editor" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                    @agentSettings.EditorRoleDescription
+                                                                </FluentTooltip>
+                                                            }
+                                                        </li>
+                                                    }
+
+                                                    @if (!string.IsNullOrEmpty(agentSettings.ReviewerRoleName))
+                                                    {
+                                                        <li>
+                                                            <span id="author-Reviewer">
+                                                                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral" Slot="start" />
+                                                                <span style="color:#e74c3c; font-size:18px; font-weight:bold;">
+                                                                    @agentSettings.ReviewerRoleName
+                                                                </span>
+                                                            </span>
+                                                            @if (!string.IsNullOrEmpty(agentSettings.ReviewerRoleDescription))
+                                                            {
+                                                                <FluentTooltip Anchor="author-Reviewer" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                    @agentSettings.ReviewerRoleDescription
+                                                                </FluentTooltip>
+                                                            }
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <!-- Switch to Show/Hide FluentAccordion -->
+                                            <FluentSwitch @bind-Value="isShowFullAgentsChatThreadVisible">Show Full Agents' Chat Thread</FluentSwitch>
+                                            }
+
+                                            <FluentCard MinimalStyle="false" Width="100%" Height="100%" style="overflow-y: auto;">
+                                            @if (isShowFullAgentsChatThreadVisible && ChatMessages != null && ChatMessages.Any())
+                                            {    
+                                                <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
+
+                                                    <!-- Displaying the chat content -->
+                                                    <FluentIcon Value="@(new Icons.Regular.Size20.Chat())" Color="@Color.Neutral" Slot="start" />
+                                                    <FluentLabel>Complete history of the conversation:</FluentLabel>
+                                                    <FluentAccordion ActiveId="@activeId" OnAccordionItemChange="HandleOnAccordionItemChange">
+
+                                                        @foreach (var message in ChatMessages)
+                                                        {
+                                                            var currentAuthor = message.Author;
+
+                                                            <FluentAccordionItem>
+                                                                <div slot="start">
+                                                                    @if (currentAuthor == agentSettings.WriterRoleName)
+                                                                    {
+                                                                        <FluentIcon Value="@(new Icons.Regular.Size20.PenSparkle())" Color="@Color.Accent" Slot="start" />
+                                                                        <span id="@($"message-{currentAuthor}")" style="color:#1a73e8; font-size:17px;">
+                                                                            @agentSettings.WriterRoleName
+                                                                        </span>
+                                                                        <FluentTooltip Anchor="@($"message-{currentAuthor}")" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                            @agentSettings.WriterRoleDescription
+                                                                        </FluentTooltip>
+                                                                    }
+                                                                    else if (currentAuthor == agentSettings.EditorRoleName)
+                                                                    {
+                                                                        <FluentIcon Value="@(new Icons.Regular.Size20.Edit())" Color="@Color.Warning" Slot="start" />
+                                                                        <span id="@($"message-{currentAuthor}")" style="color:#f39c12; font-size:17px;">
+                                                                            @agentSettings.EditorRoleName
+                                                                        </span>
+                                                                        <FluentTooltip Anchor="@($"message-{currentAuthor}")" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                            @agentSettings.EditorRoleDescription
+                                                                        </FluentTooltip>
+                                                                    }
+                                                                    else if (currentAuthor == agentSettings.ReviewerRoleName)
+                                                                    {
+                                                                        <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral" Slot="start" />
+                                                                        <span id="@($"message-{currentAuthor}")" style="color:#e74c3c; font-size:18px; font-weight:bold;">
+                                                                            @agentSettings.ReviewerRoleName
+                                                                        </span>
+                                                                        <FluentTooltip Anchor="@($"message-{currentAuthor}")" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                                            @agentSettings.ReviewerRoleDescription
+                                                                        </FluentTooltip>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <FluentIcon Value="@(new Icons.Regular.Size20.Person())" Color="@Color.Neutral" Slot="start" />
+                                                                        <span style="color:#2c3e50; font-size:17px;">
+                                                                            @currentAuthor
+                                                                        </span>
+                                                                    }
+                                                                </div>
+                                                                <div style="padding:15px; background-color:@GetBackgroundColor(currentAuthor); border-radius:8px;">
+                                                                    @((MarkupString)ConvertMarkdownToHtml(message.Content))
+                                                                </div>
+                                                            </FluentAccordionItem>
+                                                        }
+                                                    </FluentAccordion>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
+                                                    @((MarkupString)ConvertMarkdownToHtml(PanelOutput))
+                                                </div>
+                                            }
+                                            </FluentCard>
+                                        </FluentMultiSplitterPane>
+                                        <!-- OUTPUT Pane END -->
+                                    </FluentMultiSplitter>
+                                </FluentMultiSplitterPane>
+                                <!-- COMMAND Line Pane BEGIN  -->
+                                <FluentMultiSplitterPane Size="20%" Min="20%" Max="20%" Collapsible="false">
+                                    <FluentToolbar Orientation="Orientation.Horizontal" >
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical">
+
+                                            <DynamicMasterTextSettings 
+                                                FeatureName=@CurrentFeatureName
+                                                CurrentSetting=@masterTextSetting
+                                                OnMasterTextSettingRadioChange="@HandleMasterTextSettingRadioChange" 
+                                                OnMyKnowledgeBaseCheckedChange="@HandleMyKnowledgeBaseCheckedChange" 
+                                                OnTagsChange="@HandleTagsChange"
+                                                Tags="@Tags"/>
+
+                                            <DynamicAIMode 
+                                                FeatureName=@CurrentFeatureName
+                                                CurrentSetting=@ChatSetting
+                                                OnChatSettingRadioChange="@HandleChatSettingRadioChange" 
+                                                />  
+                                        </FluentStack>
+
+                                        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
+                                        VerticalAlignment="@Vertical" HorizontalGap="1">
+                                        </FluentStack>  
+
+                                        <DynamicAIStatus 
+                                            FeatureName=@CurrentFeatureName
+                                            MasterTextSetting=@masterTextSetting
+                                            ChatSetting=@ChatSetting
+                                            WritingStyleVal=@AICopilotSettings.WritingStyleVal 
+                                            AudienceLevelVal=@AICopilotSettings.AudienceLevelVal
+                                            ResponseLengthVal=@AICopilotSettings.ResponseLengthVal
+                                            CreativeAdjustmentsVal=@AICopilotSettings.CreativeAdjustmentsVal 
+                                            ResponseStyleVal=@AICopilotSettings.ResponseStyleVal
+                                            RelationSettingsVal=@AICopilotSettings.RelationSettingsVal 
+                                            ImageSetting=@ImageSetting />
+                                        <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowReset())" Title="Reset Settings"
+                                                    OnClick="AICopilotSettingsReset" />
+
+
+                                            <DynamicInputField 
+                                            Value="@UserInput" 
+                                            ValueChanged="@((value) => { 
+                                                UserInput = value; 
+                                                StateHasChanged(); // Ensure state is updated
+                                            })"
+                                            OnSubmit="@HandleSubmit" 
+                                            Placeholder="@PlaceholderCommandText" 
+                                            Rows="@Rows" 
+                                            MinLength="6"
+                                            MaxLength="16384" 
+                                            Autofocus="@Autofocus" 
+                                            Submitting="@Submitting" />   
+                                
+                                    </FluentToolbar>    
+                                </FluentMultiSplitterPane>
+                               
+                                <!-- COMMAND Line Pane END -->
+                            </FluentMultiSplitter>
+                        </FluentMultiSplitterPane>
+                        <!-- MIDDLE Pane END -->
+                        <!-- Button Pane -->
+                        <FluentMultiSplitterPane Size="@RightPaneSize" Min="30%" Collapsible="false">
+                            @if (!isRightPaneCollapsed)
+                            {
+                                <FluentCard MinimalStyle="true" Width="calc(100% - 40px)" Style="border: 1px solid var(--accent-fill-rest); padding: 0px; margin-right: 40px;"
+                                    Class="fluent-card-summary-details">
+                                    
+                                    <FluentAccordion ActiveId="@activeId" OnAccordionItemChange="HandleOnAccordionItemChange" ExpandMode="AccordionExpandMode.Single">
+                                        <!--
+                                        @if (OntologyTree != null && OntologyTree.Any()){
+                                            <FluentAccordionItem Heading="Ontologies" Class="accordion-heading fluent-accordion-item">
+                                                <FluentIcon Value="@(new Icons.Regular.Size20.Globe())" Color="@Color.Accent" Slot="start" />
+                                                <FluentCard  Height="100%"  style="padding: 0px; max-height: 90vh; overflow-y: auto; background-color: #f7f7f7;">
+
+                                                    <FluentLabel Typo="Typography.Body" Class="content-small-font-size">
+                                                    <b>@currentSelectedOntologyTitle</b> 
+                                                    </FluentLabel>                    
+                                                    <FluentLabel Typo="Typography.Body" Class="content-small-font-size">
+                                                    @currentSelectedTreeItemOntology?.Text
+                                                    </FluentLabel>
+                                                    <FluentTreeView 
+                                                    @bind-CurrentSelected="@currentSelectedTreeViewItemOntology"
+                                                    OnSelectedChange="@HandleOnSelectedChangeOntology" Class="tree-font-size">
+                                                        @foreach (var chapter in OntologyTree)
+                                                        {
+                                                            <FluentTreeItem InitiallyExpanded="false" Text="@(chapter.GetTitle())">
+                                                                @foreach (var section in chapter.Sections)
+                                                                {
+                                                                    <FluentTreeItem InitiallyExpanded="false" Text="@(section.GetTitle())" Id="@(section.GetId())">
+                                                                    </FluentTreeItem>
+                                                                }
+                                                            </FluentTreeItem>
+                                                        }
+                                                    </FluentTreeView>
+                                                </FluentCard>
+                                            </FluentAccordionItem>
+                                        }
+                                        
+                                        -->
+                                        <FluentLabel Typo="Typography.Subject">
+                                            @CurrentFeatureWorkflowName: <b>@CurrentFeatureName</b>
+                                        </FluentLabel>
+                                        <FluentAccordionItem Heading="Tasks" Class="accordion-heading fluent-accordion-item">
+                                            <FluentIcon Value="@(new Icons.Regular.Size20.SparkleCircle())" Color="@Color.Accent" Slot="start" />
+                                            <FluentTreeView bind-CurrentSelected="currentSelectedTreeItemAICopilots" OnSelectedChange="HandleOnSelectedChangeAICopilots" Class="tree-font-size">
+                                                @foreach (var component in filteredComponentsAICopilots)
+                                                {
+                                                    <FluentTreeItem InitiallyExpanded="false" Text="@component.Name">
+                                                        <FluentIcon Value="@component.Icon" Color="Color.Neutral" Slot="start" />
+                                                        @foreach (var subComponent in component.SubComponents)
+                                                        {
+                                                            <FluentTreeItem Text="@subComponent.Name" Id="@subComponent.Id">
+                                                                <FluentIcon Value="@subComponent.Icon" Color="Color.Accent" Slot="start" />
+                                                            </FluentTreeItem>
+                                                        }
+                                                    </FluentTreeItem>
+                                                }
+                                            </FluentTreeView>
+                                        </FluentAccordionItem>
+                                        <FluentAccordionItem Expanded="true" Heading="Settings" Class="accordion-heading fluent-accordion-item">
+                                            <FluentIcon Value="@(new Icons.Regular.Size20.Settings())" Color="@Color.Accent" Slot="start" />
+                                            <FluentLabel Typo="Typography.Subject">
+                                                <b>@currentSelectedTreeItemAICopilotSettings?.Text</b> 
+                                            </FluentLabel>
+                                            <div style="max-height: 640px; overflow-y: auto;">
+                                                <FluentTreeView bind-CurrentSelected=currentSelectedTreeItemAICopilotSettings OnSelectedChange="HandleOnSelectedChangeAICopilotSettings" >
+                                                    @foreach (var component in componentsAICopilotSettings)
+                                                    {
+                                                        <FluentTreeItem InitiallyExpanded="false" Text="@component.Name" Class="tree-font-size">
+                                                            <FluentIcon Value="@component.Icon" Color="Color.Neutral" Slot="start" />
+                                                            @foreach (var subComponent in component.SubComponents)
+                                                            {
+                                                                <FluentTreeItem Text="@subComponent.Name" Id="@subComponent.Id" Class="tree-font-size">
+                                                                    <FluentIcon Value="@subComponent.Icon" Color="Color.Neutral" Slot="start" />
+                                                                </FluentTreeItem>
+                                                            }
+                                                        </FluentTreeItem>
+                                                    }
+                                                </FluentTreeView>
+                                            </div>
+                                        </FluentAccordionItem>
+                                    </FluentAccordion>
+                                </FluentCard>
+                            }
+                        </FluentMultiSplitterPane>
+
+                         <!-- RIGHT Pane BEGIN -->
+                        <FluentMultiSplitterPane Size="@RightPaneSize" Min="30%" Collapsible="false">
+                        
+                        </FluentMultiSplitterPane>
+                        <!-- RIGHT Pane END -->
+
+                    </FluentMultiSplitter>
+                </div>
             </Content>
     </FluentTab>
      <FluentTab Id="Reference-id">
@@ -48,7 +551,12 @@
         </Content>
     </FluentTab>
 </FluentTabs> 
-
+<style>
+    .splitter-container {
+        height: 100vh;
+        overflow: hidden;
+    }
+</style>
 @code {
     [Parameter]
     public string FeatureNameProject { get; set; } = "AIWriting";
@@ -90,6 +598,9 @@
     public bool showINPUTPane  { get; set; } = true;
     
     [Parameter]
+    public string currentUserTenantID   { get; set; }
+
+    [Parameter]
     public string? currentUserIdentityID   { get; set; }
 
     [Parameter]
@@ -97,9 +608,16 @@
     
     [Parameter]
     public string? displayName   { get; set; }
- 
+    
     [Parameter]
     public string? timeZoneInfo   { get; set; }
+
+   [Parameter]
+    public string? userTimeZone   { get; set; }
+    [Parameter]
+    public DateTime userLocalTime   { get; set; }
+   [Parameter]
+    public string? userLanguage   { get; set; }
 
     [Parameter]
     public string? c { get; set; }
@@ -161,6 +679,7 @@
         }
     }
 
+    private ElementReference containerDiv;
 
     private bool isLeftPaneCollapsed = false;
     private bool isRightPaneCollapsed = false;
@@ -224,11 +743,13 @@
     private string DBKey = null;
 
     bool oneShotSetting = true;
-    string UserInput = "";
+    string UserInput { get; set; } = string.Empty;
     string UserInputSaved = "";
 
     public bool Autofocus { get; set; } = true;
-    private bool submitting = false;
+    private bool Submitting { get; set; } = false;
+
+   private ITreeViewItem? currentSelectedTreeItemMessages = null;
 
     private FluentTreeItem? currentSelectedTreeItemAICopilotSettings = null;
     private FluentTreeItem? currentSelectedTreeItemAICopilots = null;
@@ -238,7 +759,7 @@
 
     public string PlaceholderCommandText { get; set; } = "Ask AI Assistant.";
 
-    public int Rows = 24;
+    private int Rows { get; set; } = 24;
     public int RowsCommand = 12;
 
     string PanelInputTemp = null;
@@ -374,7 +895,7 @@
         if (ChatSetting == "Workflow")
         {
             UserInputSaved = UserInput;
-            string CurrentSessionId = $"{CurrentSession.Id}"; 
+            string CurrentSessionId = CurrentSession.Id; 
             string workflow = await azureOpenAIHandler.LoadSessionMessagesPipeAsync(CurrentSessionId);
             //Console.WriteLine($"LoadSessionMessagesAsync userFriendlyText: {userFriendlyText}");
             UserInput=($"Workflow: {workflow}");
@@ -453,18 +974,16 @@
     }
 
     public List<ChatMessageM> ChatMessages { get; set; } = new();
-    //private string FinalContent { get; set; }
-
     private async Task HandleSubmit()
     {
         string userInput = UserInput;
         string panelInput = PanelInput;
 
-        submitting = true;
-        @if (selectedSectionContentFinal != null)
-        {
-            panelInput = "Reference: " + selectedSectionContentFinal + "\n\n" + panelInput+ "\n\n" ;
-        }
+        Submitting = true;
+        //@if (selectedSectionContentFinal != null)
+        //{
+        //    panelInput = "Reference: " + selectedSectionContentFinal + "\n\n" + panelInput+ "\n\n" ;
+        //}
         Console.WriteLine($"HandleSubmit userInput: {userInput}");
         Console.WriteLine($"HandleSubmit sessionSelectedName {sessionSelectedName}");
         if (SelectedFile != null)
@@ -487,10 +1006,12 @@
             AICopilotSettings.ResponseStyleVal
         );
 
+        Console.WriteLine($"HandleSubmit currentSelectedTreeItemMessagesId: {currentSelectedTreeItemMessagesId}");
         // Get the output from AzureOpenAIHandler
         PanelOutput = await azureOpenAIHandler.HandleSubmitAsync(
             isNewSession,
             IsMyKnowledgeBaseChecked,
+            currentUserTenantID,
             currentUserIdentityID,
             CurrentFeatureWorkflowName,
             CurrentFeatureName,
@@ -504,9 +1025,10 @@
             AICopilotSettings.WritingStyleVal,
             AICopilotSettings.RelationSettingsVal,
             AICopilotSettings.ResponseStyleVal,
-            sessionSelectedName
+            sessionSelectedName,
+            currentSelectedTreeItemMessagesId
         );
-        submitting = false;
+        Submitting = false;
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
         if (agentSettings != null)
@@ -536,62 +1058,56 @@
             }
         }
 
-        await LoadSessionsAsync();
+        // Reload sessions and keep the current session selected
+        await LoadSessionsAsync(currentSelectedTreeItemMessagesId);
     }
-  private async Task LoadSessionsAsync()
+    private async Task LoadSessionsAsync(string? sessionIdToSelect = null)
     {
-        string directory = "Sessions";
-        Sessions = await azureOpenAIHandler.LoadSessionsAsync(
+        List<Cosmos.Copilot.Models.SessionChat> SessionChats = await azureOpenAIHandler.LoadSessionsAsync(
+            currentUserTenantID,
             currentUserIdentityID, 
-            directory);
+            CurrentFeatureWorkflowName);
 
-        ItemsSessions = Sessions.Select(session => new TreeViewItem
+        ItemsSessions = SessionChats.Select(session => new TreeViewItem
         {
-            Text = session.Name,
+            Text = session.Title,
             Id = session.Id,
             OnExpandedAsync = OnExpandedAsync,
-            Expanded = false, // Start with the session collapsed
-            Items = TreeViewItem.LoadingTreeViewItems, // Placeholder for lazy loading
+            Expanded = false,
+            Items = TreeViewItem.LoadingTreeViewItems,
         }).Cast<ITreeViewItem>().ToList();
 
         if (ItemsSessions.Any())
         {
-            CurrentSession = Sessions.Last();
-            SelectedItem = ItemsSessions.Last();
-            Console.WriteLine($"LoadSessionsAsync: CurrentSession Id {CurrentSession.Id}");
-            Console.WriteLine($"LoadSessionsAsync: CurrentSession Name {CurrentSession.Name}");
-            sessionSelectedName = CurrentSession.Name;
-            // Automatically expand the last session
-            await ExpandAndSelectLastChatInSessionAsync(CurrentSession.Id);
-                
-        } else {
-            sessionSelectedName = null;
-        }
- 
-        //StateHasChanged();
-    }
-    private async Task ExpandAndSelectLastChatInSessionAsync(string sessionId)
-    {
-        // Find the corresponding TreeViewItem for the session
-        var sessionItem = ItemsSessions.FirstOrDefault(item => item.Id == sessionId);
-        if (sessionItem != null)
-        {
-            // Manually trigger the loading of the session's messages
-            sessionItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(sessionId);
-            
-            // Set the session to be expanded
-            sessionItem.Expanded = true;
+            // Find the session to select based on the provided ID or default to the last session
+            var selectedSessionChat = sessionIdToSelect != null 
+                ? SessionChats.FirstOrDefault(s => s.Id == sessionIdToSelect) 
+                : SessionChats.LastOrDefault();
 
-        // Select the last chat item if available
-            var lastChatItem = sessionItem.Items.LastOrDefault();
-            if (lastChatItem != null)
+            if (selectedSessionChat != null)
             {
-                HandleSelectedSessionItemChanged(lastChatItem);
+                CurrentSession = new Session
+                {
+                    Name = selectedSessionChat.Title,
+                    Id = selectedSessionChat.Id
+                };
+                sessionSelectedName = CurrentSession.Name;
+                sessionSelectedItemName = "";
+                
+                var selectedTreeItem = ItemsSessions.FirstOrDefault(item => item.Id == selectedSessionChat.Id);
+                SelectedItem = selectedTreeItem;
+                Console.WriteLine($"LoadSessionsAsync: CurrentSession Id {CurrentSession.Id}");
+                Console.WriteLine($"LoadSessionsAsync: CurrentSession Title {CurrentSession.Name}");
+
+                await ExpandAndSelectLastChatInSessionAsync(CurrentSession.Id);
             }
         }
+        else
+        {
+            sessionSelectedName = "";
+        }
     }
-
-    private async Task OnExpandedAsync(TreeViewItemExpandedEventArgs e)
+        private async Task OnExpandedAsync(TreeViewItemExpandedEventArgs e)
     {
         if (e.Expanded)
         {
@@ -599,7 +1115,10 @@
             Console.WriteLine($"OnExpandedAsync e.CurrentItem.Id: {e.CurrentItem.Id}");
 
             // Load session messages when the item is expanded
-            e.CurrentItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(e.CurrentItem.Id);
+            e.CurrentItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(
+            currentUserTenantID,
+            currentUserIdentityID,
+            e.CurrentItem.Id);
         }
         else
         {
@@ -611,187 +1130,143 @@
         //StateHasChanged();
     }
 
-    string sessionSelectedName;
-    private void HandleSelectedSessionItemChanged(ITreeViewItem item)
+    private async Task ExpandAndSelectLastChatInSessionAsync(string sessionId)
     {
-        if (item != null){
-            var sessionSelected = Sessions.FirstOrDefault(s => s.Id == item.Id);
-            // When clciking on the session
-            if (sessionSelected != null)
+        // Find the corresponding TreeViewItem for the session
+        var sessionItem = ItemsSessions.FirstOrDefault(item => item.Id == sessionId);
+        if (sessionItem != null)
+        {
+            // Manually trigger the loading of the session's messages
+            sessionItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(
+                currentUserTenantID,
+                currentUserIdentityID, 
+                sessionId);
+
+            // Set the session to be expanded
+            sessionItem.Expanded = true;
+
+            // Select the last chat item if available
+            var lastChatItem = sessionItem.Items.LastOrDefault();
+            if (lastChatItem != null)
             {
-                sessionSelectedName = sessionSelected.Name;
-                //Console.WriteLine($"HandleSelectedSessionItemChanged: sessionSelected.Id {sessionSelected.Id}");
-                Console.WriteLine($"HandleSelectedSessionItemChanged: sessionSelectedName {sessionSelectedName}");
+                await OnItemSelectedAsync(lastChatItem.Id);
             }
-            SelectedItem = item;
-            // when clicking on the item, load the session messages
-            OnItemSelectedAsync(item).ConfigureAwait(false);
-            isNewSession = false;
         }
     }
-    private async Task OnItemSelectedAsync(ITreeViewItem selectedItem)
+
+
+
+    string sessionSelectedName;
+    private void HandleSelectedSessionItemChanged(FluentTreeItem selectedTreeItem)
     {
-        // OnItemSelectedAsync: 54a15dce-218d-4889-842f-4709a86704ed-AIMessageOptimizer/ChatSession-20240825-063041-Optimizing Marketing Messages for Engagement and Conversion|Request-20240825-071724.json|Response-20240825-071724.json
-        Console.WriteLine($"OnItemSelectedAsync: {selectedItem.Id}");
-
-        // Split the selectedItem.Id into parts
-        var sessionIdParts = selectedItem.Id.Split('|');
-        if (sessionIdParts.Length != 3)
+        if (selectedTreeItem == null)
         {
-            Console.WriteLine("Error: Unable to parse selectedItem.Id correctly.");
+            Console.WriteLine("Error: No item selected.");
             return;
         }
 
-        // sessionDirectoryPath: 54a15dce-218d-4889-842f-4709a86704ed-Sessions/ChatSession-20240903-010923-AI Driven Automation for Business Workflows
-        // requestFileName: Request-20240903-010923-Writing-AIWritingAssistant-ASAPAutonomous Systems and Proce.json
-        // responseFileName: Response-20240903-010923-Writing-AIWritingAssistant-ASAPAutonomous Systems and Proce.json
-        string sessionDirectoryPath = sessionIdParts[0];
-        string requestFileName = sessionIdParts[1];
-        string responseFileName = sessionIdParts[2];
+        // Set the selected item for processing
+        //currentSelectedTreeItemMessages = selectedTreeItem;
+        currentSelectedTreeItemMessagesId = selectedTreeItem.Id;
 
-        Console.WriteLine($"sessionDirectoryPath: {sessionDirectoryPath}");
-        Console.WriteLine($"requestFileName: {requestFileName}");
-        Console.WriteLine($"responseFileName: {responseFileName}");
+        // Extract session and message IDs if necessary
+        Console.WriteLine($"Selected Tree Item ID: {currentSelectedTreeItemMessagesId}");
+        
+        _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
+        isNewSession = false;
 
-        // Split the sessionDirectoryPath into parts
-        string[] pathParts = sessionDirectoryPath.Split('/');
-        if (pathParts.Length < 2)
+    }
+
+
+    // ChatSession-ASAPAutonomous_Systems_and_ProcessesASAP_is_a_no-code_multi-agen-20241105-012838-4f1d
+    // ChatSession-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013053-9686|Message-ChatSession-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013053-9686-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013056-e624
+    private string currentChatSessionId = string.Empty; 
+    private string currentChatSessionItemMessageId = string.Empty; 
+
+    private string currentSelectedTreeItemMessagesId = string.Empty;// can be Chat session or message ID
+
+    string sessionSelectedItemName;
+
+    private async Task OnItemSelectedAsync(string selectedItemId)
+    {
+        Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
+
+        // Split the ID by '|' to isolate the parts
+        var parts = selectedItemId.Split('|');
+
+        // Extract the first part as currentSelectedTreeItemMessagesId
+        if (parts.Length >= 1)
         {
-            Console.WriteLine("Error: sessionDirectoryPath does not have the expected format.");
+            isNewSession = false;
+
+            currentSelectedTreeItemMessagesId = parts[0];
+            currentChatSessionId = currentSelectedTreeItemMessagesId;
+
+            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentSelectedTreeItemMessagesId}");
+        }
+        else
+        {
+            Console.WriteLine("Error: Invalid ID format. Expected at least one part separated by '|'.");
             return;
         }
 
-        // Extract userId and directory
-        string userIdAndDirectory = pathParts[0]; // 54a15dce-218d-4889-842f-4709a86704ed-Sessions
-        int separatorIndex = userIdAndDirectory.LastIndexOf('-');
-        if (separatorIndex == -1)
+        string? messageId = null;
+
+        // Check if there's a second part which should be the message ID
+        if (parts.Length >= 2)
         {
-            Console.WriteLine("Error: Unable to extract userId and directory from sessionDirectoryPath.");
-            return;
-        }
-
-        string userId = userIdAndDirectory.Substring(0, separatorIndex);
-        string directory = userIdAndDirectory.Substring(separatorIndex + 1);
-
-        // Extract sessionDirectory
-        string sessionDirectory = string.Join("/", pathParts.Skip(1));
-
-        // userId: 54a15dce-218d-4889-842f-4709a86704ed
-        // directory: Sessions
-        //sessionDirectory: ChatSession-20240903-010923-AI Driven Automation for Business Workflows
-        Console.WriteLine($"userId: {userId}");
-        Console.WriteLine($"directory: {directory}");
-        Console.WriteLine($"sessionDirectory: {sessionDirectory}");
-
-        // Clean up session name by removing "ChatSession-" prefix if needed
-        sessionSelectedName = sessionDirectory.Replace("ChatSession-", "");
-
-        string requestContent;
-        try
-        {
-            requestContent = await azureOpenAIHandler.ReadBlobContentAsync(
-                userId, 
-                directory, 
-                sessionDirectory, 
-                requestFileName);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error reading request blob content: {ex.Message}");
-            return;
-        }
-
-        Console.WriteLine($"Raw request content: {requestContent}");
-
-        if (string.IsNullOrWhiteSpace(requestContent))
-        {
-            Console.WriteLine("Error: Request content is null or empty.");
-            PanelInput = string.Empty;
-            return;
-        }
-
-        try
-        {
-            var requestData = Newtonsoft.Json.JsonConvert.DeserializeObject<RequestData>(requestContent);
-            if (requestData == null)
+            var messageIdPart = parts[1];
+            if (messageIdPart.StartsWith("Message-"))
             {
-                Console.WriteLine("Error: Deserialized requestData is null.");
-                PanelInput = string.Empty;
-                return;
+                messageId = messageIdPart;
+                Console.WriteLine($"Extracted Message ID: {messageId}");
             }
-
-            RequestFeatureNameWorkflowName = requestData.FeatureNameWorkflowName ?? string.Empty;
-            RequestFeatureNameProject = requestData.FeatureNameProject ?? string.Empty;
-
-            // Set the fields based on the deserialized requestData
-            PanelInput = requestData.PanelInput?.Trim() ?? string.Empty;
-            UserInput = requestData.Input?.TrimStart() ?? string.Empty;
-
-            AICopilotSettings.ResponseLengthVal = requestData.ResponseLength ?? string.Empty;
-            AICopilotSettings.CreativeAdjustmentsVal = requestData.CreativeAdjustments ?? string.Empty;
-            AICopilotSettings.AudienceLevelVal = requestData.AudienceLevel ?? string.Empty;
-            AICopilotSettings.WritingStyleVal = requestData.WritingStyle ?? string.Empty;
-            AICopilotSettings.RelationSettingsVal = requestData.RelationSettings ?? string.Empty;
-            AICopilotSettings.ResponseStyleVal = requestData.ResponseStyle ?? string.Empty;
-
-            Console.WriteLine("Request data successfully extracted and set.");
-
-        }
-        catch (System.Text.Json.JsonException ex)
-        {
-            Console.WriteLine($"Error parsing JSON: {ex.Message}");
-            PanelInput = string.Empty;
-            return;
-        }
-        CurrentFeatureName=RequestFeatureNameProject;
-        // Read and process the response content
-        string responseContent;
-        try
-        {
-            responseContent = await azureOpenAIHandler.ReadBlobContentAsync(
-                userId, 
-                directory, 
-                sessionDirectory, 
-                responseFileName);
-            //Console.WriteLine($"Raw response content: {responseContent}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error reading response blob content: {ex.Message}");
-            PanelOutput = string.Empty;
-            return;
-        }
-
-        PanelOutput=responseContent;
-        // Retrieve agent settings for the given project feature
-        agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
-        if (agentSettings != null)
+            else
             {
-                try
-                {
-                    // Parse the JSON response into a list of messages
-                    ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
-
-                    // Format the final CopyWriter content with more prominent styling
-                    if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
-                        PanelOutput = FormatProminentWriterContent(
-                            ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
-                        );
-                    } else {
-                        PanelOutput = FormatProminentWriterContent(
-                            ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
-                        );
-                    }
-                }
-                catch (Newtonsoft.Json.JsonSerializationException ex)
-                {
-                    Console.WriteLine($"Error deserializing response JSON: {ex.Message}");
-                    PanelOutput = "Failed to process the response. Please try again later.";
-                }
+                Console.WriteLine("Warning: Second part does not start with 'Message-'. Ignoring message ID.");
             }
-            //TestDelegate(); // Test the delegate on first render
+        }
 
-        StateHasChanged();
+        if (!string.IsNullOrEmpty(messageId))
+        {
+            currentChatSessionItemMessageId = messageId;
+            // **Message Selection Scenario**
+            // Fetch the message details using the extracted message ID
+            var message = await azureOpenAIHandler.GetMessageByIdAsync(messageId);
+            if (message != null)
+            {
+                sessionSelectedItemName = message.Title;
+                // Display the message content
+                PanelInput = message.Prompt;
+                PanelOutput = message.Output;
+
+                // Set session-related settings based on message details
+                RequestFeatureNameWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
+                RequestFeatureNameProject = message.FeatureNameProject ?? string.Empty;
+
+                AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
+                AICopilotSettings.AudienceLevelVal = message.AudienceLevelVal ?? string.Empty;
+                AICopilotSettings.ResponseLengthVal = message.ResponseLengthVal ?? string.Empty;
+                AICopilotSettings.CreativeAdjustmentsVal = message.CreativeAdjustmentsVal ?? string.Empty;
+                AICopilotSettings.RelationSettingsVal = message.RelationSettingsVal ?? string.Empty;
+                AICopilotSettings.ResponseStyleVal = message.ResponseStyleVal ?? string.Empty;
+
+                // Update UI with new data
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine($"Message not found for ID: {messageId}");
+            }
+        }
+        else
+        {
+            // **No Message Selected Scenario**
+            // Optionally, you can handle cases where only the session ID is present
+            // Since you mentioned not needing the else block, we leave this section empty
+            // However, you might still want to perform some actions or simply acknowledge the selection
+            Console.WriteLine($"Selected Item is a Session with ID: {currentSelectedTreeItemMessagesId}, but no specific message selected.");
+        }
     }
 
     // Define a class to match the JSON structure
@@ -882,24 +1357,11 @@
         UserInput = string.Empty;
         PanelOutput = string.Empty;
 
-        // Reset AI Copilot Settings
-        //AICopilotSettings.ResponseLengthVal = string.Empty;
-        //AICopilotSettings.CreativeAdjustmentsVal = string.Empty;
-        //AICopilotSettings.AudienceLevelVal = string.Empty;
-        //AICopilotSettings.WritingStyleVal = string.Empty;
-        //AICopilotSettings.RelationSettingsVal = string.Empty;
-        //AICopilotSettings.ResponseStyleVal = string.Empty;
-
         // Clear the selected item
         SelectedItem = null;
 
         // Set the new session flag
         isNewSession = true;
-
-
-        // Optionally, you might want to deselect any selected item in the TreeView
-        // This depends on how your TreeView component is implemented
-        // You might need to add a method to your TreeView to deselect items
 
         //await LoadSessionsAsync();
         sessionSelectedName = null;
@@ -908,6 +1370,107 @@
     VerticalAlignment Vertical;
 
 }
+@code {
+        public string GetSecondPart(string input)
+        {
+            // Split the input string by '/'
+            var parts = input.Split('/');
+
+            // Return the second part if it exists
+            return parts.Length > 1 ? parts[1] : string.Empty;
+        }
+     
+        private async Task DeleteSession(string sessionStringId)
+        {
+            Console.WriteLine($"DeleteSession: {sessionStringId}");
+            var idParts = sessionStringId.Split('|');
+            // Case 1: Deleting a full session
+            // Delete the entire session and its messages
+            string tenantId = currentUserTenantID;
+            string userId = currentUserIdentityID;
+            await azureOpenAIHandler.DeleteChatSessionAsync(tenantId, userId, sessionStringId);
+
+            // Log and update UI after deletion
+            Console.WriteLine($"Deleted session: {sessionStringId}");
+            await LoadSessionsAsync();
+            StateHasChanged();
+        }
+         private async Task DeleteSessionItem(string sessionItemId)
+        {
+            Console.WriteLine($"sessionItemId: {sessionItemId}");
+            // Extract tenantId, userId, sessionId, and messageId
+            string tenantId = currentUserTenantID;
+            string userId = currentUserIdentityID;
+            string sessionId = currentChatSessionId;
+
+            // Delete the specific message from the session
+            await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, sessionId, sessionItemId);
+
+            // Log and update UI after deletion
+            Console.WriteLine($"Deleted message: {sessionItemId}");
+            await LoadSessionsAsync();
+            StateHasChanged();
+        }
+        
+      /*
+        private async Task DeleteSession(ITreeViewItem item)
+        {
+            Console.WriteLine($"DeleteSession: {item.Id}");
+            
+            // Split the item ID to determine if it's a session or a message within a session
+            var idParts = item.Id.Split('|');
+            
+            // Case 1: Deleting a full session
+            if (idParts.Length == 1)
+            {
+                // Extract tenantId, userId, and sessionId from the item.Id
+                string tenantId = currentUserTenantID;
+                string userId = currentUserIdentityID;
+                string sessionId = idParts[0];
+
+                // Delete the entire session and its messages
+                await azureOpenAIHandler.DeleteChatSessionAsync(tenantId, userId, sessionId);
+
+                // Log and update UI after deletion
+                Console.WriteLine($"Deleted session: {sessionId}");
+                ItemsSessions = ItemsSessions.Where(i => i.Id != item.Id).ToList();
+                await LoadSessionsAsync();
+                StateHasChanged();
+                
+                // Clear session selection if needed
+                if (SelectedItem == item)
+                {
+                    SelectedItem = null;
+                    CurrentSession = null;
+                    isNewSession = true;
+                    sessionSelectedName = null;
+                }
+            }
+            // Case 2: Deleting a specific message within a session
+            else if (idParts.Length == 2)
+            {
+                // Extract tenantId, userId, sessionId, and messageId
+                string tenantId = currentUserTenantID;
+                string userId = currentUserIdentityID;
+                string sessionId = idParts[0];
+                string messageId = idParts[1];
+
+                // Delete the specific message from the session
+                await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
+
+                // Log and update UI after deletion
+                Console.WriteLine($"Deleted message: {messageId} from session: {sessionId}");
+                ItemsSessions = ItemsSessions.Where(i => i.Id != item.Id).ToList();
+                await LoadSessionsAsync();
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine("Error: Unrecognized ID format for deletion.");
+            }
+        }
+        */
+}
 
 
 @code {
@@ -915,7 +1478,6 @@
     //private string userEmail = "konstantine@aitrailblazer.com";
     //private string userFullName;
     private string userPhoneNumer;
-    private string userLanguage;
     private string userAddress;
     private string userPrincipalJson = "default-principal";
     private string pluginPath;
@@ -940,13 +1502,22 @@
     }
     private async Task LoadUserDataAsync()
     {
+
+        //var (userId, tenantId) = await UserIDsService.GetUserIDsAsync();
+        //currentUserIdentityID = userId;
+        //currentUserTenantID = tenantId;
+
         pluginPath = PluginService.GetPluginsPath();
         Console.WriteLine($"ChatPaneSplitter Plugin Path: {pluginPath}");
 
         Console.WriteLine($"ChatPaneSplitter OnInitializedAsync CurrentFeatureName: {CurrentFeatureName}");
 
         PlaceholderCommandText = $"ChatPaneSplitter Prompt/Command Line: Enter your prompt here. If you need to use lengthy texts or code, please enter or paste them in the Context field located above on the left.";
+        
+        agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
+        FilterComponents(FeatureNameProject);
+        await LoadSessionsAsync();
     }
 }
 
@@ -1145,8 +1716,6 @@ private List<Chapter> ParseOntologyTreeMarkdown(string markdownText)
             Console.WriteLine($"No matching item found for selected ID: {selectedId}");
         }
     }
-
-    // Method to check if the selected item is the root chapter
     private bool IsRootChapter(Chapter chapter)
     {
         // Assuming the first chapter in the list is the root representing the full document
@@ -1167,14 +1736,6 @@ private List<Chapter> ParseOntologyTreeMarkdown(string markdownText)
         return fullContentBuilder.ToString();
     }
 
-    /// <summary>
-    /// Handles the selection change in the ontology tree.
-    /// </summary>
- 
-     /// <summary>
-    /// Handles the event when a tree view item is selected.
-    /// </summary>    
-    
     private async Task HandleOnSelectedChangeOntology1()
 {
     Logger.LogInformation($"HandleOnSelectedChangeOntology called. Current selected ID: {currentSelectedTreeViewItemOntology}");
@@ -1295,9 +1856,6 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 
     return subSectionContent.ToString();
 }
-
-
-
 
     /// <summary>
     /// Generates the final content for a selected Chapter.

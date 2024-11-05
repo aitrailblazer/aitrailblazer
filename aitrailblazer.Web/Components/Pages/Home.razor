@@ -1,8 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
-@attribute [Authorize]
-
 @using Markdig
 @using System.Text
 @using AITrailblazer.net.Services
@@ -12,11 +10,11 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
 @using AITGraph.Sdk.Models
-@using System.Diagnostics;
-@using Newtonsoft.Json;
+@using System.Diagnostics
+@using Newtonsoft.Json
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Authorization
-@using Azure.AI.OpenAI;
+@using Azure.AI.OpenAI
 @using SmartComponents
 @using System.ComponentModel.DataAnnotations
 @using GraphMessage = AITGraph.Sdk.Models.Message
@@ -36,7 +34,7 @@
 @currentUserIdentityID
 @timeZoneInfo
 <h1>Hello, world!</h1>
-Tenant: @Tenant
+
 
 Welcome to your new aitrailblazer app.
 
@@ -55,15 +53,12 @@ Welcome to your new aitrailblazer app.
     private string userLanguage;
     private string userAddress;
 
-    private string? Tenant;
-    private string? User;
 
     private bool isInitialized = false;
 
     // Inject NavigationManager
     //[Inject]
     //private NavigationManager NavigationManager { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,58 +68,5 @@ Welcome to your new aitrailblazer app.
             isInitialized = true;
         }
     }
-    private async Task LoadUserDataAsync()
-    {
-        try
-        {
 
-            profile = await graphService.GetCurrentUserProfileAsync();
-            accountInfo = await graphService.GetUserAccountInformationAsync();
-
-            currentUserIdentityID = accountInfo?.Id;
-
-            timeZoneInfo = _timeFunctions.GetUserTimeZone();
-
-        }
-        catch (AuthenticationRequiredException)
-        {
-            RedirectToLogin();
-        }
-        catch (Exception ex)
-        {
-            error = $"Error loading user data: {ex.Message}";
-        }
-        finally
-        {
-            //isLoading = false; // Hide loading state
-        }
-
-    }
-    private void RedirectToLogin1()
-    {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
-        // Get the value of the "myParameter" query string parameter
-        Tenant = queryString["Tenant"];
-        Console.WriteLine($"Tenant: {Tenant}");
-        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={uri}", forceLoad: true);
-
-
-        // Read query string parameters using NavigationManager
-        //var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        //var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
-
-        // Get the value of the "myParameter" query string parameter
-        //Tenant = queryString["Tenant"];
-        //Console.WriteLine($"Tenant: {Tenant}");
-    }
-    private void RedirectToLogin()
-    {
-        //var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
-        var returnUrl = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-
-        Console.WriteLine($"returnUrl: {returnUrl}");
-
-        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
-    }
 }

@@ -163,6 +163,14 @@
 .fluent-toolbar-slider {
   width: 100%; /* Ensures the slider takes full width of its container */
 }
+::deep .fluent-tree-view-selected {
+  background-color: var(--accent-fill-secondary);
+  color: var(--neutral-foreground-rest);
+}
+
+::deep .fluent-tree-item:hover {
+  background-color: var(--neutral-fill-secondary-hover);
+}
 .diagram-image {
   max-width: 512px;
   height: auto;

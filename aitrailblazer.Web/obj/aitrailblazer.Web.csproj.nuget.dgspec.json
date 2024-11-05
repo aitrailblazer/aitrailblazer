@@ -268,11 +268,11 @@
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
@@ -288,7 +288,7 @@
             },
             "Microsoft.Kiota.Abstractions": {
               "target": "Package",
-              "version": "[1.13.1, )"
+              "version": "[1.13.2, )"
             },
             "Microsoft.Kiota.Serialization.Form": {
               "target": "Package",
@@ -312,47 +312,47 @@
             },
             "Microsoft.SemanticKernel": {
               "target": "Package",
-              "version": "[1.22.0, )"
+              "version": "[1.25.0, )"
             },
             "Microsoft.SemanticKernel.Agents.Abstractions": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Agents.Core": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
               "target": "Package",
-              "version": "[1.22.0-beta, )"
+              "version": "[1.25.0-beta, )"
             },
             "Microsoft.SemanticKernel.Plugins.Core": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Plugins.OpenApi": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Plugins.Web": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.PromptTemplates.Handlebars": {
               "target": "Package",
-              "version": "[1.22.0, )"
+              "version": "[1.25.0, )"
             },
             "Microsoft.SemanticKernel.Prompty": {
               "target": "Package",
-              "version": "[1.22.0-alpha, )"
+              "version": "[1.25.0-alpha, )"
             },
             "Microsoft.SemanticKernel.Yaml": {
               "target": "Package",
-              "version": "[1.22.0, )"
+              "version": "[1.25.0, )"
             },
             "Microsoft.TypeChat": {
               "target": "Package",
@@ -373,6 +373,10 @@
             "SmartComponents.Inference.OpenAI": {
               "target": "Package",
               "version": "[0.1.0-preview10148, )"
+            },
+            "TimeZoneConverter": {
+              "target": "Package",
+              "version": "[6.1.0, )"
             }
           },
           "imports": [

@@ -74,7 +74,10 @@ body, html, .container, .fixed-top-nav, .chat-pane-container {
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 /* User.razor.css */
-
+.selected-item {
+  background-color: #0078d4; /* Fluent UI accent color */
+  color: white;
+}
 .user-profile-container {
   display: flex;
   justify-content: left; /* Centers the card horizontally */

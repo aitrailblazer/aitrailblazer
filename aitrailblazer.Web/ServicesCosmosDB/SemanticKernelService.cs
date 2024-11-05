@@ -80,7 +80,6 @@ public class SemanticKernelService
     /// <remarks>
     /// This constructor will validate credentials and create a Semantic Kernel instance.
     /// </remarks>
-    private readonly AzureOpenAIHandler _azureOpenAIHandler;
     private readonly ILogger<SemanticKernelService> _logger;
 
     public SemanticKernelService(
@@ -88,10 +87,8 @@ public class SemanticKernelService
         string completionDeploymentName, 
         string embeddingDeploymentName,
         string apiKey,
-        AzureOpenAIHandler azureOpenAIHandler,
         ILogger<SemanticKernelService> logger) // Add logger parameter
     {
-        _azureOpenAIHandler = azureOpenAIHandler ?? throw new ArgumentNullException(nameof(azureOpenAIHandler));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Initialize logger
         
         kernel = Kernel.CreateBuilder()
@@ -107,7 +104,9 @@ public class SemanticKernelService
     /// <param name="sessionId">Chat session identifier for the current conversation.</param>
     /// <param name="conversation">List of Message objects containign the context window (chat history) to send to the model.</param>
     /// <returns>Generated response along with tokens used to generate it.</returns>
-    public async Task<(string completion, int tokens)> GetChatCompletionAsync(string sessionId, List<Message> contextWindow)
+    public async Task<(string completion, int tokens)> GetChatCompletionAsync(
+        string sessionId, 
+        List<Message> contextWindow)
     {
         var skChatHistory = new ChatHistory();
         skChatHistory.AddSystemMessage(_systemPrompt);
@@ -115,8 +114,8 @@ public class SemanticKernelService
         foreach (var message in contextWindow)
         {
             skChatHistory.AddUserMessage(message.Prompt);
-            if (message.Completion != string.Empty)
-                skChatHistory.AddAssistantMessage(message.Completion);
+            if (message.Output != string.Empty)
+                skChatHistory.AddAssistantMessage(message.Output);
         }
 
         PromptExecutionSettings settings = new()
@@ -172,8 +171,8 @@ public class SemanticKernelService
         foreach (var message in contextWindow)
         {
             skChatHistory.AddUserMessage(message.Prompt);
-            if (message.Completion != string.Empty)
-                skChatHistory.AddAssistantMessage(message.Completion);
+            if (message.Output != string.Empty)
+                skChatHistory.AddAssistantMessage(message.Output);
         }
 
         PromptExecutionSettings settings = new()

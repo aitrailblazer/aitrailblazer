@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using Container = Microsoft.Azure.Cosmos.Container;
 using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace Cosmos.Copilot.Services;
 
@@ -20,7 +21,7 @@ public class CosmosDbService
     private readonly Container _chatContainer;
     private readonly Container _cacheContainer;
     private readonly Container _organizerContainer;
-    
+
     private readonly Container _productContainer;
     private readonly string _productDataSourceURI;
     private readonly ILogger<CosmosDbService> _logger;
@@ -44,7 +45,7 @@ public class CosmosDbService
         string databaseName,
         string chatContainerName,
         string cacheContainerName,
-        string organizerContainerName, 
+        string organizerContainerName,
         string productContainerName,
         string productDataSourceURI,
         ILogger<CosmosDbService> logger)
@@ -89,6 +90,486 @@ public class CosmosDbService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error initializing CosmosDbService.");
+            throw;
+        }
+    }
+    /// <summary>
+    /// Helper function to generate a hierarchical partition key based on tenantId, userId, and categoryId.
+    /// All parameters are required and will be included in the partition key, even if they are empty strings.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <param name="categoryId">Category Id of the item.</param>
+    /// <returns>Newly created partition key.</returns>
+    private static PartitionKey GetPK(string tenantId, string userId, string sessionId = null)
+    {
+        var partitionKeyBuilder = new PartitionKeyBuilder()
+            .Add(tenantId ?? string.Empty)   // Add tenantId, defaulting to empty if null
+            .Add(userId ?? string.Empty);    // Add userId, defaulting to empty if null
+
+        // Only add sessionId if it is not null or empty
+        if (!string.IsNullOrEmpty(sessionId))
+        {
+            partitionKeyBuilder.Add(sessionId);
+        }
+
+        return partitionKeyBuilder.Build();
+    }
+
+
+    /// <summary>
+    /// Inserts a new SessionChat into Cosmos DB.
+    /// </summary>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="session">SessionChat object to insert.</param>
+    /// <returns>The inserted SessionChat object.</returns>
+    public async Task InsertSessionChatAsync(
+        string tenantId,
+        string userId,
+        SessionChat session)
+    {
+        _logger.LogInformation("Inserting new session with sessionId: {sessionId}", session.SessionId);
+        try
+        {
+            PartitionKey partitionKey = GetPK(tenantId, userId, session.SessionId); ;
+            // Avoid logging the entire partition key to protect sensitive information
+            _logger.LogDebug("PartitionKey constructed for insertion.");
+
+            await _chatContainer.CreateItemAsync<SessionChat>(
+                item: session,
+                partitionKey: partitionKey
+            );
+
+            _logger.LogInformation("Inserted session with sessionId: {sessionId}", session.SessionId);
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
+        {
+            _logger.LogError(ex, "A session with sessionId {sessionId} already exists.", session.SessionId);
+            throw new InvalidOperationException($"A session with sessionId '{session.SessionId}' already exists.");
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            _logger.LogError(ex, "Bad request while inserting session with sessionId {sessionId}.", session.SessionId);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error inserting session with sessionId: {sessionId}", session.SessionId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Inserts a new Message into Cosmos DB.
+    /// </summary>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="sessionId">Session Chat identifier.</param>
+    /// <param name="title">Title of the session.</param>
+    /// <param name="prompt">The prompt or input content of the message.</param>
+    /// <param name="promptTokens">Number of tokens in the prompt.</param>
+    /// <param name="userInput">The user input content of the message.</param>
+    /// <param name="userInputTokens">Number of tokens in the user input.</param>
+    /// <param name="output">The completion or response content of the message.</param>
+    /// <param name="outputTokens">Number of tokens in the output.</param>
+    /// <param name="cacheHit">Indicates whether the response was retrieved from the cache.</param>
+    /// <param name="masterTextSetting">Master text setting for the message.</param>
+    /// <param name="chatSetting">Chat setting for the message.</param>
+    /// <param name="writingStyleVal">Writing style setting for the message.</param>
+    /// <param name="audienceLevelVal">Audience level setting for the message.</param>
+    /// <param name="responseLengthVal">Response length setting for the message.</param>
+    /// <param name="creativeAdjustmentsVal">Creative adjustments setting for the message.</param>
+    /// <param name="relationSettingsVal">Relation settings for the message.</param>
+    /// <param name="responseStyleVal">Response style setting for the message.</param>
+    /// <returns>The inserted Message object.</returns>
+    public async Task<Message> InsertMessageAsync(
+        string tenantId,
+        string userId,
+        string sessionId,
+        string title,
+        string prompt,
+        int promptTokens,
+        string userInput,
+        int userInputTokens,
+        string output,
+        int outputTokens,
+        bool cacheHit,
+        string masterTextSetting,
+        string writingStyleVal,
+        string audienceLevelVal,
+        string responseLengthVal,
+        string creativeAdjustmentsVal,
+        string relationSettingsVal,
+        string responseStyleVal)
+    {
+        _logger.LogInformation("Inserting new message with Id: {MessageId}", $"Message-{sessionId}-{DateTime.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N").Substring(0, 4)}");
+
+        try
+        {
+            var message = new Message(
+                tenantId: tenantId,
+                userId: userId,
+                sessionId: sessionId,
+                title: title,
+                prompt: prompt,
+                promptTokens: promptTokens,
+                userInput: userInput,
+                userInputTokens: userInputTokens,
+                output: output,
+                outputTokens: outputTokens,
+                cacheHit: cacheHit,
+                masterTextSetting: masterTextSetting,
+                writingStyleVal: writingStyleVal,
+                audienceLevelVal: audienceLevelVal,
+                responseLengthVal: responseLengthVal,
+                creativeAdjustmentsVal: creativeAdjustmentsVal,
+                relationSettingsVal: relationSettingsVal,
+                responseStyleVal: responseStyleVal
+            );
+
+            PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+            _logger.LogDebug("PartitionKey constructed for message insertion.");
+
+            ItemResponse<Message> response = await _chatContainer.CreateItemAsync<Message>(
+                item: message,
+                partitionKey: partitionKey
+            );
+
+            _logger.LogInformation("Inserted message with Id: {MessageId}", response.Resource.Id);
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
+        {
+            _logger.LogError(ex, "A message with Id {MessageId} already exists.", $"Message-{sessionId}-{DateTime.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N").Substring(0, 4)}");
+            throw new InvalidOperationException($"A message with Id '{ex.ActivityId}' already exists.", ex);
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            _logger.LogError(ex, "Bad request while inserting message.");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error inserting message.");
+            throw;
+        }
+    }
+    public async Task<Message> GetMessageByIdAsync(string messageId)
+    {
+        try
+        {
+            var query = new QueryDefinition("SELECT * FROM c WHERE c.id = @id AND c.type = @type")
+                .WithParameter("@id", messageId)
+                .WithParameter("@type", nameof(Message));
+
+            var iterator = _chatContainer.GetItemQueryIterator<Message>(query);
+
+            if (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                var message = response.FirstOrDefault();
+                if (message != null)
+                {
+                    _logger.LogInformation("Message retrieved with ID: {MessageId}", message.Id);
+                    return message;
+                }
+            }
+
+            _logger.LogWarning("No message found with ID: {MessageId}", messageId);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving message with ID: {MessageId}", messageId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Gets a list of all current chat sessions.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <returns>List of distinct chat session items.</returns>
+    public async Task<List<SessionChat>> GetSessionsAsync(string tenantId, string userId)
+    {
+        _logger.LogInformation("Retrieving sessions for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
+
+        PartitionKey partitionKey = GetPK(tenantId, userId);
+
+        QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.type = @type")
+            .WithParameter("@type", nameof(SessionChat));
+
+        FeedIterator<SessionChat> response = _chatContainer.GetItemQueryIterator<SessionChat>(
+            query,
+            requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
+        );
+
+        List<SessionChat> output = new();
+        while (response.HasMoreResults)
+        {
+            FeedResponse<SessionChat> results = await response.ReadNextAsync();
+            output.AddRange(results);
+            _logger.LogInformation("Retrieved {Count} sessions in current batch.", results.Count);
+        }
+
+        _logger.LogInformation("Total sessions retrieved: {TotalCount}", output.Count);
+        return output;
+    }
+
+
+    /// <summary>
+    /// Gets a list of all current chat messages for a specified session identifier.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
+    /// <returns>List of chat message items for the specified session.</returns>
+    public async Task<List<Message>> GetSessionMessagesAsync(
+        string tenantId,
+        string userId,
+        string sessionId)
+    {
+        _logger.LogInformation("Retrieving messages for Session ID: {sessionId}", sessionId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+
+        QueryDefinition query = new QueryDefinition(
+                "SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
+            .WithParameter("@sessionId", sessionId)
+            .WithParameter("@type", nameof(Message));
+
+        FeedIterator<Message> results = _chatContainer.GetItemQueryIterator<Message>(
+            query,
+            requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
+        );
+
+        List<Message> output = new();
+
+        try
+        {
+            while (results.HasMoreResults)
+            {
+                FeedResponse<Message> response = await results.ReadNextAsync();
+                output.AddRange(response);
+                _logger.LogInformation("Retrieved {Count} messages in current batch for Session ID: {sessionId}", response.Count, sessionId);
+            }
+
+            _logger.LogInformation("Total messages retrieved for Session ID {sessionId}: {TotalCount}", sessionId, output.Count);
+            return output;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving messages for Session ID: {sessionId}", sessionId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Updates an existing SessionChat in Cosmos DB.
+    /// </summary>
+    /// <param name="session">SessionChat object to update.</param>
+    /// <param name="partitionKey">Partition key value.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task UpdateSessionAsync(string partitionKey, SessionChat session)
+    {
+        _logger.LogInformation("Updating session with ID: {sessionId}", session.Id);
+        try
+        {
+            await _chatContainer.ReplaceItemAsync<SessionChat>(
+                item: session,
+                id: session.Id,
+                partitionKey: new PartitionKey(partitionKey)
+            );
+
+            _logger.LogInformation("Updated session with ID: {sessionId}.", session.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating session with ID: {sessionId}.", session.Id);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Retrieves an existing chat session.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <param name="sessionId">Chat session id for the session to return.</param>
+    /// <returns>Get chat session item to rename.</returns>
+    public async Task<SessionChat> GetSessionAsync(
+        string tenantId,
+        string userId,
+        string sessionId)
+    {
+        _logger.LogInformation("Retrieving session with sessionId: {sessionId}", sessionId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+
+        try
+        {
+            ItemResponse<SessionChat> response = await _chatContainer.ReadItemAsync<SessionChat>(
+                id: sessionId,
+                partitionKey: partitionKey
+            );
+
+            _logger.LogInformation("Retrieved session with sessionId: {sessionId}", sessionId);
+            return response.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            _logger.LogWarning("Session with sessionId {sessionId} not found.", sessionId);
+            throw new KeyNotFoundException($"Session with ID {sessionId} not found.", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving session with sessionId: {sessionId}", sessionId);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Batch upserts chat session and messages within a single transactional batch.
+    /// </summary>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="sessionId">Session Chat identifier.</param>
+    /// <param name="itemsToUpsert">Array of SessionChat and Message objects to upsert.</param>
+    public async Task UpsertSessionBatchAsync(
+        string tenantId,
+        string userId,
+        string sessionId,
+        params object[] itemsToUpsert)
+    {
+        if (itemsToUpsert == null || itemsToUpsert.Length == 0)
+        {
+            _logger.LogWarning("No items provided to UpsertSessionBatchAsync.");
+            throw new ArgumentException("At least one item must be provided.", nameof(itemsToUpsert));
+        }
+
+        _logger.LogInformation("Starting UpsertSessionBatchAsync with {Count} items.", itemsToUpsert.Length);
+
+        // Ensure all items share the same partition key
+        if (itemsToUpsert.Select(m => GetsessionId(m)).Distinct().Count() > 1)
+        {
+            _logger.LogError("All items must have the same partition key.");
+            throw new ArgumentException("All items must have the same partition key.");
+        }
+
+        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+        TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
+
+        foreach (var item in itemsToUpsert)
+        {
+            batch.UpsertItem(item: item);
+        }
+
+        try
+        {
+            TransactionalBatchResponse response = await batch.ExecuteAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                _logger.LogInformation("UpsertSessionBatchAsync completed successfully.");
+            }
+            else
+            {
+                _logger.LogError("UpsertSessionBatchAsync failed with status code: {StatusCode}. Reason: {ReasonPhrase}", response.StatusCode, response.ErrorMessage);
+                throw new CosmosException("Batch upsert failed.", response.StatusCode, 0, response.ErrorMessage, 0);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error executing batch upsert in UpsertSessionBatchAsync.");
+            throw;
+        }
+    }
+    /// <summary>
+    /// Helper function to extract sessionId from an object.
+    /// </summary>
+    /// <param name="item">The object to extract from.</param>
+    /// <returns>sessionId if available; otherwise, string.Empty.</returns>
+    private string GetsessionId(object item)
+    {
+        return item switch
+        {
+            SessionChat session => session.SessionId,
+            Message message => message.SessionId,
+            _ => string.Empty
+        };
+    }
+    /// <summary>
+    /// Batch deletes an existing chat session and all related messages.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
+    public async Task DeleteSessionAndMessagesAsync(string tenantId, string userId, string sessionId)
+    {
+        _logger.LogInformation("Deleting session and messages for Session ID: {sessionId}", sessionId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+
+        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.sessionId = @sessionId")
+                .WithParameter("@sessionId", sessionId);
+
+        FeedIterator<string> response = _chatContainer.GetItemQueryIterator<string>(query);
+
+        TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
+
+        try
+        {
+            while (response.HasMoreResults)
+            {
+                FeedResponse<string> results = await response.ReadNextAsync();
+                foreach (var itemId in results)
+                {
+                    batch.DeleteItem(id: itemId);
+                    _logger.LogDebug("Added DeleteItem to batch for ID: {ItemId}", itemId);
+                }
+            }
+
+            TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
+            if (batchResponse.IsSuccessStatusCode)
+            {
+                _logger.LogInformation("Deleted session and all related messages for Session ID: {sessionId}", sessionId);
+            }
+            else
+            {
+                _logger.LogError("Failed to delete session and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
+                throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, "", 0);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting session and messages for Session ID: {sessionId}", sessionId);
+            throw;
+        }
+    }
+    /// <summary>
+    /// Deletes a specific message within a session.
+    /// </summary>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="sessionId">Session Chat identifier.</param>
+    /// <param name="messageId">Message identifier to delete.</param>
+    public async Task DeleteMessageAsync(string tenantId, string userId, string sessionId, string messageId)
+    {
+        _logger.LogInformation("Deleting message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+
+        try
+        {
+            // Delete the message item in the container based on ID and partition key
+            await _chatContainer.DeleteItemAsync<Message>(messageId, partitionKey);
+            _logger.LogInformation("Deleted message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            _logger.LogWarning("Message with ID: {MessageId} not found in session: {SessionId}", messageId, sessionId);
+            throw new KeyNotFoundException($"Message with ID {messageId} not found in session {sessionId}.", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
             throw;
         }
     }
@@ -212,10 +693,10 @@ public class CosmosDbService
     }
 
     public async Task UpsertEmailMessageAsync(
-        string tenantId, 
-        string userId, 
-        List<string> categoryIds, 
-        string subject, 
+        string tenantId,
+        string userId,
+        List<string> categoryIds,
+        string subject,
         EmailMessage email)
     {
         _logger.LogInformation("Upserting email message with subject: {Subject}", subject);
@@ -242,8 +723,8 @@ public class CosmosDbService
     }
 
     public async Task QueryEmailMessagesAsync(
-        string tenantId, 
-        string userId, 
+        string tenantId,
+        string userId,
         string categoryId = null)
     {
         // Define the SQL query string with parameters
@@ -297,21 +778,21 @@ public class CosmosDbService
         Console.WriteLine($"[Query metrics]: (Total RUs: {totalRequestCharge})");
     }
 
-public async Task<List<EmailMessage>> SearchEmailsAsync(
-    float[] vectors, 
-    string tenantId, 
-    string userId, 
-    string categoryId, 
-    int emailMaxResults)
-{
+    public async Task<List<EmailMessage>> SearchEmailsAsync(
+        float[] vectors,
+        string tenantId,
+        string userId,
+        string categoryId,
+        int emailMaxResults)
+    {
 
-    emailMaxResults = 1;
-    _logger.LogInformation("Searching for similar emails with max results: {MaxResults} for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}", emailMaxResults, tenantId, userId, categoryId ?? "None");
+        emailMaxResults = 1;
+        _logger.LogInformation("Searching for similar emails with max results: {MaxResults} for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}", emailMaxResults, tenantId, userId, categoryId ?? "None");
 
-    List<EmailMessage> results = new();
+        List<EmailMessage> results = new();
 
-    // Construct SQL query with optional categoryId filtering
-    string queryText = $"""
+        // Construct SQL query with optional categoryId filtering
+        string queryText = $"""
         SELECT 
             TOP @maxResults
             c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
@@ -321,383 +802,58 @@ public async Task<List<EmailMessage>> SearchEmailsAsync(
         WHERE c.type = 'EmailMessage' AND c.tenantId = @tenantId AND c.userId = @userId
         """;
 
-    if (!string.IsNullOrEmpty(categoryId))
-    {
-        queryText += " AND c.categoryId = @categoryId";
-    }
-
-    queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-
-    // Set up a query definition with parameters for tenantId, userId, categoryId, and vectors
-    var queryDef = new QueryDefinition(queryText)
-        .WithParameter("@maxResults", emailMaxResults)
-        .WithParameter("@vectors", vectors)
-        .WithParameter("@tenantId", tenantId)
-        .WithParameter("@userId", userId);
-
-    if (!string.IsNullOrEmpty(categoryId))
-    {
-        queryDef = queryDef.WithParameter("@categoryId", categoryId);
-    }
-
-    using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
-
-    try
-    {
-        while (resultSet.HasMoreResults)
+        if (!string.IsNullOrEmpty(categoryId))
         {
-            FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
+            queryText += " AND c.categoryId = @categoryId";
+        }
 
-            foreach (var email in response)
+        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+        // Set up a query definition with parameters for tenantId, userId, categoryId, and vectors
+        var queryDef = new QueryDefinition(queryText)
+            .WithParameter("@maxResults", emailMaxResults)
+            .WithParameter("@vectors", vectors)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@userId", userId);
+
+        if (!string.IsNullOrEmpty(categoryId))
+        {
+            queryDef = queryDef.WithParameter("@categoryId", categoryId);
+        }
+
+        using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
+
+        try
+        {
+            while (resultSet.HasMoreResults)
             {
-                _logger.LogInformation("Email ID: {EmailId}, Subject: {Subject}, ConversationId: {ConversationId}, WebLink: {WebLink}, KeyPoints: {KeyPoints}", 
-                    email.Id, email.Subject, email.ConversationId ?? "N/A", email.WebLink ?? "N/A", email.KeyPoints ?? "N/A");
-                
-                // Convert the email object to JSON and log it to see all fields
-                string emailJson = JsonConvert.SerializeObject(email, Formatting.Indented);
-                _logger.LogInformation("Email JSON: {EmailJson}", emailJson);
+                FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
 
-                results.Add(email);
-            }
-
-            _logger.LogInformation("Retrieved {Count} emails in current batch.", response.Count);
-        }
-
-        _logger.LogInformation("SearchEmailsAsync found {TotalCount} similar emails.", results.Count);
-        return results;
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error searching for similar emails.");
-        throw;
-    }
-}
-
-    /// <summary>
-    /// Helper function to generate a hierarchical partition key based on tenantId, userId, and categoryId.
-    /// All parameters are required and will be included in the partition key, even if they are empty strings.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="categoryId">Category Id of the item.</param>
-    /// <returns>Newly created partition key.</returns>
-    private static PartitionKey GetPK(
-        string tenantId,
-        string userId,
-        string categoryId)
-    {
-        return new PartitionKeyBuilder()
-            .Add(tenantId ?? string.Empty)   // Default to empty string if null
-            .Add(userId ?? string.Empty)
-            .Add(categoryId ?? string.Empty)
-            .Build();
-    }
-    
-    /// <summary>
-    /// Creates a new chat session.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="session">Chat session item to create.</param>
-    /// <returns>Newly created chat session item.</returns>
-    public async Task<SessionChat> InsertSessionAsync(string tenantId, string userId, SessionChat session)
-    {
-        _logger.LogInformation("Inserting new session with ID: {SessionId}", session.SessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, session.SessionId);
-
-        try
-        {
-            SessionChat createdSession = await _chatContainer.CreateItemAsync<SessionChat>(
-                item: session,
-                partitionKey: partitionKey
-            );
-
-            _logger.LogInformation("Inserted session with ID: {SessionId}", createdSession.SessionId);
-            return createdSession;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error inserting session with ID: {SessionId}", session.SessionId);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Creates a new chat message.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="message">Chat message item to create.</param>
-    /// <returns>Newly created chat message item.</returns>
-    public async Task<Message> InsertMessageAsync(string tenantId, string userId, Message message)
-    {
-        _logger.LogInformation("Inserting new message for Session ID: {SessionId}", message.SessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, message.SessionId);
-        Message newMessage = message with { TimeStamp = DateTime.UtcNow };
-
-        try
-        {
-            Message createdMessage = await _chatContainer.CreateItemAsync<Message>(
-                item: newMessage,
-                partitionKey: partitionKey
-            );
-
-            _logger.LogInformation("Inserted message with ID: {MessageId}", createdMessage.Id);
-            return createdMessage;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error inserting message with ID: {MessageId}", message.Id);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Gets a list of all current chat sessions.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <returns>List of distinct chat session items.</returns>
-    public async Task<List<SessionChat>> GetSessionsAsync(string tenantId, string userId)
-    {
-        _logger.LogInformation("Retrieving sessions for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, string.Empty);
-
-        QueryDefinition query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
-            .WithParameter("@type", nameof(Session));
-
-        FeedIterator<SessionChat> response = _chatContainer.GetItemQueryIterator<SessionChat>(
-            query,
-            requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
-        );
-
-        List<SessionChat> output = new();
-
-        try
-        {
-            while (response.HasMoreResults)
-            {
-                FeedResponse<SessionChat> results = await response.ReadNextAsync();
-                output.AddRange(results);
-                _logger.LogInformation("Retrieved {Count} sessions in current batch.", results.Count);
-            }
-
-            _logger.LogInformation("Total sessions retrieved: {TotalCount}", output.Count);
-            return output;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error retrieving sessions for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Gets a list of all current chat messages for a specified session identifier.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
-    /// <returns>List of chat message items for the specified session.</returns>
-    public async Task<List<Message>> GetSessionMessagesAsync(string tenantId, string userId, string sessionId)
-    {
-        _logger.LogInformation("Retrieving messages for Session ID: {SessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
-
-        QueryDefinition query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
-            .WithParameter("@sessionId", sessionId)
-            .WithParameter("@type", nameof(Message));
-
-        FeedIterator<Message> results = _chatContainer.GetItemQueryIterator<Message>(
-            query,
-            requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
-        );
-
-        List<Message> output = new();
-
-        try
-        {
-            while (results.HasMoreResults)
-            {
-                FeedResponse<Message> response = await results.ReadNextAsync();
-                output.AddRange(response);
-                _logger.LogInformation("Retrieved {Count} messages in current batch for Session ID: {SessionId}", response.Count, sessionId);
-            }
-
-            _logger.LogInformation("Total messages retrieved for Session ID {SessionId}: {TotalCount}", sessionId, output.Count);
-            return output;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error retrieving messages for Session ID: {SessionId}", sessionId);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Updates an existing chat session.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="session">Chat session item to update.</param>
-    /// <returns>Revised created chat session item.</returns>
-    public async Task<SessionChat> UpdateSessionAsync(string tenantId, string userId, SessionChat session)
-    {
-        _logger.LogInformation("Updating session with ID: {SessionId}", session.SessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, session.SessionId);
-
-        try
-        {
-            SessionChat updatedSession = await _chatContainer.ReplaceItemAsync(
-                item: session,
-                id: session.Id,
-                partitionKey: partitionKey
-            );
-
-            _logger.LogInformation("Updated session with ID: {SessionId}", updatedSession.SessionId);
-            return updatedSession;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating session with ID: {SessionId}", session.SessionId);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Returns an existing chat session.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session id for the session to return.</param>
-    /// <returns>Chat session item.</returns>
-    public async Task<SessionChat> GetSessionAsync(string tenantId, string userId, string sessionId)
-    {
-        _logger.LogInformation("Retrieving session with ID: {SessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
-
-        try
-        {
-            SessionChat session = await _chatContainer.ReadItemAsync<SessionChat>(
-                partitionKey: partitionKey,
-                id: sessionId
-            );
-
-            _logger.LogInformation("Retrieved session with ID: {SessionId}", sessionId);
-            return session;
-        }
-        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-        {
-            _logger.LogWarning("Session with ID {SessionId} not found.", sessionId);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error retrieving session with ID: {SessionId}", sessionId);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Batch create chat message and update session.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="messages">Chat message and session items to create or replace.</param>
-    public async Task UpsertSessionBatchAsync(string tenantId, string userId, params dynamic[] messages)
-    {
-        if (messages == null || messages.Length == 0)
-        {
-            _logger.LogWarning("No messages provided to UpsertSessionBatchAsync.");
-            throw new ArgumentException("At least one message must be provided.", nameof(messages));
-        }
-
-        _logger.LogInformation("Starting UpsertSessionBatchAsync with {Count} messages.", messages.Length);
-
-        // Make sure items are all in the same partition
-        if (messages.Select(m => m.SessionId).Distinct().Count() > 1)
-        {
-            _logger.LogError("All items must have the same partition key.");
-            throw new ArgumentException("All items must have the same partition key.");
-        }
-
-        string sessionId = messages[0].SessionId;
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
-        TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
-
-        foreach (var message in messages)
-        {
-            batch.UpsertItem(item: message);
-        }
-
-        try
-        {
-            TransactionalBatchResponse response = await batch.ExecuteAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                _logger.LogInformation("UpsertSessionBatchAsync completed successfully.");
-            }
-            else
-            {
-                _logger.LogError("UpsertSessionBatchAsync failed with status code: {StatusCode}", response.StatusCode);
-                throw new CosmosException("Batch upsert failed.", response.StatusCode, 0, "", 0);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error executing batch upsert in UpsertSessionBatchAsync.");
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Batch deletes an existing chat session and all related messages.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
-    public async Task DeleteSessionAndMessagesAsync(string tenantId, string userId, string sessionId)
-    {
-        _logger.LogInformation("Deleting session and messages for Session ID: {SessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
-
-        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.sessionId = @sessionId")
-                .WithParameter("@sessionId", sessionId);
-
-        FeedIterator<string> response = _chatContainer.GetItemQueryIterator<string>(query);
-
-        TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
-
-        try
-        {
-            while (response.HasMoreResults)
-            {
-                FeedResponse<string> results = await response.ReadNextAsync();
-                foreach (var itemId in results)
+                foreach (var email in response)
                 {
-                    batch.DeleteItem(id: itemId);
-                    _logger.LogDebug("Added DeleteItem to batch for ID: {ItemId}", itemId);
+                    _logger.LogInformation("Email ID: {EmailId}, Subject: {Subject}, ConversationId: {ConversationId}, WebLink: {WebLink}, KeyPoints: {KeyPoints}",
+                        email.Id, email.Subject, email.ConversationId ?? "N/A", email.WebLink ?? "N/A", email.KeyPoints ?? "N/A");
+
+                    // Convert the email object to JSON and log it to see all fields
+                    string emailJson = JsonConvert.SerializeObject(email, Formatting.Indented);
+                    _logger.LogInformation("Email JSON: {EmailJson}", emailJson);
+
+                    results.Add(email);
                 }
+
+                _logger.LogInformation("Retrieved {Count} emails in current batch.", response.Count);
             }
 
-            TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
-            if (batchResponse.IsSuccessStatusCode)
-            {
-                _logger.LogInformation("Deleted session and all related messages for Session ID: {SessionId}", sessionId);
-            }
-            else
-            {
-                _logger.LogError("Failed to delete session and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
-                throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, "", 0);
-            }
+            _logger.LogInformation("SearchEmailsAsync found {TotalCount} similar emails.", results.Count);
+            return results;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting session and messages for Session ID: {SessionId}", sessionId);
+            _logger.LogError(ex, "Error searching for similar emails.");
             throw;
         }
     }
+
 
     /// <summary>
     /// Upserts a new product.
@@ -808,7 +964,7 @@ public async Task<List<EmailMessage>> SearchEmailsAsync(
         string cacheResponse = "";
 
         string queryText = $"""
-            SELECT TOP 1 c.prompt, c.completion, VectorDistance(c.vectors, @vectors) as similarityScore
+            SELECT TOP 1 c.prompt, c.output, VectorDistance(c.vectors, @vectors) as similarityScore
             FROM c  
             WHERE VectorDistance(c.vectors, @vectors) > @similarityScore 
             ORDER BY VectorDistance(c.vectors, @vectors)
@@ -828,7 +984,7 @@ public async Task<List<EmailMessage>> SearchEmailsAsync(
 
                 foreach (CacheItem item in response)
                 {
-                    cacheResponse = item.Completion;
+                    cacheResponse = item.Output;
                     _logger.LogInformation("Cache hit for similarity score: {SimilarityScore}", similarityScore);
                     return cacheResponse;
                 }
