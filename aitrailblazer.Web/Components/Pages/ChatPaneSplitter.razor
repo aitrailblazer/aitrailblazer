@@ -67,7 +67,7 @@
                     <FluentMultiSplitter>
                         <!-- LEFT Pane BEGIN -->
                         @if (showLEFTPane)  {
-                            <FluentMultiSplitterPane Size="@LeftPaneSize" Min="0" Max="40%" Collapsible="true">
+                            <FluentMultiSplitterPane Size="@LeftPaneSize" Min="0" Max="40%" Collapsible="false">
                                 <div style="display: flex; height: 100%; position: relative;">
                                     @if (!isLeftPaneCollapsed) {
                                         <FluentCard MinimalStyle="true" Width="@FluentCardWidth"  Height="100%"  style="padding: 0px; max-height: 90vh; overflow-y: auto; background-color: #f7f7f7;">
@@ -387,7 +387,7 @@
                                     </FluentMultiSplitter>
                                 </FluentMultiSplitterPane>
                                 <!-- COMMAND Line Pane BEGIN  -->
-                                <FluentMultiSplitterPane Size="20%" Min="20%" Max="20%" Collapsible="false">
+                                <FluentMultiSplitterPane Size="20%"  Collapsible="false">
                                     <FluentToolbar Orientation="Orientation.Horizontal" >
                                         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
                                         VerticalAlignment="@Vertical">
