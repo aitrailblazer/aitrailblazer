@@ -396,4 +396,4 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/2ex4cc0yjp-2jmos03fny.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/miv2iv0y6j-uitguh58h5.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/d4pk31d3nk-1ignfzux3t.gz
-/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-u0npfvyshk.gz
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-v6spg9glwp.gz

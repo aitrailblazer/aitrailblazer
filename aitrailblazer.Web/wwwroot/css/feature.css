@@ -5,10 +5,10 @@
   --accent-fill-rest: #d783ff; /* Example accent color */
   --neutral-fill-rest: #f3f3f3; /* Example neutral color */
   
-  --middle-fill-rest: #0992e1; /* Example accent color */
+  --middle-fill-rest: #ffffff; /* Example accent color */
 
-  --input-fill-rest: #e1c509; /* Example accent color */
-  --output-fill-rest: #09e146; /* Example accent color */
+  --input-fill-rest: #ffffff; /* Example accent color */
+  --output-fill-rest: #ffffff; /* Example accent color */
 
   --color-vivid-purple1: #a757d3;
 
@@ -817,9 +817,7 @@ fluent-horizontal-scroll {
   background: var(--gradient-AIEmailWizard);
 }
 
-.AIBrandAssets-feature-title {
-  background: var(--gradient-AIBrandAssets);
-}
+
 
 .aiwebsiteanalysiswizard-feature-title {
   background: var(--gradient-aiwebsiteanalysiswizard);

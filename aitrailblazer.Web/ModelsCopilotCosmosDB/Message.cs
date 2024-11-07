@@ -34,23 +34,22 @@ namespace Cosmos.Copilot.Models
         [JsonProperty("prompt")]
         public string Prompt { get; set; }
 
-        [JsonProperty("promptTokens")]
-        public int PromptTokens { get; set; }
+        [JsonProperty("promptTokensCount")]
+        public int InputTokenCount { get; set; }
+       [JsonProperty("outputTokensCount")]
+        public int OutputTokenCount { get; set; }
+ 
+        [JsonProperty("totalTokenCount")]
+        public int TotalTokenCount { get; set; }
 
         [JsonProperty("userInput")]
         public string UserInput { get; set; }
 
-        [JsonProperty("userInputTokens")]
-        public int UserInputTokens { get; set; }
 
         [JsonProperty("output")]
         public string Output { get; set; }
 
-        [JsonProperty("OutputTokens")]
-        public int OutputTokens { get; set; }
 
-        [JsonProperty("tokens")]
-        public int Tokens { get; set; }
 
         [JsonProperty("cacheHit")]
         public bool CacheHit { get; set; }
@@ -100,10 +99,11 @@ namespace Cosmos.Copilot.Models
             string featureNameProject,
             string title,
             string prompt,
-            int promptTokens,
             string userInput,
-            int userInputTokens,
             string output,
+            int inputTokenCount,
+            int outputTokenCount,
+            int totalTokenCount,
             string masterTextSetting,
             string writingStyleVal,
             string audienceLevelVal,
@@ -111,7 +111,6 @@ namespace Cosmos.Copilot.Models
             string creativeAdjustmentsVal,
             string relationSettingsVal,
             string responseStyleVal,
-            int outputTokens = 0,
             bool cacheHit = false)
         {
             if (string.IsNullOrWhiteSpace(sessionId)) throw new ArgumentException("SessionId cannot be null or empty.", nameof(sessionId));
@@ -119,8 +118,6 @@ namespace Cosmos.Copilot.Models
             if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentException("UserId cannot be null or empty.", nameof(userId));
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title cannot be null or empty.", nameof(title));
             if (string.IsNullOrWhiteSpace(prompt)) throw new ArgumentException("Prompt cannot be null or empty.", nameof(prompt));
-            if (promptTokens < 0) throw new ArgumentOutOfRangeException(nameof(promptTokens), "PromptTokens cannot be negative.");
-            if (outputTokens < 0) throw new ArgumentOutOfRangeException(nameof(outputTokens), "OutputTokens cannot be negative.");
 
             // Generate unique identifier
             string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
@@ -138,12 +135,13 @@ namespace Cosmos.Copilot.Models
             Title = title;
             TimeStamp = DateTime.UtcNow;
             Prompt = prompt;
-            PromptTokens = promptTokens;
             UserInput = userInput;
-            UserInputTokens = userInputTokens;
             Output = output;
-            OutputTokens = outputTokens;
-            Tokens = promptTokens + outputTokens + userInputTokens;
+
+            InputTokenCount = inputTokenCount;
+            OutputTokenCount = outputTokenCount;
+            TotalTokenCount = totalTokenCount;
+
             CacheHit = cacheHit;
 
             // Initialize additional settings

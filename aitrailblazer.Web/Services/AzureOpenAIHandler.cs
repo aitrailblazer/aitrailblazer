@@ -602,12 +602,12 @@ namespace AITrailblazer.net.Services
                     featureNameWorkflowName: featureNameWorkflowName,
                     featureNameProject: featureNameProject,
                     title: requestTitle,                        // title
-                    prompt: panelInput,                         // prompt
-                    promptTokens: tokenUsage.InputTokenCount,                            // promptTokens
                     userInput: userInput,                       // userInput
-                    userInputTokens: tokenUsage.InputTokenCount,                         // userInputTokens
+                    prompt: panelInput,                         // prompt
+                    inputTokenCount: tokenUsage.InputTokenCount,                            // promptTokens
+                    outputTokenCount: tokenUsage.OutputTokenCount,                         // userInputTokens
+                    totalTokenCount: tokenUsage.TotalTokenCount,                            // outputTokens
                     output: responseOutput,                     // output
-                    outputTokens: tokenUsage.OutputTokenCount,                            // outputTokens
                     cacheHit: false,                            // cacheHit
                     masterTextSetting: masterTextSetting,       // masterTextSetting
                     writingStyleVal: writingStyleVal,           // writingStyleVal
@@ -781,177 +781,7 @@ namespace AITrailblazer.net.Services
             return timestamp.ToString("MMMM dd, yyyy");
         }
 
-        /*
-        public async Task<List<ITreeViewItem>> LoadSessionMessagesAsync(string sessionId)
-        {
-            var manager = BlobStorageManagerCreate();
-            var items = new List<ITreeViewItem>();
-
-            try
-            {
-                var blobs = await manager.ListBlobsAsync(sessionId);
-
-                if (blobs == null || !blobs.Any())
-                {
-                    _logger.LogInformation($"No blobs found for session: {sessionId}");
-                    return items; // Return an empty list if no blobs are found
-                }
-
-                var groupedBlobs = blobs
-                    .Select(blob => Path.GetFileName(blob.Name))
-                    .GroupBy(name =>
-                    {
-                        var timestampIndex = name.IndexOf('-') + 1;
-                        if (timestampIndex + 15 <= name.Length) // Ensure the timestamp exists and is within bounds
-                        {
-                            return name.Substring(timestampIndex, 15); // Extract timestamp safely
-                        }
-                        else
-                        {
-                            _logger.LogInformation($"Invalid timestamp format in blob: {name}");
-                            return null;
-                        }
-                    })
-                    .Where(group => group.Key != null) // Remove any groups where the key is null due to invalid timestamps
-                    .ToList();
-
-                foreach (var group in groupedBlobs)
-                {
-                    try
-                    {
-                        var requestBlob = group.FirstOrDefault(n => n.StartsWith("Request-"));
-                        var responseBlob = group.FirstOrDefault(n => n.StartsWith("Response-"));
-
-                        if (requestBlob == null)
-                        {
-                            _logger.LogInformation($"Request blob not found for group: {group.Key}");
-                            continue; // Skip this group if no request blob is found
-                        }
-
-                        if (responseBlob == null)
-                        {
-                            _logger.LogInformation($"Response blob not found for group: {group.Key}");
-                            continue; // Skip this group if no response blob is found
-                        }
-
-                        // Extract the text after "Request-YYYYMMDD-HHmmss-" and remove ".json"
-                        var requestBlobPrefixLength = "Request-YYYYMMDD-HHmmss-".Length;
-                        if (requestBlob.Length <= requestBlobPrefixLength)
-                        {
-                            _logger.LogInformation($"Invalid request blob format: {requestBlob}");
-                            continue; // Skip this group if the blob format is invalid
-                        }
-
-                        var userFriendlyText = requestBlob
-                            .Substring(requestBlobPrefixLength)
-                            .Replace(".json", string.Empty);
-
-                        var combinedId = $"{sessionId}|{requestBlob}|{responseBlob}";
-
-                        items.Add(new TreeViewItem
-                        {
-                            Text = userFriendlyText,
-                            Id = combinedId
-                        });
-
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogInformation($"Error processing group {group.Key}: {ex.Message}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Error loading session messages for session: {sessionId}, Error: {ex.Message}");
-            }
-
-            return items;
-        }
-        */
-        /*
-        public async Task<List<ITreeViewItem>> LoadSessionMessagesAsyncOLD(string tenantId, string userId, string sessionId)
-        {
-            var items = new List<ITreeViewItem>();
-
-            try
-            {
-                // Retrieve messages for the session from ChatService
-                var messages = await _chatService.GetChatSessionMessagesAsync(tenantId, userId, sessionId);
-
-                if (messages == null || !messages.Any())
-                {
-                    _logger.LogInformation($"No messages found for session: {sessionId}");
-                    return items; // Return an empty list if no messages are found
-                }
-
-                // Group messages by timestamp derived from their ID for chronological order (if needed)
-                var groupedMessages = messages.GroupBy(message =>
-                {
-                    // Assuming message.Id is formatted with a timestamp or unique identifier
-                    var timestampIndex = message.Id.IndexOf('-') + 1;
-                    if (timestampIndex + 15 <= message.Id.Length) // Ensure the timestamp exists and is within bounds
-                    {
-                        return message.Id.Substring(timestampIndex, 15); // Extract timestamp safely
-                    }
-                    else
-                    {
-                        _logger.LogInformation($"Invalid timestamp format in message ID: {message.Id}");
-                        return null;
-                    }
-                })
-                .Where(group => group.Key != null) // Remove any groups where the key is null due to invalid timestamps
-                .ToList();
-
-                // Process each message group
-                foreach (var group in groupedMessages)
-                {
-                    try
-                    {
-                        // Get the first request and response messages if they exist
-                        var requestMessage = group.FirstOrDefault(m => m.Prompt != null);
-                        var responseMessage = group.FirstOrDefault(m => m.Output != null);
-
-                        if (requestMessage == null)
-                        {
-                            _logger.LogInformation($"Request message not found for group: {group.Key}");
-                            continue; // Skip if no request message is found
-                        }
-
-                        if (responseMessage == null)
-                        {
-                            _logger.LogInformation($"Response message not found for group: {group.Key}");
-                            continue; // Skip if no response message is found
-                        }
-
-                        // Create a user-friendly text for the TreeView item
-                        var userFriendlyText = $"{requestMessage.Title}";
-
-                        // Create a combined ID for the TreeView item using both request and response message IDs
-                        var combinedId = $"{sessionId}|{requestMessage.Id}|{responseMessage.Id}";
-
-                        // Add a new TreeViewItem for this message group
-                        items.Add(new TreeViewItem
-                        {
-                            Text = userFriendlyText,
-                            Id = combinedId
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogInformation($"Error processing group {group.Key}: {ex.Message}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Error loading session messages for session: {sessionId}, Error: {ex.Message}");
-            }
-
-            return items;
-        }
-        */
-
+  
         public async Task<List<ITreeViewItem>> LoadSessionMessagesAsync(string tenantId, string userId, string sessionId)
         {
             var items = new List<ITreeViewItem>();
@@ -981,14 +811,8 @@ namespace AITrailblazer.net.Services
                         // Create a unique ID for the TreeView item using the message ID
                         var combinedId = $"{sessionId}|{message.Id}";
 
-                        var promptTokens = message.PromptTokens;
-                        var userInputTokens = message.UserInputTokens;
-                        var outputTokens = message.OutputTokens;
-
-                        // sum all tokens
-                        var totalTokens = promptTokens + userInputTokens + outputTokens;
                         // write it user friendly
-                        var userFriendlyText = $"({totalTokens} tokens) {message.Title}";
+                        var userFriendlyText = $"{message.Title}";
 
                         // Add a new TreeViewItem with just the title
                         items.Add(new TreeViewItem

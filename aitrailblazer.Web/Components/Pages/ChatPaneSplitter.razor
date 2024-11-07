@@ -32,7 +32,7 @@
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         ID: <span class="value-text">@currentUserTenantID / @currentUserIdentityID</span>
                     </FluentTextBlock>
-                    --> 
+
 
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" VerticalGap="1">
                     <FluentTextBlock Typo="Typography.Body">
@@ -48,6 +48,7 @@
                         Language: <span class="value-text">@userLanguage</span>
                     </FluentTextBlock>                
                 </FluentStack>
+                --> 
                 <!--
                     <FluentTextBlock Typo="Typography.BodyStrong">
                         Phone: <span class="value-text">@GetUserPhoneNumber()</span>
@@ -173,23 +174,30 @@
                                 <FluentMultiSplitterPane Size="60%" Min="20%" Max="80%" Collapsible="false">
                                     <FluentMultiSplitter Orientation="Orientation.Horizontal" >
                                     <!-- INPUT Pane BEGIN -->
-                    
+
                                         @if (showINPUTPane)
                                         {
-                                        <FluentMultiSplitterPane Min="10%" Max="90%" Collapsible="false" Style="border: 2px solid var(--input-fill-rest);">
-                                            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal"
-                                        VerticalAlignment="@Vertical">
-
-                                        @if (!string.IsNullOrEmpty(PanelInput))
-                                        {
-                                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
-                                        VerticalAlignment="@Vertical">
-
-                                            <FluentSwitch @bind-Value="isHtmlView">Show HTML View</FluentSwitch>
-                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
-                                                OnClick="ClearPanelInput" /> 
-                                            </FluentStack>
-                                        }
+                                        <FluentMultiSplitterPane Min="10%" Max="90%" Collapsible="false" Style="border: 2px;">
+                                            <div style="padding:1px;min-width:800px">
+                                                <FluentToolbar id="toolbar-fluent-components-input" style="width:100%">
+                                                    @if (!string.IsNullOrEmpty(PanelInput))
+                                                    {
+                                                        <FluentSwitch @bind-Value="isHtmlView">Show HTML View</FluentSwitch>
+                                                        <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
+                                                            OnClick="ClearPanelInput" /> 
+                                                            <!--
+                                                        <FluentCounterBadge Count="@inputTokenCount" BackgroundColor="@Color.Accent" Color="Color.Fill">
+                                                            <ChildContent>
+                                                                <FluentButton>
+                                                                    <FluentIcon Value="@(new Icons.Regular.Size24.Info())" Color="@Color.Neutral" />
+                                                                </FluentButton>
+                                                            </ChildContent>
+                                                            <BadgeTemplate>Tokens: @context</BadgeTemplate>
+                                                        </FluentCounterBadge>
+                                                        -->
+                                                    }
+                                                </FluentToolbar>
+                                            </div>
                                                 <FluentCard MinimalStyle="false" Width="100%" Height="100%">
                                                     <FluentLabel Typo="Typography.Subject">@RequestFeatureNameWorkflowName | @RequestFeatureNameProject</FluentLabel>
                                                     <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
@@ -209,41 +217,52 @@
                                                         }
                                                     </div>
                                                 </FluentCard>
-
-                                                </FluentStack>
-
                                             </FluentMultiSplitterPane>
                                         }
                                         <!-- INPUT Pane END -->
                                         <!-- OUTPUT Pane BEGIN -->
-                                        <FluentMultiSplitterPane Min="20%" Collapsible="false" Style="border: 2px solid var(--output-fill-rest);">
+                                        <FluentMultiSplitterPane Min="20%" Collapsible="false" Style="border: 1px solid;">
                                         <!-- Switch to Show/Hide FluentAccordion -->
                                         @if (!string.IsNullOrEmpty(PanelOutput))
                                         {
-                                            <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content"
-                                                Loading="@loadingOutput2"
-                                                OnClick="CopyOutputToInput" />
-                                             <FluentTooltip Anchor="CopyOutputToInput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                Transfer Content to Input
-                                            </FluentTooltip>
-                                            <FluentButton id="CopyToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
-                                                Loading="@loadingOutput1"
-                                                OnClick="CopyToClipboard" />
-                                            <FluentTooltip Anchor="CopyToClipboard" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                Copy to clipboard
-                                            </FluentTooltip>
-                                            <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear"
-                                                OnClick="ClearPanelOutput" />                    
-                                            <FluentTooltip Anchor="ClearPanelOutput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                Clear Output
-                                            </FluentTooltip>
-                                            @if (sessionSelectedItemName != null)
-                                            {
-                                                <FluentButton id="DeleteSessionItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
-                                                <FluentTooltip Anchor="DeleteSessionItem" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                    Delete this chat  
+                                            <div style="padding:1px;min-width:800px">
+                                                <FluentToolbar id="toolbar-fluent-components-input" style="width:100%">
+
+                                                <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content"
+                                                    Loading="@loadingOutput2"
+                                                    OnClick="CopyOutputToInput" />
+                                                <FluentTooltip Anchor="CopyOutputToInput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                    Transfer Content to Input
                                                 </FluentTooltip>
-                                            }
+                                                <FluentButton id="CopyToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                                    Loading="@loadingOutput1"
+                                                    OnClick="CopyToClipboard" />
+                                                <FluentTooltip Anchor="CopyToClipboard" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                    Copy to clipboard
+                                                </FluentTooltip>
+                                                <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear"
+                                                    OnClick="ClearPanelOutput" />                    
+                                                <FluentTooltip Anchor="ClearPanelOutput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                    Clear Output
+                                                </FluentTooltip>
+
+                                                @if (sessionSelectedItemName != null)
+                                                {
+                                                    <FluentButton id="DeleteSessionItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
+                                                    <FluentTooltip Anchor="DeleteSessionItem" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                        Delete this chat  
+                                                    </FluentTooltip>
+                                                    <FluentCounterBadge Count="@totalTokenCount" BackgroundColor="@Color.Accent" Color="Color.Fill">
+                                                        <ChildContent>
+                                                            <FluentButton>
+                                                                <FluentIcon Value="@(new Icons.Regular.Size24.Info())" Color="@Color.Neutral" />
+                                                            </FluentButton>
+                                                        </ChildContent>
+                                                        <BadgeTemplate>Total tokens: @context</BadgeTemplate>
+                                                    </FluentCounterBadge>
+                                                }
+                                                </FluentToolbar>
+                                            </div>
                                         }
                                             <FluentLabel Typo="Typography.Subject">
                                             </FluentLabel>
@@ -622,7 +641,7 @@
     [Parameter]
     public string? c { get; set; }
 
-       [Parameter]
+    [Parameter]
     public EventCallback<string> OnFeatureNameChanged { get; set; }
     
     private FileItemRow _selectedFile;
@@ -678,6 +697,9 @@
             }
         }
     }
+    private int inputTokenCount = 0;
+    private int outputTokenCount = 0;
+    private int totalTokenCount = 0;
 
     private ElementReference containerDiv;
 
@@ -754,7 +776,7 @@
     private FluentTreeItem? currentSelectedTreeItemAICopilotSettings = null;
     private FluentTreeItem? currentSelectedTreeItemAICopilots = null;
 
-    public string PlaceholderInputText { get; set; } = "Please enter lengthy texts or code in this space.\nEnter your prompt into the Prompt/Command Line below.";
+    public string PlaceholderInputText { get; set; } = "";
     public string PlaceholderOutputText { get; set; } = "The AI will display the processed output here for your review and analysis.";
 
     public string PlaceholderCommandText { get; set; } = "Ask AI Assistant.";
@@ -1253,6 +1275,11 @@
                 PanelInput = message.Prompt;
                 PanelOutput = message.Output;
 
+                inputTokenCount = message.InputTokenCount;
+                outputTokenCount = message.OutputTokenCount;
+                totalTokenCount = message.TotalTokenCount;
+
+
                 // Set session-related settings based on message details
                 RequestFeatureNameWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
                 RequestFeatureNameProject = message.FeatureNameProject ?? string.Empty;
@@ -1471,11 +1498,11 @@
         //currentUserTenantID = tenantId;
 
         pluginPath = PluginService.GetPluginsPath();
-        Console.WriteLine($"ChatPaneSplitter Plugin Path: {pluginPath}");
+        //Console.WriteLine($"ChatPaneSplitter Plugin Path: {pluginPath}");
 
-        Console.WriteLine($"ChatPaneSplitter OnInitializedAsync CurrentFeatureName: {CurrentFeatureName}");
+        //Console.WriteLine($"ChatPaneSplitter OnInitializedAsync CurrentFeatureName: {CurrentFeatureName}");
 
-        PlaceholderCommandText = $"ChatPaneSplitter Prompt/Command Line: Enter your prompt here. If you need to use lengthy texts or code, please enter or paste them in the Context field located above on the left.";
+        PlaceholderCommandText = $"Enter your message";
         
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 

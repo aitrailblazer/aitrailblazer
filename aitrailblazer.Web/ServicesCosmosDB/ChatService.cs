@@ -439,7 +439,7 @@ namespace Cosmos.Copilot.Services
                 session.AddMessage(chatMessage);
 
                 _logger.LogDebug("Session tokens updated. CorrelationId={CorrelationId}, SessionId={SessionId}, NewTotalTokens={NewTotalTokens}.",
-                    correlationId, sessionId, session.Tokens);
+                    correlationId, sessionId, session.TotalTokenCount);
 
                 // Prepare items for batch upsert
                 var itemsToUpsert = new object[]

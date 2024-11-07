@@ -54,8 +54,8 @@ namespace Cosmos.Copilot.Models
         /// <summary>
         /// Total tokens used in the session.
         /// </summary>
-        [JsonProperty("tokens")]
-        public int Tokens { get;  set; } // Ensures the Tokens count cannot be modified externally
+        [JsonProperty("totalTokenCount")]
+        public int TotalTokenCount { get;  set; } // Ensures the Tokens count cannot be modified externally
 
         /// <summary>
         /// Timestamp of the last activity in the session.
@@ -109,7 +109,7 @@ namespace Cosmos.Copilot.Models
             SessionId = Id; // Set SessionId to Id for uniqueness and alignment with partition key
             Title = title;
 
-            Tokens = 0;
+            TotalTokenCount = 0;
             TimeStamp = DateTime.UtcNow;
             Messages = new List<Message>();
         }
@@ -157,7 +157,7 @@ namespace Cosmos.Copilot.Models
                 throw new ArgumentNullException(nameof(message), "Message cannot be null.");
 
             Messages.Add(message);
-            Tokens += message.PromptTokens + message.OutputTokens;
+            TotalTokenCount += message.TotalTokenCount;
             TimeStamp = DateTime.UtcNow;
         }
 
@@ -174,8 +174,8 @@ namespace Cosmos.Copilot.Models
             if (existingMessage != null)
             {
                 // Update token counts
-                Tokens = Tokens - (existingMessage.PromptTokens + existingMessage.OutputTokens)
-                         + (message.PromptTokens + message.OutputTokens);
+                TotalTokenCount = TotalTokenCount - existingMessage.TotalTokenCount
+                         + message.TotalTokenCount;
 
                 // Replace the existing message with the updated one
                 var index = Messages.IndexOf(existingMessage);
@@ -202,7 +202,7 @@ namespace Cosmos.Copilot.Models
             if (message != null)
             {
                 Messages.Remove(message);
-                Tokens -= message.PromptTokens + message.OutputTokens;
+                TotalTokenCount -= message.TotalTokenCount;
                 TimeStamp = DateTime.UtcNow;
             }
             else
