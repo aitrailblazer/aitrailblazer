@@ -186,6 +186,8 @@ public class CosmosDbService
     public async Task<Message> InsertMessageAsync(
         string tenantId,
         string userId,
+        string featureNameWorkflowName,
+        string featureNameProject,
         string sessionId,
         string title,
         string prompt,
@@ -210,6 +212,8 @@ public class CosmosDbService
             var message = new Message(
                 tenantId: tenantId,
                 userId: userId,
+                featureNameWorkflowName: featureNameWorkflowName,
+                featureNameProject: featureNameProject,
                 sessionId: sessionId,
                 title: title,
                 prompt: prompt,

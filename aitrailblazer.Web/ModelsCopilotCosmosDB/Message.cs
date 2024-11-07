@@ -96,6 +96,8 @@ namespace Cosmos.Copilot.Models
             string sessionId,
             string tenantId,
             string userId,
+            string featureNameWorkflowName,
+            string featureNameProject,
             string title,
             string prompt,
             int promptTokens,
@@ -130,6 +132,8 @@ namespace Cosmos.Copilot.Models
             Type = nameof(Message);
             TenantId = tenantId;
             UserId = userId;
+            FeatureNameWorkflowName = featureNameWorkflowName;
+            FeatureNameProject = featureNameProject;
             SessionId = sessionId;
             Title = title;
             TimeStamp = DateTime.UtcNow;
@@ -151,27 +155,9 @@ namespace Cosmos.Copilot.Models
             RelationSettingsVal = relationSettingsVal;
             ResponseStyleVal = responseStyleVal;
 
-            // Extract featureNameWorkflowName and featureNameProject from title
-            ParseTitle(title);
         }
 
-        /// <summary>
-        /// Parses the title to extract featureNameWorkflowName and featureNameProject.
-        /// </summary>
-        void ParseTitle(string title)
-        {
-            var parts = title.Split('-');
-            if (parts.Length >= 2)
-            {
-                FeatureNameWorkflowName = parts[0];
-                FeatureNameProject = parts[1];
-            }
-            else
-            {
-                FeatureNameWorkflowName = "UnknownWorkflow";
-                FeatureNameProject = "UnknownProject";
-            }
-        }
+
 //     "id": "Message-ChatSession-Writing-AIWritingAssistant-ASAPAutonomous_Systems_and_ProcessesASAP_is_a_no-code_multi-agen-20241104-071821-7e2a-Writing-AIWritingAssistant-ASAPAutonomous_Systems_and_ProcessesASAP_is_a_no-code_multi-agen-20241104-071824-5cfd",
 //     "id": "Message-ChatSession-Writing-AIWritingAssistant-ASAPAutonomous_Systems_and_ProcessesASAP_is_a_no-code_multi-agen-20241104-071821-7e2a-Writing-AIWritingAssistant-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241104-071843-9452",
 

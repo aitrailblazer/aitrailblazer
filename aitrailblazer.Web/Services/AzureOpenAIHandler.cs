@@ -19,6 +19,7 @@ using Microsoft.SemanticKernel.Plugins.Web;
 using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
 
+
 using System.ComponentModel;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.TypeChat;
@@ -573,7 +574,7 @@ namespace AITrailblazer.net.Services
                 var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
 
                 _logger.LogInformation("Generating response with Prompty.");
-                var responseOutput = await GenerateWithPromptyAsync(
+                var (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
                     featureNameProject,
                     enhancedInputs.EnhancedPanelInput,
                     enhancedInputs.EnhancedUserInput,
@@ -598,13 +599,15 @@ namespace AITrailblazer.net.Services
                     sessionId: session.SessionId,               // sessionId
                     tenantId: currentUserTenantID,              // tenantId
                     userId: currentUserIdentityID,              // userId
+                    featureNameWorkflowName: featureNameWorkflowName,
+                    featureNameProject: featureNameProject,
                     title: requestTitle,                        // title
                     prompt: panelInput,                         // prompt
-                    promptTokens: 0,                            // promptTokens
+                    promptTokens: tokenUsage.InputTokenCount,                            // promptTokens
                     userInput: userInput,                       // userInput
-                    userInputTokens: 0,                         // userInputTokens
+                    userInputTokens: tokenUsage.InputTokenCount,                         // userInputTokens
                     output: responseOutput,                     // output
-                    outputTokens: 0,                            // outputTokens
+                    outputTokens: tokenUsage.OutputTokenCount,                            // outputTokens
                     cacheHit: false,                            // cacheHit
                     masterTextSetting: masterTextSetting,       // masterTextSetting
                     writingStyleVal: writingStyleVal,           // writingStyleVal
@@ -973,10 +976,19 @@ namespace AITrailblazer.net.Services
                     try
                     {
                         // Create a user-friendly title for the TreeView item
-                        var userFriendlyText = $"{message.Title} - {message.TimeStamp:yyyy-MM-dd HH:mm:ss}";
+                        //var userFriendlyText = $"{message.Title} - {message.TimeStamp:yyyy-MM-dd HH:mm:ss}";
 
                         // Create a unique ID for the TreeView item using the message ID
                         var combinedId = $"{sessionId}|{message.Id}";
+
+                        var promptTokens = message.PromptTokens;
+                        var userInputTokens = message.UserInputTokens;
+                        var outputTokens = message.OutputTokens;
+
+                        // sum all tokens
+                        var totalTokens = promptTokens + userInputTokens + outputTokens;
+                        // write it user friendly
+                        var userFriendlyText = $"({totalTokens} tokens) {message.Title}";
 
                         // Add a new TreeViewItem with just the title
                         items.Add(new TreeViewItem
@@ -1050,7 +1062,17 @@ namespace AITrailblazer.net.Services
             // Concatenate all pipe-delimited strings into a single string
             return string.Join("|", pipeDelimitedStrings);
         }
+        public async Task<SessionChat> GetChatSessionAsync(
+            string tenantId,
+            string userId,
+            string sessionId)
+        {
+            // Get the session and its messages from Cosmos DB
+            var session = await _chatService.GetSessionAsync(tenantId, userId, sessionId);
 
+            _logger.LogInformation($"Get session ID: {sessionId}");
+            return session;
+        }
         public async Task DeleteChatSessionAsync(
             string tenantId,
             string userId,
@@ -2320,7 +2342,7 @@ namespace AITrailblazer.net.Services
             return promptyTemplate;
         }
 
-        public async Task<string> GenerateWithPromptyAsync(
+        public async Task<(string response, ChatTokenUsage? tokenUsage)> GenerateWithPromptyAsync(
             string FeatureNameProject,
             string PanelInput,
             string input,
@@ -2344,7 +2366,7 @@ namespace AITrailblazer.net.Services
 
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + FeatureNameProject + ".prompty";
-            _logger.LogInformation($"Prompty file path: {pluginPath}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
 
             var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
 
@@ -2414,7 +2436,7 @@ namespace AITrailblazer.net.Services
                 responseStylePreferenceStr,
                 masterTextSettingsService,
                 maxTokensLabel);
-            _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
 
             // Enable automatic function calling
             var executionSettings = new AzureOpenAIPromptExecutionSettings
@@ -2544,15 +2566,15 @@ namespace AITrailblazer.net.Services
 
             };
 
-            _logger.LogInformation($"Prompty file loaded: {promptyTemplate}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
 
 
             // Act
             var kernelFunction = new Kernel().CreateFunctionFromPrompty(promptyTemplate);
 
-            _logger.LogInformation($"Kernel function created from prompty file: {kernelFunction.Name}");
-            _logger.LogInformation($"Kernel function description: {kernelFunction.Description}");
-            _logger.LogInformation($"Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function created from prompty file: {kernelFunction.Name}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function description: {kernelFunction.Description}");
+            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function parameters: {kernelFunction.Metadata.Parameters}");
 
             var arguments = new KernelArguments(executionSettings)
             {
@@ -2564,29 +2586,44 @@ namespace AITrailblazer.net.Services
 
             try
             {
-                var result = await kernel.InvokeAsync(kernelFunction, arguments);
+                var response = await kernel.InvokeAsync(kernelFunction, arguments);
+                _logger.LogInformation($"GenerateWithPromptyAsync: Metadata: {string.Join(",", response.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+               
+                var usage = response.Metadata?["Usage"] as ChatTokenUsage;
 
-                _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
-                return result.GetValue<string>();
+                if (usage != null)
+                {
+                    _logger.LogInformation($"GenerateWithPromptyAsync:InputTokenCount: {usage.InputTokenCount}");
+                    _logger.LogInformation($"GenerateWithPromptyAsync:OutputTokenCount: {usage.OutputTokenCount}");
+                    _logger.LogInformation($"GenerateWithPromptyAsync:TotalTokenCount: {usage.TotalTokenCount}");
+                }
+                else
+                {
+                    _logger.LogWarning("Usage metadata is null.");
+                }
+
+                var result = response.GetValue<string>();
+
+                return (result, usage);
 
             }
             catch (ArgumentException ex)
             {
                 // Handle argument exceptions, which may occur if arguments are incorrect
                 _logger.LogInformation($"Argument error: {ex.Message}");
-                return "Please try again";
+                return ("", null);
             }
             catch (InvalidOperationException ex)
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
                 _logger.LogInformation($"Invalid operation: {ex.Message}");
-                return "Please try again";
+                return ("",null);
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
                 _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
-                return "Please try again";
+                return ("",null);
             }
 
         }

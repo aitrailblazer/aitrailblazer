@@ -75,14 +75,13 @@
                                             <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange" Class="top-tabs-font-size">
                                                 <FluentTab Id="ConversationalMemory-id" Icon="@(new Icons.Regular.Size24.ChatMultiple())">
                                                     <Header>
-                                                        Sessions
+                                                        <FluentLabel Typo="Typography.Body">Conversation Memory</FluentLabel>
                                                     </Header>
                                                     <Content>
                                                             <FluentCard MinimalStyle="true" Width="calc(100% - 1px)" Height="100%">
-                                                                <FluentLabel Typo="Typography.Body">Conversation Memory</FluentLabel>
-                                                                <FluentButton Id="NewSession" IconEnd="@(new Icons.Regular.Size16.Add())" Title="New Session" OnClick="@StartNewSession" />
+                                                                <FluentButton Id="NewSession" IconStart="@(new Icons.Regular.Size16.Add())" Title="New Thread" OnClick="@StartNewSession">New Thread</FluentButton>
                                                                 <FluentTooltip Anchor="NewSession" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                                    Start a new session. Enter a new context and prompt to begin a new conversation.
+                                                                    Start a new thread. Enter a new context and prompt to begin a new conversation.
                                                                 </FluentTooltip>
                                                                 @if (ItemsSessions != null && ItemsSessions.Any())
                                                                 {
@@ -92,7 +91,7 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    <FluentLabel Typo="Typography.Body">No sessions found.</FluentLabel>
+                                                                    <FluentLabel Typo="Typography.Body">No threads found.</FluentLabel>
                                                                 }
 
                                                             </FluentCard>
@@ -160,29 +159,15 @@
                                 <div class="current-session">
                                     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal"
                                         VerticalAlignment="@Vertical">
-                                        @if (sessionSelectedName != null)
-                                        {
-                                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
-                                                <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSession(currentChatSessionId))" />
-                                                <FluentLabel Typo="Typography.Subject"><b>Current Session: </b>@sessionSelectedName</FluentLabel>
-                                            </FluentStack>
-                                        }
-                                        else
-                                        {
-                                            <span class="no-session">Start a new session. Enter a new context and prompt to begin a new conversation.</span>
-                                        }
-                                        
-                                        @if (sessionSelectedItemName != null)
-                                        {
-                                              <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
-                                                <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
-                                                <FluentLabel Typo="Typography.Subject"><b>Current Chat: </b>@sessionSelectedItemName</FluentLabel>
-                                            </FluentStack>
-                                        }
-                                        else
-                                        {
-                                            <span class="no-session">Start a new session. Enter a new context and prompt to begin a new conversation.</span>
-                                        }
+
+                                            @if (!string.IsNullOrEmpty(currentChatSessionId))
+                                            {
+                                                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
+                                                    <FluentLabel Typo="Typography.Subject"><b>Current Session: </b>@sessionSelectedName</FluentLabel>
+                                                    <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSession(currentChatSessionId))" />
+                                                </FluentStack>
+                                            }
+
                                         </FluentStack>
                                 </div>
                                 <FluentMultiSplitterPane Size="60%" Min="20%" Max="80%" Collapsible="false">
@@ -235,15 +220,30 @@
                                         <!-- Switch to Show/Hide FluentAccordion -->
                                         @if (!string.IsNullOrEmpty(PanelOutput))
                                         {
-                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Copy to Input"
+                                            <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content"
                                                 Loading="@loadingOutput2"
                                                 OnClick="CopyOutputToInput" />
-
-                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                             <FluentTooltip Anchor="CopyOutputToInput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                Transfer Content to Input
+                                            </FluentTooltip>
+                                            <FluentButton id="CopyToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
                                                 Loading="@loadingOutput1"
                                                 OnClick="CopyToClipboard" />
-                                            <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Output"
+                                            <FluentTooltip Anchor="CopyToClipboard" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                Copy to clipboard
+                                            </FluentTooltip>
+                                            <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear"
                                                 OnClick="ClearPanelOutput" />                    
+                                            <FluentTooltip Anchor="ClearPanelOutput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                Clear Output
+                                            </FluentTooltip>
+                                            @if (sessionSelectedItemName != null)
+                                            {
+                                                <FluentButton id="DeleteSessionItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
+                                                <FluentTooltip Anchor="DeleteSessionItem" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                    Delete this chat  
+                                                </FluentTooltip>
+                                            }
                                         }
                                             <FluentLabel Typo="Typography.Subject">
                                             </FluentLabel>
@@ -697,7 +697,7 @@
     {
         return activeid switch
         {
-            "Github-id" => "20%", // Adjust this value based on your preference
+            //"Github-id" => "20%", // Adjust this value based on your preference
             "ConversationalMemory-id" => "20%", // Default size for Sessions
             _ => "20%", // Fallback size
         };
@@ -706,7 +706,7 @@
     {
         return activeid switch
         {
-            "Github-id" => "820px", // Wide width for Github Repositories
+            //"Github-id" => "820px", // Wide width for Github Repositories
             "ConversationalMemory-id" => "340px", // Narrow width for Sessions
             _ => "340px", // Fallback width
         };
@@ -1006,7 +1006,7 @@
             AICopilotSettings.ResponseStyleVal
         );
 
-        Console.WriteLine($"HandleSubmit currentSelectedTreeItemMessagesId: {currentSelectedTreeItemMessagesId}");
+        Console.WriteLine($"HandleSubmit currentChatSessionId: {currentChatSessionId}");
         // Get the output from AzureOpenAIHandler
         PanelOutput = await azureOpenAIHandler.HandleSubmitAsync(
             isNewSession,
@@ -1026,7 +1026,7 @@
             AICopilotSettings.RelationSettingsVal,
             AICopilotSettings.ResponseStyleVal,
             sessionSelectedName,
-            currentSelectedTreeItemMessagesId
+            currentChatSessionId
         );
         Submitting = false;
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
@@ -1059,8 +1059,11 @@
         }
 
         // Reload sessions and keep the current session selected
-        await LoadSessionsAsync(currentSelectedTreeItemMessagesId);
+        await LoadSessionsAsync(currentChatSessionId);
     }
+    private Icon IconCollapsed = new Icons.Regular.Size20.Folder();
+    private Icon IconExpanded = new Icons.Regular.Size20.FolderOpen();
+
     private async Task LoadSessionsAsync(string? sessionIdToSelect = null)
     {
         List<Cosmos.Copilot.Models.SessionChat> SessionChats = await azureOpenAIHandler.LoadSessionsAsync(
@@ -1072,6 +1075,8 @@
         {
             Text = session.Title,
             Id = session.Id,
+            IconCollapsed = IconCollapsed,
+            IconExpanded = IconExpanded,
             OnExpandedAsync = OnExpandedAsync,
             Expanded = false,
             Items = TreeViewItem.LoadingTreeViewItems,
@@ -1091,8 +1096,10 @@
                     Name = selectedSessionChat.Title,
                     Id = selectedSessionChat.Id
                 };
-                sessionSelectedName = CurrentSession.Name;
-                sessionSelectedItemName = "";
+                sessionSelectedName = selectedSessionChat.Title;
+                sessionSelectedItemName = null;
+                // Update UI with new data
+                StateHasChanged();
                 
                 var selectedTreeItem = ItemsSessions.FirstOrDefault(item => item.Id == selectedSessionChat.Id);
                 SelectedItem = selectedTreeItem;
@@ -1104,7 +1111,16 @@
         }
         else
         {
-            sessionSelectedName = "";
+            // Clear the selected item
+            SelectedItem = null;
+
+            // Set the new session flag
+            isNewSession = true;
+
+            //await LoadSessionsAsync();
+            sessionSelectedName = null;
+            currentChatSessionId = string.Empty;
+            sessionSelectedItemName = null;
         }
     }
         private async Task OnExpandedAsync(TreeViewItemExpandedEventArgs e)
@@ -1122,7 +1138,6 @@
         }
         else
         {
-            // Use placeholder for collapsing
             e.CurrentItem.Items = TreeViewItem.LoadingTreeViewItems;
         }
 
@@ -1165,16 +1180,8 @@
             return;
         }
 
-        // Set the selected item for processing
-        //currentSelectedTreeItemMessages = selectedTreeItem;
-        currentSelectedTreeItemMessagesId = selectedTreeItem.Id;
-
-        // Extract session and message IDs if necessary
-        Console.WriteLine($"Selected Tree Item ID: {currentSelectedTreeItemMessagesId}");
-        
         _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
         isNewSession = false;
-
     }
 
 
@@ -1183,7 +1190,6 @@
     private string currentChatSessionId = string.Empty; 
     private string currentChatSessionItemMessageId = string.Empty; 
 
-    private string currentSelectedTreeItemMessagesId = string.Empty;// can be Chat session or message ID
 
     string sessionSelectedItemName;
 
@@ -1194,15 +1200,22 @@
         // Split the ID by '|' to isolate the parts
         var parts = selectedItemId.Split('|');
 
-        // Extract the first part as currentSelectedTreeItemMessagesId
         if (parts.Length >= 1)
         {
             isNewSession = false;
 
-            currentSelectedTreeItemMessagesId = parts[0];
-            currentChatSessionId = currentSelectedTreeItemMessagesId;
+            currentChatSessionId = parts[0];
+             var selectedSessionChat = await azureOpenAIHandler.GetChatSessionAsync(
+                currentUserTenantID,
+                currentUserIdentityID, 
+                currentChatSessionId);
+            if (selectedSessionChat != null)
+            {
+                sessionSelectedName = selectedSessionChat.Title;
+                StateHasChanged();
+            }
 
-            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentSelectedTreeItemMessagesId}");
+            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatSessionId}");
         }
         else
         {
@@ -1265,7 +1278,7 @@
             // Optionally, you can handle cases where only the session ID is present
             // Since you mentioned not needing the else block, we leave this section empty
             // However, you might still want to perform some actions or simply acknowledge the selection
-            Console.WriteLine($"Selected Item is a Session with ID: {currentSelectedTreeItemMessagesId}, but no specific message selected.");
+            Console.WriteLine($"Selected Item is a Session with ID: {currentChatSessionId}, but no specific message selected.");
         }
     }
 
@@ -1365,6 +1378,8 @@
 
         //await LoadSessionsAsync();
         sessionSelectedName = null;
+        currentChatSessionId = string.Empty;
+        sessionSelectedItemName = null;
     }
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
@@ -1392,6 +1407,11 @@
 
             // Log and update UI after deletion
             Console.WriteLine($"Deleted session: {sessionStringId}");
+
+            sessionSelectedName = null;
+            currentChatSessionId = string.Empty;
+            sessionSelectedItemName = null;
+
             await LoadSessionsAsync();
             StateHasChanged();
         }
@@ -1408,68 +1428,11 @@
 
             // Log and update UI after deletion
             Console.WriteLine($"Deleted message: {sessionItemId}");
+            sessionSelectedItemName = null;
+
             await LoadSessionsAsync();
             StateHasChanged();
         }
-        
-      /*
-        private async Task DeleteSession(ITreeViewItem item)
-        {
-            Console.WriteLine($"DeleteSession: {item.Id}");
-            
-            // Split the item ID to determine if it's a session or a message within a session
-            var idParts = item.Id.Split('|');
-            
-            // Case 1: Deleting a full session
-            if (idParts.Length == 1)
-            {
-                // Extract tenantId, userId, and sessionId from the item.Id
-                string tenantId = currentUserTenantID;
-                string userId = currentUserIdentityID;
-                string sessionId = idParts[0];
-
-                // Delete the entire session and its messages
-                await azureOpenAIHandler.DeleteChatSessionAsync(tenantId, userId, sessionId);
-
-                // Log and update UI after deletion
-                Console.WriteLine($"Deleted session: {sessionId}");
-                ItemsSessions = ItemsSessions.Where(i => i.Id != item.Id).ToList();
-                await LoadSessionsAsync();
-                StateHasChanged();
-                
-                // Clear session selection if needed
-                if (SelectedItem == item)
-                {
-                    SelectedItem = null;
-                    CurrentSession = null;
-                    isNewSession = true;
-                    sessionSelectedName = null;
-                }
-            }
-            // Case 2: Deleting a specific message within a session
-            else if (idParts.Length == 2)
-            {
-                // Extract tenantId, userId, sessionId, and messageId
-                string tenantId = currentUserTenantID;
-                string userId = currentUserIdentityID;
-                string sessionId = idParts[0];
-                string messageId = idParts[1];
-
-                // Delete the specific message from the session
-                await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
-
-                // Log and update UI after deletion
-                Console.WriteLine($"Deleted message: {messageId} from session: {sessionId}");
-                ItemsSessions = ItemsSessions.Where(i => i.Id != item.Id).ToList();
-                await LoadSessionsAsync();
-                StateHasChanged();
-            }
-            else
-            {
-                Console.WriteLine("Error: Unrecognized ID format for deletion.");
-            }
-        }
-        */
 }
 
 
