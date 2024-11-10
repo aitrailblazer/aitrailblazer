@@ -122,8 +122,8 @@ namespace Cosmos.Copilot.Services
         /// Retrieves chat messages for a specific session.
         /// </summary>
         public async Task<List<Message>> GetChatSessionMessagesAsync(
-            string tenantId, 
-            string userId, 
+            string tenantId,
+            string userId,
             string? sessionId)
         {
             // Retrieving chat messages for 
@@ -346,8 +346,8 @@ namespace Cosmos.Copilot.Services
 
                 int tokensUsed = 0;
                 var allMessages = await _cosmosDbService.GetSessionMessagesAsync(
-                    tenantId, 
-                    userId, 
+                    tenantId,
+                    userId,
                     sessionId);
                 var contextWindow = new List<Message>();
                 _logger.LogInformation("GetChatSessionContextWindow Retrieved {Count} messages for SessionId={SessionId}.", allMessages.Count, sessionId);
@@ -375,7 +375,7 @@ namespace Cosmos.Copilot.Services
                 throw;
             }
         }
-        
+
 
 
         public async Task<SessionChat> GetSessionAsync(
@@ -509,7 +509,17 @@ namespace Cosmos.Copilot.Services
             return 0;
         }
 
-        public async Task<Message> SearchClosestMessageAsync(string tenantId, string userId, string featureNameProject, string searchQuery)
+        public async Task<Message> SearchClosestMessageAsync(
+           string tenantId,
+           string userId,
+           string featureNameProject,
+           string searchQuery,
+           string responseLengthVal,
+           string creativeAdjustmentsVal,
+           string audienceLevelVal,
+           string writingStyleVal,
+           string relationSettingsVal,
+           string responseStyleVal)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             _logger.LogInformation("Performing semantic search for the closest message for TenantId={TenantId}, UserId={UserId}, FeatureNameProject={FeatureNameProject}.", tenantId, userId, featureNameProject);
@@ -521,10 +531,21 @@ namespace Cosmos.Copilot.Services
                 _logger.LogInformation("Embeddings generated for the search query.");
 
                 // Define the similarity threshold (adjust as needed)
-                double similarityScore = 0.9; 
+                double similarityScore = 0.9;
 
-                // Search for the closest message
-                var closestMessage = await _cosmosDbService.SearchClosestMessageAsync(tenantId, userId, featureNameProject, queryVectors, similarityScore);
+                // Search for the closest message with additional parameters
+                var closestMessage = await _cosmosDbService.SearchClosestMessageAsync(
+                    tenantId,
+                    userId,
+                    featureNameProject,
+                    queryVectors,
+                    similarityScore,
+                    responseLengthVal,
+                    creativeAdjustmentsVal,
+                    audienceLevelVal,
+                    writingStyleVal,
+                    relationSettingsVal,
+                    responseStyleVal);
 
                 if (closestMessage != null)
                 {
@@ -557,28 +578,28 @@ namespace Cosmos.Copilot.Services
             _logger.LogInformation("GetCacheAsync: Performing cache search with context window containing {Count} messages.", contextWindow.Count);
             try
             {
-            // Grab the user prompts for the context window
-            var prompts = string.Join(Environment.NewLine, contextWindow.Select(m => m.Prompt));
-            _logger.LogInformation("GetCacheAsync:Aggregated prompts for cache search: {Prompts}.", prompts);
+                // Grab the user prompts for the context window
+                var prompts = string.Join(Environment.NewLine, contextWindow.Select(m => m.Prompt));
+                _logger.LogInformation("GetCacheAsync:Aggregated prompts for cache search: {Prompts}.", prompts);
 
-            // Get the embeddings for the user prompts
-            var vectors = await _semanticKernelService.GetEmbeddingsAsync(prompts);
-            _logger.LogInformation("GetCacheAsync:Embeddings generated for cache search.");
+                // Get the embeddings for the user prompts
+                var vectors = await _semanticKernelService.GetEmbeddingsAsync(prompts);
+                _logger.LogInformation("GetCacheAsync:Embeddings generated for cache search.");
 
-            // Check the cache for similar vectors
-            var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
-            _logger.LogInformation("GetCacheAsync:Cache search completed. CacheResponse='{CacheResponse}'.", response);
+                // Check the cache for similar vectors
+                var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
+                _logger.LogInformation("GetCacheAsync:Cache search completed. CacheResponse='{CacheResponse}'.", response);
 
-            stopwatch.Stop();
-            _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                stopwatch.Stop();
+                _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
 
-            return (prompts, vectors, response);
+                return (prompts, vectors, response);
             }
             catch (Exception ex)
             {
-            stopwatch.Stop();
-            _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
-            throw;
+                stopwatch.Stop();
+                _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                throw;
             }
         }
         public async Task<(string cachePrompts, float[] cacheVectors, string cacheResponse)> GetCacheStringAsync(string contextWindow)
@@ -588,27 +609,27 @@ namespace Cosmos.Copilot.Services
 
             try
             {
-            // Log the context window
-            _logger.LogInformation("GetCacheAsync: Context window: {ContextWindow}.", contextWindow);
+                // Log the context window
+                _logger.LogInformation("GetCacheAsync: Context window: {ContextWindow}.", contextWindow);
 
-            // Get the embeddings for the context window
-            var vectors = await _semanticKernelService.GetEmbeddingsAsync(contextWindow);
-            _logger.LogInformation("GetCacheAsync: Embeddings generated for cache search.");
+                // Get the embeddings for the context window
+                var vectors = await _semanticKernelService.GetEmbeddingsAsync(contextWindow);
+                _logger.LogInformation("GetCacheAsync: Embeddings generated for cache search.");
 
-            // Check the cache for similar vectors
-            var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
-            _logger.LogInformation("GetCacheAsync: Cache search completed. CacheResponse='{CacheResponse}'.", response);
+                // Check the cache for similar vectors
+                var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
+                _logger.LogInformation("GetCacheAsync: Cache search completed. CacheResponse='{CacheResponse}'.", response);
 
-            stopwatch.Stop();
-            _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                stopwatch.Stop();
+                _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
 
-            return (contextWindow, vectors, response);
+                return (contextWindow, vectors, response);
             }
             catch (Exception ex)
             {
-            stopwatch.Stop();
-            _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
-            throw;
+                stopwatch.Stop();
+                _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                throw;
             }
         }
 
@@ -616,8 +637,8 @@ namespace Cosmos.Copilot.Services
         /// Caches the generated completion.
         /// </summary>
         public async Task CachePutAsync(
-            string cachePrompts, 
-            float[] cacheVectors, 
+            string cachePrompts,
+            float[] cacheVectors,
             string responseOutput)
         {
             _logger.LogDebug("Caching completion for prompts: '{Prompts}'.", cachePrompts);
@@ -682,10 +703,10 @@ namespace Cosmos.Copilot.Services
 
                 // Search for similar email messages using embeddings
                 var similarEmails = await _cosmosDbService.SearchEmailsAsync(
-                    promptVectors, 
-                    tenantId, 
-                    userId, 
-                    categoryId, 
+                    promptVectors,
+                    tenantId,
+                    userId,
+                    categoryId,
                     _emailMaxResults);
                 _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
                 _logger.LogInformation($"SearchEmailsAsync {similarEmails}", similarEmails);

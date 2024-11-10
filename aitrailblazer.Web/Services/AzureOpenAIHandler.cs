@@ -590,9 +590,16 @@ namespace AITrailblazer.net.Services
                 Cosmos.Copilot.Models.Message closestMessage = await _chatService.SearchClosestMessageAsync(
                     tenantId: currentUserTenantID,
                     userId: currentUserIdentityID,
-                    featureNameProject: featureNameProject, // Added featureNameProject
-                    searchQuery: inputRequest // Assuming inputRequest is your search string
+                    featureNameProject: featureNameProject,
+                    searchQuery: inputRequest,
+                    responseLengthVal: responseLengthVal,
+                    creativeAdjustmentsVal: creativeAdjustmentsVal,
+                    audienceLevelVal: audienceLevelVal,
+                    writingStyleVal: writingStyleVal,
+                    relationSettingsVal: relationSettingsVal,
+                    responseStyleVal: responseStyleVal
                 );
+
 
                 // Initialize variables for the new message
                 bool cacheHit = false;

@@ -856,7 +856,18 @@ public class CosmosDbService
         }
     }
 
-    public async Task<Message> SearchClosestMessageAsync(string tenantId, string userId, string featureNameProject, float[] vectors, double similarityScore)
+    public async Task<Message> SearchClosestMessageAsync(
+    string tenantId, 
+    string userId, 
+    string featureNameProject, 
+    float[] vectors, 
+    double similarityScore,
+    string responseLengthVal,
+    string creativeAdjustmentsVal,
+    string audienceLevelVal,
+    string writingStyleVal,
+    string relationSettingsVal,
+    string responseStyleVal)
     {
 
         _logger.LogInformation("Searching for the closest message with similarity score above {similarityScore} and FeatureNameProject={FeatureNameProject}", similarityScore, featureNameProject);
@@ -890,10 +901,16 @@ public class CosmosDbService
             VectorDistance(c.vectors, @vectors) AS similarityScore
         FROM c
         WHERE c.type = 'Message'
-            AND c.tenantId = @tenantId
-            AND c.userId = @userId
-            AND c.featureNameProject = @featureNameProject
-            AND VectorDistance(c.vectors, @vectors) > @similarityScore
+                AND c.tenantId = @tenantId
+                AND c.userId = @userId
+                AND c.featureNameProject = @featureNameProject
+                AND VectorDistance(c.vectors, @vectors) > @similarityScore
+                AND c.responseLengthVal = @responseLengthVal
+                AND c.creativeAdjustmentsVal = @creativeAdjustmentsVal
+                AND c.audienceLevelVal = @audienceLevelVal
+                AND c.writingStyleVal = @writingStyleVal
+                AND c.relationSettingsVal = @relationSettingsVal
+                AND c.responseStyleVal = @responseStyleVal
         """;
 
         var queryDef = new QueryDefinition(queryText)
@@ -901,7 +918,12 @@ public class CosmosDbService
             .WithParameter("@similarityScore", similarityScore)
             .WithParameter("@tenantId", tenantId)
             .WithParameter("@userId", userId)
-            .WithParameter("@featureNameProject", featureNameProject);
+            .WithParameter("@featureNameProject", featureNameProject).WithParameter("@responseLengthVal", responseLengthVal)
+            .WithParameter("@creativeAdjustmentsVal", creativeAdjustmentsVal)
+            .WithParameter("@audienceLevelVal", audienceLevelVal)
+            .WithParameter("@writingStyleVal", writingStyleVal)
+            .WithParameter("@relationSettingsVal", relationSettingsVal)
+            .WithParameter("@responseStyleVal", responseStyleVal);
 
         try
         {
