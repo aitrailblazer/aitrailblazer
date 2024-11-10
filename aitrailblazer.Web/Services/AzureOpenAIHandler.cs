@@ -64,6 +64,8 @@ namespace AITrailblazer.net.Services
         //private readonly WebSearchService _webSearchService;
         private readonly TimeFunctions _timeFunctions;
         private readonly ChatService _chatService;
+        private readonly SemanticKernelService _semanticKernelService;
+
         // Intent-function map
         private readonly Dictionary<string, Func<string, Task<string>>> _intentFunctionMap;
 
@@ -78,7 +80,8 @@ namespace AITrailblazer.net.Services
             ILogger<AzureOpenAIHandler> logger,
             KernelAddPLugin kernelAddPLugin,
             TimeFunctions timeFunctions,
-            ChatService chatService)
+            ChatService chatService,
+            SemanticKernelService semanticKernelService)
         {
             _parametersAzureService = parametersAzureService;
             _pluginService = pluginService;
@@ -91,6 +94,7 @@ namespace AITrailblazer.net.Services
             _kernelAddPLugin = kernelAddPLugin;
             _timeFunctions = timeFunctions;
             _chatService = chatService;
+            _semanticKernelService = semanticKernelService;
 
             // Initialize the intent-function mapping
             _intentFunctionMap = new Dictionary<string, Func<string, Task<string>>>(StringComparer.OrdinalIgnoreCase)
@@ -405,7 +409,7 @@ namespace AITrailblazer.net.Services
 
             return response;
         }
-        public async Task<string> HandleSubmitAsync(
+        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsync(
             bool isNewSession,
             bool isMyKnowledgeBaseChecked,
             string currentUserTenantID,
@@ -433,7 +437,7 @@ namespace AITrailblazer.net.Services
             {
                 _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
                     currentUserIdentityID, currentUserTenantID);
-                return "Panel Input and User Input cannot both be empty.";
+                return ("Panel Input and User Input cannot both be empty.", 0);
             }
 
             try
@@ -467,7 +471,7 @@ namespace AITrailblazer.net.Services
                         responseStyleVal,
                         existingSessionTitle);
                     _logger.LogInformation("Submission handled by WriterReviewer for AIMessageOptimizer. User: {UserIdentityID}", currentUserIdentityID);
-                    return response;
+                    return (response,0);
                 }
                 else if (agentSettings != null)
                 {
@@ -491,7 +495,7 @@ namespace AITrailblazer.net.Services
                         existingSessionTitle);
                     _logger.LogInformation("Submission handled by WriterEditorReviewer for Project: {FeatureNameProject}. User: {UserIdentityID}",
                         featureNameProject, currentUserIdentityID);
-                    return response;
+                    return (response,0);
                 }
 
                 //var manager = BlobStorageManagerCreate();
@@ -567,34 +571,72 @@ namespace AITrailblazer.net.Services
 
                     _logger.LogInformation("Continuing existing session. SessionId: {SessionId}", session.Id);
                 }
+                /*
+                List<Cosmos.Copilot.Models.Message> contextWindow = await _chatService.GetChatSessionContextWindow(
+                        tenantId: currentUserTenantID,
+                        userId: currentUserIdentityID,
+                        sessionId: session.Id
+                    );
 
 
-                // Enhance inputs with citations and generate response
-                _logger.LogInformation("Enhancing inputs with citations.");
-                var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+                */
+                string responseOutput = string.Empty;
+                ChatTokenUsage tokenUsage = null;
 
-                _logger.LogInformation("Generating response with Prompty.");
-                var (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
-                    featureNameProject,
-                    enhancedInputs.EnhancedPanelInput,
-                    enhancedInputs.EnhancedUserInput,
-                    masterTextSetting,
-                    responseLengthVal,
-                    creativeAdjustmentsVal,
-                    audienceLevelVal,
-                    writingStyleVal,
-                    relationSettingsVal,
-                    responseStyleVal);
+                _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}", currentUserIdentityID, currentUserTenantID);
 
-                // Append citations if available
-                if (enhancedInputs.AllCitations.Any())
+                // Perform a semantic search to see if a similar message already exists
+                _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+                Cosmos.Copilot.Models.Message closestMessage = await _chatService.SearchClosestMessageAsync(
+                    tenantId: currentUserTenantID,
+                    userId: currentUserIdentityID,
+                    featureNameProject: featureNameProject, // Added featureNameProject
+                    searchQuery: inputRequest // Assuming inputRequest is your search string
+                );
+
+                // Initialize variables for the new message
+                bool cacheHit = false;
+
+                // Check if a similar message was found
+                if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
                 {
-                    var citationsText = FormatCitations(enhancedInputs.AllCitations);
-                    responseOutput += $"\n\nReferences:\n{citationsText}";
-                    _logger.LogInformation("Citations appended to the response.");
+                    // Cache hit, use the cached completion
+                    responseOutput = closestMessage.Output;
+                    cacheHit = true;
+
+                    _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
+                }
+                else
+                {
+                    // Cache miss, generate a new response
+                    _logger.LogInformation("Cache miss: Generating response with Prompty.");
+                    (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
+                        featureNameProject,
+                        panelInput,
+                        userInput,
+                        masterTextSetting,
+                        responseLengthVal,
+                        creativeAdjustmentsVal,
+                        audienceLevelVal,
+                        writingStyleVal,
+                        relationSettingsVal,
+                        responseStyleVal
+                    );
+
+                    // Enhance inputs with citations and generate response
+                    _logger.LogInformation("Enhancing inputs with citations.");
+                    var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                    // Append citations if available
+                    if (enhancedInputs.AllCitations.Any())
+                    {
+                        var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                        responseOutput += $"\n\nReferences:\n{citationsText}";
+                        _logger.LogInformation("Citations appended to the response.");
+                    }
                 }
 
-                // Generate the completed message
+                // Create the completed chat message
                 var completedChatMessage = new Cosmos.Copilot.Models.Message(
                     sessionId: session.SessionId,               // sessionId
                     tenantId: currentUserTenantID,              // tenantId
@@ -604,11 +646,11 @@ namespace AITrailblazer.net.Services
                     title: requestTitle,                        // title
                     userInput: userInput,                       // userInput
                     prompt: panelInput,                         // prompt
-                    inputTokenCount: tokenUsage.InputTokenCount,                            // promptTokens
-                    outputTokenCount: tokenUsage.OutputTokenCount,                         // userInputTokens
-                    totalTokenCount: tokenUsage.TotalTokenCount,                            // outputTokens
+                    inputTokenCount: tokenUsage?.InputTokenCount ?? 0,     // inputTokenCount
+                    outputTokenCount: tokenUsage?.OutputTokenCount ?? 0,   // outputTokenCount
+                    totalTokenCount: tokenUsage?.TotalTokenCount ?? 0,     // totalTokenCount
                     output: responseOutput,                     // output
-                    cacheHit: false,                            // cacheHit
+                    cacheHit: cacheHit,                         // cacheHit
                     masterTextSetting: masterTextSetting,       // masterTextSetting
                     writingStyleVal: writingStyleVal,           // writingStyleVal
                     audienceLevelVal: audienceLevelVal,         // audienceLevelVal
@@ -618,22 +660,32 @@ namespace AITrailblazer.net.Services
                     responseStyleVal: responseStyleVal          // responseStyleVal
                 );
 
+                // If cache miss, set the embeddings
+                if (!cacheHit)
+                {
+                    _logger.LogInformation("Generating embeddings for the new message.");
+                    float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(inputRequest);
+                    completedChatMessage.Vectors = promptVectors;
+                }
+
                 _logger.LogInformation("Updating session and message. SessionId: {SessionId}", session.SessionId);
 
-                // Corrected method name and variable
+                // Save the message to the database
                 await _chatService.UpsertSessionAndMessageAsync(
                     tenantId: currentUserTenantID,
                     userId: currentUserIdentityID,
-                    sessionId: session.SessionId,           // Use SessionId instead of SessionChatId
-                    chatMessage: completedChatMessage        // Pass the correct variable
+                    sessionId: session.SessionId,
+                    chatMessage: completedChatMessage
                 );
-                _logger.LogInformation("Chat message persisted with new completion. SessionId: {SessionId}", session.SessionId);
+
+                _logger.LogInformation("Chat message persisted with completion. SessionId: {SessionId}", session.SessionId);
 
                 timer.Stop();
                 _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
                     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
 
-                return responseOutput;
+                return (responseOutput, timer.Elapsed.TotalSeconds);
+
             }
             catch (Exception ex)
             {

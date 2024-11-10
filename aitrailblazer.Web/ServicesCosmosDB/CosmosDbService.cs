@@ -160,7 +160,7 @@ public class CosmosDbService
         }
     }
 
-     public async Task<Message> GetMessageByIdAsync(string messageId)
+    public async Task<Message> GetMessageByIdAsync(string messageId)
     {
         try
         {
@@ -856,6 +856,78 @@ public class CosmosDbService
         }
     }
 
+    public async Task<Message> SearchClosestMessageAsync(string tenantId, string userId, string featureNameProject, float[] vectors, double similarityScore)
+    {
+
+        _logger.LogInformation("Searching for the closest message with similarity score above {similarityScore} and FeatureNameProject={FeatureNameProject}", similarityScore, featureNameProject);
+
+        string queryText = $"""
+        SELECT TOP 1
+            c.id,
+            c.type,
+            c.tenantId,
+            c.userId,
+            c.sessionId,
+            c.title,
+            c.timeStamp,
+            c.prompt,
+            c.promptTokensCount,
+            c.outputTokensCount,
+            c.totalTokenCount,
+            c.userInput,
+            c.output,
+            c.cacheHit,
+            c.featureNameWorkflowName,
+            c.featureNameProject,
+            c.masterTextSetting,
+            c.writingStyleVal,
+            c.audienceLevelVal,
+            c.responseLengthVal,
+            c.creativeAdjustmentsVal,
+            c.relationSettingsVal,
+            c.responseStyleVal,
+            c.vectors,
+            VectorDistance(c.vectors, @vectors) AS similarityScore
+        FROM c
+        WHERE c.type = 'Message'
+            AND c.tenantId = @tenantId
+            AND c.userId = @userId
+            AND c.featureNameProject = @featureNameProject
+            AND VectorDistance(c.vectors, @vectors) > @similarityScore
+        """;
+
+        var queryDef = new QueryDefinition(queryText)
+            .WithParameter("@vectors", vectors)
+            .WithParameter("@similarityScore", similarityScore)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@userId", userId)
+            .WithParameter("@featureNameProject", featureNameProject);
+
+        try
+        {
+            using FeedIterator<Message> resultSet = _chatContainer.GetItemQueryIterator<Message>(queryDef);
+
+            if (resultSet.HasMoreResults)
+            {
+                FeedResponse<Message> response = await resultSet.ReadNextAsync();
+                var closestMessage = response.FirstOrDefault();
+
+                if (closestMessage != null)
+                {
+                    _logger.LogInformation("Found closest message with ID: {MessageId}", closestMessage.Id);
+                    return closestMessage;
+                }
+            }
+
+            _logger.LogInformation("No messages found within the similarity threshold and FeatureNameProject={FeatureNameProject}.", featureNameProject);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching for the closest message.");
+            throw;
+        }
+    }
 
     /// <summary>
     /// Find a cache item based on vector similarity.

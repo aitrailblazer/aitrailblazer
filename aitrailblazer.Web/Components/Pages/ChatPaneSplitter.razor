@@ -200,7 +200,7 @@
                                             </div>
                                                 <FluentCard MinimalStyle="false" Width="100%" Height="100%">
                                                     <FluentLabel Typo="Typography.Subject">@RequestFeatureNameWorkflowName | @RequestFeatureNameProject</FluentLabel>
-                                                    <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
+                                                    <div style="max-height:100%; overflow-y:auto; padding: 1px; margin-bottom:40px;">
                                                         @if (isHtmlView)
                                                         {
                                                             <FluentLabel Typo="Typography.Body" Class="content-splitter-font-size" 
@@ -228,38 +228,45 @@
                                             <div style="padding:1px;min-width:800px">
                                                 <FluentToolbar id="toolbar-fluent-components-input" style="width:100%">
 
-                                                <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content"
+                                                <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content to Input"
                                                     Loading="@loadingOutput2"
                                                     OnClick="CopyOutputToInput" />
-                                                <FluentTooltip Anchor="CopyOutputToInput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                    Transfer Content to Input
-                                                </FluentTooltip>
                                                 <FluentButton id="CopyToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
                                                     Loading="@loadingOutput1"
                                                     OnClick="CopyToClipboard" />
-                                                <FluentTooltip Anchor="CopyToClipboard" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                    Copy to clipboard
-                                                </FluentTooltip>
-                                                <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear"
+                                                <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Output"
                                                     OnClick="ClearPanelOutput" />                    
-                                                <FluentTooltip Anchor="ClearPanelOutput" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                    Clear Output
-                                                </FluentTooltip>
 
                                                 @if (sessionSelectedItemName != null)
                                                 {
                                                     <FluentButton id="DeleteSessionItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
-                                                    <FluentTooltip Anchor="DeleteSessionItem" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
-                                                        Delete this chat  
-                                                    </FluentTooltip>
-                                                    <FluentCounterBadge Count="@totalTokenCount" BackgroundColor="@Color.Accent" Color="Color.Fill">
+                                      
+                                                    <FluentBadge Appearance="Appearance.Accent">
+                                                        @timeTaken
+                                                    </FluentBadge>
+
+                                                    <FluentCounterBadge 
+                                                        Count="@totalTokenCount" 
+                                                        BackgroundColor="@(cacheHit ? Color.Neutral : Color.Accent)" 
+                                                        Color="Color.Fill">
                                                         <ChildContent>
-                                                            <FluentButton>
-                                                                <FluentIcon Value="@(new Icons.Regular.Size24.Info())" Color="@Color.Neutral" />
+                                                            <FluentButton id="FluentCounterBadge">
+                                                                <FluentIcon 
+                                                                    Value="@(cacheHit ? (Icon)new Icons.Regular.Size24.Bookmark() : (Icon)new Icons.Regular.Size24.ChatSparkle())" 
+                                                                    Color="@Color.Neutral" />
                                                             </FluentButton>
                                                         </ChildContent>
-                                                        <BadgeTemplate>Total tokens: @context</BadgeTemplate>
+                                                        <BadgeTemplate>Tokens: @context</BadgeTemplate>
                                                     </FluentCounterBadge>
+                                                    <FluentTooltip 
+                                                        Anchor="FluentCounterBadge" 
+                                                        HideTooltipOnCursorLeave="true" 
+                                                        MaxWidth="200px" 
+                                                        Delay="300">
+                                                        <p>Response retrieved from the database for free if no tokens were used; otherwise, tokens were spent for processing.</p>
+                                                    </FluentTooltip>
+
+
                                                 }
                                                 </FluentToolbar>
                                             </div>
@@ -700,6 +707,7 @@
     private int inputTokenCount = 0;
     private int outputTokenCount = 0;
     private int totalTokenCount = 0;
+    private bool cacheHit = false;
 
     private ElementReference containerDiv;
 
@@ -994,7 +1002,7 @@
         // Return the processed text, truncated if necessary
         return  text;
     }
-
+    string timeTaken;
     public List<ChatMessageM> ChatMessages { get; set; } = new();
     private async Task HandleSubmit()
     {
@@ -1030,7 +1038,7 @@
 
         Console.WriteLine($"HandleSubmit currentChatSessionId: {currentChatSessionId}");
         // Get the output from AzureOpenAIHandler
-        PanelOutput = await azureOpenAIHandler.HandleSubmitAsync(
+        (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
             isNewSession,
             IsMyKnowledgeBaseChecked,
             currentUserTenantID,
@@ -1050,7 +1058,14 @@
             sessionSelectedName,
             currentChatSessionId
         );
+        // Format a user-friendly string with the response and time spent
+        /// Format the time taken as a user-friendly string
+        timeTaken = timeSpent < 60 
+            ? $"{timeSpent:F2} seconds" 
+            : $"{(timeSpent / 60):F2} minutes";
+
         Submitting = false;
+        PanelOutput = responseOutput;
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
         if (agentSettings != null)
@@ -1201,7 +1216,7 @@
             Console.WriteLine("Error: No item selected.");
             return;
         }
-
+        timeTaken="";
         _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
         isNewSession = false;
     }
@@ -1214,7 +1229,6 @@
 
 
     string sessionSelectedItemName;
-
     private async Task OnItemSelectedAsync(string selectedItemId)
     {
         Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
@@ -1279,6 +1293,9 @@
                 outputTokenCount = message.OutputTokenCount;
                 totalTokenCount = message.TotalTokenCount;
 
+                cacheHit = message.CacheHit;
+
+                StateHasChanged();
 
                 // Set session-related settings based on message details
                 RequestFeatureNameWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;

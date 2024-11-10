@@ -81,7 +81,10 @@ namespace Cosmos.Copilot.Models
 
         [JsonProperty("responseStyleVal")]
         public string ResponseStyleVal { get; set; }
-
+       
+        // Add the Vectors property for embeddings
+        [JsonProperty("vectors")]
+        public float[] Vectors { get; set; }
         /// <summary>
         /// Default constructor for deserialization.
         /// </summary>

@@ -98,57 +98,7 @@ public class SemanticKernelService
     }
 
 
-    /// <summary>
-    /// Generates a completion using a user prompt with chat history to Semantic Kernel and returns the response.
-    /// </summary>
-    /// <param name="sessionId">Chat session identifier for the current conversation.</param>
-    /// <param name="conversation">List of Message objects containign the context window (chat history) to send to the model.</param>
-    /// <returns>Generated response along with tokens used to generate it.</returns>
-    public async Task<(string completion, int tokens)> GetChatCompletionAsync(
-        string sessionId, 
-        List<Message> contextWindow)
-    {
-        var skChatHistory = new ChatHistory();
-        skChatHistory.AddSystemMessage(_systemPrompt);
-
-        foreach (var message in contextWindow)
-        {
-            skChatHistory.AddUserMessage(message.Prompt);
-            if (message.Output != string.Empty)
-                skChatHistory.AddAssistantMessage(message.Output);
-        }
-
-        PromptExecutionSettings settings = new()
-        {
-            ExtensionData = new Dictionary<string, object>()
-            {
-                { "Temperature", 0.2 },
-                { "TopP", 0.7 },
-                { "MaxTokens", 1000  }
-            }
-        };
-
-
-        var result = await kernel.GetRequiredService<IChatCompletionService>().GetChatMessageContentAsync(skChatHistory, settings);
-
-        var usage = result.Metadata?["Usage"];
-
-         if (usage is not null)
-        {
-             Console.Write($"Usage: {JsonConvert.SerializeObject(usage)}");
-        }
-        var completionTokens = 0;//usage?.OutputTokenCount ?? 0;
-        //var promptTokens =usage?.InputTokenCount ?? 0;
-        //var totalTokens =usage?.totalTokens ?? 0;
-
-        //CompletionsUsage completionUsage = (CompletionsUsage)result.Metadata!["Usage"]!;
-
-        string completion = result.Items[0].ToString()!;
-        //int tokens = completionUsage.CompletionTokens;
-
-        return (completion, completionTokens);
-    }
-
+  
     /// <summary>
     /// Generates a completion using a user prompt with chat history and vector search results to Semantic Kernel and returns the response.
     /// </summary>
