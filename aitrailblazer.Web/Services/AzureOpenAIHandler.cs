@@ -651,8 +651,8 @@ namespace AITrailblazer.net.Services
                     featureNameWorkflowName: featureNameWorkflowName,
                     featureNameProject: featureNameProject,
                     title: requestTitle,                        // title
-                    userInput: userInput,                       // userInput
                     prompt: panelInput,                         // prompt
+                    userInput: userInput,                       // userInput
                     inputTokenCount: tokenUsage?.InputTokenCount ?? 0,     // inputTokenCount
                     outputTokenCount: tokenUsage?.OutputTokenCount ?? 0,   // outputTokenCount
                     totalTokenCount: tokenUsage?.TotalTokenCount ?? 0,     // totalTokenCount

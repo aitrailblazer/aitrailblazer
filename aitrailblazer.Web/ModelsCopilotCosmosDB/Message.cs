@@ -120,7 +120,6 @@ namespace Cosmos.Copilot.Models
             if (string.IsNullOrWhiteSpace(tenantId)) throw new ArgumentException("TenantId cannot be null or empty.", nameof(tenantId));
             if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentException("UserId cannot be null or empty.", nameof(userId));
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title cannot be null or empty.", nameof(title));
-            if (string.IsNullOrWhiteSpace(prompt)) throw new ArgumentException("Prompt cannot be null or empty.", nameof(prompt));
 
             // Generate unique identifier
             string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
