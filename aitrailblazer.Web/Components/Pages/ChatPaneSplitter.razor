@@ -80,10 +80,10 @@
                                                     </Header>
                                                     <Content>
                                                             <FluentCard MinimalStyle="true" Width="calc(100% - 1px)" Height="100%">
-                                                                <FluentButton Id="NewSession" IconStart="@(new Icons.Regular.Size16.Add())" Title="New Thread" OnClick="@StartNewSession">New Thread</FluentButton>
-                                                                @if (ItemsSessions != null && ItemsSessions.Any())
+                                                                <FluentButton Id="NewThread" IconStart="@(new Icons.Regular.Size16.Add())" Title="New Thread" OnClick="@StartNewThread">New Thread</FluentButton>
+                                                                @if (ItemsThreads != null && ItemsThreads.Any())
                                                                 {
-                                                                    <FluentTreeView Items="@ItemsSessions" @bind-SelectedItem="@currentSelectedTreeItemMessages" OnSelectedChange="@HandleSelectedSessionItemChanged" OnExpandedAsync="OnExpandedAsync" Class="session-tree-font-size">
+                                                                    <FluentTreeView Items="@ItemsThreads" @bind-SelectedItem="@currentSelectedTreeItemMessages" OnSelectedChange="@HandleSelectedThreadItemChanged" OnExpandedAsync="OnExpandedAsync" Class="session-tree-font-size">
 
                                                                     </FluentTreeView>
                                                                 }
@@ -153,11 +153,11 @@
                                     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal"
                                         VerticalAlignment="@Vertical">
 
-                                            @if (!string.IsNullOrEmpty(currentChatSessionId))
+                                            @if (!string.IsNullOrEmpty(currentChatThreadId))
                                             {
                                                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal">
-                                                    <FluentLabel Typo="Typography.Subject">Thread: @sessionSelectedName</FluentLabel>
-                                                    <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSession(currentChatSessionId))" Appearance="Appearance.Outline"/>
+                                                    <FluentLabel Typo="Typography.Subject">Thread: @threadSelectedName</FluentLabel>
+                                                    <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteThread(currentChatThreadId))" Appearance="Appearance.Outline"/>
                                                 </FluentStack>
                                             }
 
@@ -227,9 +227,9 @@
                                                 <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Output"
                                                     OnClick="ClearPanelOutput" />                    
 
-                                                @if (sessionSelectedItemName != null)
+                                                @if (threadSelectedItemName != null)
                                                 {
-                                                    <FluentButton id="DeleteSessionItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteSessionItem(currentChatSessionItemMessageId))" />
+                                                    <FluentButton id="DeleteThreadItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteThreadItem(currentChatThreadItemMessageId))" />
                                       
                                                     <FluentBadge Appearance="Appearance.Accent">
                                                         @timeTaken
@@ -595,8 +595,6 @@
     [Parameter]
     public string PanelInput { get; set; } = "";
 
-    //[Parameter]
-    //public Session? CurrentSession { get; set; }
 
     [Parameter]
     public EventCallback OnNavBarVisibilityUpdated { get; set; }
@@ -715,7 +713,7 @@
         return activeid switch
         {
             //"Github-id" => "20%", // Adjust this value based on your preference
-            "ConversationalMemory-id" => "20%", // Default size for Sessions
+            "ConversationalMemory-id" => "20%", // Default size for Threads
             _ => "20%", // Fallback size
         };
     }
@@ -724,7 +722,7 @@
         return activeid switch
         {
             //"Github-id" => "820px", // Wide width for Github Repositories
-            "ConversationalMemory-id" => "340px", // Narrow width for Sessions
+            "ConversationalMemory-id" => "340px", // Narrow width for Threads
             _ => "340px", // Fallback width
         };
     }
@@ -806,8 +804,7 @@
     private string? UserPromptSet { get; set; }
     private string? CollectionName { get; set; }
     private string? imageUrl;
-    //private List<SessionMessage>? _messagesInChat;
-    //private static event EventHandler<Session>? _onMessagePosted;
+
     private bool _loadingComplete;
     string? comboboxValue;
     string InputMessage = "";
@@ -912,9 +909,8 @@
         if (ChatSetting == "Workflow")
         {
             UserInputSaved = UserInput;
-            string CurrentSessionId = CurrentSession.Id; 
-            string workflow = await azureOpenAIHandler.LoadSessionMessagesPipeAsync(CurrentSessionId);
-            //Console.WriteLine($"LoadSessionMessagesAsync userFriendlyText: {userFriendlyText}");
+            string CurrentThreadId = CurrentThread.Id; 
+            string workflow = await azureOpenAIHandler.LoadThreadMessagesPipeAsync(CurrentThreadId);
             UserInput=($"Workflow: {workflow}");
         } else{
             UserInput=UserInputSaved;
@@ -950,8 +946,8 @@
         AICopilotSettings.RelationSettingsVal= ""; 
         AICopilotSettings.ResponseStyleVal= ""; 
     }
-    bool isNewSession = true;
-    private string GetFormattedSessionTitle(string text)
+    bool isNewThread = true;
+    private string GetFormattedThreadTitle(string text)
     {
         // Count the number of dashes in the text
         int dashCount = text.Count(c => c == '-');
@@ -970,7 +966,7 @@
         // Return the processed text, truncated if necessary
         return text.Length > 22 ? text.Substring(0, 22) : text;
     }
-    private string GetFormattedSessionFullTitle(string text)
+    private string GetFormattedThreadFullTitle(string text)
     {
         // Count the number of dashes in the text
         int dashCount = text.Count(c => c == '-');
@@ -1002,7 +998,7 @@
         //    panelInput = "Reference: " + selectedSectionContentFinal + "\n\n" + panelInput+ "\n\n" ;
         //}
         Console.WriteLine($"HandleSubmit userInput: {userInput}");
-        Console.WriteLine($"HandleSubmit sessionSelectedName {sessionSelectedName}");
+        Console.WriteLine($"HandleSubmit threadSelectedName {threadSelectedName}");
         if (SelectedFile != null)
         {
             panelInput = SelectedFileContent + "\n\n" + panelInput;
@@ -1023,10 +1019,10 @@
             AICopilotSettings.ResponseStyleVal
         );
 
-        Console.WriteLine($"HandleSubmit currentChatSessionId: {currentChatSessionId}");
+        Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
         // Get the output from AzureOpenAIHandler
         (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
-            isNewSession,
+            isNewThread,
             IsMyKnowledgeBaseChecked,
             currentUserTenantID,
             currentUserIdentityID,
@@ -1042,8 +1038,8 @@
             AICopilotSettings.WritingStyleVal,
             AICopilotSettings.RelationSettingsVal,
             AICopilotSettings.ResponseStyleVal,
-            sessionSelectedName,
-            currentChatSessionId
+            threadSelectedName,
+            currentChatThreadId
         );
         // Format a user-friendly string with the response and time spent
         /// Format the time taken as a user-friendly string
@@ -1082,23 +1078,22 @@
             }
         }
 
-        // Reload sessions and keep the current session selected
-        await LoadSessionsAsync(currentChatSessionId);
+        await LoadThreadsAsync(currentChatThreadId);
     }
     private Icon IconCollapsed = new Icons.Regular.Size20.Folder();
     private Icon IconExpanded = new Icons.Regular.Size20.FolderOpen();
 
-    private async Task LoadSessionsAsync(string? sessionIdToSelect = null)
+    private async Task LoadThreadsAsync(string? threadIdToSelect = null)
     {
-        List<Cosmos.Copilot.Models.SessionChat> SessionChats = await azureOpenAIHandler.LoadSessionsAsync(
+        List<Cosmos.Copilot.Models.ThreadChat> ThreadChats = await azureOpenAIHandler.LoadThreadsAsync(
             currentUserTenantID,
             currentUserIdentityID, 
             CurrentFeatureWorkflowName);
 
-        ItemsSessions = SessionChats.Select(session => new TreeViewItem
+        ItemsThreads = ThreadChats.Select(thread => new TreeViewItem
         {
-            Text = session.Title,
-            Id = session.Id,
+            Text = thread.Title,
+            Id = thread.Id,
             IconCollapsed = IconCollapsed,
             IconExpanded = IconExpanded,
             OnExpandedAsync = OnExpandedAsync,
@@ -1106,31 +1101,31 @@
             Items = TreeViewItem.LoadingTreeViewItems,
         }).Cast<ITreeViewItem>().ToList();
 
-        if (ItemsSessions.Any())
+        if (ItemsThreads.Any())
         {
-            // Find the session to select based on the provided ID or default to the last session
-            var selectedSessionChat = sessionIdToSelect != null 
-                ? SessionChats.FirstOrDefault(s => s.Id == sessionIdToSelect) 
-                : SessionChats.LastOrDefault();
+            // Find the thread to select based on the provided ID or default to the last Thread
+            var selectedThreadChat = threadIdToSelect != null 
+                ? ThreadChats.FirstOrDefault(s => s.Id == threadIdToSelect) 
+                : ThreadChats.LastOrDefault();
 
-            if (selectedSessionChat != null)
+            if (selectedThreadChat != null)
             {
-                CurrentSession = new Session
+                CurrentThread = new Thread
                 {
-                    Name = selectedSessionChat.Title,
-                    Id = selectedSessionChat.Id
+                    Name = selectedThreadChat.Title,
+                    Id = selectedThreadChat.Id
                 };
-                sessionSelectedName = selectedSessionChat.Title;
-                sessionSelectedItemName = null;
+                threadSelectedName = selectedThreadChat.Title;
+                threadSelectedItemName = null;
                 // Update UI with new data
                 StateHasChanged();
                 
-                var selectedTreeItem = ItemsSessions.FirstOrDefault(item => item.Id == selectedSessionChat.Id);
+                var selectedTreeItem = ItemsThreads.FirstOrDefault(item => item.Id == selectedThreadChat.Id);
                 SelectedItem = selectedTreeItem;
-                Console.WriteLine($"LoadSessionsAsync: CurrentSession Id {CurrentSession.Id}");
-                Console.WriteLine($"LoadSessionsAsync: CurrentSession Title {CurrentSession.Name}");
+                Console.WriteLine($"LoadThreadsAsync: CurrentThread Id {CurrentThread.Id}");
+                Console.WriteLine($"LoadThreadsAsync: CurrentThread Title {CurrentThread.Name}");
 
-                await ExpandAndSelectLastChatInSessionAsync(CurrentSession.Id);
+                await ExpandAndSelectLastChatInThreadAsync(CurrentThread.Id);
             }
         }
         else
@@ -1138,24 +1133,22 @@
             // Clear the selected item
             SelectedItem = null;
 
-            // Set the new session flag
-            isNewSession = true;
+            // Set the new Thread flag
+            isNewThread = true;
 
-            //await LoadSessionsAsync();
-            sessionSelectedName = null;
-            currentChatSessionId = string.Empty;
-            sessionSelectedItemName = null;
+            //await LoadThreadsAsync();
+            threadSelectedName = null;
+            currentChatThreadId = string.Empty;
+            threadSelectedItemName = null;
         }
     }
         private async Task OnExpandedAsync(TreeViewItemExpandedEventArgs e)
     {
         if (e.Expanded)
         {
-            // 54a15dce-218d-4889-842f-4709a86704ed-AIWritingAssistant/ChatSession-Unified Workspace: Seamless Integration of Applications and AI Tools
             Console.WriteLine($"OnExpandedAsync e.CurrentItem.Id: {e.CurrentItem.Id}");
 
-            // Load session messages when the item is expanded
-            e.CurrentItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(
+            e.CurrentItem.Items = await azureOpenAIHandler.LoadThreadMessagesAsync(
             currentUserTenantID,
             currentUserIdentityID,
             e.CurrentItem.Id);
@@ -1169,23 +1162,23 @@
         //StateHasChanged();
     }
 
-    private async Task ExpandAndSelectLastChatInSessionAsync(string sessionId)
+    private async Task ExpandAndSelectLastChatInThreadAsync(string threadId)
     {
-        // Find the corresponding TreeViewItem for the session
-        var sessionItem = ItemsSessions.FirstOrDefault(item => item.Id == sessionId);
-        if (sessionItem != null)
+        // Find the corresponding TreeViewItem for the thread
+        var threadItem = ItemsThreads.FirstOrDefault(item => item.Id == threadId);
+        if (threadItem != null)
         {
-            // Manually trigger the loading of the session's messages
-            sessionItem.Items = await azureOpenAIHandler.LoadSessionMessagesAsync(
+            // Manually trigger the loading of the thread's messages
+            threadItem.Items = await azureOpenAIHandler.LoadThreadMessagesAsync(
                 currentUserTenantID,
                 currentUserIdentityID, 
-                sessionId);
+                threadId);
 
-            // Set the session to be expanded
-            sessionItem.Expanded = true;
+            // Set the Thread to be expanded
+            threadItem.Expanded = true;
 
             // Select the last chat item if available
-            var lastChatItem = sessionItem.Items.LastOrDefault();
+            var lastChatItem = threadItem.Items.LastOrDefault();
             if (lastChatItem != null)
             {
                 await OnItemSelectedAsync(lastChatItem.Id);
@@ -1195,8 +1188,8 @@
 
 
 
-    string sessionSelectedName;
-    private void HandleSelectedSessionItemChanged(FluentTreeItem selectedTreeItem)
+    string threadSelectedName;
+    private void HandleSelectedThreadItemChanged(FluentTreeItem selectedTreeItem)
     {
         if (selectedTreeItem == null)
         {
@@ -1205,17 +1198,15 @@
         }
         timeTaken="";
         _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
-        isNewSession = false;
+        isNewThread = false;
     }
 
 
-    // ChatSession-ASAPAutonomous_Systems_and_ProcessesASAP_is_a_no-code_multi-agen-20241105-012838-4f1d
-    // ChatSession-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013053-9686|Message-ChatSession-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013053-9686-Imagine_AI_saving_you_hours_each_day!With_AI_taking_care_of_tedi-20241105-013056-e624
-    private string currentChatSessionId = string.Empty; 
-    private string currentChatSessionItemMessageId = string.Empty; 
+     private string currentChatThreadId = string.Empty; 
+    private string currentChatThreadItemMessageId = string.Empty; 
 
 
-    string sessionSelectedItemName;
+    string threadSelectedItemName;
     private async Task OnItemSelectedAsync(string selectedItemId)
     {
         Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
@@ -1225,20 +1216,20 @@
 
         if (parts.Length >= 1)
         {
-            isNewSession = false;
+            isNewThread = false;
 
-            currentChatSessionId = parts[0];
-             var selectedSessionChat = await azureOpenAIHandler.GetChatSessionAsync(
+            currentChatThreadId = parts[0];
+             var selectedThreadChat = await azureOpenAIHandler.GetThreadAsync(
                 currentUserTenantID,
                 currentUserIdentityID, 
-                currentChatSessionId);
-            if (selectedSessionChat != null)
+                currentChatThreadId);
+            if (selectedThreadChat != null)
             {
-                sessionSelectedName = selectedSessionChat.Title;
+                threadSelectedName = selectedThreadChat.Title;
                 StateHasChanged();
             }
 
-            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatSessionId}");
+            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatThreadId}");
         }
         else
         {
@@ -1265,13 +1256,13 @@
 
         if (!string.IsNullOrEmpty(messageId))
         {
-            currentChatSessionItemMessageId = messageId;
+            currentChatThreadItemMessageId = messageId;
             // **Message Selection Scenario**
             // Fetch the message details using the extracted message ID
             var message = await azureOpenAIHandler.GetMessageByIdAsync(messageId);
             if (message != null)
             {
-                sessionSelectedItemName = message.Title;
+                threadSelectedItemName = message.Title;
                 // Display the message content
                 PanelInput = message.Prompt;
                 PanelOutput = message.Output;
@@ -1284,7 +1275,7 @@
 
                 StateHasChanged();
 
-                // Set session-related settings based on message details
+                // Set Thread-related settings based on message details
                 CurrentFeatureWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
                 CurrentFeatureName = message.FeatureNameProject ?? string.Empty;
 
@@ -1306,10 +1297,10 @@
         else
         {
             // **No Message Selected Scenario**
-            // Optionally, you can handle cases where only the session ID is present
+            // Optionally, you can handle cases where only the Thread ID is present
             // Since you mentioned not needing the else block, we leave this section empty
             // However, you might still want to perform some actions or simply acknowledge the selection
-            Console.WriteLine($"Selected Item is a Session with ID: {currentChatSessionId}, but no specific message selected.");
+            Console.WriteLine($"Selected Item is a Thread with ID: {currentChatThreadId}, but no specific message selected.");
         }
     }
 
@@ -1333,7 +1324,7 @@
 
 
 
-    private void HandleOnSelectedSelectSession(FluentTreeItem selectedItem)
+    private void HandleOnSelectedSelectThread(FluentTreeItem selectedItem)
     {
         //SelectedItem = selectedItem;
         Console.WriteLine($"Selected selectedItem.Id: {selectedItem.Id}");
@@ -1394,7 +1385,7 @@
         return html;
     }
 
-    private async Task StartNewSession()
+    private async Task StartNewThread()
     {
         // Clear the necessary fields
         PanelInput = string.Empty;
@@ -1404,13 +1395,13 @@
         // Clear the selected item
         SelectedItem = null;
 
-        // Set the new session flag
-        isNewSession = true;
+        // Set the new Thread flag
+        isNewThread = true;
 
-        //await LoadSessionsAsync();
-        sessionSelectedName = null;
-        currentChatSessionId = string.Empty;
-        sessionSelectedItemName = null;
+        //await LoadThreadsAsync();
+        threadSelectedName = null;
+        currentChatThreadId = string.Empty;
+        threadSelectedItemName = null;
     }
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
@@ -1426,42 +1417,42 @@
             return parts.Length > 1 ? parts[1] : string.Empty;
         }
      
-        private async Task DeleteSession(string sessionStringId)
+        private async Task DeleteThread(string threadStringId)
         {
-            Console.WriteLine($"DeleteSession: {sessionStringId}");
-            var idParts = sessionStringId.Split('|');
-            // Case 1: Deleting a full session
-            // Delete the entire session and its messages
+            Console.WriteLine($"DeleteThread: {threadStringId}");
+            var idParts = threadStringId.Split('|');
+            // Case 1: Deleting a full Thread
+            // Delete the entire Thread and its messages
             string tenantId = currentUserTenantID;
             string userId = currentUserIdentityID;
-            await azureOpenAIHandler.DeleteChatSessionAsync(tenantId, userId, sessionStringId);
+            await azureOpenAIHandler.DeleteChatThreadAsync(tenantId, userId, threadStringId);
 
             // Log and update UI after deletion
-            Console.WriteLine($"Deleted session: {sessionStringId}");
+            Console.WriteLine($"Deleted Thread: {threadStringId}");
 
-            sessionSelectedName = null;
-            currentChatSessionId = string.Empty;
-            sessionSelectedItemName = null;
+            threadSelectedName = null;
+            currentChatThreadId = string.Empty;
+            threadSelectedItemName = null;
 
-            await LoadSessionsAsync();
+            await LoadThreadsAsync();
             StateHasChanged();
         }
-         private async Task DeleteSessionItem(string sessionItemId)
+         private async Task DeleteThreadItem(string threadItemId)
         {
-            Console.WriteLine($"sessionItemId: {sessionItemId}");
-            // Extract tenantId, userId, sessionId, and messageId
+            Console.WriteLine($"threadItemId: {threadItemId}");
+            // Extract tenantId, userId, threadId, and messageId
             string tenantId = currentUserTenantID;
             string userId = currentUserIdentityID;
-            string sessionId = currentChatSessionId;
+            string threadId = currentChatThreadId;
 
-            // Delete the specific message from the session
-            await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, sessionId, sessionItemId);
+            // Delete the specific message from the Thread
+            await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, threadId, threadItemId);
 
             // Log and update UI after deletion
-            Console.WriteLine($"Deleted message: {sessionItemId}");
-            sessionSelectedItemName = null;
+            Console.WriteLine($"Deleted message: {threadItemId}");
+            threadSelectedItemName = null;
 
-            await LoadSessionsAsync();
+            await LoadThreadsAsync();
             StateHasChanged();
         }
 }
@@ -1481,9 +1472,9 @@
     private string? Tags;
 
     private ITreeViewItem? SelectedItem;
-    private IEnumerable<ITreeViewItem>? ItemsSessions = new List<ITreeViewItem>();
-    private List<Session> Sessions = new();
-    private Session? CurrentSession { get; set; }
+    private IEnumerable<ITreeViewItem>? ItemsThreads = new List<ITreeViewItem>();
+    private List<Thread> Threads = new();
+    private Thread? CurrentThread { get; set; }
     private AgentSettings agentSettings;
 
        protected override async Task OnInitializedAsync()
@@ -1511,7 +1502,7 @@
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
         FilterComponents(FeatureNameProject);
-        await LoadSessionsAsync();
+        await LoadThreadsAsync();
     }
 }
 
@@ -2338,9 +2329,6 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         CurrentFeatureName=currentSelectedTreeItemAICopilots.Id;
         Console.WriteLine($"HandleOnSelectedChangeAICopilots CurrentFeatureName: {CurrentFeatureName}");
         await OnFeatureNameChanged.InvokeAsync(CurrentFeatureName);
-        // StartNewSession();
-        //PlaceholderCommandText = $"Ask {CurrentFeatureName} or type / for commands. For example, /help";
-        // Retrieve agent settings for the given project feature
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
  
         HandleSelectedChangeAICopilots(currentSelectedTreeItemAICopilots.Id);
@@ -2356,8 +2344,8 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         var pipelines = UserInput.Split(new[] { " | " }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(p => p.Trim())
                                 .Distinct();
-                                 // Clear existing sessions before reloading
-        //await LoadSessionsAsync();
+                                 // Clear existing Threads before reloading
+        //await LoadThreadsAsync();
 
         // Rejoin the items to update UserInput string properly
         //UserInput = string.Join(" | ", pipelines) + " | ";

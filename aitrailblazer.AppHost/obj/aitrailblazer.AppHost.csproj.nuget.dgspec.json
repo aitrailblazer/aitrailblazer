@@ -47,21 +47,17 @@
           "dependencies": {
             "Aspire.Dashboard.Sdk.osx-arm64": {
               "target": "Package",
-              "version": "[8.2.1, )",
+              "version": "[9.0.0, )",
               "autoReferenced": true
             },
             "Aspire.Hosting.AppHost": {
               "target": "Package",
-              "version": "[8.2.1, )"
+              "version": "[9.0.0, )"
             },
             "Aspire.Hosting.Orchestration.osx-arm64": {
               "target": "Package",
-              "version": "[8.2.1, )",
+              "version": "[9.0.0, )",
               "autoReferenced": true
-            },
-            "Microsoft.SemanticKernel.Connectors.AzureOpenAI": {
-              "target": "Package",
-              "version": "[1.25.0, )"
             }
           },
           "imports": [
@@ -80,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5asOO4oI+1vBqNxJ2KxnXLAJYGh7maf8eDXPaZ9/lH4=",
+  "Hash": "eUoPZMdtVSas5xsDzIlMouDZOzS8ytR35sj44mhsqtg=",
   "Source": "aitrailblazer.ApiService",
   "BasePath": "_content/aitrailblazer.ApiService",
   "Mode": "Default",
@@ -9,10 +9,10 @@
   "DiscoveryPatterns": [],
   "Assets": [
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Anchor/FluentAnchor.razor.js",
       "AssetKind": "All",
@@ -27,13 +27,13 @@
       "Integrity": "b9RSPukLvSHekr3kftcukF9Hbr4g1a5l0/cfyJ61XMA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Anchor/FluentAnchor.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Anchor/FluentAnchor.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
       "AssetKind": "All",
@@ -48,13 +48,13 @@
       "Integrity": "em7H1x6ijv/Ln1xS18rdjLu1JRbd3KqLfbEg9v+9Ot8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Button/FluentButton.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Button/FluentButton.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Button/FluentButton.razor.js",
       "AssetKind": "All",
@@ -69,13 +69,13 @@
       "Integrity": "8QTQtCTbbHkwqt3rAy8ZPjez2lZ6PGmR5Il+7Q3g/rs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Button/FluentButton.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Button/FluentButton.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Checkbox/FluentCheckbox.razor.js",
       "AssetKind": "All",
@@ -90,13 +90,13 @@
       "Integrity": "gVrV4WI8finQdUGG7EIZIAh2tTbFW0GF7Hl73l/1JnE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/DataGrid/FluentDataGrid.razor.js",
       "AssetKind": "All",
@@ -107,17 +107,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "7qfet7j4h3",
-      "Integrity": "HzAgaembHMgVOas7QCi3n/hbl9qTx/+UVvsizyrStRU=",
+      "Fingerprint": "8wtpv4tl7h",
+      "Integrity": "mIIiYfcklWhqiBdq+TYRdggEmPJVdIGAiIVPe5qQA4Y=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/DesignSystemProvider/FluentDesignTheme.razor.js",
       "AssetKind": "All",
@@ -128,17 +128,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "botrf5pb00",
-      "Integrity": "+8FOHdERuqtW2HKzC7AkPshOOBjZKX+j9qKbTdZtobY=",
+      "Fingerprint": "u93i13xew3",
+      "Integrity": "Ev4Kojt6pIRpgo1en7WTdMnGAI6m6iD4kfsPNHe5dzE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Divider/FluentDivider.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Divider/FluentDivider.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Divider/FluentDivider.razor.js",
       "AssetKind": "All",
@@ -153,13 +153,13 @@
       "Integrity": "CndcCP/YVXs68LoE68COc38ypIJenMbJyu+fR0/ZIPc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Divider/FluentDivider.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Divider/FluentDivider.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Grid/FluentGrid.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Grid/FluentGrid.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Grid/FluentGrid.razor.js",
       "AssetKind": "All",
@@ -174,13 +174,13 @@
       "Integrity": "V4iZz/kay7SoC/eRuDViVZkhxiL1oNW1gzMAFC6k/wY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Grid/FluentGrid.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Grid/FluentGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
       "AssetKind": "All",
@@ -195,13 +195,13 @@
       "Integrity": "yf+15AR63QV4X8XvrAMxrEP5sX3Ea0tuh+Tsinb6yXU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/InputFile/FluentInputFile.razor.js",
       "AssetKind": "All",
@@ -212,17 +212,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "0i77194r8h",
-      "Integrity": "SHlIMCuGGKjt46PfbR7RmGYsrGGxtB4EFROaEUkUjxA=",
+      "Fingerprint": "01uvncfd48",
+      "Integrity": "PP/sd+/TmUOGcOlWecN29U8NiuDIEWAdn05aDunSL8Q=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/InputFile/FluentInputFile.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/InputFile/FluentInputFile.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/KeyCode/FluentKeyCode.razor.js",
       "AssetKind": "All",
@@ -237,13 +237,13 @@
       "Integrity": "4DGYmbjn8yoDAD3kPln39j035aYjxVv4oH987Qm3Nx0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Label/FluentInputLabel.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Label/FluentInputLabel.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Label/FluentInputLabel.razor.js",
       "AssetKind": "All",
@@ -258,13 +258,13 @@
       "Integrity": "hXPNDHD1hTdz/sH1cD60f/ehIklf8zQAEE73UZNGtu8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Label/FluentInputLabel.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Label/FluentInputLabel.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentAutocomplete.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentAutocomplete.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/FluentAutocomplete.razor.js",
       "AssetKind": "All",
@@ -279,13 +279,13 @@
       "Integrity": "2bhET+uXWbAao2aJyUqqscx9PObMTXmpUAkDQOQBGI8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentAutocomplete.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentAutocomplete.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentCombobox.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentCombobox.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/FluentCombobox.razor.js",
       "AssetKind": "All",
@@ -300,13 +300,13 @@
       "Integrity": "nIU5FWzn1UKAWh1+g35w3aDIn8pSmnmQV1YWZ+1eb8w=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentCombobox.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentCombobox.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/ListComponentBase.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/ListComponentBase.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/List/ListComponentBase.razor.js",
       "AssetKind": "All",
@@ -321,13 +321,13 @@
       "Integrity": "/lFyXHGb/lh02BDFUuMzwbfU+zNOdnw2s2zKSrTtW00=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/ListComponentBase.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/ListComponentBase.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Menu/FluentMenu.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Menu/FluentMenu.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Menu/FluentMenu.razor.js",
       "AssetKind": "All",
@@ -342,13 +342,13 @@
       "Integrity": "C/YKywsVlWaSpZ1PLDeRKkkkM6ki2G2gT9ny+WVuERA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Menu/FluentMenu.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Menu/FluentMenu.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/NavMenu/FluentNavMenu.razor.js",
       "AssetKind": "All",
@@ -363,13 +363,13 @@
       "Integrity": "u3HANg4jObqKg1Jso4ovjOp2lKuYeAN0+zlRIfKuHhw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Overflow/FluentOverflow.razor.js",
       "AssetKind": "All",
@@ -380,17 +380,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "bqks71ra3s",
-      "Integrity": "DW1lozNjJoanAz4g+lHpNyZj8qYwVL0oFgIg8gkL5ug=",
+      "Fingerprint": "rgycuwl3sw",
+      "Integrity": "hVi+eZ1AhYzWA2HILBTSjl5xstub4DMGzUxGJIQgjVo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overflow/FluentOverflow.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overflow/FluentOverflow.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Overlay/FluentOverlay.razor.js",
       "AssetKind": "All",
@@ -405,13 +405,13 @@
       "Integrity": "IDySDi264SKaXFu1nL+hU2NeFhEMrX6Zv7ubUPR88VI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overlay/FluentOverlay.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overlay/FluentOverlay.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/PullToRefresh/FluentPullToRefresh.razor.js",
       "AssetKind": "All",
@@ -426,13 +426,13 @@
       "Integrity": "xlA5fSAkA6TiFUznwHP835N8kAxJ7YJ5MTizYCGeOfo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Search/FluentSearch.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Search/FluentSearch.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Search/FluentSearch.razor.js",
       "AssetKind": "All",
@@ -447,13 +447,13 @@
       "Integrity": "5Xro3i41QLeYkA4vXMC3sJ/GOerzbXq4CJRFnA+jYNE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Search/FluentSearch.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Search/FluentSearch.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSlider.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSlider.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Slider/FluentSlider.razor.js",
       "AssetKind": "All",
@@ -468,13 +468,13 @@
       "Integrity": "TAnVg0aJviMtvE8pWYaaZahF5suJcjonGCC7accq76k=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSlider.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSlider.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Slider/FluentSliderLabel.razor.js",
       "AssetKind": "All",
@@ -489,13 +489,13 @@
       "Integrity": "Em8bsrj69skLLR4IHVJ8lIJTR1EcY/U9nvcfn9t1rzo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/SortableList/FluentSortableList.razor.js",
       "AssetKind": "All",
@@ -510,13 +510,13 @@
       "Integrity": "rBxLYd0QGHwfD9IZljh74Lf+ZC+zqoRLqwikRKcRgpg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/SortableList/FluentSortableList.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/SortableList/FluentSortableList.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Splitter/FluentMultiSplitter.razor.js",
       "AssetKind": "All",
@@ -531,13 +531,13 @@
       "Integrity": "kExJSsKpmByqtTJ/TOwptCU5yawR+13aqkZxoVN+a1A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tabs/FluentTab.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tabs/FluentTab.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Tabs/FluentTab.razor.js",
       "AssetKind": "All",
@@ -552,13 +552,13 @@
       "Integrity": "Kh0YI9vhH0m+YJJvQVdOvtm0zuIIGEdRv3aH6iv7Gcg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tabs/FluentTab.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tabs/FluentTab.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/TextField/FluentTextField.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/TextField/FluentTextField.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/TextField/FluentTextField.razor.js",
       "AssetKind": "All",
@@ -573,13 +573,13 @@
       "Integrity": "EnvcMggAdstebmtcZrEOhDW5p/e0dFj2ZywJtuMypIw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/TextField/FluentTextField.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/TextField/FluentTextField.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Components/Tooltip/FluentTooltip.razor.js",
       "AssetKind": "All",
@@ -594,13 +594,13 @@
       "Integrity": "pWY0aUTl5SagZBQwX/+DOHxke3fHSPoZdTQXbRQSFTU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tooltip/FluentTooltip.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tooltip/FluentTooltip.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "css/reboot.css",
       "AssetKind": "All",
@@ -611,17 +611,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "6nvs5i8nnd",
-      "Integrity": "MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU=",
+      "Fingerprint": "1dlotxxwer",
+      "Integrity": "2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "js/initializersLoader.webview.js",
       "AssetKind": "All",
@@ -636,13 +636,13 @@
       "Integrity": "L9w4Nw5htE5XBWcy0I11eRfWwkTxtN8VSJWnitKu30Q=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "js/loading-theme.js",
       "AssetKind": "All",
@@ -657,15 +657,15 @@
       "Integrity": "kX+9ky61TMxar94Z7+S8myontpvgH4571DVehjxVvM4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
-      "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
+      "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Primary",
@@ -674,17 +674,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "3eliywa438",
-      "Integrity": "y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8=",
+      "Fingerprint": "2jmos03fny",
+      "Integrity": "DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
       "AssetKind": "All",
@@ -695,17 +695,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "JSModule",
       "AssetTraitValue": "JSLibraryModule",
-      "Fingerprint": "j63q8f0xrg",
-      "Integrity": "ZYkvi7NZG5XUqY/KZ9XuAzQnqyd9fRG223i5iclZQpw=",
+      "Fingerprint": "wzv0u97glo",
+      "Integrity": "/LPTy2KpNBBYdj9b6lNMDILfmbdqo+FWKCFS6WQd0mU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
       "AssetKind": "All",
@@ -720,13 +720,13 @@
       "Integrity": "gD29yOMICDIiYM16Dl8m2EwS2lyds8DoFkgTy29qko4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt"
     },
     {
-      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
+      "Identity": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/",
+      "ContentRoot": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/",
       "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
       "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
       "AssetKind": "All",
@@ -737,11 +737,11 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "hhohuyaagt",
-      "Integrity": "NVzwIuzpB6Eabdxt08rN2CAjgryhsKdiAEcFZe/VE4M=",
+      "Fingerprint": "1cf9i7un7b",
+      "Integrity": "4SNdvLM7SDhaju7Ir+uYFq6/+6PwZqn7sQPCIe+nI0g=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/2b4v2q74ar-0b0bj86z40.gz",
@@ -755,17 +755,38 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSlider.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSlider.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "745hw7b3mg",
       "Integrity": "J0DRpZ4FvVImDmi+Z5uKfyC8YO+FD7ZvkyCbtAFOHY0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSlider.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSlider.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-hhohuyaagt.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/2ex4cc0yjp-2jmos03fny.gz",
+      "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
+      "SourceType": "Package",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
+      "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "arzfihn4gw",
+      "Integrity": "xghxeiQwz0lLWFf4r/cCHugj2Ve5h6JkvETD6UnojPQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-1cf9i7un7b.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -776,17 +797,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "dqkamj09tn",
-      "Integrity": "izYxNzOx4e/EkQl5VWFECvSQ2FnHxuLNi+ukLlDreRY=",
+      "Fingerprint": "st162l5q79",
+      "Integrity": "wNR/uI3kJ2RBq1ZxTb3gbnoCCv3gSAd0JLB3ZVpl4Lo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-u93i13xew3.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -797,14 +818,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "uyeppsbi6l",
-      "Integrity": "+g7z4EgmtwbA4F8pwwzDjIG1t2neHHw3nbLmB1co9QI=",
+      "Fingerprint": "d6rgo6mtwc",
+      "Integrity": "lX1rafBkLRBoVdXYKWmWwLbL0F9bGgPuuGMPClo31RU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4sjayj892b-9fmja7pljs.gz",
@@ -818,22 +839,22 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "xk7w1nw4t6",
       "Integrity": "YUvVoT2W4414KnY0OcG2XJJPAt96dppAYuAUin16uV0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-6po4uqjumj.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-hunh6sv0gl.gz",
       "SourceId": "aitrailblazer.ApiService",
       "SourceType": "Computed",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/aitrailblazer.ApiService",
-      "RelativePath": "aitrailblazer.ApiService#[.{fingerprint=6po4uqjumj}]?.styles.css.gz",
+      "RelativePath": "aitrailblazer.ApiService#[.{fingerprint=hunh6sv0gl}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -842,8 +863,8 @@
       "RelatedAsset": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/scopedcss/bundle/aitrailblazer.ApiService.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "19ip97b17j",
-      "Integrity": "W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0=",
+      "Fingerprint": "w8gzubopc5",
+      "Integrity": "ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/scopedcss/bundle/aitrailblazer.ApiService.styles.css"
@@ -860,14 +881,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "66h3r7swc6",
       "Integrity": "Uk9dNnaf9hXKYPy9RuOt0PJ4r5r/xhKSOJTL087cYx8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/5eye7ha8pe-e5lgg05xwp.gz",
@@ -881,14 +902,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "1yaijosux8",
       "Integrity": "F2WaeOGW4Wa7Y9C6A/QT1brA5LXaJ1J0qrDWdSFOsXo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSliderLabel.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6mwvvlkmgj-hi1gwvth64.gz",
@@ -902,17 +923,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Grid/FluentGrid.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Grid/FluentGrid.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "n7w33lz8ow",
       "Integrity": "00y4LDh6CcV1wojgbYVcOWht37WjbmSqQAeDrklrZwM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Grid/FluentGrid.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Grid/FluentGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-1dlotxxwer.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -923,14 +944,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "m6fmb8iszd",
-      "Integrity": "XiFkNKUup5YQLXNNYqTcBTZzLH2bfVn6rNJRqAty3T0=",
+      "Fingerprint": "v9w6jgvavw",
+      "Integrity": "HXQZ+tvphMziqgBXJXNlPEIXtuFeRsO+Y2N1j5lvU8w=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6o9gthdpke-psptt994gq.gz",
@@ -944,14 +965,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentAutocomplete.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentAutocomplete.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "cm54kvv3qw",
       "Integrity": "dBUFVxd4mydqT95sdgyitDxi88MwJgchMDWvlODsNaA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentAutocomplete.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentAutocomplete.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/7g337ulk4n-iy34mpf72d.gz",
@@ -965,35 +986,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Divider/FluentDivider.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Divider/FluentDivider.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "1hsa1ziz9l",
       "Integrity": "pZu0g/ILeAo0sfv3e6WFCRtUyN0QodzLt7B+WBJKdwM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Divider/FluentDivider.razor.js"
-    },
-    {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/8eaczaxb8w-3eliywa438.gz",
-      "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
-      "SourceType": "Package",
-      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
-      "BasePath": "_content/Microsoft.FluentUI.AspNetCore.Components",
-      "RelativePath": "Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css.gz",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Alternative",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "Fingerprint": "dxiu5a2tc1",
-      "Integrity": "r1dEPT/TlAS/5t9wVqmF+PMKQ2NO2TTUMfDWO56fyfs=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Divider/FluentDivider.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/akzl5bxou0-p6kf5zqzit.gz",
@@ -1007,14 +1007,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Button/FluentButton.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Button/FluentButton.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "p7hya7eo9j",
       "Integrity": "pTHx5LLu3MAymOwIho5/k1KWQlAvCa1AXnsHRRKAKss=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Button/FluentButton.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Button/FluentButton.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/cdrmjjq1d6-dpoev2zj9b.gz",
@@ -1028,14 +1028,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "n3bq4lf2br",
       "Integrity": "syK+er0tCwxOEeclTSfyWopdOYOdsl7B/5rk7W6/Jig=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Anchor/FluentAnchor.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Anchor/FluentAnchor.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/cq4bmj8gmb-zjzit57lox.gz",
@@ -1049,14 +1049,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "6qyxfwkbtz",
       "Integrity": "Dh1Q8txaptF+aEA8NArxBPQYBU2VOQoYHmf/301b3GE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/cspigw2pl9-o32v8r49vv.gz",
@@ -1091,14 +1091,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/ListComponentBase.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/ListComponentBase.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "b8wpltsz30",
       "Integrity": "a7gsvXAKQfRDRPNts4QDuR9u12oMtJcNdB+nzsX7PTo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/ListComponentBase.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/ListComponentBase.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/fiqznfocyn-ki10xp5gks.gz",
@@ -1112,17 +1112,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "9fhx39zc2e",
       "Integrity": "i1LH05E2K0iskHWUYLVdCmY1NJydM6fPjJWAvvtIm+s=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/SortableList/FluentSortableList.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/SortableList/FluentSortableList.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-01uvncfd48.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -1133,14 +1133,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "gltjfedlmr",
-      "Integrity": "lJMUAuRWagZBuIfAlAO3A3oW0WuIoN58r/L/q8/9tik=",
+      "Fingerprint": "bgucbz1kmg",
+      "Integrity": "K4yZKonj7DYXYCfEAHURWaZ46b8wg3SHvz1+3Bop22s=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/InputFile/FluentInputFile.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/InputFile/FluentInputFile.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/ijuf810ucb-xp2f0e0rh3.gz",
@@ -1154,14 +1154,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Label/FluentInputLabel.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Label/FluentInputLabel.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "s9nbtbgwzl",
       "Integrity": "kJN0OWuju7I2ZGBewbyd3LPLiJLu1t74cek39lc4ULE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Label/FluentInputLabel.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Label/FluentInputLabel.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/is0nail857-b0dyrub9as.gz",
@@ -1175,14 +1175,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "oxcomylapw",
       "Integrity": "hDodzUjxCZ2XtemgWrjdkSuYOxoPI8q/r0zWe2vMiOQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tooltip/FluentTooltip.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tooltip/FluentTooltip.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/jq2jihf5fr-awzanx0pu8.gz",
@@ -1196,17 +1196,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "8rdqgi8gkl",
       "Integrity": "3B//syxoqYbYSruFdd3O298Dupz0/mCx+3Wfbs3kZK4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-7qfet7j4h3.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-8wtpv4tl7h.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -1217,17 +1217,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "p5c9t4znku",
-      "Integrity": "zWIrcaFU5kIYYPaSxEuIGbXkmk/dal99ECAfhG8kNbU=",
+      "Fingerprint": "hxel5wynu1",
+      "Integrity": "1cNdBjZTsfRWnUl+saxFu3XiKnS8YMcUK7x/y+2fy1c=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-j63q8f0xrg.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-wzv0u97glo.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -1238,14 +1238,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "oki76vrtqs",
-      "Integrity": "OBSZbax/JJK4GfS5FFC4ce+UFb2V6IgUjIlcxMLktmk=",
+      "Fingerprint": "zt8hzp6b2h",
+      "Integrity": "CZIr/W5IfCTBmfJ3k1z8W1Ackv+4xdnJkK2a4MuEg9g=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/m1yjzwotev-f8c5bd5212.gz",
@@ -1259,14 +1259,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "hiarbvajht",
       "Integrity": "+ZSx2bluq2VIGxFt+J52hJlBpmlsSELTkfsn5X3vUag=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/m3ffqup1h6-kz8gc8cxma.gz",
@@ -1280,17 +1280,17 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "75b6w2c72a",
       "Integrity": "FZq/bo8uDXiEDGXRof1ZyJFk7IeZdogvf30HMzPzQlg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt"
     },
     {
-      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-rgycuwl3sw.gz",
       "SourceId": "Microsoft.FluentUI.AspNetCore.Components",
       "SourceType": "Package",
       "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/",
@@ -1301,14 +1301,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "c3mq7yxlwn",
-      "Integrity": "qI73ocxsjH+lb5MHA3ZPsQ3gt7XlcWgWG2+/cIA3Gfo=",
+      "Fingerprint": "osuqmq4hsf",
+      "Integrity": "mONdh3VWN8igUyuuoyifrWo1YJ+i0EBdcljxfHD4bC8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overflow/FluentOverflow.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overflow/FluentOverflow.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/pfc9to5k3q-5pcucyxosc.gz",
@@ -1322,14 +1322,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "3a9gh8ltez",
       "Integrity": "+/P38QWaCXVTnfSQh8njqGP6wji5hlWYsmFbU6lWX90=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/pn46o4hdgm-5wrroj4j54.gz",
@@ -1343,14 +1343,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Menu/FluentMenu.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Menu/FluentMenu.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "dzzlafhzdu",
       "Integrity": "aV+nb7lC+B0Vxasc5CAg3I3yuZ70LYAdrJkCUug5CUU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Menu/FluentMenu.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Menu/FluentMenu.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/ruk4ibgzyp-t5s4sbrbsi.gz",
@@ -1364,14 +1364,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "ccjbvny2ip",
       "Integrity": "VO7FLrGNQN7XxSHdkRqDQy5SBwGk2iJ6TK2UvtXVZMs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/sbcuig79xm-uxxx5b63uj.gz",
@@ -1385,14 +1385,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/TextField/FluentTextField.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/TextField/FluentTextField.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "9wqg9c05jz",
       "Integrity": "KYXoKsQDPvNxaFJ+Cjm+b7MItGdasO0v6igCJGQJDJo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/TextField/FluentTextField.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/TextField/FluentTextField.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/sc7iw8bo2n-idf8r2y2gj.gz",
@@ -1406,14 +1406,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tabs/FluentTab.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tabs/FluentTab.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "kl0hbnnwh7",
       "Integrity": "SDTqBYDnlwgPzyphBzW8qw0GU38xuYOaruA7Y9ZqLIE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tabs/FluentTab.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tabs/FluentTab.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/tb98bamshq-g9dxtzlran.gz",
@@ -1427,14 +1427,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentCombobox.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentCombobox.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "jlbngfceaa",
       "Integrity": "d4a4Qney5G1JfYRoIGMNM3kjvg8aB41Nbel2wkSPtO0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentCombobox.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentCombobox.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/twd6d0wh4o-60czas7noz.gz",
@@ -1448,14 +1448,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "yfrlzxubvq",
       "Integrity": "LkVX+qRFeyEzXs0pO58dSVIVL54Ur8l/MzkeixvSdNw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/uslingtyva-rkj8st4k2x.gz",
@@ -1469,14 +1469,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Search/FluentSearch.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Search/FluentSearch.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "8zt07io23g",
       "Integrity": "PHmjeDtDNljXFIcdWkwOi0D+27TCrRIwOB3kTTIUHjM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Search/FluentSearch.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Search/FluentSearch.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/win2gt64sq-c1boksilep.gz",
@@ -1490,14 +1490,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "qnfl83oj76",
       "Integrity": "eok8vXdIwfTA/9qcOrJtgRIF+QhrhbWBXuy2GOKXBS4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/wmgko3ir4p-kjm33rwg1a.gz",
@@ -1511,14 +1511,14 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
+      "RelatedAsset": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "3al8da4gbl",
       "Integrity": "u/K8X49qZPF+Cqpg+kj7OFNgjFkNE9fkv92x8cOSvG4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overlay/FluentOverlay.razor.js"
+      "OriginalItemSpec": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overlay/FluentOverlay.razor.js"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/jsmodules/jsmodules.build.manifest.json",
@@ -1556,8 +1556,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "6po4uqjumj",
-      "Integrity": "CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ=",
+      "Fingerprint": "hunh6sv0gl",
+      "Integrity": "B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/scopedcss/bundle/aitrailblazer.ApiService.styles.css"
@@ -1566,7 +1566,7 @@
   "Endpoints": [
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Anchor/FluentAnchor.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Anchor/FluentAnchor.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1591,7 +1591,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -1630,7 +1630,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1687,7 +1687,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1711,7 +1711,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1736,7 +1736,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -1775,7 +1775,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1832,7 +1832,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1856,7 +1856,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Button/FluentButton.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Button/FluentButton.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Button/FluentButton.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1881,7 +1881,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -1920,7 +1920,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1977,7 +1977,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2001,7 +2001,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Checkbox/FluentCheckbox.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Checkbox/FluentCheckbox.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2026,7 +2026,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2065,7 +2065,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2122,7 +2122,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2146,7 +2146,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DataGrid/FluentDataGrid.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DataGrid/FluentDataGrid.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2159,7 +2159,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "13760"
+          "Value": "14341"
         },
         {
           "Name": "Content-Type",
@@ -2167,17 +2167,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"HzAgaembHMgVOas7QCi3n/hbl9qTx/+UVvsizyrStRU=\""
+          "Value": "\"mIIiYfcklWhqiBdq+TYRdggEmPJVdIGAiIVPe5qQA4Y=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-HzAgaembHMgVOas7QCi3n/hbl9qTx/+UVvsizyrStRU="
+          "Value": "sha256-mIIiYfcklWhqiBdq+TYRdggEmPJVdIGAiIVPe5qQA4Y="
         },
         {
           "Name": "script-type",
@@ -2187,12 +2187,12 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DataGrid/FluentDataGrid.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-7qfet7j4h3.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-8wtpv4tl7h.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000403063281"
+          "Quality": "0.000389711613"
         }
       ],
       "ResponseHeaders": [
@@ -2202,15 +2202,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2480"
+          "Value": "2565"
         },
         {
           "Name": "ETag",
-          "Value": "\"zWIrcaFU5kIYYPaSxEuIGbXkmk/dal99ECAfhG8kNbU=\""
+          "Value": "\"1cNdBjZTsfRWnUl+saxFu3XiKnS8YMcUK7x/y+2fy1c=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2230,13 +2230,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"HzAgaembHMgVOas7QCi3n/hbl9qTx/+UVvsizyrStRU=\""
+          "Value": "W/\"mIIiYfcklWhqiBdq+TYRdggEmPJVdIGAiIVPe5qQA4Y=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-HzAgaembHMgVOas7QCi3n/hbl9qTx/+UVvsizyrStRU="
+          "Value": "sha256-mIIiYfcklWhqiBdq+TYRdggEmPJVdIGAiIVPe5qQA4Y="
         },
         {
           "Name": "script-type",
@@ -2246,7 +2246,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DataGrid/FluentDataGrid.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-7qfet7j4h3.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/klh9ieqob8-8wtpv4tl7h.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2255,7 +2255,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2480"
+          "Value": "2565"
         },
         {
           "Name": "Content-Type",
@@ -2263,11 +2263,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"zWIrcaFU5kIYYPaSxEuIGbXkmk/dal99ECAfhG8kNbU=\""
+          "Value": "\"1cNdBjZTsfRWnUl+saxFu3XiKnS8YMcUK7x/y+2fy1c=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2285,13 +2285,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-zWIrcaFU5kIYYPaSxEuIGbXkmk/dal99ECAfhG8kNbU="
+          "Value": "sha256-1cNdBjZTsfRWnUl+saxFu3XiKnS8YMcUK7x/y+2fy1c="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2304,7 +2304,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1540"
+          "Value": "1960"
         },
         {
           "Name": "Content-Type",
@@ -2312,17 +2312,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+8FOHdERuqtW2HKzC7AkPshOOBjZKX+j9qKbTdZtobY=\""
+          "Value": "\"Ev4Kojt6pIRpgo1en7WTdMnGAI6m6iD4kfsPNHe5dzE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-+8FOHdERuqtW2HKzC7AkPshOOBjZKX+j9qKbTdZtobY="
+          "Value": "sha256-Ev4Kojt6pIRpgo1en7WTdMnGAI6m6iD4kfsPNHe5dzE="
         },
         {
           "Name": "script-type",
@@ -2332,12 +2332,12 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DesignSystemProvider/FluentDesignTheme.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-u93i13xew3.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001633986928"
+          "Quality": "0.001349527665"
         }
       ],
       "ResponseHeaders": [
@@ -2347,15 +2347,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "611"
+          "Value": "740"
         },
         {
           "Name": "ETag",
-          "Value": "\"+g7z4EgmtwbA4F8pwwzDjIG1t2neHHw3nbLmB1co9QI=\""
+          "Value": "\"lX1rafBkLRBoVdXYKWmWwLbL0F9bGgPuuGMPClo31RU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2375,13 +2375,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"+8FOHdERuqtW2HKzC7AkPshOOBjZKX+j9qKbTdZtobY=\""
+          "Value": "W/\"Ev4Kojt6pIRpgo1en7WTdMnGAI6m6iD4kfsPNHe5dzE=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-+8FOHdERuqtW2HKzC7AkPshOOBjZKX+j9qKbTdZtobY="
+          "Value": "sha256-Ev4Kojt6pIRpgo1en7WTdMnGAI6m6iD4kfsPNHe5dzE="
         },
         {
           "Name": "script-type",
@@ -2391,7 +2391,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/DesignSystemProvider/FluentDesignTheme.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-botrf5pb00.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4jvn6qpxj5-u93i13xew3.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2400,7 +2400,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "611"
+          "Value": "740"
         },
         {
           "Name": "Content-Type",
@@ -2408,11 +2408,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+g7z4EgmtwbA4F8pwwzDjIG1t2neHHw3nbLmB1co9QI=\""
+          "Value": "\"lX1rafBkLRBoVdXYKWmWwLbL0F9bGgPuuGMPClo31RU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2430,13 +2430,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-+g7z4EgmtwbA4F8pwwzDjIG1t2neHHw3nbLmB1co9QI="
+          "Value": "sha256-lX1rafBkLRBoVdXYKWmWwLbL0F9bGgPuuGMPClo31RU="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Divider/FluentDivider.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Divider/FluentDivider.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Divider/FluentDivider.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2461,7 +2461,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2500,7 +2500,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2557,7 +2557,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2581,7 +2581,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Grid/FluentGrid.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Grid/FluentGrid.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Grid/FluentGrid.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2606,7 +2606,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2645,7 +2645,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2702,7 +2702,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2726,7 +2726,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/HorizontalScroll/FluentHorizontalScroll.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2751,7 +2751,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2790,7 +2790,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2847,7 +2847,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2871,7 +2871,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/InputFile/FluentInputFile.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/InputFile/FluentInputFile.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2884,7 +2884,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "766"
+          "Value": "2684"
         },
         {
           "Name": "Content-Type",
@@ -2892,17 +2892,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SHlIMCuGGKjt46PfbR7RmGYsrGGxtB4EFROaEUkUjxA=\""
+          "Value": "\"PP/sd+/TmUOGcOlWecN29U8NiuDIEWAdn05aDunSL8Q=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-SHlIMCuGGKjt46PfbR7RmGYsrGGxtB4EFROaEUkUjxA="
+          "Value": "sha256-PP/sd+/TmUOGcOlWecN29U8NiuDIEWAdn05aDunSL8Q="
         },
         {
           "Name": "script-type",
@@ -2912,12 +2912,12 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/InputFile/FluentInputFile.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-01uvncfd48.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.002824858757"
+          "Quality": "0.001256281407"
         }
       ],
       "ResponseHeaders": [
@@ -2927,15 +2927,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "353"
+          "Value": "795"
         },
         {
           "Name": "ETag",
-          "Value": "\"lJMUAuRWagZBuIfAlAO3A3oW0WuIoN58r/L/q8/9tik=\""
+          "Value": "\"K4yZKonj7DYXYCfEAHURWaZ46b8wg3SHvz1+3Bop22s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2955,13 +2955,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"SHlIMCuGGKjt46PfbR7RmGYsrGGxtB4EFROaEUkUjxA=\""
+          "Value": "W/\"PP/sd+/TmUOGcOlWecN29U8NiuDIEWAdn05aDunSL8Q=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-SHlIMCuGGKjt46PfbR7RmGYsrGGxtB4EFROaEUkUjxA="
+          "Value": "sha256-PP/sd+/TmUOGcOlWecN29U8NiuDIEWAdn05aDunSL8Q="
         },
         {
           "Name": "script-type",
@@ -2971,7 +2971,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/InputFile/FluentInputFile.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-0i77194r8h.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/h0qxm5u0yy-01uvncfd48.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2980,7 +2980,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "353"
+          "Value": "795"
         },
         {
           "Name": "Content-Type",
@@ -2988,11 +2988,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lJMUAuRWagZBuIfAlAO3A3oW0WuIoN58r/L/q8/9tik=\""
+          "Value": "\"K4yZKonj7DYXYCfEAHURWaZ46b8wg3SHvz1+3Bop22s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3010,13 +3010,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-lJMUAuRWagZBuIfAlAO3A3oW0WuIoN58r/L/q8/9tik="
+          "Value": "sha256-K4yZKonj7DYXYCfEAHURWaZ46b8wg3SHvz1+3Bop22s="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/KeyCode/FluentKeyCode.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/KeyCode/FluentKeyCode.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3041,7 +3041,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3080,7 +3080,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3137,7 +3137,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3161,7 +3161,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Label/FluentInputLabel.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Label/FluentInputLabel.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Label/FluentInputLabel.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3186,7 +3186,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3225,7 +3225,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3282,7 +3282,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3306,7 +3306,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentAutocomplete.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentAutocomplete.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentAutocomplete.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3331,7 +3331,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3370,7 +3370,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3427,7 +3427,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3451,7 +3451,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/FluentCombobox.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/FluentCombobox.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/FluentCombobox.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3476,7 +3476,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3515,7 +3515,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3572,7 +3572,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3596,7 +3596,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/List/ListComponentBase.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/List/ListComponentBase.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/List/ListComponentBase.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3621,7 +3621,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3660,7 +3660,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3717,7 +3717,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3741,7 +3741,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Menu/FluentMenu.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Menu/FluentMenu.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Menu/FluentMenu.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3766,7 +3766,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3805,7 +3805,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3862,7 +3862,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3886,7 +3886,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/NavMenu/FluentNavMenu.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/NavMenu/FluentNavMenu.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3911,7 +3911,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -3950,7 +3950,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4007,7 +4007,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4031,7 +4031,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overflow/FluentOverflow.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overflow/FluentOverflow.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4044,7 +4044,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5556"
+          "Value": "6575"
         },
         {
           "Name": "Content-Type",
@@ -4052,17 +4052,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"DW1lozNjJoanAz4g+lHpNyZj8qYwVL0oFgIg8gkL5ug=\""
+          "Value": "\"hVi+eZ1AhYzWA2HILBTSjl5xstub4DMGzUxGJIQgjVo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-DW1lozNjJoanAz4g+lHpNyZj8qYwVL0oFgIg8gkL5ug="
+          "Value": "sha256-hVi+eZ1AhYzWA2HILBTSjl5xstub4DMGzUxGJIQgjVo="
         },
         {
           "Name": "script-type",
@@ -4072,12 +4072,12 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overflow/FluentOverflow.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-rgycuwl3sw.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000648088140"
+          "Quality": "0.000572082380"
         }
       ],
       "ResponseHeaders": [
@@ -4087,15 +4087,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1542"
+          "Value": "1747"
         },
         {
           "Name": "ETag",
-          "Value": "\"qI73ocxsjH+lb5MHA3ZPsQ3gt7XlcWgWG2+/cIA3Gfo=\""
+          "Value": "\"mONdh3VWN8igUyuuoyifrWo1YJ+i0EBdcljxfHD4bC8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4115,13 +4115,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"DW1lozNjJoanAz4g+lHpNyZj8qYwVL0oFgIg8gkL5ug=\""
+          "Value": "W/\"hVi+eZ1AhYzWA2HILBTSjl5xstub4DMGzUxGJIQgjVo=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-DW1lozNjJoanAz4g+lHpNyZj8qYwVL0oFgIg8gkL5ug="
+          "Value": "sha256-hVi+eZ1AhYzWA2HILBTSjl5xstub4DMGzUxGJIQgjVo="
         },
         {
           "Name": "script-type",
@@ -4131,7 +4131,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overflow/FluentOverflow.razor.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-bqks71ra3s.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/mm8wr5jb95-rgycuwl3sw.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4140,7 +4140,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1542"
+          "Value": "1747"
         },
         {
           "Name": "Content-Type",
@@ -4148,11 +4148,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"qI73ocxsjH+lb5MHA3ZPsQ3gt7XlcWgWG2+/cIA3Gfo=\""
+          "Value": "\"mONdh3VWN8igUyuuoyifrWo1YJ+i0EBdcljxfHD4bC8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4170,13 +4170,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-qI73ocxsjH+lb5MHA3ZPsQ3gt7XlcWgWG2+/cIA3Gfo="
+          "Value": "sha256-mONdh3VWN8igUyuuoyifrWo1YJ+i0EBdcljxfHD4bC8="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Overlay/FluentOverlay.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Overlay/FluentOverlay.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4201,7 +4201,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4240,7 +4240,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4297,7 +4297,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4321,7 +4321,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/PullToRefresh/FluentPullToRefresh.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/PullToRefresh/FluentPullToRefresh.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4346,7 +4346,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4385,7 +4385,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4442,7 +4442,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4466,7 +4466,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Search/FluentSearch.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Search/FluentSearch.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Search/FluentSearch.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4491,7 +4491,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4530,7 +4530,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4587,7 +4587,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4611,7 +4611,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSlider.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSlider.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSlider.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4636,7 +4636,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4675,7 +4675,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4732,7 +4732,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4756,7 +4756,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Slider/FluentSliderLabel.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Slider/FluentSliderLabel.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4781,7 +4781,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4820,7 +4820,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4877,7 +4877,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4901,7 +4901,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/SortableList/FluentSortableList.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/SortableList/FluentSortableList.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4926,7 +4926,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -4965,7 +4965,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5022,7 +5022,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5046,7 +5046,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Splitter/FluentMultiSplitter.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Splitter/FluentMultiSplitter.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5071,7 +5071,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5110,7 +5110,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5167,7 +5167,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5191,7 +5191,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tabs/FluentTab.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tabs/FluentTab.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tabs/FluentTab.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5216,7 +5216,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5255,7 +5255,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5312,7 +5312,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5336,7 +5336,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/TextField/FluentTextField.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/TextField/FluentTextField.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/TextField/FluentTextField.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5361,7 +5361,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5400,7 +5400,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5457,7 +5457,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5481,7 +5481,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Components/Tooltip/FluentTooltip.razor.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5506,7 +5506,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5545,7 +5545,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5602,7 +5602,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5625,8 +5625,8 @@
       ]
     },
     {
-      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.6nvs5i8nnd.css",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css",
+      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.1dlotxxwer.css",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5639,7 +5639,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7809"
+          "Value": "7992"
         },
         {
           "Name": "Content-Type",
@@ -5647,21 +5647,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU=\""
+          "Value": "\"2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6nvs5i8nnd"
+          "Value": "1dlotxxwer"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU="
+          "Value": "sha256-2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU="
         },
         {
           "Name": "label",
@@ -5671,7 +5671,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/css/reboot.css",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/css/reboot.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5684,7 +5684,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "7809"
+          "Value": "7992"
         },
         {
           "Name": "Content-Type",
@@ -5692,28 +5692,28 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU=\""
+          "Value": "\"2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU="
+          "Value": "sha256-2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-1dlotxxwer.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000468823254"
+          "Quality": "0.000458295142"
         }
       ],
       "ResponseHeaders": [
@@ -5723,15 +5723,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2132"
+          "Value": "2181"
         },
         {
           "Name": "ETag",
-          "Value": "\"XiFkNKUup5YQLXNNYqTcBTZzLH2bfVn6rNJRqAty3T0=\""
+          "Value": "\"HXQZ+tvphMziqgBXJXNlPEIXtuFeRsO+Y2N1j5lvU8w=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5751,19 +5751,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU=\""
+          "Value": "W/\"2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-MnwvQYzztzFEYHSG/pmenxOWEmaY7pF6fXdK7bmKJAU="
+          "Value": "sha256-2wyFQ9++b6uYwv3gv265xtRV2OWnPQMN68NpUHffScU="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-6nvs5i8nnd.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/6nn42apl8y-1dlotxxwer.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5772,7 +5772,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2132"
+          "Value": "2181"
         },
         {
           "Name": "Content-Type",
@@ -5780,11 +5780,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XiFkNKUup5YQLXNNYqTcBTZzLH2bfVn6rNJRqAty3T0=\""
+          "Value": "\"HXQZ+tvphMziqgBXJXNlPEIXtuFeRsO+Y2N1j5lvU8w=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5802,13 +5802,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XiFkNKUup5YQLXNNYqTcBTZzLH2bfVn6rNJRqAty3T0="
+          "Value": "sha256-HXQZ+tvphMziqgBXJXNlPEIXtuFeRsO+Y2N1j5lvU8w="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/initializersLoader.webview.f8c5bd5212.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5833,7 +5833,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5853,7 +5853,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/initializersLoader.webview.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/initializersLoader.webview.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/initializersLoader.webview.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5878,7 +5878,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5913,7 +5913,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5966,7 +5966,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5990,7 +5990,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6015,7 +6015,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -6050,7 +6050,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6103,7 +6103,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6127,7 +6127,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.t5s4sbrbsi.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/js/loading-theme.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/js/loading-theme.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6152,7 +6152,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:56:46 GMT"
+          "Value": "Mon, 28 Oct 2024 13:58:06 GMT"
         }
       ],
       "EndpointProperties": [
@@ -6171,8 +6171,8 @@
       ]
     },
     {
-      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
+      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6185,7 +6185,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "102031"
+          "Value": "102349"
         },
         {
           "Name": "Content-Type",
@@ -6193,21 +6193,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8=\""
+          "Value": "\"DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:47 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:58 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "3eliywa438"
+          "Value": "2jmos03fny"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8="
+          "Value": "sha256-DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU="
         },
         {
           "Name": "label",
@@ -6216,8 +6216,8 @@
       ]
     },
     {
-      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/8eaczaxb8w-3eliywa438.gz",
+      "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/2ex4cc0yjp-2jmos03fny.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6226,7 +6226,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14025"
+          "Value": "14052"
         },
         {
           "Name": "Content-Type",
@@ -6234,11 +6234,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"r1dEPT/TlAS/5t9wVqmF+PMKQ2NO2TTUMfDWO56fyfs=\""
+          "Value": "\"xghxeiQwz0lLWFf4r/cCHugj2Ve5h6JkvETD6UnojPQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:46 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:58 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6256,13 +6256,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-r1dEPT/TlAS/5t9wVqmF+PMKQ2NO2TTUMfDWO56fyfs="
+          "Value": "sha256-xghxeiQwz0lLWFf4r/cCHugj2Ve5h6JkvETD6UnojPQ="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6275,7 +6275,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "102031"
+          "Value": "102349"
         },
         {
           "Name": "Content-Type",
@@ -6283,28 +6283,28 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8=\""
+          "Value": "\"DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:47 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:58 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8="
+          "Value": "sha256-DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.bundle.scp.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/8eaczaxb8w-3eliywa438.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/2ex4cc0yjp-2jmos03fny.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000071296164"
+          "Quality": "0.000071159183"
         }
       ],
       "ResponseHeaders": [
@@ -6314,15 +6314,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14025"
+          "Value": "14052"
         },
         {
           "Name": "ETag",
-          "Value": "\"r1dEPT/TlAS/5t9wVqmF+PMKQ2NO2TTUMfDWO56fyfs=\""
+          "Value": "\"xghxeiQwz0lLWFf4r/cCHugj2Ve5h6JkvETD6UnojPQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:46 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:58 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6342,19 +6342,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8=\""
+          "Value": "W/\"DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-y74bbAi3pTFmlPJw0oKZbQgOD3J1aS5IcoF+uMm/Ro8="
+          "Value": "sha256-DhTx7sZDVMsjrKlvEkUuPagV43qe9xi53hhllVFNUbU="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6367,7 +6367,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "392959"
+          "Value": "393139"
         },
         {
           "Name": "Content-Type",
@@ -6375,11 +6375,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZYkvi7NZG5XUqY/KZ9XuAzQnqyd9fRG223i5iclZQpw=\""
+          "Value": "\"/LPTy2KpNBBYdj9b6lNMDILfmbdqo+FWKCFS6WQd0mU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:19 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         }
       ],
       "EndpointProperties": [
@@ -6389,7 +6389,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZYkvi7NZG5XUqY/KZ9XuAzQnqyd9fRG223i5iclZQpw="
+          "Value": "sha256-/LPTy2KpNBBYdj9b6lNMDILfmbdqo+FWKCFS6WQd0mU="
         },
         {
           "Name": "script-type",
@@ -6399,12 +6399,12 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-j63q8f0xrg.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-wzv0u97glo.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000010996261"
+          "Quality": "0.000010993602"
         }
       ],
       "ResponseHeaders": [
@@ -6414,15 +6414,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "90939"
+          "Value": "90961"
         },
         {
           "Name": "ETag",
-          "Value": "\"OBSZbax/JJK4GfS5FFC4ce+UFb2V6IgUjIlcxMLktmk=\""
+          "Value": "\"CZIr/W5IfCTBmfJ3k1z8W1Ackv+4xdnJkK2a4MuEg9g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6442,7 +6442,7 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"ZYkvi7NZG5XUqY/KZ9XuAzQnqyd9fRG223i5iclZQpw=\""
+          "Value": "W/\"/LPTy2KpNBBYdj9b6lNMDILfmbdqo+FWKCFS6WQd0mU=\""
         }
       ],
       "EndpointProperties": [
@@ -6452,7 +6452,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZYkvi7NZG5XUqY/KZ9XuAzQnqyd9fRG223i5iclZQpw="
+          "Value": "sha256-/LPTy2KpNBBYdj9b6lNMDILfmbdqo+FWKCFS6WQd0mU="
         },
         {
           "Name": "script-type",
@@ -6462,7 +6462,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-j63q8f0xrg.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/kwrall9b0s-wzv0u97glo.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6471,7 +6471,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "90939"
+          "Value": "90961"
         },
         {
           "Name": "Content-Type",
@@ -6479,11 +6479,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"OBSZbax/JJK4GfS5FFC4ce+UFb2V6IgUjIlcxMLktmk=\""
+          "Value": "\"CZIr/W5IfCTBmfJ3k1z8W1Ackv+4xdnJkK2a4MuEg9g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6501,13 +6501,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-OBSZbax/JJK4GfS5FFC4ce+UFb2V6IgUjIlcxMLktmk="
+          "Value": "sha256-CZIr/W5IfCTBmfJ3k1z8W1Ackv+4xdnJkK2a4MuEg9g="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6532,7 +6532,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:19 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         }
       ],
       "EndpointProperties": [
@@ -6567,7 +6567,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6620,7 +6620,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6644,7 +6644,7 @@
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
-      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.2/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
+      "AssetFile": "/Users/constantinevassilev02/.nuget/packages/microsoft.fluentui.aspnetcore.components/4.10.3/staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6657,7 +6657,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1313323"
+          "Value": "1313769"
         },
         {
           "Name": "Content-Type",
@@ -6665,28 +6665,28 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"NVzwIuzpB6Eabdxt08rN2CAjgryhsKdiAEcFZe/VE4M=\""
+          "Value": "\"4SNdvLM7SDhaju7Ir+uYFq6/+6PwZqn7sQPCIe+nI0g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:19 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-NVzwIuzpB6Eabdxt08rN2CAjgryhsKdiAEcFZe/VE4M="
+          "Value": "sha256-4SNdvLM7SDhaju7Ir+uYFq6/+6PwZqn7sQPCIe+nI0g="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-hhohuyaagt.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-1cf9i7un7b.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000003594136"
+          "Quality": "0.000003593335"
         }
       ],
       "ResponseHeaders": [
@@ -6696,15 +6696,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "278230"
+          "Value": "278292"
         },
         {
           "Name": "ETag",
-          "Value": "\"izYxNzOx4e/EkQl5VWFECvSQ2FnHxuLNi+ukLlDreRY=\""
+          "Value": "\"wNR/uI3kJ2RBq1ZxTb3gbnoCCv3gSAd0JLB3ZVpl4Lo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6724,19 +6724,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"NVzwIuzpB6Eabdxt08rN2CAjgryhsKdiAEcFZe/VE4M=\""
+          "Value": "W/\"4SNdvLM7SDhaju7Ir+uYFq6/+6PwZqn7sQPCIe+nI0g=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-NVzwIuzpB6Eabdxt08rN2CAjgryhsKdiAEcFZe/VE4M="
+          "Value": "sha256-4SNdvLM7SDhaju7Ir+uYFq6/+6PwZqn7sQPCIe+nI0g="
         }
       ]
     },
     {
       "Route": "_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-hhohuyaagt.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/3emkb5z5ma-1cf9i7un7b.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6745,7 +6745,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "278230"
+          "Value": "278292"
         },
         {
           "Name": "Content-Type",
@@ -6753,11 +6753,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"izYxNzOx4e/EkQl5VWFECvSQ2FnHxuLNi+ukLlDreRY=\""
+          "Value": "\"wNR/uI3kJ2RBq1ZxTb3gbnoCCv3gSAd0JLB3ZVpl4Lo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 09 Oct 2024 12:59:18 GMT"
+          "Value": "Mon, 28 Oct 2024 14:02:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6775,18 +6775,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-izYxNzOx4e/EkQl5VWFECvSQ2FnHxuLNi+ukLlDreRY="
+          "Value": "sha256-wNR/uI3kJ2RBq1ZxTb3gbnoCCv3gSAd0JLB3ZVpl4Lo="
         }
       ]
     },
     {
-      "Route": "aitrailblazer.ApiService.6po4uqjumj.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-6po4uqjumj.gz",
+      "Route": "aitrailblazer.ApiService.hunh6sv0gl.styles.css",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-hunh6sv0gl.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.009009009009"
+          "Quality": "0.009090909091"
         }
       ],
       "ResponseHeaders": [
@@ -6796,15 +6796,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "110"
+          "Value": "109"
         },
         {
           "Name": "ETag",
-          "Value": "\"W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0=\""
+          "Value": "\"ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6824,21 +6824,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ=\""
+          "Value": "W/\"B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY=\""
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6po4uqjumj"
+          "Value": "hunh6sv0gl"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ="
+          "Value": "sha256-B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY="
         },
         {
           "Name": "label",
@@ -6847,7 +6847,7 @@
       ]
     },
     {
-      "Route": "aitrailblazer.ApiService.6po4uqjumj.styles.css",
+      "Route": "aitrailblazer.ApiService.hunh6sv0gl.styles.css",
       "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/scopedcss/bundle/aitrailblazer.ApiService.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6869,25 +6869,25 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ=\""
+          "Value": "\"B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6po4uqjumj"
+          "Value": "hunh6sv0gl"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ="
+          "Value": "sha256-B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY="
         },
         {
           "Name": "label",
@@ -6896,8 +6896,8 @@
       ]
     },
     {
-      "Route": "aitrailblazer.ApiService.6po4uqjumj.styles.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-6po4uqjumj.gz",
+      "Route": "aitrailblazer.ApiService.hunh6sv0gl.styles.css.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-hunh6sv0gl.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6906,7 +6906,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "110"
+          "Value": "109"
         },
         {
           "Name": "Content-Type",
@@ -6914,11 +6914,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0=\""
+          "Value": "\"ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6936,7 +6936,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6po4uqjumj"
+          "Value": "hunh6sv0gl"
         },
         {
           "Name": "label",
@@ -6944,7 +6944,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0="
+          "Value": "sha256-ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM="
         }
       ]
     },
@@ -7087,12 +7087,12 @@
     },
     {
       "Route": "aitrailblazer.ApiService.styles.css",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-6po4uqjumj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-hunh6sv0gl.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.009009009009"
+          "Quality": "0.009090909091"
         }
       ],
       "ResponseHeaders": [
@@ -7102,15 +7102,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "110"
+          "Value": "109"
         },
         {
           "Name": "ETag",
-          "Value": "\"W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0=\""
+          "Value": "\"ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7130,17 +7130,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ=\""
+          "Value": "W/\"B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY=\""
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ="
+          "Value": "sha256-B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY="
         }
       ]
     },
@@ -7167,27 +7167,27 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ=\""
+          "Value": "\"B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Link",
-          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css>; rel=\"preload\"; as=\"style\""
+          "Value": "<_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.2jmos03fny.bundle.scp.css>; rel=\"preload\"; as=\"style\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-CoxUumaTyA9t7hCK2/Vez2uBcBci7LavqIbud6VR/RQ="
+          "Value": "sha256-B8e4GUqhBDDpS4o42WmNGs6fzmacOKvXU0RIzSBDOvY="
         }
       ]
     },
     {
       "Route": "aitrailblazer.ApiService.styles.css.gz",
-      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-6po4uqjumj.gz",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.ApiService/obj/Debug/net9.0/compressed/4x3zoe3z89-hunh6sv0gl.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7196,7 +7196,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "110"
+          "Value": "109"
         },
         {
           "Name": "Content-Type",
@@ -7204,11 +7204,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0=\""
+          "Value": "\"ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 12 Oct 2024 21:42:41 GMT"
+          "Value": "Wed, 13 Nov 2024 05:35:54 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7226,7 +7226,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-W8JVx8abfU2I4QF0HiKXYBX7/2upGaLR7ztCgwzsnk0="
+          "Value": "sha256-ABmDw03nW7mWMEhYDPuu+OtATeecHMBZsHGtBwysYbM="
         }
       ]
     }

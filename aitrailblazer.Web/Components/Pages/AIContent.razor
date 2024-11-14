@@ -108,7 +108,7 @@ else
 
         <FluentTab Id="VectorizedDB-id" Icon="@(new Icons.Regular.Size24.BookDatabase())">
             <Header>
-                My Knowledge Base
+                Knowledge Navigator
             </Header>
             <Content>
     <FluentTabs @bind-ActiveTabId="@activeid1" OnTabChange="HandleOnTabChange1" Class="top-tabs-font-size">
@@ -1230,7 +1230,7 @@ else
 
             string directory = FeatureNameProject+"FileInput"; // Directory structure in which the blob will be stored
             string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
-            string blobName = $"ChatSession-{fileName}-{currentTime}"; // Name of the blob to be created            string contentName = "Input"; // Name of the content to be stored in the blob
+            string blobName = $"ChatThread-{fileName}-{currentTime}"; // Name of the blob to be created            string contentName = "Input"; // Name of the content to be stored in the blob
 
             
             string contentName = "Input"; // Name of the content to be stored in the blob

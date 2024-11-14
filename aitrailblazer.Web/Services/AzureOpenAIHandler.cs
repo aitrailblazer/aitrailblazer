@@ -8,6 +8,8 @@ using System.Text;
 using System;
 using System.Web;
 using System.Threading.Tasks;
+using OpenAI.Chat;
+
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -18,7 +20,8 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Plugins.Web;
 using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
-
+using Microsoft.SemanticKernel.Plugins.Core;
+using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
 
 using System.ComponentModel;
 using Microsoft.OpenApi.Extensions;
@@ -28,8 +31,7 @@ using Microsoft.TypeChat.Schema;
 using aitrailblazer.net.Utilities;
 using Microsoft.Extensions.Logging;
 using Kernel = Microsoft.SemanticKernel.Kernel;
-using Microsoft.SemanticKernel.Plugins.Core;
-using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+
 using Fluid.Ast;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
@@ -43,7 +45,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using AITrailblazer.net.Models;
-using OpenAI.Chat;
+
 using Cosmos.Copilot.Services;
 using Cosmos.Copilot.Models;
 namespace AITrailblazer.net.Services
@@ -114,7 +116,7 @@ namespace AITrailblazer.net.Services
 
         private Stopwatch _timer;
         public async Task<string> HandleSubmitAsyncWriterReviewer(
-               bool isNewSession,
+               bool isNewThread,
                bool isMyKnowledgeBaseChecked,
                string currentUserIdentityID,
                string featureWorkflowName,
@@ -129,13 +131,13 @@ namespace AITrailblazer.net.Services
                string writingStyleVal,
                string relationSettingsVal,
                string responseStyleVal,
-               string existingSessionTitle)
+               string existingThreadTitle)
         {
             _timer = Stopwatch.StartNew();
 
             // Retrieve agent settings for the given project feature
             var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-            string directory = "Sessions";//featureNameProject;
+            string directory = "Threads";//featureNameProject;
             string inputRequestResponseTitle = userInput + "\n\n" + panelInput;
             // Remove slashes and then clean the input
             string cleanedRequestResponseTitle = inputRequestResponseTitle
@@ -174,17 +176,17 @@ namespace AITrailblazer.net.Services
                 relationSettingsVal,
                 responseStyleVal);
 
-            // Prepare storage details and session directory paths
+            // Prepare storage details and Thread directory paths
             var manager = BlobStorageManagerCreate();
             string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
 
-            string title = string.IsNullOrWhiteSpace(existingSessionTitle)
+            string title = string.IsNullOrWhiteSpace(existingThreadTitle)
                 ? await GenerateTitleAsync(userInput, panelInput)
-                : existingSessionTitle;
+                : existingThreadTitle;
 
-            string sessionDirectory = isNewSession
-                ? $"ChatSession-{currentTime}-{title}"
-                : $"ChatSession-{title}";
+            string threadDirectory = isNewThread
+                ? $"ChatThread-{currentTime}-{title}"
+                : $"ChatThread-{title}";
 
             _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
 
@@ -207,7 +209,7 @@ namespace AITrailblazer.net.Services
             await manager.UploadStringToBlobAsync(
                 currentUserIdentityID,
                 directory,
-                sessionDirectory,
+                threadDirectory,
                 requestFileName,
                 requestContent);
 
@@ -243,7 +245,7 @@ namespace AITrailblazer.net.Services
             await manager.UploadStringToBlobAsync(
                 currentUserIdentityID,
                 directory,
-                sessionDirectory,
+                threadDirectory,
                 responseFileName,
                 response);
 
@@ -252,45 +254,22 @@ namespace AITrailblazer.net.Services
 
             return response;
         }
-        public async Task<string> HandleSubmitAsyncWriterEditorReviewer(
-            bool isNewSession,
-            bool isMyKnowledgeBaseChecked,
-            string currentUserIdentityID,
-            string featureWorkflowName,
+        public async Task<(string response, TokenCounts? tokenUsage)> HandleSubmitAsyncWriterEditorReviewer(
             string featureNameProject,
             string panelInput,
             string userInput,
-            string tags,
             string masterTextSetting,
             string responseLengthVal,
             string creativeAdjustmentsVal,
             string audienceLevelVal,
             string writingStyleVal,
             string relationSettingsVal,
-            string responseStyleVal,
-            string existingSessionTitle)
+            string responseStyleVal)
         {
             _timer = Stopwatch.StartNew();
 
             // Retrieve agent settings for the given project feature
             var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-            string directory = "Sessions";//featureNameProject;
-            string inputRequestResponseTitle = userInput + "\n\n" + panelInput;
-            // Remove slashes and then clean the input
-            string cleanedRequestResponseTitle = inputRequestResponseTitle
-                .Replace(":", "_")            // Replace colon with underscore
-                .Replace("/", string.Empty)   // Remove all occurrences of "/"
-                .Replace(".", "_")            // Replace period with underscore
-                .Replace("\n", string.Empty)  // Remove all newlines
-                .Replace("\r", string.Empty); // Handle Windows-style line endings
-
-            // Further clean whitespace
-            cleanedRequestResponseTitle = string.Concat(cleanedRequestResponseTitle.Where(c => !char.IsWhiteSpace(c) || c == ' '));
-
-            // Limit the cleaned string to 32 characters
-            string requestResponseTitle = new string(cleanedRequestResponseTitle.Take(32).ToArray());
-
-            _logger.LogInformation($"HandleSubmitAsync requestResponseTitle: {requestResponseTitle}");
 
             // Modify writer, editor, and reviewer instructions based on dynamic inputs
             var writerInstructions = await AgentWithPromptyAsync(
@@ -323,49 +302,15 @@ namespace AITrailblazer.net.Services
                 relationSettingsVal,
                 responseStyleVal);
 
-            // Prepare storage details and session directory paths
-            var manager = BlobStorageManagerCreate();
-            string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
-
-            string title = isNewSession
-                ? await GenerateTitleAsync(userInput, panelInput)
-                : existingSessionTitle;
-
-            string sessionDirectory = isNewSession
-                ? $"ChatSession-{currentTime}-{title}"
-                : $"ChatSession-{title}";
-
-            _logger.LogInformation($"HandleSubmitAsync sessionDirectory: {sessionDirectory}");
-
-            // Create and upload the request content to blob storage
-            var requestContent = CreateJsonContent(
-                featureWorkflowName,
-                featureNameProject,
-                panelInput,
-                userInput,
-                tags,
-                masterTextSetting,
-                responseLengthVal,
-                creativeAdjustmentsVal,
-                audienceLevelVal,
-                writingStyleVal,
-                relationSettingsVal,
-                responseStyleVal);
-
-            string requestFileName = $"Request-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
-            await manager.UploadStringToBlobAsync(
-                currentUserIdentityID,
-                directory,
-                sessionDirectory,
-                requestFileName,
-                requestContent);
-
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
+            
+            string responseOutput = string.Empty;
+            TokenCounts tokenUsage = null;
 
             // Execute the chat interaction with the configured agents
-            string response = await _kernelFunctionStrategies.ExecuteAgentChatWriterEditorReviewerAsync(
+            (responseOutput, tokenUsage) = await _kernelFunctionStrategies.ExecuteAgentChatWriterEditorReviewerAsync(
                 initialUserInput: $"{panelInput}\n\n{userInput}",
                 writerSettings: new ChatAgentSettings
                 {
@@ -395,22 +340,15 @@ namespace AITrailblazer.net.Services
                 maxIterations: 10
             );
 
-            // Upload the response content to blob storage
-            string responseFileName = $"Response-{currentTime}-{featureWorkflowName}-{featureNameProject}-{requestResponseTitle}.json";
-            await manager.UploadStringToBlobAsync(
-                currentUserIdentityID,
-                directory,
-                sessionDirectory,
-                responseFileName,
-                response);
-
             _timer.Stop();
             _logger.LogInformation($"Time: {_timer.ElapsedMilliseconds / 1000} secs");
 
-            return response;
+             return (responseOutput, tokenUsage);
         }
+
+
         public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsync(
-            bool isNewSession,
+            bool isNewThread,
             bool isMyKnowledgeBaseChecked,
             string currentUserTenantID,
             string currentUserIdentityID,
@@ -426,12 +364,12 @@ namespace AITrailblazer.net.Services
             string writingStyleVal,
             string relationSettingsVal,
             string responseStyleVal,
-            string existingSessionTitle,
-            string existingSessionId)
+            string existingThreadTitle,
+            string existingThreadId)
         {
             var timer = Stopwatch.StartNew();
-            _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingSessionId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
-                existingSessionId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+            _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingThreadId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+                existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
 
             if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
             {
@@ -450,6 +388,7 @@ namespace AITrailblazer.net.Services
                 panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
                 _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
 
+/*
                 if (featureNameProject == "AIMessageOptimizer")
                 {
                     _logger.LogDebug("Handling submission for AIMessageOptimizer.");
@@ -473,113 +412,61 @@ namespace AITrailblazer.net.Services
                     _logger.LogInformation("Submission handled by WriterReviewer for AIMessageOptimizer. User: {UserIdentityID}", currentUserIdentityID);
                     return (response,0);
                 }
-                else if (agentSettings != null)
-                {
-                    _logger.LogInformation("Handling submission with WriterEditorReviewer for Project: {FeatureNameProject}", featureNameProject);
-                    var response = await HandleSubmitAsyncWriterEditorReviewer(
-                        isNewSession,
-                        isMyKnowledgeBaseChecked,
-                        currentUserIdentityID,
-                        featureNameWorkflowName,
-                        featureNameProject,
-                        panelInput,
-                        userInput,
-                        tags,
-                        masterTextSetting,
-                        responseLengthVal,
-                        creativeAdjustmentsVal,
-                        audienceLevelVal,
-                        writingStyleVal,
-                        relationSettingsVal,
-                        responseStyleVal,
-                        existingSessionTitle);
-                    _logger.LogInformation("Submission handled by WriterEditorReviewer for Project: {FeatureNameProject}. User: {UserIdentityID}",
-                        featureNameProject, currentUserIdentityID);
-                    return (response,0);
-                }
-
-                //var manager = BlobStorageManagerCreate();
-                //_logger.LogDebug("BlobStorageManager created successfully.");
-
+*/
                 string cleanedUserInput = CleanInput(userInput);
                 string cleanedPanelInput = CleanInput(panelInput);
                 _logger.LogInformation("User input and panel input cleaned.");
 
-                // Generate or use existing session title
-                string title = string.IsNullOrWhiteSpace(existingSessionTitle)
+                // Generate or use existing Thread title
+                string title = string.IsNullOrWhiteSpace(existingThreadTitle)
                     ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
-                    : existingSessionTitle;
-                _logger.LogInformation("Session title determined: {Title}", title);
+                    : existingThreadTitle;
+                _logger.LogInformation("Thread title determined: {Title}", title);
 
                 string inputRequest = $"{userInput}\n\n{panelInput}";
                 string cleanedRequestResponseTitle = CleanAndShortenRequestResponseTitle(inputRequest);
-
-                // Create JSON content for the request
-                var requestContent = CreateJsonContent(
-                    featureNameWorkflowName,
-                    featureNameProject,
-                    panelInput,
-                    userInput,
-                    tags,
-                    masterTextSetting,
-                    responseLengthVal,
-                    creativeAdjustmentsVal,
-                    audienceLevelVal,
-                    writingStyleVal,
-                    relationSettingsVal,
-                    responseStyleVal);
-                _logger.LogInformation("JSON request content created.");
 
                 //string requestTitle = $"{featureNameWorkflowName}-{featureNameProject}-{cleanedRequestResponseTitle}";
                 string requestTitle = cleanedRequestResponseTitle;
                 _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
 
-                SessionChat session;
+                ThreadChat thread;
 
-                if (isNewSession)
+                if (isNewThread)
                 {
-                    _logger.LogInformation("Creating a new chat session. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                    _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
                     try
                     {
-                        session = await _chatService.CreateNewSessionChatAsync(
+                        thread = await _chatService.CreateNewThreadChatAsync(
                             tenantId: currentUserTenantID,
                             userId: currentUserIdentityID,
                             title: requestTitle
                         );
-                        _logger.LogInformation("New chat session created successfully. SessionId: {SessionId}, Title: {Title}", session.Id, title);
+                        _logger.LogInformation("New chat Thread created successfully. ThreadId: {ThreadId}, Title: {Title}", thread.Id, title);
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Failed to create a new chat session. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                        _logger.LogError(ex, "Failed to create a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
                         throw; // Re-throw the exception to be handled upstream
                     }
                 }
                 else
                 {
-                    _logger.LogInformation("Retrieving existing session by ID. SessionId: {SessionId}, User: {UserIdentityID}", existingSessionId, currentUserIdentityID);
-                    session = await _chatService.GetSessionAsync(
+                    _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, currentUserIdentityID);
+                    thread = await _chatService.GetThreadAsync(
                         tenantId: currentUserTenantID,
                         userId: currentUserIdentityID,
-                        sessionId: existingSessionId
+                        threadId: existingThreadId
                     );
 
-                    if (session == null)
+                    if (thread == null)
                     {
-                        _logger.LogError("Session retrieval failed. Session ID: {Title}, User: {UserIdentityID} does not exist.", title, currentUserIdentityID);
-                        throw new InvalidOperationException($"Session with ID {title} does not exist.");
+                        _logger.LogError("Thread retrieval failed. Thread ID: {Title}, User: {UserIdentityID} does not exist.", title, currentUserIdentityID);
+                        throw new InvalidOperationException($"Thread with ID {title} does not exist.");
                     }
 
-                    _logger.LogInformation("Continuing existing session. SessionId: {SessionId}", session.Id);
+                    _logger.LogInformation("Continuing existing Thread. ThreadId: {ThreadId}", thread.Id);
                 }
-                /*
-                List<Cosmos.Copilot.Models.Message> contextWindow = await _chatService.GetChatSessionContextWindow(
-                        tenantId: currentUserTenantID,
-                        userId: currentUserIdentityID,
-                        sessionId: session.Id
-                    );
-
-
-                */
                 string responseOutput = string.Empty;
                 ChatTokenUsage tokenUsage = null;
 
@@ -603,6 +490,9 @@ namespace AITrailblazer.net.Services
 
                 // Initialize variables for the new message
                 bool cacheHit = false;
+                var inputTokenCount=0;     // inputTokenCount
+                var outputTokenCount=0;  // outputTokenCount
+                var totalTokenCount=0;    // totalTokenCount
 
                 // Check if a similar message was found
                 if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
@@ -615,37 +505,78 @@ namespace AITrailblazer.net.Services
                 }
                 else
                 {
-                    // Cache miss, generate a new response
-                    _logger.LogInformation("Cache miss: Generating response with Prompty.");
-                    (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
-                        featureNameProject,
-                        panelInput,
-                        userInput,
-                        masterTextSetting,
-                        responseLengthVal,
-                        creativeAdjustmentsVal,
-                        audienceLevelVal,
-                        writingStyleVal,
-                        relationSettingsVal,
-                        responseStyleVal
-                    );
 
-                    // Enhance inputs with citations and generate response
-                    _logger.LogInformation("Enhancing inputs with citations.");
-                    var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+                    if (agentSettings != null){
+                        // Cache miss, generate a new response
+                        _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
+                        TokenCounts? tokenUsageTc = null;
+                        string responseOutputTc = string.Empty;
+                        (responseOutputTc, tokenUsageTc) = await HandleSubmitAsyncWriterEditorReviewer(
+                            featureNameProject,
+                            panelInput,
+                            userInput,
+                            masterTextSetting,
+                            responseLengthVal,
+                            creativeAdjustmentsVal,
+                            audienceLevelVal,
+                            writingStyleVal,
+                            relationSettingsVal,
+                            responseStyleVal
+                        );
+                        responseOutput=responseOutputTc;
+                        inputTokenCount = tokenUsageTc.PromptTokens;
+                        outputTokenCount = tokenUsageTc.CompletionTokens;
+                        totalTokenCount = tokenUsageTc.TotalTokens;
 
-                    // Append citations if available
-                    if (enhancedInputs.AllCitations.Any())
-                    {
-                        var citationsText = FormatCitations(enhancedInputs.AllCitations);
-                        responseOutput += $"\n\nReferences:\n{citationsText}";
-                        _logger.LogInformation("Citations appended to the response.");
+                        // Enhance inputs with citations and generate response
+                        _logger.LogInformation("Enhancing inputs with citations.");
+                        var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                        // Append citations if available
+                        if (enhancedInputs.AllCitations.Any())
+                        {
+                            var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                            responseOutput += $"\n\nReferences:\n{citationsText}";
+                            _logger.LogInformation("Citations appended to the response.");
+                        }
+                    } else {
+                        // Cache miss, generate a new response
+                        _logger.LogInformation("Cache miss: Generating response with Prompty.");
+                        (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
+                            featureNameProject,
+                            panelInput,
+                            userInput,
+                            masterTextSetting,
+                            responseLengthVal,
+                            creativeAdjustmentsVal,
+                            audienceLevelVal,
+                            writingStyleVal,
+                            relationSettingsVal,
+                            responseStyleVal
+                        );
+
+                        inputTokenCount = tokenUsage.InputTokenCount;
+                        outputTokenCount = tokenUsage.OutputTokenCount;
+                        totalTokenCount = tokenUsage.TotalTokenCount;
+
+                        // Enhance inputs with citations and generate response
+                        _logger.LogInformation("Enhancing inputs with citations.");
+                        var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                        // Append citations if available
+                        if (enhancedInputs.AllCitations.Any())
+                        {
+                            var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                            responseOutput += $"\n\nReferences:\n{citationsText}";
+                            _logger.LogInformation("Citations appended to the response.");
+                        }
                     }
+
                 }
 
                 // Create the completed chat message
                 var completedChatMessage = new Cosmos.Copilot.Models.Message(
-                    sessionId: session.SessionId,               // sessionId
+                    threadId: thread.ThreadId,               // threadId
                     tenantId: currentUserTenantID,              // tenantId
                     userId: currentUserIdentityID,              // userId
                     featureNameWorkflowName: featureNameWorkflowName,
@@ -653,9 +584,9 @@ namespace AITrailblazer.net.Services
                     title: requestTitle,                        // title
                     prompt: panelInput,                         // prompt
                     userInput: userInput,                       // userInput
-                    inputTokenCount: tokenUsage?.InputTokenCount ?? 0,     // inputTokenCount
-                    outputTokenCount: tokenUsage?.OutputTokenCount ?? 0,   // outputTokenCount
-                    totalTokenCount: tokenUsage?.TotalTokenCount ?? 0,     // totalTokenCount
+                    inputTokenCount: inputTokenCount,     // inputTokenCount
+                    outputTokenCount: outputTokenCount,   // outputTokenCount
+                    totalTokenCount: totalTokenCount,     // totalTokenCount
                     output: responseOutput,                     // output
                     cacheHit: cacheHit,                         // cacheHit
                     masterTextSetting: masterTextSetting,       // masterTextSetting
@@ -675,17 +606,17 @@ namespace AITrailblazer.net.Services
                     completedChatMessage.Vectors = promptVectors;
                 }
 
-                _logger.LogInformation("Updating session and message. SessionId: {SessionId}", session.SessionId);
+                _logger.LogInformation("Updating thread and message. threadId: {ThreadId}", thread.ThreadId);
 
                 // Save the message to the database
-                await _chatService.UpsertSessionAndMessageAsync(
+                await _chatService.UpsertThreadAndMessageAsync(
                     tenantId: currentUserTenantID,
                     userId: currentUserIdentityID,
-                    sessionId: session.SessionId,
+                    threadId: thread.ThreadId,
                     chatMessage: completedChatMessage
                 );
 
-                _logger.LogInformation("Chat message persisted with completion. SessionId: {SessionId}", session.SessionId);
+                _logger.LogInformation("Chat message persisted with completion. ThreadId: {threadId}", thread.ThreadId);
 
                 timer.Stop();
                 _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
@@ -750,52 +681,29 @@ namespace AITrailblazer.net.Services
         public async Task<string> ReadBlobContentAsync(
             string userId,
             string directory,
-            string sessionDirectory,
+            string threadDirectory,
             string fileName)
         {
             var manager = BlobStorageManagerCreate();
             return await manager.ReadBlobContentAsync(
                 userId,
                 directory,
-                sessionDirectory,
+                threadDirectory,
                 fileName);
         }
 
-        /*
-                public async Task<List<Session>> LoadSessionsAsync(
-                    string userId,
-                    string featureNameWorkflowName)
-                {
-                    var manager = BlobStorageManagerCreate();
-
-                    var sessionTitles = await manager.ListSessionsAsync(
-                        userId,
-                        featureNameWorkflowName);
-
-                    // Convert the session titles (strings) into Session objects
-                    var sessions = sessionTitles.Select(title => new Session
-                    { 
-                        Name = title, // Set the Name property
-                        Id = $"{userId}-{featureNameWorkflowName}/ChatSession-{title}" // Set the Id property
-                    }).ToList();
-
-                    //_logger.LogInformation($"Loaded {sessions.Count} sessions.");
-
-                    return sessions;
-                }
-        */
-        public async Task<List<Cosmos.Copilot.Models.SessionChat>> LoadSessionsAsync(
+        public async Task<List<Cosmos.Copilot.Models.ThreadChat>> LoadThreadsAsync(
             string tenantId,
             string userId,
             string featureNameWorkflowName)
         {
 
-            var sessions = await _chatService.GetAllChatSessionsAsync(
+            var threads = await _chatService.GetAllChatThreadsAsync(
                 tenantId,
                 userId
             );
 
-            return sessions;
+            return threads;
         }
 
         public async Task<Cosmos.Copilot.Models.Message> GetMessageByIdAsync(string messageId)
@@ -841,18 +749,21 @@ namespace AITrailblazer.net.Services
         }
 
   
-        public async Task<List<ITreeViewItem>> LoadSessionMessagesAsync(string tenantId, string userId, string sessionId)
+        public async Task<List<ITreeViewItem>> LoadThreadMessagesAsync(
+            string tenantId, 
+            string userId, 
+            string threadId)
         {
             var items = new List<ITreeViewItem>();
 
             try
             {
-                // Retrieve messages for the session from ChatService
-                var messages = await _chatService.GetChatSessionMessagesAsync(tenantId, userId, sessionId);
+                // Retrieve messages for the thread from ChatService
+                var messages = await _chatService.GetChatThreadMessagesAsync(tenantId, userId, threadId);
 
                 if (messages == null || !messages.Any())
                 {
-                    _logger.LogInformation($"No messages found for session: {sessionId}");
+                    _logger.LogInformation($"LoadThreadMessagesAsync No messages found for thread: {threadId}");
                     return items; // Return an empty list if no messages are found
                 }
 
@@ -868,7 +779,7 @@ namespace AITrailblazer.net.Services
                         //var userFriendlyText = $"{message.Title} - {message.TimeStamp:yyyy-MM-dd HH:mm:ss}";
 
                         // Create a unique ID for the TreeView item using the message ID
-                        var combinedId = $"{sessionId}|{message.Id}";
+                        var combinedId = $"{threadId}|{message.Id}";
 
                         // write it user friendly
                         var userFriendlyText = $"{message.Title}";
@@ -888,7 +799,7 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"Error loading session messages for session: {sessionId}, Error: {ex.Message}");
+                _logger.LogInformation($"Error loading thread messages for thread: {threadId}, Error: {ex.Message}");
             }
 
             return items;
@@ -914,13 +825,12 @@ namespace AITrailblazer.net.Services
         }
 
 
-        // CurrentSession.Id
-        public async Task<string> LoadSessionMessagesPipeAsync(string sessionId)
+        public async Task<string> LoadThreadMessagesPipeAsync(string threadId)
         {
             var manager = BlobStorageManagerCreate();
             var pipeDelimitedStrings = new List<string>();
 
-            var blobs = await manager.ListBlobsAsync(sessionId);
+            var blobs = await manager.ListBlobsAsync(threadId);
 
             var groupedBlobs = blobs
                 .Select(blob => Path.GetFileName(blob.Name))
@@ -931,7 +841,7 @@ namespace AITrailblazer.net.Services
             {
                 var requestBlob = group.FirstOrDefault(n => n.StartsWith("Request-"));
                 // var responseBlob = group.FirstOrDefault(n => n.StartsWith("Response-"));
-                _logger.LogInformation($"LoadSessionMessagesPipeAsync requestBlob: {requestBlob}");
+                _logger.LogInformation($"LoadThreadMessagesPipeAsync requestBlob: {requestBlob}");
 
                 if (requestBlob != null)
                 {
@@ -945,74 +855,39 @@ namespace AITrailblazer.net.Services
             // Concatenate all pipe-delimited strings into a single string
             return string.Join("|", pipeDelimitedStrings);
         }
-        public async Task<SessionChat> GetChatSessionAsync(
+        public async Task<ThreadChat> GetThreadAsync(
             string tenantId,
             string userId,
-            string sessionId)
+            string threadId)
         {
-            // Get the session and its messages from Cosmos DB
-            var session = await _chatService.GetSessionAsync(tenantId, userId, sessionId);
+            // Get the thread and its messages from Cosmos DB
+            var thread = await _chatService.GetThreadAsync(tenantId, userId, threadId);
 
-            _logger.LogInformation($"Get session ID: {sessionId}");
-            return session;
+            _logger.LogInformation($"Get thread ID: {threadId}");
+            return thread;
         }
-        public async Task DeleteChatSessionAsync(
+        public async Task DeleteChatThreadAsync(
             string tenantId,
             string userId,
-            string sessionId)
+            string threadId)
         {
-            // Delete the session and its messages from Cosmos DB
-            await _chatService.DeleteChatSessionAsync(tenantId, userId, sessionId);
+            await _chatService.DeleteChatThreadAsync(tenantId, userId, threadId);
 
-            _logger.LogInformation($"Deleted session and its messages in Cosmos DB for Session ID: {sessionId}");
+            _logger.LogInformation($"Deleted thread and its messages in Cosmos DB for thread ID: {threadId}");
         }
 
         public async Task DeleteMessageAsync(
         string tenantId,
         string userId,
-        string sessionId,
+        string threadId,
         string messageId)
         {
             // Delete the specific message in Cosmos DB
-            await _chatService.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
+            await _chatService.DeleteMessageAsync(tenantId, userId, threadId, messageId);
 
-            _logger.LogInformation($"Deleted message in Cosmos DB for Message ID: {messageId} within Session ID: {sessionId}");
+            _logger.LogInformation($"Deleted message in Cosmos DB for Message ID: {messageId} within thread ID: {threadId}");
         }
 
-        /*
-
-        public async Task DeleteSessionDirectoryAsync(
-            string userId,
-            string featureWorkflowName,
-            string title)
-        {
-            var manager = BlobStorageManagerCreate();
-
-            // Construct the correct directory prefix
-            string directoryPrefix = $"{userId}-{featureWorkflowName}/ChatSession-{title}/";
-
-            await manager.DeleteBlobDirectoryAsync(directoryPrefix);
-
-            _logger.LogInformation($"Deleted session directory: {directoryPrefix}");
-        }
-        */
-        // Method to delete specific input and output blobs within a session
-        public async Task DeleteBlobItemsAsync(
-            string userId,
-            string directory,
-            string sessionDirectory,
-            string requestFileName,
-            string responseFileName)
-        {
-            var manager = BlobStorageManagerCreate();
-
-            await manager.DeleteBlobItemsAsync(
-                userId,
-                directory,
-                sessionDirectory,
-                requestFileName,
-                responseFileName);
-        }
         public async Task<string> GenerateTitleAsync(
             string userInput,
             string panelInput)

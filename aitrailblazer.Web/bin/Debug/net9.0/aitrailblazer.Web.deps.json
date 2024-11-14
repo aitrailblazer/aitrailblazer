@@ -9,25 +9,25 @@
       "aitrailblazer.Web/1.0.0": {
         "dependencies": {
           "AITGraph.Sdk": "1.0.0",
-          "Azure.Storage.Blobs": "12.22.2",
+          "Azure.Storage.Blobs": "12.23.0",
           "CognitiveServices.Sdk": "1.0.0",
-          "HtmlAgilityPack": "1.11.67",
+          "HtmlAgilityPack": "1.11.71",
           "Humanizer": "2.14.1",
-          "Markdig": "0.37.0",
-          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "9.0.0-rc.1.24452.1",
-          "Microsoft.Azure.Cosmos": "3.44.1",
+          "Markdig": "0.38.0",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "9.0.0",
+          "Microsoft.Azure.Cosmos": "3.45.1",
           "Microsoft.FluentUI.AspNetCore.Components": "4.10.3",
           "Microsoft.FluentUI.AspNetCore.Components.Icons": "4.10.3",
-          "Microsoft.Identity.Web": "3.2.2",
-          "Microsoft.Identity.Web.GraphServiceClientBeta": "3.2.2",
-          "Microsoft.Identity.Web.UI": "3.2.2",
-          "Microsoft.Kiota.Abstractions": "1.13.2",
-          "Microsoft.Kiota.Serialization.Form": "1.13.1",
-          "Microsoft.Kiota.Serialization.Json": "1.13.1",
-          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
-          "Microsoft.Kiota.Serialization.Text": "1.13.1",
+          "Microsoft.Identity.Web": "3.3.1",
+          "Microsoft.Identity.Web.GraphServiceClientBeta": "3.3.1",
+          "Microsoft.Identity.Web.UI": "3.3.1",
+          "Microsoft.Kiota.Abstractions": "1.14.0",
+          "Microsoft.Kiota.Serialization.Form": "1.14.0",
+          "Microsoft.Kiota.Serialization.Json": "1.14.0",
+          "Microsoft.Kiota.Serialization.Multipart": "1.14.0",
+          "Microsoft.Kiota.Serialization.Text": "1.14.0",
           "Microsoft.ML.Tokenizers": "0.21.1",
-          "Microsoft.SemanticKernel": "1.25.0",
+          "Microsoft.SemanticKernel": "1.28.0",
           "Microsoft.SemanticKernel.Agents.Abstractions": "1.25.0-alpha",
           "Microsoft.SemanticKernel.Agents.Core": "1.25.0-alpha",
           "Microsoft.SemanticKernel.Connectors.AzureAIInference": "1.25.0-beta",
@@ -35,9 +35,9 @@
           "Microsoft.SemanticKernel.Plugins.OpenApi": "1.25.0-alpha",
           "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions": "1.25.0-alpha",
           "Microsoft.SemanticKernel.Plugins.Web": "1.25.0-alpha",
-          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.25.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.28.0",
           "Microsoft.SemanticKernel.Prompty": "1.25.0-alpha",
-          "Microsoft.SemanticKernel.Yaml": "1.25.0",
+          "Microsoft.SemanticKernel.Yaml": "1.28.0",
           "Microsoft.TypeChat": "0.1.240227.3-preview",
           "Newtonsoft.Json": "13.0.3",
           "SixLabors.ImageSharp": "3.1.5",
@@ -53,7 +53,7 @@
       "Azure.AI.Inference/1.0.0-beta.1": {
         "dependencies": {
           "Azure.Core": "1.44.1",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.AI.Inference.dll": {
@@ -78,11 +78,11 @@
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "System.ClientModel": "1.1.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
+          "System.Diagnostics.DiagnosticSource": "9.0.0",
           "System.Memory.Data": "6.0.0",
           "System.Numerics.Vectors": "4.5.0",
           "System.Text.Encodings.Web": "6.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7",
+          "System.Text.Json": "9.0.0-rc.2.24473.5",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -95,11 +95,11 @@
       "Azure.Identity/1.11.4": {
         "dependencies": {
           "Azure.Core": "1.44.1",
-          "Microsoft.Identity.Client": "4.65.0",
+          "Microsoft.Identity.Client": "4.66.1",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
-          "System.Memory": "4.5.4",
+          "System.Memory": "4.5.5",
           "System.Security.Cryptography.ProtectedData": "6.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7",
+          "System.Text.Json": "9.0.0-rc.2.24473.5",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -112,8 +112,8 @@
       "Azure.Security.KeyVault.Certificates/4.6.0": {
         "dependencies": {
           "Azure.Core": "1.44.1",
-          "System.Memory": "4.5.4",
-          "System.Text.Json": "9.0.0-rc.1.24431.7",
+          "System.Memory": "4.5.5",
+          "System.Text.Json": "9.0.0-rc.2.24473.5",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -126,8 +126,8 @@
       "Azure.Security.KeyVault.Secrets/4.6.0": {
         "dependencies": {
           "Azure.Core": "1.44.1",
-          "System.Memory": "4.5.4",
-          "System.Text.Json": "9.0.0-rc.1.24431.7",
+          "System.Memory": "4.5.5",
+          "System.Text.Json": "9.0.0-rc.2.24473.5",
           "System.Threading.Tasks.Extensions": "4.5.4"
         },
         "runtime": {
@@ -137,33 +137,33 @@
           }
         }
       },
-      "Azure.Storage.Blobs/12.22.2": {
+      "Azure.Storage.Blobs/12.23.0": {
         "dependencies": {
-          "Azure.Storage.Common": "12.21.1",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Azure.Storage.Common": "12.22.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net6.0/Azure.Storage.Blobs.dll": {
-            "assemblyVersion": "12.22.2.0",
-            "fileVersion": "12.2200.224.51019"
+            "assemblyVersion": "12.23.0.0",
+            "fileVersion": "12.2300.24.56203"
           }
         }
       },
-      "Azure.Storage.Common/12.21.1": {
+      "Azure.Storage.Common/12.22.0": {
         "dependencies": {
           "Azure.Core": "1.44.1",
           "System.IO.Hashing": "6.0.0"
         },
         "runtime": {
           "lib/net6.0/Azure.Storage.Common.dll": {
-            "assemblyVersion": "12.21.1.0",
-            "fileVersion": "12.2100.124.51010"
+            "assemblyVersion": "12.22.0.0",
+            "fileVersion": "12.2200.24.56203"
           }
         }
       },
       "Fluid.Core/2.11.1": {
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0",
           "Parlot": "1.0.2",
           "TimeZoneConverter": "6.1.0"
         },
@@ -217,7 +217,7 @@
       },
       "Grpc.Core.Api/2.52.0": {
         "dependencies": {
-          "System.Memory": "4.5.4"
+          "System.Memory": "4.5.5"
         },
         "runtime": {
           "lib/netstandard2.1/Grpc.Core.Api.dll": {
@@ -229,7 +229,7 @@
       "Grpc.Net.Client/2.52.0": {
         "dependencies": {
           "Grpc.Net.Common": "2.52.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0"
         },
         "runtime": {
           "lib/net7.0/Grpc.Net.Client.dll": {
@@ -282,11 +282,11 @@
           }
         }
       },
-      "HtmlAgilityPack/1.11.67": {
+      "HtmlAgilityPack/1.11.71": {
         "runtime": {
           "lib/netstandard2.0/HtmlAgilityPack.dll": {
-            "assemblyVersion": "1.11.67.0",
-            "fileVersion": "1.11.67.0"
+            "assemblyVersion": "1.11.71.0",
+            "fileVersion": "1.11.71.0"
           }
         }
       },
@@ -840,7 +840,7 @@
       },
       "Json.More.Net/1.9.0": {
         "dependencies": {
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Json.More.dll": {
@@ -873,41 +873,41 @@
           }
         }
       },
-      "Markdig/0.37.0": {
+      "Markdig/0.38.0": {
         "runtime": {
           "lib/net8.0/Markdig.dll": {
-            "assemblyVersion": "0.37.0.0",
-            "fileVersion": "0.37.0.0"
+            "assemblyVersion": "0.38.0.0",
+            "fileVersion": "0.38.0.0"
           }
         }
       },
-      "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0-rc.1.24452.1": {
+      "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0-rc.2.24474.3": {
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2"
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.24.45201"
+            "fileVersion": "9.0.24.47403"
           }
         }
       },
-      "Microsoft.AspNetCore.Authentication.OpenIdConnect/9.0.0-rc.1.24452.1": {
+      "Microsoft.AspNetCore.Authentication.OpenIdConnect/9.0.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2"
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.24.45201"
+            "fileVersion": "9.0.24.52903"
           }
         }
       },
       "Microsoft.AspNetCore.Authorization/9.0.0-rc.2.24474.3": {
         "dependencies": {
           "Microsoft.AspNetCore.Metadata": "9.0.0-rc.2.24474.3",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0"
         }
       },
       "Microsoft.AspNetCore.Components/9.0.0-rc.2.24474.3": {
@@ -926,26 +926,26 @@
         "dependencies": {
           "Microsoft.AspNetCore.Components": "9.0.0-rc.2.24474.3",
           "Microsoft.AspNetCore.Components.Forms": "9.0.0-rc.2.24474.3",
-          "Microsoft.Extensions.DependencyInjection": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0",
           "Microsoft.JSInterop": "9.0.0-rc.2.24474.3"
         }
       },
-      "Microsoft.AspNetCore.Cryptography.Internal/9.0.0-rc.1.24452.1": {},
-      "Microsoft.AspNetCore.DataProtection/9.0.0-rc.1.24452.1": {
+      "Microsoft.AspNetCore.Cryptography.Internal/9.0.0-rc.2.24474.3": {},
+      "Microsoft.AspNetCore.DataProtection/9.0.0-rc.2.24474.3": {
         "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.Internal": "9.0.0-rc.1.24452.1",
-          "Microsoft.AspNetCore.DataProtection.Abstractions": "9.0.0-rc.1.24452.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "System.Security.Cryptography.Xml": "9.0.0-rc.1.24431.7"
+          "Microsoft.AspNetCore.Cryptography.Internal": "9.0.0-rc.2.24474.3",
+          "Microsoft.AspNetCore.DataProtection.Abstractions": "9.0.0-rc.2.24474.3",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "System.Security.Cryptography.Xml": "9.0.0-rc.2.24473.5"
         }
       },
-      "Microsoft.AspNetCore.DataProtection.Abstractions/9.0.0-rc.1.24452.1": {},
+      "Microsoft.AspNetCore.DataProtection.Abstractions/9.0.0-rc.2.24474.3": {},
       "Microsoft.AspNetCore.Metadata/9.0.0-rc.2.24474.3": {},
-      "Microsoft.Azure.Cosmos/3.44.1": {
+      "Microsoft.Azure.Cosmos/3.45.1": {
         "dependencies": {
           "Azure.Core": "1.44.1",
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
@@ -954,8 +954,8 @@
           "System.Buffers": "4.5.1",
           "System.Collections.Immutable": "7.0.0",
           "System.Configuration.ConfigurationManager": "6.0.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
-          "System.Memory": "4.5.4",
+          "System.Diagnostics.DiagnosticSource": "9.0.0",
+          "System.Memory": "4.5.5",
           "System.Net.Http": "4.3.4",
           "System.Numerics.Vectors": "4.5.0",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
@@ -965,16 +965,16 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Azure.Cosmos.Client.dll": {
-            "assemblyVersion": "3.44.1.0",
-            "fileVersion": "3.44.1.0"
+            "assemblyVersion": "3.45.1.0",
+            "fileVersion": "3.45.1.0"
           },
           "lib/netstandard2.0/Microsoft.Azure.Cosmos.Core.dll": {
             "assemblyVersion": "2.11.0.0",
             "fileVersion": "2.11.0.0"
           },
           "lib/netstandard2.0/Microsoft.Azure.Cosmos.Direct.dll": {
-            "assemblyVersion": "3.36.1.0",
-            "fileVersion": "3.36.1.0"
+            "assemblyVersion": "3.37.1.0",
+            "fileVersion": "3.37.1.0"
           },
           "lib/netstandard2.0/Microsoft.Azure.Cosmos.Serialization.HybridRow.dll": {
             "assemblyVersion": "1.1.0.0",
@@ -1141,283 +1141,291 @@
           }
         }
       },
-      "Microsoft.Extensions.AmbientMetadata.Application/8.10.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Configuration": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5"
-        },
+      "Microsoft.Extensions.AI.Abstractions/9.0.0-preview.9.24525.1": {
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.AmbientMetadata.Application.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.AI.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.52501"
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.1.24431.7": {
+      "Microsoft.Extensions.AmbientMetadata.Application/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
-        }
-      },
-      "Microsoft.Extensions.Caching.Memory/9.0.0-rc.1.24431.7": {
-        "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.0-rc.1.24431.7",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
-        }
-      },
-      "Microsoft.Extensions.Compliance.Abstractions/8.10.0": {
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.ObjectPool": "8.0.10"
+          "Microsoft.Extensions.Configuration": "9.0.0",
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Compliance.Abstractions.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.AmbientMetadata.Application.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Configuration/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.2.24473.5": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Configuration.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Caching.Memory/9.0.0-rc.2.24473.5": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Configuration.Binder/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Compliance.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5"
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection/9.0.0-rc.2.24473.5": {
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5"
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0-rc.2.24473.5": {},
-      "Microsoft.Extensions.DependencyInjection.AutoActivation/8.10.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.ObjectPool": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Compliance.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Diagnostics/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Configuration/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Diagnostics.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Configuration.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Diagnostics.ExceptionSummarization/8.10.0": {
+      "Microsoft.Extensions.Configuration.Binder/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0"
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/9.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {},
+      "Microsoft.Extensions.DependencyInjection.AutoActivation/9.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Features/8.0.8": {},
-      "Microsoft.Extensions.FileProviders.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Diagnostics/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration": "9.0.0",
+          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0"
+        }
+      },
+      "Microsoft.Extensions.Diagnostics.Abstractions/9.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0"
+        }
+      },
+      "Microsoft.Extensions.Diagnostics.ExceptionSummarization/9.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
+          }
+        }
+      },
+      "Microsoft.Extensions.Features/8.0.11": {},
+      "Microsoft.Extensions.FileProviders.Abstractions/9.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
       "Microsoft.Extensions.FileProviders.Physical/8.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0",
           "Microsoft.Extensions.FileSystemGlobbing": "8.0.0",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
       "Microsoft.Extensions.FileSystemGlobbing/8.0.0": {},
-      "Microsoft.Extensions.Hosting.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Hosting.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0",
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Http/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Http/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Diagnostics": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Diagnostics": "9.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Http.Diagnostics/8.10.0": {
+      "Microsoft.Extensions.Http.Diagnostics/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.AutoActivation": "8.10.0",
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Telemetry": "8.10.0",
+          "Microsoft.Extensions.DependencyInjection.AutoActivation": "9.0.0",
+          "Microsoft.Extensions.Http": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0",
+          "Microsoft.Extensions.Telemetry": "9.0.0",
           "Microsoft.IO.RecyclableMemoryStream": "3.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Http.Diagnostics.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Http.Diagnostics.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Http.Resilience/8.10.0": {
+      "Microsoft.Extensions.Http.Resilience/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Http.Diagnostics": "8.10.0",
-          "Microsoft.Extensions.ObjectPool": "8.0.10",
-          "Microsoft.Extensions.Resilience": "8.10.0"
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+          "Microsoft.Extensions.Http.Diagnostics": "9.0.0",
+          "Microsoft.Extensions.ObjectPool": "9.0.0",
+          "Microsoft.Extensions.Resilience": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Http.Resilience.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Http.Resilience.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Logging/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Logging/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Logging.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Logging.Configuration/8.0.1": {
+      "Microsoft.Extensions.Logging.Configuration/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration": "9.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0"
         }
       },
-      "Microsoft.Extensions.ObjectPool/8.0.10": {},
-      "Microsoft.Extensions.Options/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.ObjectPool/9.0.0": {},
+      "Microsoft.Extensions.Options/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0"
         }
       },
-      "Microsoft.Extensions.Primitives/9.0.0-rc.2.24473.5": {},
-      "Microsoft.Extensions.Resilience/8.10.0": {
+      "Microsoft.Extensions.Primitives/9.0.0": {},
+      "Microsoft.Extensions.Resilience/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Diagnostics.ExceptionSummarization": "8.10.0",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Telemetry.Abstractions": "8.10.0",
+          "Microsoft.Extensions.Diagnostics": "9.0.0",
+          "Microsoft.Extensions.Diagnostics.ExceptionSummarization": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0",
+          "Microsoft.Extensions.Telemetry.Abstractions": "9.0.0",
           "Polly.Extensions": "8.4.2",
           "Polly.RateLimiting": "8.4.2"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Resilience.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Resilience.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.ServiceDiscovery/8.2.1": {
+      "Microsoft.Extensions.ServiceDiscovery/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Features": "8.0.8",
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.ServiceDiscovery.Abstractions": "8.2.1"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Features": "8.0.11",
+          "Microsoft.Extensions.Http": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0",
+          "Microsoft.Extensions.ServiceDiscovery.Abstractions": "9.0.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.ServiceDiscovery.dll": {
-            "assemblyVersion": "8.2.1.0",
-            "fileVersion": "8.200.124.47304"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55103"
           }
         }
       },
-      "Microsoft.Extensions.ServiceDiscovery.Abstractions/8.2.1": {
+      "Microsoft.Extensions.ServiceDiscovery.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Features": "8.0.8",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Features": "8.0.11",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "Microsoft.Extensions.Primitives": "9.0.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": {
-            "assemblyVersion": "8.2.1.0",
-            "fileVersion": "8.200.124.47304"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55103"
           }
         }
       },
-      "Microsoft.Extensions.Telemetry/8.10.0": {
+      "Microsoft.Extensions.Telemetry/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.AmbientMetadata.Application": "8.10.0",
-          "Microsoft.Extensions.DependencyInjection.AutoActivation": "8.10.0",
-          "Microsoft.Extensions.Logging.Configuration": "8.0.1",
-          "Microsoft.Extensions.ObjectPool": "8.0.10",
-          "Microsoft.Extensions.Telemetry.Abstractions": "8.10.0"
+          "Microsoft.Extensions.AmbientMetadata.Application": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.AutoActivation": "9.0.0",
+          "Microsoft.Extensions.Logging.Configuration": "9.0.0",
+          "Microsoft.Extensions.ObjectPool": "9.0.0",
+          "Microsoft.Extensions.Telemetry.Abstractions": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Telemetry.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Telemetry.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
-      "Microsoft.Extensions.Telemetry.Abstractions/8.10.0": {
+      "Microsoft.Extensions.Telemetry.Abstractions/9.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Compliance.Abstractions": "8.10.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.ObjectPool": "8.0.10",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Compliance.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.ObjectPool": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Telemetry.Abstractions.dll": {
-            "assemblyVersion": "8.10.0.0",
-            "fileVersion": "8.1000.24.50207"
+          "lib/net9.0/Microsoft.Extensions.Telemetry.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.55605"
           }
         }
       },
@@ -1432,9 +1440,9 @@
       "Microsoft.FluentUI.AspNetCore.Components/4.10.3": {
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "9.0.0-rc.2.24474.3",
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Http": "9.0.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.FluentUI.AspNetCore.Components.dll": {
@@ -1489,14 +1497,14 @@
       },
       "Microsoft.Graph.Core/3.1.6": {
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2",
-          "Microsoft.Kiota.Abstractions": "1.13.2",
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0",
+          "Microsoft.Kiota.Abstractions": "1.14.0",
           "Microsoft.Kiota.Authentication.Azure": "1.1.2",
           "Microsoft.Kiota.Http.HttpClientLibrary": "1.13.1",
-          "Microsoft.Kiota.Serialization.Form": "1.13.1",
-          "Microsoft.Kiota.Serialization.Json": "1.13.1",
-          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
-          "Microsoft.Kiota.Serialization.Text": "1.13.1",
+          "Microsoft.Kiota.Serialization.Form": "1.14.0",
+          "Microsoft.Kiota.Serialization.Json": "1.14.0",
+          "Microsoft.Kiota.Serialization.Multipart": "1.14.0",
+          "Microsoft.Kiota.Serialization.Text": "1.14.0",
           "NETStandard.Library": "2.0.3",
           "System.Security.Claims": "4.3.0"
         },
@@ -1515,21 +1523,21 @@
           }
         }
       },
-      "Microsoft.Identity.Client/4.65.0": {
+      "Microsoft.Identity.Client/4.66.1": {
         "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "8.1.2",
-          "System.Diagnostics.DiagnosticSource": "8.0.1"
+          "Microsoft.IdentityModel.Abstractions": "8.2.0",
+          "System.Diagnostics.DiagnosticSource": "9.0.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.Identity.Client.dll": {
-            "assemblyVersion": "4.65.0.0",
-            "fileVersion": "4.65.0.0"
+            "assemblyVersion": "4.66.1.0",
+            "fileVersion": "4.66.1.0"
           }
         }
       },
       "Microsoft.Identity.Client.Extensions.Msal/4.61.3": {
         "dependencies": {
-          "Microsoft.Identity.Client": "4.65.0",
+          "Microsoft.Identity.Client": "4.66.1",
           "System.Security.Cryptography.ProtectedData": "6.0.0"
         },
         "runtime": {
@@ -1539,230 +1547,230 @@
           }
         }
       },
-      "Microsoft.Identity.Web/3.2.2": {
+      "Microsoft.Identity.Web/3.3.1": {
         "dependencies": {
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5",
-          "Microsoft.Identity.Web.Certificate": "3.2.2",
-          "Microsoft.Identity.Web.Certificateless": "3.2.2",
-          "Microsoft.Identity.Web.TokenAcquisition": "3.2.2",
-          "Microsoft.Identity.Web.TokenCache": "3.2.2",
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2",
-          "Microsoft.IdentityModel.Validators": "8.1.2",
-          "System.Formats.Asn1": "9.0.0-rc.1.24431.7",
-          "System.IdentityModel.Tokens.Jwt": "8.1.2",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Microsoft.Extensions.Http": "9.0.0",
+          "Microsoft.Identity.Web.Certificate": "3.3.1",
+          "Microsoft.Identity.Web.Certificateless": "3.3.1",
+          "Microsoft.Identity.Web.TokenAcquisition": "3.3.1",
+          "Microsoft.Identity.Web.TokenCache": "3.3.1",
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0",
+          "Microsoft.IdentityModel.Validators": "8.2.0",
+          "System.Formats.Asn1": "9.0.0-rc.2.24473.5",
+          "System.IdentityModel.Tokens.Jwt": "8.2.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.Certificate/3.2.2": {
+      "Microsoft.Identity.Web.Certificate/3.3.1": {
         "dependencies": {
           "Azure.Identity": "1.11.4",
           "Azure.Security.KeyVault.Certificates": "4.6.0",
           "Azure.Security.KeyVault.Secrets": "4.6.0",
           "Microsoft.Identity.Abstractions": "7.1.0",
-          "Microsoft.Identity.Web.Certificateless": "3.2.2",
-          "Microsoft.Identity.Web.Diagnostics": "3.2.2",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Microsoft.Identity.Web.Certificateless": "3.3.1",
+          "Microsoft.Identity.Web.Diagnostics": "3.3.1",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.Certificate.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.Certificateless/3.2.2": {
+      "Microsoft.Identity.Web.Certificateless/3.3.1": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Identity.Client": "4.65.0",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.1.2",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Identity.Client": "4.66.1",
+          "Microsoft.IdentityModel.JsonWebTokens": "8.2.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Identity.Web.Certificateless.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.Diagnostics/3.2.2": {
+      "Microsoft.Identity.Web.Diagnostics/3.3.1": {
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.Diagnostics.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.GraphServiceClient/3.2.2": {
+      "Microsoft.Identity.Web.GraphServiceClient/3.3.1": {
         "dependencies": {
           "Microsoft.Graph": "5.40.0",
-          "Microsoft.Identity.Web.TokenAcquisition": "3.2.2"
+          "Microsoft.Identity.Web.TokenAcquisition": "3.3.1"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.GraphServiceClient.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.GraphServiceClientBeta/3.2.2": {
+      "Microsoft.Identity.Web.GraphServiceClientBeta/3.3.1": {
         "dependencies": {
           "Microsoft.Graph.Beta": "5.56.0-preview",
-          "Microsoft.Identity.Web.GraphServiceClient": "3.2.2",
-          "Microsoft.Identity.Web.TokenAcquisition": "3.2.2"
+          "Microsoft.Identity.Web.GraphServiceClient": "3.3.1",
+          "Microsoft.Identity.Web.TokenAcquisition": "3.3.1"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.GraphServiceClientBeta.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.TokenAcquisition/3.2.2": {
+      "Microsoft.Identity.Web.TokenAcquisition/3.3.1": {
         "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0-rc.1.24452.1",
-          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "9.0.0-rc.1.24452.1",
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0-rc.2.24473.5",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0-rc.2.24474.3",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "9.0.0",
+          "Microsoft.Extensions.Http": "9.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.0",
           "Microsoft.Identity.Abstractions": "7.1.0",
-          "Microsoft.Identity.Web.Certificate": "3.2.2",
-          "Microsoft.Identity.Web.Certificateless": "3.2.2",
-          "Microsoft.Identity.Web.TokenCache": "3.2.2",
-          "Microsoft.IdentityModel.Logging": "8.1.2",
-          "Microsoft.IdentityModel.LoggingExtensions": "8.1.2",
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2",
-          "System.IdentityModel.Tokens.Jwt": "8.1.2"
+          "Microsoft.Identity.Web.Certificate": "3.3.1",
+          "Microsoft.Identity.Web.Certificateless": "3.3.1",
+          "Microsoft.Identity.Web.TokenCache": "3.3.1",
+          "Microsoft.IdentityModel.Logging": "8.2.0",
+          "Microsoft.IdentityModel.LoggingExtensions": "8.2.0",
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0",
+          "System.IdentityModel.Tokens.Jwt": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.TokenAcquisition.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.TokenCache/3.2.2": {
+      "Microsoft.Identity.Web.TokenCache/3.3.1": {
         "dependencies": {
-          "Microsoft.AspNetCore.DataProtection": "9.0.0-rc.1.24452.1",
-          "Microsoft.Extensions.Caching.Memory": "9.0.0-rc.1.24431.7",
-          "Microsoft.Extensions.Logging": "9.0.0-rc.2.24473.5",
-          "Microsoft.Identity.Client": "4.65.0",
-          "Microsoft.Identity.Web.Diagnostics": "3.2.2",
-          "System.Formats.Asn1": "9.0.0-rc.1.24431.7",
-          "System.Security.Cryptography.Pkcs": "9.0.0-rc.1.24431.7",
-          "System.Security.Cryptography.Xml": "9.0.0-rc.1.24431.7"
+          "Microsoft.AspNetCore.DataProtection": "9.0.0-rc.2.24474.3",
+          "Microsoft.Extensions.Caching.Memory": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "Microsoft.Identity.Client": "4.66.1",
+          "Microsoft.Identity.Web.Diagnostics": "3.3.1",
+          "System.Formats.Asn1": "9.0.0-rc.2.24473.5",
+          "System.Security.Cryptography.Pkcs": "9.0.0-rc.2.24473.5",
+          "System.Security.Cryptography.Xml": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.TokenCache.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.Identity.Web.UI/3.2.2": {
+      "Microsoft.Identity.Web.UI/3.3.1": {
         "dependencies": {
-          "Microsoft.Identity.Web": "3.2.2"
+          "Microsoft.Identity.Web": "3.3.1"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Identity.Web.UI.dll": {
-            "assemblyVersion": "3.2.2.0",
-            "fileVersion": "3.2.2.0"
+            "assemblyVersion": "3.3.1.0",
+            "fileVersion": "3.3.1.0"
           }
         }
       },
-      "Microsoft.IdentityModel.Abstractions/8.1.2": {
+      "Microsoft.IdentityModel.Abstractions/8.2.0": {
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Abstractions.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.JsonWebTokens/8.1.2": {
+      "Microsoft.IdentityModel.JsonWebTokens/8.2.0": {
         "dependencies": {
           "Microsoft.Bcl.TimeProvider": "8.0.1",
-          "Microsoft.IdentityModel.Tokens": "8.1.2"
+          "Microsoft.IdentityModel.Tokens": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.Logging/8.1.2": {
+      "Microsoft.IdentityModel.Logging/8.2.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "8.1.2"
+          "Microsoft.IdentityModel.Abstractions": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Logging.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.LoggingExtensions/8.1.2": {
+      "Microsoft.IdentityModel.LoggingExtensions/8.2.0": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.IdentityModel.Abstractions": "8.1.2"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.IdentityModel.Abstractions": "8.2.0"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.IdentityModel.LoggingExtensions.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.Protocols/8.1.2": {
+      "Microsoft.IdentityModel.Protocols/8.2.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "8.1.2"
+          "Microsoft.IdentityModel.Tokens": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Protocols.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.Protocols.OpenIdConnect/8.1.2": {
+      "Microsoft.IdentityModel.Protocols.OpenIdConnect/8.2.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols": "8.1.2",
-          "System.IdentityModel.Tokens.Jwt": "8.1.2"
+          "Microsoft.IdentityModel.Protocols": "8.2.0",
+          "System.IdentityModel.Tokens.Jwt": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.Tokens/8.1.2": {
+      "Microsoft.IdentityModel.Tokens/8.2.0": {
         "dependencies": {
           "Microsoft.Bcl.TimeProvider": "8.0.1",
-          "Microsoft.IdentityModel.Logging": "8.1.2"
+          "Microsoft.IdentityModel.Logging": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Tokens.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
-      "Microsoft.IdentityModel.Validators/8.1.2": {
+      "Microsoft.IdentityModel.Validators/8.2.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.Protocols": "8.1.2",
-          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.2",
-          "Microsoft.IdentityModel.Tokens": "8.1.2",
-          "System.IdentityModel.Tokens.Jwt": "8.1.2"
+          "Microsoft.IdentityModel.Protocols": "8.2.0",
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.2.0",
+          "Microsoft.IdentityModel.Tokens": "8.2.0",
+          "System.IdentityModel.Tokens.Jwt": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/Microsoft.IdentityModel.Validators.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
@@ -1775,22 +1783,22 @@
         }
       },
       "Microsoft.JSInterop/9.0.0-rc.2.24474.3": {},
-      "Microsoft.Kiota.Abstractions/1.13.2": {
+      "Microsoft.Kiota.Abstractions/1.14.0": {
         "dependencies": {
           "Std.UriTemplate": "2.0.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Abstractions.dll": {
-            "assemblyVersion": "1.13.2.0",
-            "fileVersion": "1.13.2.0"
+            "assemblyVersion": "1.14.0.0",
+            "fileVersion": "1.14.0.0"
           }
         }
       },
       "Microsoft.Kiota.Authentication.Azure/1.1.2": {
         "dependencies": {
           "Azure.Core": "1.44.1",
-          "Microsoft.Kiota.Abstractions": "1.13.2",
-          "System.Diagnostics.DiagnosticSource": "8.0.1"
+          "Microsoft.Kiota.Abstractions": "1.14.0",
+          "System.Diagnostics.DiagnosticSource": "9.0.0"
         },
         "runtime": {
           "lib/net5.0/Microsoft.Kiota.Authentication.Azure.dll": {
@@ -1801,12 +1809,12 @@
       },
       "Microsoft.Kiota.Bundle/1.13.1": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2",
+          "Microsoft.Kiota.Abstractions": "1.14.0",
           "Microsoft.Kiota.Http.HttpClientLibrary": "1.13.1",
-          "Microsoft.Kiota.Serialization.Form": "1.13.1",
-          "Microsoft.Kiota.Serialization.Json": "1.13.1",
-          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
-          "Microsoft.Kiota.Serialization.Text": "1.13.1"
+          "Microsoft.Kiota.Serialization.Form": "1.14.0",
+          "Microsoft.Kiota.Serialization.Json": "1.14.0",
+          "Microsoft.Kiota.Serialization.Multipart": "1.14.0",
+          "Microsoft.Kiota.Serialization.Text": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Bundle.dll": {
@@ -1817,7 +1825,7 @@
       },
       "Microsoft.Kiota.Http.HttpClientLibrary/1.13.1": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2"
+          "Microsoft.Kiota.Abstractions": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Http.HttpClientLibrary.dll": {
@@ -1826,53 +1834,53 @@
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Form/1.13.1": {
+      "Microsoft.Kiota.Serialization.Form/1.14.0": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2"
+          "Microsoft.Kiota.Abstractions": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Form.dll": {
-            "assemblyVersion": "1.13.1.0",
-            "fileVersion": "1.13.1.0"
+            "assemblyVersion": "1.14.0.0",
+            "fileVersion": "1.14.0.0"
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Json/1.13.1": {
+      "Microsoft.Kiota.Serialization.Json/1.14.0": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2"
+          "Microsoft.Kiota.Abstractions": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Json.dll": {
-            "assemblyVersion": "1.13.1.0",
-            "fileVersion": "1.13.1.0"
+            "assemblyVersion": "1.14.0.0",
+            "fileVersion": "1.14.0.0"
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Multipart/1.13.1": {
+      "Microsoft.Kiota.Serialization.Multipart/1.14.0": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2"
+          "Microsoft.Kiota.Abstractions": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Multipart.dll": {
-            "assemblyVersion": "1.13.1.0",
-            "fileVersion": "1.13.1.0"
+            "assemblyVersion": "1.14.0.0",
+            "fileVersion": "1.14.0.0"
           }
         }
       },
-      "Microsoft.Kiota.Serialization.Text/1.13.1": {
+      "Microsoft.Kiota.Serialization.Text/1.14.0": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2"
+          "Microsoft.Kiota.Abstractions": "1.14.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Kiota.Serialization.Text.dll": {
-            "assemblyVersion": "1.13.1.0",
-            "fileVersion": "1.13.1.0"
+            "assemblyVersion": "1.14.0.0",
+            "fileVersion": "1.14.0.0"
           }
         }
       },
       "Microsoft.ML.Tokenizers/0.21.1": {
         "dependencies": {
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.ML.Tokenizers.dll": {
@@ -1894,7 +1902,7 @@
       "Microsoft.OpenApi.ApiManifest/0.5.4-preview": {
         "dependencies": {
           "Microsoft.OpenApi.Readers": "1.6.21",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.OpenApi.ApiManifest.dll": {
@@ -1915,41 +1923,42 @@
           }
         }
       },
-      "Microsoft.SemanticKernel/1.25.0": {
+      "Microsoft.SemanticKernel/1.28.0": {
         "dependencies": {
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.25.0",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.28.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
-      "Microsoft.SemanticKernel.Abstractions/1.25.0": {
+      "Microsoft.SemanticKernel.Abstractions/1.28.0": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.AI.Abstractions": "9.0.0-preview.9.24525.1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
           "Microsoft.Extensions.VectorData.Abstractions": "9.0.0-preview.1.24523.1",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Diagnostics.DiagnosticSource": "9.0.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Abstractions.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
       "Microsoft.SemanticKernel.Agents.Abstractions/1.25.0-alpha": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0",
           "System.Linq.Async": "6.0.1",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Agents.Abstractions.dll": {
@@ -1972,7 +1981,7 @@
       "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.25.0-beta": {
         "dependencies": {
           "Azure.AI.Inference": "1.0.0-beta.1",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.dll": {
@@ -1981,50 +1990,50 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.25.0": {
+      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.28.0": {
         "dependencies": {
           "Azure.AI.OpenAI": "2.1.0-beta.1",
-          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.25.0",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.28.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.OpenAI/1.25.0": {
+      "Microsoft.SemanticKernel.Connectors.OpenAI/1.28.0": {
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.25.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0",
           "OpenAI": "2.1.0-beta.1"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
-      "Microsoft.SemanticKernel.Core/1.25.0": {
+      "Microsoft.SemanticKernel.Core/1.28.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "9.0.0-rc.2.24473.5",
-          "Microsoft.SemanticKernel.Abstractions": "1.25.0",
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.28.0",
           "System.Numerics.Tensors": "8.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Core.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
       "Microsoft.SemanticKernel.Plugins.Core/1.25.0-alpha": {
         "dependencies": {
           "Microsoft.Bcl.TimeProvider": "8.0.1",
-          "Microsoft.Extensions.Http": "9.0.0-rc.2.24473.5",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.Extensions.Http": "9.0.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
@@ -2039,7 +2048,7 @@
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
           "Microsoft.OpenApi": "1.6.21",
           "Microsoft.OpenApi.Readers": "1.6.21",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.dll": {
@@ -2051,7 +2060,7 @@
       "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.25.0-alpha": {
         "dependencies": {
           "Microsoft.OpenApi.ApiManifest": "0.5.4-preview",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0",
           "Microsoft.SemanticKernel.Plugins.OpenApi": "1.25.0-alpha"
         },
         "runtime": {
@@ -2064,9 +2073,9 @@
       "Microsoft.SemanticKernel.Plugins.Web/1.25.0-alpha": {
         "dependencies": {
           "Google.Apis.CustomSearchAPI.v1": "1.60.0.3001",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.SemanticKernel.Abstractions": "1.25.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.28.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.dll": {
@@ -2075,23 +2084,23 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.25.0": {
+      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.28.0": {
         "dependencies": {
           "Handlebars.Net": "2.1.6",
           "Handlebars.Net.Helpers": "2.4.6",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
       "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.25.0-alpha": {
         "dependencies": {
           "Fluid.Core": "2.11.1",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Core": "1.28.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.dll": {
@@ -2103,8 +2112,8 @@
       "Microsoft.SemanticKernel.Prompty/1.25.0-alpha": {
         "dependencies": {
           "Microsoft.Extensions.FileProviders.Physical": "8.0.0",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
-          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.25.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.28.0",
           "Microsoft.SemanticKernel.PromptTemplates.Liquid": "1.25.0-alpha",
           "YamlDotNet": "15.3.0"
         },
@@ -2115,15 +2124,15 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Yaml/1.25.0": {
+      "Microsoft.SemanticKernel.Yaml/1.28.0": {
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.25.0",
+          "Microsoft.SemanticKernel.Core": "1.28.0",
           "YamlDotNet": "15.3.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Yaml.dll": {
-            "assemblyVersion": "1.25.0.0",
-            "fileVersion": "1.25.0.0"
+            "assemblyVersion": "1.28.0.0",
+            "fileVersion": "1.28.0.0"
           }
         }
       },
@@ -2131,7 +2140,7 @@
         "dependencies": {
           "Microsoft.TypeChat.Schema": "0.1.240227.3-preview",
           "System.ComponentModel.Annotations": "5.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.TypeChat.dll": {
@@ -2144,7 +2153,7 @@
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "4.8.0",
           "System.ComponentModel.Annotations": "5.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net7.0/Microsoft.TypeChat.Schema.dll": {
@@ -2185,7 +2194,7 @@
       "OpenAI/2.1.0-beta.1": {
         "dependencies": {
           "System.ClientModel": "1.1.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1"
+          "System.Diagnostics.DiagnosticSource": "9.0.0"
         },
         "runtime": {
           "lib/net6.0/OpenAI.dll": {
@@ -2194,71 +2203,70 @@
           }
         }
       },
-      "OpenTelemetry/1.9.0": {
+      "OpenTelemetry/1.10.0": {
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Configuration": "8.0.1",
-          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.9.0"
+          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Configuration": "9.0.0",
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.10.0"
         },
         "runtime": {
-          "lib/net8.0/OpenTelemetry.dll": {
+          "lib/net9.0/OpenTelemetry.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.9.0.1312"
+            "fileVersion": "1.10.0.1468"
           }
         }
       },
-      "OpenTelemetry.Api/1.9.0": {
+      "OpenTelemetry.Api/1.10.0": {
         "dependencies": {
-          "System.Diagnostics.DiagnosticSource": "8.0.1"
+          "System.Diagnostics.DiagnosticSource": "9.0.0"
         },
         "runtime": {
-          "lib/net8.0/OpenTelemetry.Api.dll": {
+          "lib/net9.0/OpenTelemetry.Api.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.9.0.1312"
+            "fileVersion": "1.10.0.1468"
           }
         }
       },
-      "OpenTelemetry.Api.ProviderBuilderExtensions/1.9.0": {
+      "OpenTelemetry.Api.ProviderBuilderExtensions/1.10.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.2.24473.5",
-          "OpenTelemetry.Api": "1.9.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "OpenTelemetry.Api": "1.10.0"
         },
         "runtime": {
-          "lib/net8.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll": {
+          "lib/net9.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.9.0.1312"
+            "fileVersion": "1.10.0.1468"
           }
         }
       },
-      "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.9.0": {
+      "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.10.0": {
         "dependencies": {
           "Google.Protobuf": "3.22.5",
           "Grpc.Net.Client": "2.52.0",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
-          "OpenTelemetry": "1.9.0"
+          "OpenTelemetry": "1.10.0"
         },
         "runtime": {
-          "lib/net8.0/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": {
+          "lib/net9.0/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.9.0.1312"
+            "fileVersion": "1.10.0.1468"
           }
         }
       },
-      "OpenTelemetry.Extensions.Hosting/1.9.0": {
+      "OpenTelemetry.Extensions.Hosting/1.10.0": {
         "dependencies": {
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0-rc.2.24473.5",
-          "OpenTelemetry": "1.9.0"
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0",
+          "OpenTelemetry": "1.10.0"
         },
         "runtime": {
-          "lib/net8.0/OpenTelemetry.Extensions.Hosting.dll": {
+          "lib/net9.0/OpenTelemetry.Extensions.Hosting.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.9.0.1312"
+            "fileVersion": "1.10.0.1468"
           }
         }
       },
       "OpenTelemetry.Instrumentation.AspNetCore/1.9.0": {
         "dependencies": {
-          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.9.0"
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.10.0"
         },
         "runtime": {
           "lib/net8.0/OpenTelemetry.Instrumentation.AspNetCore.dll": {
@@ -2269,9 +2277,9 @@
       },
       "OpenTelemetry.Instrumentation.Http/1.9.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
-          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.9.0"
+          "Microsoft.Extensions.Configuration": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.10.0"
         },
         "runtime": {
           "lib/net8.0/OpenTelemetry.Instrumentation.Http.dll": {
@@ -2282,7 +2290,7 @@
       },
       "OpenTelemetry.Instrumentation.Runtime/1.9.0": {
         "dependencies": {
-          "OpenTelemetry.Api": "1.9.0"
+          "OpenTelemetry.Api": "1.10.0"
         },
         "runtime": {
           "lib/net6.0/OpenTelemetry.Instrumentation.Runtime.dll": {
@@ -2309,8 +2317,8 @@
       },
       "Polly.Extensions/8.4.2": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Options": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Options": "9.0.0",
           "Polly.Core": "8.4.2"
         },
         "runtime": {
@@ -2415,9 +2423,9 @@
       },
       "SmartComponents.Inference/0.1.0-preview10148": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-rc.2.24473.5",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0-rc.2.24473.5",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/netstandard2.0/SmartComponents.Inference.dll": {
@@ -2429,7 +2437,7 @@
       "SmartComponents.Inference.OpenAI/0.1.0-preview10148": {
         "dependencies": {
           "Azure.AI.OpenAI": "2.1.0-beta.1",
-          "Microsoft.Extensions.Configuration.Binder": "9.0.0-rc.2.24473.5",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.0",
           "SmartComponents.Inference": "0.1.0-preview10148"
         },
         "runtime": {
@@ -2459,7 +2467,7 @@
       "System.ClientModel/1.1.0": {
         "dependencies": {
           "System.Memory.Data": "6.0.0",
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net6.0/System.ClientModel.dll": {
@@ -2510,7 +2518,7 @@
           "System.Runtime": "4.3.1"
         }
       },
-      "System.Diagnostics.DiagnosticSource/8.0.1": {},
+      "System.Diagnostics.DiagnosticSource/9.0.0": {},
       "System.Diagnostics.Tracing/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.1",
@@ -2543,7 +2551,7 @@
           }
         }
       },
-      "System.Formats.Asn1/9.0.0-rc.1.24431.7": {},
+      "System.Formats.Asn1/9.0.0-rc.2.24473.5": {},
       "System.Globalization/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.1",
@@ -2569,15 +2577,15 @@
           "System.Runtime.InteropServices": "4.3.0"
         }
       },
-      "System.IdentityModel.Tokens.Jwt/8.1.2": {
+      "System.IdentityModel.Tokens.Jwt/8.2.0": {
         "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "8.1.2",
-          "Microsoft.IdentityModel.Tokens": "8.1.2"
+          "Microsoft.IdentityModel.JsonWebTokens": "8.2.0",
+          "Microsoft.IdentityModel.Tokens": "8.2.0"
         },
         "runtime": {
           "lib/net9.0/System.IdentityModel.Tokens.Jwt.dll": {
-            "assemblyVersion": "8.1.2.0",
-            "fileVersion": "8.1.2.51008"
+            "assemblyVersion": "8.2.0.0",
+            "fileVersion": "8.2.0.51101"
           }
         }
       },
@@ -2635,10 +2643,10 @@
           }
         }
       },
-      "System.Memory/4.5.4": {},
+      "System.Memory/4.5.5": {},
       "System.Memory.Data/6.0.0": {
         "dependencies": {
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         },
         "runtime": {
           "lib/net6.0/System.Memory.Data.dll": {
@@ -2652,7 +2660,7 @@
           "Microsoft.NETCore.Platforms": "1.1.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.DiagnosticSource": "8.0.1",
+          "System.Diagnostics.DiagnosticSource": "9.0.0",
           "System.Diagnostics.Tracing": "4.3.0",
           "System.Globalization": "4.3.0",
           "System.Globalization.Extensions": "4.3.0",
@@ -2858,7 +2866,7 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.2"
         }
       },
-      "System.Security.Cryptography.Pkcs/9.0.0-rc.1.24431.7": {},
+      "System.Security.Cryptography.Pkcs/9.0.0-rc.2.24473.5": {},
       "System.Security.Cryptography.Primitives/4.3.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.3.0",
@@ -2915,9 +2923,9 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.2"
         }
       },
-      "System.Security.Cryptography.Xml/9.0.0-rc.1.24431.7": {
+      "System.Security.Cryptography.Xml/9.0.0-rc.2.24473.5": {
         "dependencies": {
-          "System.Security.Cryptography.Pkcs": "9.0.0-rc.1.24431.7"
+          "System.Security.Cryptography.Pkcs": "9.0.0-rc.2.24473.5"
         }
       },
       "System.Security.Permissions/6.0.0": {
@@ -2949,7 +2957,7 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
-      "System.Text.Json/9.0.0-rc.1.24431.7": {},
+      "System.Text.Json/9.0.0-rc.2.24473.5": {},
       "System.Text.RegularExpressions/4.3.1": {
         "dependencies": {
           "System.Runtime": "4.3.1"
@@ -3008,11 +3016,11 @@
       },
       "AITGraph.Sdk/1.0.0": {
         "dependencies": {
-          "Microsoft.Kiota.Abstractions": "1.13.2",
-          "Microsoft.Kiota.Serialization.Form": "1.13.1",
-          "Microsoft.Kiota.Serialization.Json": "1.13.1",
-          "Microsoft.Kiota.Serialization.Multipart": "1.13.1",
-          "Microsoft.Kiota.Serialization.Text": "1.13.1"
+          "Microsoft.Kiota.Abstractions": "1.14.0",
+          "Microsoft.Kiota.Serialization.Form": "1.14.0",
+          "Microsoft.Kiota.Serialization.Json": "1.14.0",
+          "Microsoft.Kiota.Serialization.Multipart": "1.14.0",
+          "Microsoft.Kiota.Serialization.Text": "1.14.0"
         },
         "runtime": {
           "AITGraph.Sdk.dll": {
@@ -3023,13 +3031,13 @@
       },
       "aitrailblazer.ServiceDefaults/1.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Http.Resilience": "8.10.0",
-          "Microsoft.Extensions.ServiceDiscovery": "8.2.1",
+          "Microsoft.Extensions.Http.Resilience": "9.0.0",
+          "Microsoft.Extensions.ServiceDiscovery": "9.0.0",
           "Microsoft.FluentUI.AspNetCore.Components": "4.10.3",
           "Microsoft.FluentUI.AspNetCore.Components.Emoji": "4.6.0",
           "Microsoft.FluentUI.AspNetCore.Components.Icons": "4.10.3",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.9.0",
-          "OpenTelemetry.Extensions.Hosting": "1.9.0",
+          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.10.0",
+          "OpenTelemetry.Extensions.Hosting": "1.10.0",
           "OpenTelemetry.Instrumentation.AspNetCore": "1.9.0",
           "OpenTelemetry.Instrumentation.Http": "1.9.0",
           "OpenTelemetry.Instrumentation.Runtime": "1.9.0"
@@ -3102,19 +3110,19 @@
       "path": "azure.security.keyvault.secrets/4.6.0",
       "hashPath": "azure.security.keyvault.secrets.4.6.0.nupkg.sha512"
     },
-    "Azure.Storage.Blobs/12.22.2": {
+    "Azure.Storage.Blobs/12.23.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/BK63qx31dhXjnqOXB90DP8mJM+pHbti45+v/D3SiEgP2A+ekvJlGWGLVGQznriT5UAOerM+3vAAEJNKolVSIQ==",
-      "path": "azure.storage.blobs/12.22.2",
-      "hashPath": "azure.storage.blobs.12.22.2.nupkg.sha512"
+      "sha512": "sha512-wokJ5KX/iViQQ32xyCu69+Ter0aR4B9QQ+oR9NCpc/WPIanxnDErrmFfdmE7K8ZdccjHkvE/wEnqJxaF1+5wFg==",
+      "path": "azure.storage.blobs/12.23.0",
+      "hashPath": "azure.storage.blobs.12.23.0.nupkg.sha512"
     },
-    "Azure.Storage.Common/12.21.1": {
+    "Azure.Storage.Common/12.22.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NgDJw/upcro33AgGf91sPIG+BU2pFTgGDBzWEp8HctGwzmbjG80eYTl4CJMIwgxVOQWnEXnQZXLY7w3k+BQ9ig==",
-      "path": "azure.storage.common/12.21.1",
-      "hashPath": "azure.storage.common.12.21.1.nupkg.sha512"
+      "sha512": "sha512-0Vm30bRpQ0fcswB0xQMhKAOSXnRygnF2f/029uPaIDLaj1/yfX4jmU0fFjJe9ojGEj/vlAmsApCEOyL9if6zHg==",
+      "path": "azure.storage.common/12.22.0",
+      "hashPath": "azure.storage.common.12.22.0.nupkg.sha512"
     },
     "Fluid.Core/2.11.1": {
       "type": "package",
@@ -3193,12 +3201,12 @@
       "path": "handlebars.net.helpers.core/2.4.6",
       "hashPath": "handlebars.net.helpers.core.2.4.6.nupkg.sha512"
     },
-    "HtmlAgilityPack/1.11.67": {
+    "HtmlAgilityPack/1.11.71": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xnt6f8E56oK9nLqgkF42bsVSAkUuIuJnSfvzimK7GwvbhdXWRmGsx4A8AKmLOlCUq1rVSUADKalxnSMizHt4Mg==",
-      "path": "htmlagilitypack/1.11.67",
-      "hashPath": "htmlagilitypack.1.11.67.nupkg.sha512"
+      "sha512": "sha512-HlEThQBnob4/29DIiyrPSYlGXXSZUtOH7571PRev+yu8FW8n5pdxqHyun+PMm17cp3ovCrxFhXedC+1HUSdRMA==",
+      "path": "htmlagilitypack/1.11.71",
+      "hashPath": "htmlagilitypack.1.11.71.nupkg.sha512"
     },
     "Humanizer/2.14.1": {
       "type": "package",
@@ -3578,26 +3586,26 @@
       "path": "jsonschema.net/5.4.2",
       "hashPath": "jsonschema.net.5.4.2.nupkg.sha512"
     },
-    "Markdig/0.37.0": {
+    "Markdig/0.38.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-biiu4MTPFjW55qw6v5Aphtj0MjDLJ14x8ndZwkJUHIeqvaSGKeqhLY7S7Vu/S3k7/c9KwhhnaCDP9hdFNUhcNA==",
-      "path": "markdig/0.37.0",
-      "hashPath": "markdig.0.37.0.nupkg.sha512"
+      "sha512": "sha512-zKy3JFjQvr1wbuMtbfcZVjNNCIqHxSCjGMq/CBcyNsY/MPsxqcS3o8M7CZ2kcMGGIw5LI2ZZd8rFUaFeV6SvrQ==",
+      "path": "markdig/0.38.0",
+      "hashPath": "markdig.0.38.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0-rc.1.24452.1": {
+    "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0-rc.2.24474.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-deEedVZvom7GIFkPuMb1kEAGnkJCbZr1Yvul8X94pYW+3LOdx6D8Cdb16hVzhqU3L6YLQFVyvtx4MBaJLYXL8g==",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/9.0.0-rc.1.24452.1",
-      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.9.0.0-rc.1.24452.1.nupkg.sha512"
+      "sha512": "sha512-SIVHfNH25QhntLMmXNvC+nGVNzAOlM+bu2t4ReYLi9fqSHrpdi1k0mgROmHnGFW1Q6YE2vIlMmkMmQMpJmQOPQ==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/9.0.0-rc.2.24474.3",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Authentication.OpenIdConnect/9.0.0-rc.1.24452.1": {
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6Y6IhbppGg2weVi7b1r7gBzTnc5uAE7n3dGd3zjhHnFjWGf1hRW5arXXIsRCG1sxWuh8lQQLMw7h7w8F4bNEpw==",
-      "path": "microsoft.aspnetcore.authentication.openidconnect/9.0.0-rc.1.24452.1",
-      "hashPath": "microsoft.aspnetcore.authentication.openidconnect.9.0.0-rc.1.24452.1.nupkg.sha512"
+      "sha512": "sha512-afrTDM8viZRruJGNkGa0pMhNqgjWBLln3DBPYrQaklOQn+wE9B5ZvOpi7l8l68JEwsBUVKteKyiY1ivPlK6kQw==",
+      "path": "microsoft.aspnetcore.authentication.openidconnect/9.0.0",
+      "hashPath": "microsoft.aspnetcore.authentication.openidconnect.9.0.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authorization/9.0.0-rc.2.24474.3": {
       "type": "package",
@@ -3634,26 +3642,26 @@
       "path": "microsoft.aspnetcore.components.web/9.0.0-rc.2.24474.3",
       "hashPath": "microsoft.aspnetcore.components.web.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Cryptography.Internal/9.0.0-rc.1.24452.1": {
+    "Microsoft.AspNetCore.Cryptography.Internal/9.0.0-rc.2.24474.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yHONVifWF5MVzWqvnADlCkQ+oRjZS9OP6q+OAYOkMdfmMxvH2zoTeSQ7mAjvRLMSvfPZe/F5EQ4PeZeo75kPNA==",
-      "path": "microsoft.aspnetcore.cryptography.internal/9.0.0-rc.1.24452.1",
-      "hashPath": "microsoft.aspnetcore.cryptography.internal.9.0.0-rc.1.24452.1.nupkg.sha512"
+      "sha512": "sha512-6tlf3zZAghvjwsBPPjcPl6/7PY8Hz0pj/i44Rr0b27X/lFUFzceOWo2Dtkoe0eG1nc+XYSlSymtqm08Olv4XFg==",
+      "path": "microsoft.aspnetcore.cryptography.internal/9.0.0-rc.2.24474.3",
+      "hashPath": "microsoft.aspnetcore.cryptography.internal.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.DataProtection/9.0.0-rc.1.24452.1": {
+    "Microsoft.AspNetCore.DataProtection/9.0.0-rc.2.24474.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jDadgomlePf+qfluac1wZe9D7wqwH6NuHCdaHle/Z+EOBq1pg2YWL5l92p5JGoIFPlcs41EXEnCAPKjhnxZtzg==",
-      "path": "microsoft.aspnetcore.dataprotection/9.0.0-rc.1.24452.1",
-      "hashPath": "microsoft.aspnetcore.dataprotection.9.0.0-rc.1.24452.1.nupkg.sha512"
+      "sha512": "sha512-29UPEM+WJC1eZdaXzsmiEisFr+2Ep47bF65XMrDpFQWeYwFIOtxjDBB6J1OQfxv+F9pyNXqFwiExq5avaPuuSw==",
+      "path": "microsoft.aspnetcore.dataprotection/9.0.0-rc.2.24474.3",
+      "hashPath": "microsoft.aspnetcore.dataprotection.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.DataProtection.Abstractions/9.0.0-rc.1.24452.1": {
+    "Microsoft.AspNetCore.DataProtection.Abstractions/9.0.0-rc.2.24474.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SwmxxU3xI29zLU0TVHN042ZJao3pv6nh8NlC/dmmW0NjQrEJpl1PBowgUXWlzNypQrhym6ZbDLo+OICXZ1zn5A==",
-      "path": "microsoft.aspnetcore.dataprotection.abstractions/9.0.0-rc.1.24452.1",
-      "hashPath": "microsoft.aspnetcore.dataprotection.abstractions.9.0.0-rc.1.24452.1.nupkg.sha512"
+      "sha512": "sha512-mNTjIMy1a79xRAngOSYCK2TFdJnYzc9nXjDwTBCguSWf3+PeQHxnHwGP2Q9bdfLyXwSDn1QmbkX/JT5toMeKHA==",
+      "path": "microsoft.aspnetcore.dataprotection.abstractions/9.0.0-rc.2.24474.3",
+      "hashPath": "microsoft.aspnetcore.dataprotection.abstractions.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Metadata/9.0.0-rc.2.24474.3": {
       "type": "package",
@@ -3662,12 +3670,12 @@
       "path": "microsoft.aspnetcore.metadata/9.0.0-rc.2.24474.3",
       "hashPath": "microsoft.aspnetcore.metadata.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.Azure.Cosmos/3.44.1": {
+    "Microsoft.Azure.Cosmos/3.45.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RKqF3S+BD6Wy4uhlb6a8NXZhkN/cf4A3GrsUOH8GMV/izLDXBfGr3gN6Yk4dBtR9lAPfLJG27G3od9caZv1U4Q==",
-      "path": "microsoft.azure.cosmos/3.44.1",
-      "hashPath": "microsoft.azure.cosmos.3.44.1.nupkg.sha512"
+      "sha512": "sha512-jVD2MWeUVRSUwpPxEDAnMiqxVjBYN7xgRX5oGErt6zMvH039/L4G6E00+MhQS4znIVXgLz2//GZWOrwuiM/NPQ==",
+      "path": "microsoft.azure.cosmos/3.45.1",
+      "hashPath": "microsoft.azure.cosmos.3.45.1.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
       "type": "package",
@@ -3711,110 +3719,117 @@
       "path": "microsoft.codeanalysis.csharp/4.8.0",
       "hashPath": "microsoft.codeanalysis.csharp.4.8.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.AmbientMetadata.Application/8.10.0": {
+    "Microsoft.Extensions.AI.Abstractions/9.0.0-preview.9.24525.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-uSLKFK7IKLsgc3rqryPDH6qIOsEIagG/XGiq8osbgIZQpBff5TA28+3XwX3JyUf/h3lzqmnbyGsfOZf1v66BAA==",
-      "path": "microsoft.extensions.ambientmetadata.application/8.10.0",
-      "hashPath": "microsoft.extensions.ambientmetadata.application.8.10.0.nupkg.sha512"
+      "sha512": "sha512-b5EntLa7aYjui129KSWQRZpXgUNn6l5G9OYQwVFlDXPiADMcmMEJCveD3BDBDxSbt1jkhIYs0eGuYKM0mXVkFw==",
+      "path": "microsoft.extensions.ai.abstractions/9.0.0-preview.9.24525.1",
+      "hashPath": "microsoft.extensions.ai.abstractions.9.0.0-preview.9.24525.1.nupkg.sha512"
     },
-    "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.1.24431.7": {
+    "Microsoft.Extensions.AmbientMetadata.Application/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IU44wiAGza2/CIBTuyxi+mqg2aTzEF/FEqmve1UUl+2PhaPCHVm2yhzeXurSh7HMhtw8B5ZE72uzAzbO0d8C/w==",
-      "path": "microsoft.extensions.caching.abstractions/9.0.0-rc.1.24431.7",
-      "hashPath": "microsoft.extensions.caching.abstractions.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-F/pe4t8UXc65l0KFLoUDtYttoLI0qtXiWQ4HStw3Cq2ExaNARxS4isAvA6w0PNCyIs8dLxkaruJHeyKN8mK1lA==",
+      "path": "microsoft.extensions.ambientmetadata.application/9.0.0",
+      "hashPath": "microsoft.extensions.ambientmetadata.application.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Caching.Memory/9.0.0-rc.1.24431.7": {
+    "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QH9mKrHzu84Omh069/Nw1orRObXznK08VVugv9QFJUxUoiWMW/W2jl8Wnl33KnAXLXmFs4Jt48zBat4GBi/gpw==",
-      "path": "microsoft.extensions.caching.memory/9.0.0-rc.1.24431.7",
-      "hashPath": "microsoft.extensions.caching.memory.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-7HrtHGMfGtyDZaDoM+gODjbljBHhTBCGyvzVlDNoN8jHfwkN/aqNcPE7ulLyU/zwannCVVrYteK2UMMoGjDOJQ==",
+      "path": "microsoft.extensions.caching.abstractions/9.0.0-rc.2.24473.5",
+      "hashPath": "microsoft.extensions.caching.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
-    "Microsoft.Extensions.Compliance.Abstractions/8.10.0": {
+    "Microsoft.Extensions.Caching.Memory/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SlVnMqZjYh7409vddtcoQ1N2HEtEQUHbYPuOOJZ/zNSvbJT4x78BBHaWUTKNEfwdg+MEftRVL63BLB6CVdOCRg==",
-      "path": "microsoft.extensions.compliance.abstractions/8.10.0",
-      "hashPath": "microsoft.extensions.compliance.abstractions.8.10.0.nupkg.sha512"
+      "sha512": "sha512-4lkpVHDX4Twm/1cO8e2HZ8KPaU/y+XsaONqxWls0Le2v3psp2AZmHDKju7UtGQR6BUFdN3aADsguUz+fgMWO5g==",
+      "path": "microsoft.extensions.caching.memory/9.0.0-rc.2.24473.5",
+      "hashPath": "microsoft.extensions.caching.memory.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
-    "Microsoft.Extensions.Configuration/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Compliance.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0hsJlhsf0e9Q4449obn6Mmk8jZiC8d7q06U8stgnDkTvWVzTcukcRwBwSDWY7lgxqAVgqT2uumuwWABDR6j8PA==",
-      "path": "microsoft.extensions.configuration/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.configuration.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-Y85iXLdg55OYwJR23KvCYAPDaIa+723vus9WzLROVWMy0sblHlxVtPR01QR+mwVFbYiljqa9NknmELVitzxbXw==",
+      "path": "microsoft.extensions.compliance.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.compliance.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Configuration.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Configuration/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rZdBuOxD0nTZVbPMaDhXEND+bkGQ2GcsVpte8JBYss0o+c0xyW8EIwnB7KUha2pzDd//n+y3ABVz2Lh1VxyKgQ==",
-      "path": "microsoft.extensions.configuration.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.configuration.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-YIMO9T3JL8MeEXgVozKt2v79hquo/EFtnY0vgxmLnUvk1Rei/halI7kOWZL2RBeV9FMGzgM9LZA8CVaNwFMaNA==",
+      "path": "microsoft.extensions.configuration/9.0.0",
+      "hashPath": "microsoft.extensions.configuration.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Configuration.Binder/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Configuration.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5pL5ybuLS9eGzGJGSwQdgVQBbJW1H1CmdtqeoGu8W7j3z26go4F+XAeoxYoLZKkbFu4eCCSDyA/x7fATWmipEg==",
-      "path": "microsoft.extensions.configuration.binder/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.configuration.binder.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-lqvd7W3FGKUO1+ZoUEMaZ5XDJeWvjpy2/M/ptCGz3tXLD4HWVaSzjufsAsjemasBEg+2SxXVtYVvGt5r2nKDlg==",
+      "path": "microsoft.extensions.configuration.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Configuration.Binder/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FHb7uxiX/08FBBtwat7fiBdQltxst1Farux6Ifn1dfke+D8h1rcDj1ZbKzNB9SvLh1XmEXNYmoWGkTjt1mVzXg==",
-      "path": "microsoft.extensions.dependencyinjection/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.dependencyinjection.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-RiScL99DcyngY9zJA2ROrri7Br8tn5N4hP4YNvGdTN/bvg1A3dwvDOxHnNZ3Im7x2SJ5i4LkX1uPiR/MfSFBLQ==",
+      "path": "microsoft.extensions.configuration.binder/9.0.0",
+      "hashPath": "microsoft.extensions.configuration.binder.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.DependencyInjection/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-T8oVF5Kz+J5IVagQAqcFFUrc/JrjaSvpACSm+t6cNolBX1S41PZVe3JLa3bxKnz0GTkUfSPPIkaekLmpAmHu3Q==",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-MCPrg7v3QgNMr0vX4vzRXvkNGgLg8vKWX0nKCWUxu2uPyMsaRgiRc1tHBnbTcfJMhMKj2slE/j2M9oGkd25DNw==",
+      "path": "microsoft.extensions.dependencyinjection/9.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection.AutoActivation/8.10.0": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xN0s32RZHnMDr08/fu1qoC7BSEoTL1HlKQCffsNlNtMN5EJnTLEAHS/ES/ugP8l3x9uoaqi//RA7Rkj2LZpWDg==",
-      "path": "microsoft.extensions.dependencyinjection.autoactivation/8.10.0",
-      "hashPath": "microsoft.extensions.dependencyinjection.autoactivation.8.10.0.nupkg.sha512"
+      "sha512": "sha512-+6f2qv2a3dLwd5w6JanPIPs47CxRbnk+ZocMJUhv9NxP88VlOcJYZs9jY+MYSjxvady08bUZn6qgiNh7DadGgg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Diagnostics/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.DependencyInjection.AutoActivation/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3imcv1HCKh8bE56ihM9e/lHZoFI4ZIllPtF/vXPjvGc+P60jPOR/z4xK+Xx1ZEZ/SPRBWd0Rg5mlLNqtg4ktXQ==",
-      "path": "microsoft.extensions.diagnostics/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.diagnostics.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-Wv4APocpxkPf0zcEFDwGrdwP6tOOSSQ5ByHUxRYcvXu8CXY0N0Pf95usTVs605jG2txxLOpRESH6ficdPDNiTg==",
+      "path": "microsoft.extensions.dependencyinjection.autoactivation/9.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.autoactivation.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Diagnostics.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Diagnostics/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eNsjF81RRsKj9tfxc8l8YOJOECN10eGtt/lIwyaYi1A089/gB+9Ut1gJOaO0ksYrLC6aohrACLdgRl17bSS6yw==",
-      "path": "microsoft.extensions.diagnostics.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.diagnostics.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-0CF9ZrNw5RAlRfbZuVIvzzhP8QeWqHiUmMBU/2H7Nmit8/vwP3/SbHeEctth7D4Gz2fBnEbokPc1NU8/j/1ZLw==",
+      "path": "microsoft.extensions.diagnostics/9.0.0",
+      "hashPath": "microsoft.extensions.diagnostics.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Diagnostics.ExceptionSummarization/8.10.0": {
+    "Microsoft.Extensions.Diagnostics.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ajZg6WnvwSi8/gpNWQ7ruoEooOdpwNf/DR9Yck3b2AVrorPuJWJjWFpgfCAwph4DO4PPazB+6ifcWBHWm4QBZA==",
-      "path": "microsoft.extensions.diagnostics.exceptionsummarization/8.10.0",
-      "hashPath": "microsoft.extensions.diagnostics.exceptionsummarization.8.10.0.nupkg.sha512"
+      "sha512": "sha512-1K8P7XzuzX8W8pmXcZjcrqS6x5eSSdvhQohmcpgiQNY/HlDAlnrhR9dvlURfFz428A+RTCJpUyB+aKTA6AgVcQ==",
+      "path": "microsoft.extensions.diagnostics.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.diagnostics.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Features/8.0.8": {
+    "Microsoft.Extensions.Diagnostics.ExceptionSummarization/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-twQ7HVVebAchBSLM5VsPeS/rwri3HJwxv22+wUQppr0ByUke97Ipw38gwGqFAnG2dz08N5LicKW2wpNtRng6Fw==",
-      "path": "microsoft.extensions.features/8.0.8",
-      "hashPath": "microsoft.extensions.features.8.0.8.nupkg.sha512"
+      "sha512": "sha512-eRuTbk4jB0JcNEcYngXNAiLM6tpDyuUfFd13bPy/TJCdHU3IP+C7dZN7qu+Z7mOg3CmxS78YtRULQX8QhL+fMQ==",
+      "path": "microsoft.extensions.diagnostics.exceptionsummarization/9.0.0",
+      "hashPath": "microsoft.extensions.diagnostics.exceptionsummarization.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.FileProviders.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Features/8.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mFkk+K8MGrwzRrWUYk9Zpo2pBCQBhsDNnQ+Ywvwm+dBiz0G/sXcsjSUKivSobeDdnQz6Mgn21W/IECZ+30dTvw==",
-      "path": "microsoft.extensions.fileproviders.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.fileproviders.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-xL0WcA9bRu49QSUmGZEYY5dslR/x52fl+XY9GWOP2h5ibOJY7hF8Tz/raXVP+GPJ2S2piNPlfL4GkJK794PjFA==",
+      "path": "microsoft.extensions.features/8.0.11",
+      "hashPath": "microsoft.extensions.features.8.0.11.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Abstractions/9.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uK439QzYR0q2emLVtYzwyK3x+T5bTY4yWsd/k/ZUS9LR6Sflp8MIdhGXW8kQCd86dQD4tLqvcbLkku8qHY263Q==",
+      "path": "microsoft.extensions.fileproviders.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.fileproviders.abstractions.9.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Physical/8.0.0": {
       "type": "package",
@@ -3830,117 +3845,117 @@
       "path": "microsoft.extensions.filesystemglobbing/8.0.0",
       "hashPath": "microsoft.extensions.filesystemglobbing.8.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Hosting.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Hosting.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9UG7HN1sETx7WLXNJtrF5dLqtoabU2KC9MmNXIzJlu119PSFOGAg9DxAd7xun/iA+OS+8HA/NuTaXjxFfmOTUQ==",
-      "path": "microsoft.extensions.hosting.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.hosting.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-yUKJgu81ExjvqbNWqZKshBbLntZMbMVz/P7Way2SBx7bMqA08Mfdc9O7hWDKAiSp+zPUGT6LKcSCQIPeDK+CCw==",
+      "path": "microsoft.extensions.hosting.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.hosting.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Http/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Http/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-keBCwetARoeWWyUkjFaRNhhdxILmpoVPck2dympki/VH3pMsOSJjCl4MEcbR/uwcvSgEW+j2lHst7mGyYr2jPA==",
-      "path": "microsoft.extensions.http/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.http.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-DqI4q54U4hH7bIAq9M5a/hl5Odr/KBAoaZ0dcT4OgutD8dook34CbkvAfAIzkMVjYXiL+E5ul9etwwqiX4PHGw==",
+      "path": "microsoft.extensions.http/9.0.0",
+      "hashPath": "microsoft.extensions.http.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Http.Diagnostics/8.10.0": {
+    "Microsoft.Extensions.Http.Diagnostics/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lLvjt7N4tUwXd1DJvsC7K12T1ZzmQpFBxFA6moi6A7SdJw5JLvhzXULsQUt06mxeu0tjkrR0neJJTsO8OZs4Uw==",
-      "path": "microsoft.extensions.http.diagnostics/8.10.0",
-      "hashPath": "microsoft.extensions.http.diagnostics.8.10.0.nupkg.sha512"
+      "sha512": "sha512-68vpnYcWc/6WZQItq1P4bwJ5K14jFrj0BvFl7yIKwsGrQK+hvqU/1sqT/DnjmvgXSUAnTLluAtBIVMomadYD/g==",
+      "path": "microsoft.extensions.http.diagnostics/9.0.0",
+      "hashPath": "microsoft.extensions.http.diagnostics.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Http.Resilience/8.10.0": {
+    "Microsoft.Extensions.Http.Resilience/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-b+CnTcqlmg4vppGmxsLifY4gnMsE7XDhH1VRxpIn7NBksCoCqJn/2U+TTH9LjpNrAG6tfnGT8m4PP6WaDdPoMQ==",
-      "path": "microsoft.extensions.http.resilience/8.10.0",
-      "hashPath": "microsoft.extensions.http.resilience.8.10.0.nupkg.sha512"
+      "sha512": "sha512-XkzXX1r+J6wxzR9jLZtJhW+h2x3Ff/hgwVBS9hrzAS7CUFaQgL+oYTAFiP6fyp93ruDxx0rDi/kGzy3KWUDCiQ==",
+      "path": "microsoft.extensions.http.resilience/9.0.0",
+      "hashPath": "microsoft.extensions.http.resilience.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Logging/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FZe8VCCAkkDOyek1ZlMmakDJNkA+cojDLpTtl5Pm4H5MdWS6WWGSfoDi++V1XiDUympTJ/S0iItSxfFf/M5e6w==",
-      "path": "microsoft.extensions.logging/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.logging.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-crjWyORoug0kK7RSNJBTeSE6VX8IQgLf3nUpTB9m62bPXp/tzbnOsnbe8TXEG0AASNaKZddnpHKw7fET8E++Pg==",
+      "path": "microsoft.extensions.logging/9.0.0",
+      "hashPath": "microsoft.extensions.logging.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging.Abstractions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Logging.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GFglWb+13UaNAoIN1Pxvlm+/iBblBw0LHTu3dYPVCNTD2cQHM2SORFpb/s+QqKs0iT0SAwC27CnSsCKh3eGH6A==",
-      "path": "microsoft.extensions.logging.abstractions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.logging.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-g0UfujELzlLbHoVG8kPKVBaW470Ewi+jnptGS9KUi6jcb+k2StujtK3m26DFSGGwQ/+bVgZfsWqNzlP6YOejvw==",
+      "path": "microsoft.extensions.logging.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging.Configuration/8.0.1": {
+    "Microsoft.Extensions.Logging.Configuration/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QWwTrsgOnJMmn+XUslm8D2H1n3PkP/u/v52FODtyBc/k4W9r3i2vcXXeeX/upnzllJYRRbrzVzT0OclfNJtBJA==",
-      "path": "microsoft.extensions.logging.configuration/8.0.1",
-      "hashPath": "microsoft.extensions.logging.configuration.8.0.1.nupkg.sha512"
+      "sha512": "sha512-H05HiqaNmg6GjH34ocYE9Wm1twm3Oz2aXZko8GTwGBzM7op2brpAA8pJ5yyD1OpS1mXUtModBYOlcZ/wXeWsSg==",
+      "path": "microsoft.extensions.logging.configuration/9.0.0",
+      "hashPath": "microsoft.extensions.logging.configuration.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.ObjectPool/8.0.10": {
+    "Microsoft.Extensions.ObjectPool/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-u7gAG7JgxF8VSJUGPSudAcPxOt+ymJKQCSxNRxiuKV+klCQbHljQR75SilpedCTfhPWDhtUwIJpnDVtspr9nMg==",
-      "path": "microsoft.extensions.objectpool/8.0.10",
-      "hashPath": "microsoft.extensions.objectpool.8.0.10.nupkg.sha512"
+      "sha512": "sha512-UbsU/gYe4nv1DeqMXIVzDfNNek7Sk2kKuAOXL/Y+sLcAR0HwFUqzg1EPiU88jeHNe0g81aPvvHbvHarQr3r9IA==",
+      "path": "microsoft.extensions.objectpool/9.0.0",
+      "hashPath": "microsoft.extensions.objectpool.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Options/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Options/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yv1/d9PHKB6W2KnyjgASAKU9siFtHQzFKcMLaGtEn95c2/j8ATKZkt+d4MbzxRY7fYtMyK7SOSMAFr3LybyWiw==",
-      "path": "microsoft.extensions.options/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.options.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-y2146b3jrPI3Q0lokKXdKLpmXqakYbDIPDV6r3M8SqvSf45WwOTzkyfDpxnZXJsJQEpAsAqjUq5Pu8RCJMjubg==",
+      "path": "microsoft.extensions.options/9.0.0",
+      "hashPath": "microsoft.extensions.options.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KDQO0DbEcLh1ZcgB4icV6lgT6K+9d3xUWbgZWBoGlVgzv+fwnMsXqYAo7u6UfA7B1z27/+N8BaNVnnujNSn5SQ==",
-      "path": "microsoft.extensions.options.configurationextensions/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.options.configurationextensions.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-Ob3FXsXkcSMQmGZi7qP07EQ39kZpSBlTcAZLbJLdI4FIf0Jug8biv2HTavWmnTirchctPlq9bl/26CXtQRguzA==",
+      "path": "microsoft.extensions.options.configurationextensions/9.0.0",
+      "hashPath": "microsoft.extensions.options.configurationextensions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Primitives/9.0.0-rc.2.24473.5": {
+    "Microsoft.Extensions.Primitives/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gNj30XW3pWU6CqitHqR4OBUzqauunjzHe3hJBeueE1OcXBIs9C1XpnmyNVTvBUC+ENgxU06N8hnXHNu0rveIBA==",
-      "path": "microsoft.extensions.primitives/9.0.0-rc.2.24473.5",
-      "hashPath": "microsoft.extensions.primitives.9.0.0-rc.2.24473.5.nupkg.sha512"
+      "sha512": "sha512-N3qEBzmLMYiASUlKxxFIISP4AiwuPTHF5uCh+2CWSwwzAJiIYx0kBJsS30cp1nvhSySFAVi30jecD307jV+8Kg==",
+      "path": "microsoft.extensions.primitives/9.0.0",
+      "hashPath": "microsoft.extensions.primitives.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Resilience/8.10.0": {
+    "Microsoft.Extensions.Resilience/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2WsgG1zEPVtROZ+SHSAKiyuTREqFOOz/gPPDD/9BjfxYEpGa8E+QsD86UGeWIwnrplUxF6e7K388XkVDWBbSnQ==",
-      "path": "microsoft.extensions.resilience/8.10.0",
-      "hashPath": "microsoft.extensions.resilience.8.10.0.nupkg.sha512"
+      "sha512": "sha512-ZwG0HaAUbtTaQ6gTnSXd+2mmh3oWbjh+/HKQJRxjBpIOmdKXVCJrs7N6nbVzAZ7GS6eilR1XJFZmjDyJ8QGhRA==",
+      "path": "microsoft.extensions.resilience/9.0.0",
+      "hashPath": "microsoft.extensions.resilience.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.ServiceDiscovery/8.2.1": {
+    "Microsoft.Extensions.ServiceDiscovery/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RuaU33YlHwzQUI7ONUwbEAleXdmQPv6r40bgdK419PPkxYY/uXRxzx1O3XNlRa1kTZqMw+ycBmQ0JzKGHggdGQ==",
-      "path": "microsoft.extensions.servicediscovery/8.2.1",
-      "hashPath": "microsoft.extensions.servicediscovery.8.2.1.nupkg.sha512"
+      "sha512": "sha512-bRJ7+R+Qz6ueGGH2WqiZjyAJJho9UBLBclSTf8ReOIeMxjvbaBXTtOGmmrckSSJ/RLQRJKM9QNyK9+y1UUpVGw==",
+      "path": "microsoft.extensions.servicediscovery/9.0.0",
+      "hashPath": "microsoft.extensions.servicediscovery.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.ServiceDiscovery.Abstractions/8.2.1": {
+    "Microsoft.Extensions.ServiceDiscovery.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-J0kZ4VNYaG2mCdP8wc7YGBlYlJJ+Xwmzlq9/tRHVnJbAHeE20ygda58loec2aYgVZHSve9AjMOpWrjr8p66bkQ==",
-      "path": "microsoft.extensions.servicediscovery.abstractions/8.2.1",
-      "hashPath": "microsoft.extensions.servicediscovery.abstractions.8.2.1.nupkg.sha512"
+      "sha512": "sha512-gJRU3MTYVtB6reZGJGVOcYhNLgt1i86Pt8yMnekCe7mEz9hr2g5fg5mu2l1lWoxM4eagqDHtk9HkrQFS88yJ3w==",
+      "path": "microsoft.extensions.servicediscovery.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.servicediscovery.abstractions.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Telemetry/8.10.0": {
+    "Microsoft.Extensions.Telemetry/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FcWCYW8W1O05w5tXtFRl4seCtTgV4ihTrCFgkbDUo3PIW2f5N8I1IGEE7KbdApxBFN0Oqf8FmVmtvjTncmlUBw==",
-      "path": "microsoft.extensions.telemetry/8.10.0",
-      "hashPath": "microsoft.extensions.telemetry.8.10.0.nupkg.sha512"
+      "sha512": "sha512-aid79SF7sJmn/rpliUscwV3gnDOjqx1GmG+R/5E9mK8Cy5tNhEcGnak7RW9RSOOCzqpLEP3jOwdcH3YZ2F/kNA==",
+      "path": "microsoft.extensions.telemetry/9.0.0",
+      "hashPath": "microsoft.extensions.telemetry.9.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Telemetry.Abstractions/8.10.0": {
+    "Microsoft.Extensions.Telemetry.Abstractions/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lnXq37FJZHJPbSJNEFoQVndG8cJvRbzeaUE9eoY1i6yfQUACHnEhuMnkZm7zPCkSqn0tylF0fITQn/RuDvt+0g==",
-      "path": "microsoft.extensions.telemetry.abstractions/8.10.0",
-      "hashPath": "microsoft.extensions.telemetry.abstractions.8.10.0.nupkg.sha512"
+      "sha512": "sha512-F84i7q3FleH1kjmaSuslZ33yzWtzxZXWjd1ylXcuwM5jNjWN2ifJSO0xQ5c5BYWZA5VeIWWUWupIYr6+3TnDqA==",
+      "path": "microsoft.extensions.telemetry.abstractions/9.0.0",
+      "hashPath": "microsoft.extensions.telemetry.abstractions.9.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.VectorData.Abstractions/9.0.0-preview.1.24523.1": {
       "type": "package",
@@ -3998,12 +4013,12 @@
       "path": "microsoft.identity.abstractions/7.1.0",
       "hashPath": "microsoft.identity.abstractions.7.1.0.nupkg.sha512"
     },
-    "Microsoft.Identity.Client/4.65.0": {
+    "Microsoft.Identity.Client/4.66.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-RV35ZcJ5/P7n+Zu6J3wmtiDdK6MW5h6EpZ0ojjB9sMwNhGHEJCv829cb3kZ4PZ664llYFv8sbUITWWGvBTqv0Q==",
-      "path": "microsoft.identity.client/4.65.0",
-      "hashPath": "microsoft.identity.client.4.65.0.nupkg.sha512"
+      "sha512": "sha512-mE+m3pZ7zSKocSubKXxwZcUrCzLflC86IdLxrVjS8tialy0b1L+aECBqRBC/ykcPlB4y7skg49TaTiA+O2UfDw==",
+      "path": "microsoft.identity.client/4.66.1",
+      "hashPath": "microsoft.identity.client.4.66.1.nupkg.sha512"
     },
     "Microsoft.Identity.Client.Extensions.Msal/4.61.3": {
       "type": "package",
@@ -4012,124 +4027,124 @@
       "path": "microsoft.identity.client.extensions.msal/4.61.3",
       "hashPath": "microsoft.identity.client.extensions.msal.4.61.3.nupkg.sha512"
     },
-    "Microsoft.Identity.Web/3.2.2": {
+    "Microsoft.Identity.Web/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-N75Gyb0RAxydepwVEhKTDS4Db/GO2pYsSeMvqmQizIKdmQQmCFYMeHdtSTiEsv/bng9zmNOmwarz/d7ONnTMuQ==",
-      "path": "microsoft.identity.web/3.2.2",
-      "hashPath": "microsoft.identity.web.3.2.2.nupkg.sha512"
+      "sha512": "sha512-/MpFoFOkZ91xWKyPabbrr9UHmKjipoqW5DaT9EFlKLH/XvtKqQjsRA0WFw8nXFC7K24SS6WtY5htbybxAPPDeQ==",
+      "path": "microsoft.identity.web/3.3.1",
+      "hashPath": "microsoft.identity.web.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.Certificate/3.2.2": {
+    "Microsoft.Identity.Web.Certificate/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Xe1xAvGx9ZLy0wLEsmbsSCpIVjWzhsUAl5EN7RWqd+zeb2fEOqRInCxgS9eLCAD4wfrcATzHt3ELHtB5to/b8w==",
-      "path": "microsoft.identity.web.certificate/3.2.2",
-      "hashPath": "microsoft.identity.web.certificate.3.2.2.nupkg.sha512"
+      "sha512": "sha512-OQbl+eFsh5ghnBjaeQc2y0B2oecwhc5xRxXva9fOvpcghoHqZCoqpnQv7spa6JJqqRbNpqvHcwSvmc0aKUj+4Q==",
+      "path": "microsoft.identity.web.certificate/3.3.1",
+      "hashPath": "microsoft.identity.web.certificate.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.Certificateless/3.2.2": {
+    "Microsoft.Identity.Web.Certificateless/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U/liNxeAitSQ/zmSf9W93PdWvXxIVqsrPF0qGY80dsRQy8yu7SxB2X1a7lgzTOqn2BtczemGLyj1QdP/86wNAQ==",
-      "path": "microsoft.identity.web.certificateless/3.2.2",
-      "hashPath": "microsoft.identity.web.certificateless.3.2.2.nupkg.sha512"
+      "sha512": "sha512-wEKkQJ+racs6Bf7drdcafCzFBEJRQUvt+lE6ls8AKsqGTMO631rs//NMGdLlmG1s/anH+Y2eqXHi0iesb29pyA==",
+      "path": "microsoft.identity.web.certificateless/3.3.1",
+      "hashPath": "microsoft.identity.web.certificateless.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.Diagnostics/3.2.2": {
+    "Microsoft.Identity.Web.Diagnostics/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ms4/yJzRuZ7Qp0lH73tRWz2XnjHopHxrZv0VgJXrqB1HvTP1uCnoq/DM+qs8XVwG2lvejMFplsv5vU3l2xqOOg==",
-      "path": "microsoft.identity.web.diagnostics/3.2.2",
-      "hashPath": "microsoft.identity.web.diagnostics.3.2.2.nupkg.sha512"
+      "sha512": "sha512-0llZUHnuwwpMo+vxR8qyGgYowwkQECFQHsCe31lPGPjf1xYYNWCBqy5AmM9aA5TnYCT0zjU6zgljAkJmx6l/ew==",
+      "path": "microsoft.identity.web.diagnostics/3.3.1",
+      "hashPath": "microsoft.identity.web.diagnostics.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.GraphServiceClient/3.2.2": {
+    "Microsoft.Identity.Web.GraphServiceClient/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SaCSduJDTNSf1TACFGVZqeMvOdEbmgFxsLMhga2GEy3PsL/m4i0p0VZMZLY5qDfM6wkmEYMYGym7aQ5sAz4LwA==",
-      "path": "microsoft.identity.web.graphserviceclient/3.2.2",
-      "hashPath": "microsoft.identity.web.graphserviceclient.3.2.2.nupkg.sha512"
+      "sha512": "sha512-EoNRhQ3rWzvPkFjID8PH1++o9A4WRSrfk9Rkdi9W1BZGkeq0/DgwQuyo67NvF98lCMEMIlMyrpA2nZhdW8jZkQ==",
+      "path": "microsoft.identity.web.graphserviceclient/3.3.1",
+      "hashPath": "microsoft.identity.web.graphserviceclient.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.GraphServiceClientBeta/3.2.2": {
+    "Microsoft.Identity.Web.GraphServiceClientBeta/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-n2lc7/yIZxLazt0Rh/CMv6lVeAuM/eao6gFf8ZvfpNOhoKu+lin8kIfbUzT4ypNRvC7drOxj3u2L4Zz88pwtUA==",
-      "path": "microsoft.identity.web.graphserviceclientbeta/3.2.2",
-      "hashPath": "microsoft.identity.web.graphserviceclientbeta.3.2.2.nupkg.sha512"
+      "sha512": "sha512-BAs4FtJV7xCx5kQcFuq98cWkxpMNYNSk9jJz8QdvL53G4D36hYGgo8F/MlkJpPkh9VSOJjTDqB3WryratQTFWw==",
+      "path": "microsoft.identity.web.graphserviceclientbeta/3.3.1",
+      "hashPath": "microsoft.identity.web.graphserviceclientbeta.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.TokenAcquisition/3.2.2": {
+    "Microsoft.Identity.Web.TokenAcquisition/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WWqmmG9nE3C+yzduvh8ieb7Hti26ltfGKy9BtzpMoqLTc/VKbHxFl3d9elRztmNeukjUvOmKvtqbykFkeTtCqQ==",
-      "path": "microsoft.identity.web.tokenacquisition/3.2.2",
-      "hashPath": "microsoft.identity.web.tokenacquisition.3.2.2.nupkg.sha512"
+      "sha512": "sha512-f3fN1dlmEQJg7V4g0MBtpk2SjQyZz3zWpnJPj9alIVJ6v66Afg3tapi/RSjiu4i+WFWp61gXo5qpDvoniP+cBQ==",
+      "path": "microsoft.identity.web.tokenacquisition/3.3.1",
+      "hashPath": "microsoft.identity.web.tokenacquisition.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.TokenCache/3.2.2": {
+    "Microsoft.Identity.Web.TokenCache/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IdblF2ySKDuv12hP/WT1LPovuVOqYepV6UYzABDaJQaFnA8C4fFAV+ez8yp7rT7Mf3iDtRO0W66ESSnlb0NdQQ==",
-      "path": "microsoft.identity.web.tokencache/3.2.2",
-      "hashPath": "microsoft.identity.web.tokencache.3.2.2.nupkg.sha512"
+      "sha512": "sha512-h//OOJIXlct71AVWDsGmyZLTHip18FC5+GyvvEl1uLmeUD5j6AZfJLuXBRI9llrGMP6/Xkv8/LMfefOtCzBa+g==",
+      "path": "microsoft.identity.web.tokencache/3.3.1",
+      "hashPath": "microsoft.identity.web.tokencache.3.3.1.nupkg.sha512"
     },
-    "Microsoft.Identity.Web.UI/3.2.2": {
+    "Microsoft.Identity.Web.UI/3.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-wLcjNaPou1/A5YIXUsoeC4zCDz7u1HyusokcWnm5ahw6oqnbyxsmNaMnzGnBQwXd5AeZu47bHjgOpDaYTAK0XA==",
-      "path": "microsoft.identity.web.ui/3.2.2",
-      "hashPath": "microsoft.identity.web.ui.3.2.2.nupkg.sha512"
+      "sha512": "sha512-OaRqisLkDFVdnSB9z/4xIWRkx0ZZhHr2pCPwEJoPTdU6+CqAKhK/yyyNeOjbYiFgyz/7/QvB0h5NCBMTo/MtRQ==",
+      "path": "microsoft.identity.web.ui/3.3.1",
+      "hashPath": "microsoft.identity.web.ui.3.3.1.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Abstractions/8.1.2": {
+    "Microsoft.IdentityModel.Abstractions/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QSSDer3kvyTdNq6BefgX4EYi1lsia2zJUh5CfIMZFQUh6BhrXK1WE4i2C9ltUmmuUjoeVVX6AaSo9NZfpTGNdw==",
-      "path": "microsoft.identitymodel.abstractions/8.1.2",
-      "hashPath": "microsoft.identitymodel.abstractions.8.1.2.nupkg.sha512"
+      "sha512": "sha512-27ClfnelIu92kLGOaz0vjdXR1Jv7hAdLffxxNgR8T0+IMWmxeVyO3cU8oohmuTrWUFOfd2tsSGaRNewnuClIZw==",
+      "path": "microsoft.identitymodel.abstractions/8.2.0",
+      "hashPath": "microsoft.identitymodel.abstractions.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.JsonWebTokens/8.1.2": {
+    "Microsoft.IdentityModel.JsonWebTokens/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AWQINMvtamdYBqtG8q8muyYTfA9i5xRBEsMKQdzOn5xRzhVVDSzsNGYof1docfF3pX4hNRUpHlzs61RP0reZMw==",
-      "path": "microsoft.identitymodel.jsonwebtokens/8.1.2",
-      "hashPath": "microsoft.identitymodel.jsonwebtokens.8.1.2.nupkg.sha512"
+      "sha512": "sha512-/DAx+9HeqfkH/PccwHx7cUtQe9fYM6AxEmTla8WXUT+w+mapKLnigWmdKtF55hNvxiSnmGhSSCcG7XrvkpGKFA==",
+      "path": "microsoft.identitymodel.jsonwebtokens/8.2.0",
+      "hashPath": "microsoft.identitymodel.jsonwebtokens.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Logging/8.1.2": {
+    "Microsoft.IdentityModel.Logging/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pEn//qKJcEXDsLHLzACFrT3a2kkpIGOXLEYkcuxjqWoeDnbeotu0LY9fF8+Ds9WWpVE9ZGlxXamT0VR8rxaQeA==",
-      "path": "microsoft.identitymodel.logging/8.1.2",
-      "hashPath": "microsoft.identitymodel.logging.8.1.2.nupkg.sha512"
+      "sha512": "sha512-mZsjOZlbmCZfM71y8Fyo+D5UJ1RZFvmKXkxTfE2llQ0/CrfEeWmbpoew51w++EWs+G8B/peZqR1DQtbX3bB6Fg==",
+      "path": "microsoft.identitymodel.logging/8.2.0",
+      "hashPath": "microsoft.identitymodel.logging.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.LoggingExtensions/8.1.2": {
+    "Microsoft.IdentityModel.LoggingExtensions/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eS/IBBE19VkUL1DtoIhTOO8X0DyYJ1nWEJ9kpxua2tkjnwvn/H3GZBYOoev0B1bB1rcRv+neYEpA6dyhOR9fxQ==",
-      "path": "microsoft.identitymodel.loggingextensions/8.1.2",
-      "hashPath": "microsoft.identitymodel.loggingextensions.8.1.2.nupkg.sha512"
+      "sha512": "sha512-6GDDNQtM4uk1qhNkubbPf1v227GNSslPL04ss7U09r0p9IRuEIzv7+AHdGc/pAdxodKsqluCxEMBjzByBKNEPg==",
+      "path": "microsoft.identitymodel.loggingextensions/8.2.0",
+      "hashPath": "microsoft.identitymodel.loggingextensions.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Protocols/8.1.2": {
+    "Microsoft.IdentityModel.Protocols/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Yu3UJWIFX2/5m2MZskECqByr62L8A0uTtTblWIxy0wJNUg0OJGhIK6oRdpcZ8xbSJYD/SOE8psjo5IXRqC3Bsw==",
-      "path": "microsoft.identitymodel.protocols/8.1.2",
-      "hashPath": "microsoft.identitymodel.protocols.8.1.2.nupkg.sha512"
+      "sha512": "sha512-ytjEaWazvXO8aza2+voDW2WcInIu1aI/GT+Rdo6ZGgd0yDncR9Ze9rcIST3HO9uHsdoe4kbKCIF2CltCl6qPtw==",
+      "path": "microsoft.identitymodel.protocols/8.2.0",
+      "hashPath": "microsoft.identitymodel.protocols.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Protocols.OpenIdConnect/8.1.2": {
+    "Microsoft.IdentityModel.Protocols.OpenIdConnect/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eEtnzZiYymJYaguYeIXyviUocltBQzeYI0bEtot1Nrnl+qklCZARgk+SAaeYfdmc9CYo7aqP5UJ78rTTSTpQGQ==",
-      "path": "microsoft.identitymodel.protocols.openidconnect/8.1.2",
-      "hashPath": "microsoft.identitymodel.protocols.openidconnect.8.1.2.nupkg.sha512"
+      "sha512": "sha512-SqTIhvZZfs4Pv7KigYTLdirB5OWf2siQPjLAeOONpyYf0oxkN2rkp6RRbL9qZSJR9QJWtgCsmXTgtU0wDYWOSA==",
+      "path": "microsoft.identitymodel.protocols.openidconnect/8.2.0",
+      "hashPath": "microsoft.identitymodel.protocols.openidconnect.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Tokens/8.1.2": {
+    "Microsoft.IdentityModel.Tokens/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ZSzGsAA3BY20XHnsp8OjrHFtpd+pQtiu4UJDjPtXwCtEzcE5CjWP/8iZEJXy5AxVEFB0z6EwLSN+T1Fsdpjifw==",
-      "path": "microsoft.identitymodel.tokens/8.1.2",
-      "hashPath": "microsoft.identitymodel.tokens.8.1.2.nupkg.sha512"
+      "sha512": "sha512-/I+6D3SwW8hQh5wznGzQCrS4L5y5Re/0AEKKfXXAduWzz4WKqJzY8RmjwZ6W66bIFUhPrqOy6zsLKPik4Ppnbw==",
+      "path": "microsoft.identitymodel.tokens/8.2.0",
+      "hashPath": "microsoft.identitymodel.tokens.8.2.0.nupkg.sha512"
     },
-    "Microsoft.IdentityModel.Validators/8.1.2": {
+    "Microsoft.IdentityModel.Validators/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gC4VQ1CGBFlPbx8T6kMLSuzs9SPTpK53L+oT+cbIVvwJFPorw/kvgfwvASGN2BN1Rh8naz5wfVXSKm25LpYlKQ==",
-      "path": "microsoft.identitymodel.validators/8.1.2",
-      "hashPath": "microsoft.identitymodel.validators.8.1.2.nupkg.sha512"
+      "sha512": "sha512-QAeH+HvcxInbCYUlOqCe7JUvbflAe+YClSoMFRWiWmDl2zkKAQJ6sxPHERh3f4l1+cCZwFT9fSG38DA7sKApLA==",
+      "path": "microsoft.identitymodel.validators/8.2.0",
+      "hashPath": "microsoft.identitymodel.validators.8.2.0.nupkg.sha512"
     },
     "Microsoft.IO.RecyclableMemoryStream/3.0.0": {
       "type": "package",
@@ -4145,12 +4160,12 @@
       "path": "microsoft.jsinterop/9.0.0-rc.2.24474.3",
       "hashPath": "microsoft.jsinterop.9.0.0-rc.2.24474.3.nupkg.sha512"
     },
-    "Microsoft.Kiota.Abstractions/1.13.2": {
+    "Microsoft.Kiota.Abstractions/1.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oNG90x+jNZiaB66pxgMqrgcaH1qqeGlm++VT7J+UWB8Sf4r5VE+8yoRNBD1gy73Ge2R7Yls1lGpa/Ry+pXWQWQ==",
-      "path": "microsoft.kiota.abstractions/1.13.2",
-      "hashPath": "microsoft.kiota.abstractions.1.13.2.nupkg.sha512"
+      "sha512": "sha512-So3FWhqba6gvRpXMKGK826mNuQjh699Zxoui5AvUMJ9KA1LNnqFIxJ2cx2dqdb0FcMHJ+FZCrNQbMg1XqvCVBQ==",
+      "path": "microsoft.kiota.abstractions/1.14.0",
+      "hashPath": "microsoft.kiota.abstractions.1.14.0.nupkg.sha512"
     },
     "Microsoft.Kiota.Authentication.Azure/1.1.2": {
       "type": "package",
@@ -4173,33 +4188,33 @@
       "path": "microsoft.kiota.http.httpclientlibrary/1.13.1",
       "hashPath": "microsoft.kiota.http.httpclientlibrary.1.13.1.nupkg.sha512"
     },
-    "Microsoft.Kiota.Serialization.Form/1.13.1": {
+    "Microsoft.Kiota.Serialization.Form/1.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sxvBgyFq2wNe2WhaKHQl3oeE8ZFJ1NYFpHOIxz45dxbuJWfflaNTbAoqX11QjaHhHmlbu0OvLVFxObmLTv3UXg==",
-      "path": "microsoft.kiota.serialization.form/1.13.1",
-      "hashPath": "microsoft.kiota.serialization.form.1.13.1.nupkg.sha512"
+      "sha512": "sha512-aueCKgh+lby9QzEkYCtZpzP4OUL/AAZ43O3A7v0EQjTCsNYo3sYnz5a5Rtz/Hjyd26xN5x2TilWPfgFg+X0QiA==",
+      "path": "microsoft.kiota.serialization.form/1.14.0",
+      "hashPath": "microsoft.kiota.serialization.form.1.14.0.nupkg.sha512"
     },
-    "Microsoft.Kiota.Serialization.Json/1.13.1": {
+    "Microsoft.Kiota.Serialization.Json/1.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2vPP7XmIUl2A2oC3OVDe9HFYboosGwSronsFP0lUz94S7dqfhVwbTvPuQH/Uc5oe3Pg5sycXgGACBhbO95SZdQ==",
-      "path": "microsoft.kiota.serialization.json/1.13.1",
-      "hashPath": "microsoft.kiota.serialization.json.1.13.1.nupkg.sha512"
+      "sha512": "sha512-oGt74kVtlIooh2KiBf9GGi9dUYz/xWkStxd/oawS0mxqSNm/eiNcwFNU3odUDxKfKjF9+zPJxDzkEE0rILus8w==",
+      "path": "microsoft.kiota.serialization.json/1.14.0",
+      "hashPath": "microsoft.kiota.serialization.json.1.14.0.nupkg.sha512"
     },
-    "Microsoft.Kiota.Serialization.Multipart/1.13.1": {
+    "Microsoft.Kiota.Serialization.Multipart/1.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1/mZDnznud+/ciIU/1lwmzQEWwk4y30jl59oKbG6bDczYZ9is7OFTTzTZA2dv+v81ScNBhTFNrvYU1f2fldMFA==",
-      "path": "microsoft.kiota.serialization.multipart/1.13.1",
-      "hashPath": "microsoft.kiota.serialization.multipart.1.13.1.nupkg.sha512"
+      "sha512": "sha512-gzciQfs3v4h0TZcmeXjaIf+j+MGw+frXuXvGkrWP4BlJOv4NmVT614rmvfEWAUfDnVwfn3FP1ghEodHb1RI7vw==",
+      "path": "microsoft.kiota.serialization.multipart/1.14.0",
+      "hashPath": "microsoft.kiota.serialization.multipart.1.14.0.nupkg.sha512"
     },
-    "Microsoft.Kiota.Serialization.Text/1.13.1": {
+    "Microsoft.Kiota.Serialization.Text/1.14.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UF3/mZFC7HqEcMUOXJwiACkykgWxhrs0m9a4u4/YnlbK14h1keoOJIRXMguAce6jOlLA4VgveNGjxSWYQ5pHzA==",
-      "path": "microsoft.kiota.serialization.text/1.13.1",
-      "hashPath": "microsoft.kiota.serialization.text.1.13.1.nupkg.sha512"
+      "sha512": "sha512-Q7AMnooas6aG55mBENwU2Wz9Ey1fwN3DfrzNlR2iUolalMftLtXGZeNY7gSYEBtCOo65OEhmSszrOlxNkFD92w==",
+      "path": "microsoft.kiota.serialization.text/1.14.0",
+      "hashPath": "microsoft.kiota.serialization.text.1.14.0.nupkg.sha512"
     },
     "Microsoft.ML.Tokenizers/0.21.1": {
       "type": "package",
@@ -4243,19 +4258,19 @@
       "path": "microsoft.openapi.readers/1.6.21",
       "hashPath": "microsoft.openapi.readers.1.6.21.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel/1.25.0": {
+    "Microsoft.SemanticKernel/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Z6Qim8gskZQlTlNokf+NF9SwO2J2hso08wSLzjNElTB0kmgxV2xm2mjO074LH16x9tjdxhXyRfwgXfYMqXU6vQ==",
-      "path": "microsoft.semantickernel/1.25.0",
-      "hashPath": "microsoft.semantickernel.1.25.0.nupkg.sha512"
+      "sha512": "sha512-JIjFoVD70R+eYUmzrHTyzz0oCy2tl4NfqlBDqy8VWyCTKx9v5PE8fHiQu1XEv1pRSEwJM3UjQ1zeIJV71pfvDA==",
+      "path": "microsoft.semantickernel/1.28.0",
+      "hashPath": "microsoft.semantickernel.1.28.0.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.Abstractions/1.25.0": {
+    "Microsoft.SemanticKernel.Abstractions/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-tBoubbSVF2urr/xjkaSG0qoZo3tX3WqCrgSzaQNkDmILwvhkqn7GP4iTEGK23CtpqIxgFUVjWPAWyKtH8xbIZA==",
-      "path": "microsoft.semantickernel.abstractions/1.25.0",
-      "hashPath": "microsoft.semantickernel.abstractions.1.25.0.nupkg.sha512"
+      "sha512": "sha512-R90D6qDPvTUnD3aDCgvJ1PquBZ7PDdnm/clSPsk143XwTCe5VwKpf+i2tOx2PrTlzyp6p4IOg2bePAVfUFQjdw==",
+      "path": "microsoft.semantickernel.abstractions/1.28.0",
+      "hashPath": "microsoft.semantickernel.abstractions.1.28.0.nupkg.sha512"
     },
     "Microsoft.SemanticKernel.Agents.Abstractions/1.25.0-alpha": {
       "type": "package",
@@ -4278,26 +4293,26 @@
       "path": "microsoft.semantickernel.connectors.azureaiinference/1.25.0-beta",
       "hashPath": "microsoft.semantickernel.connectors.azureaiinference.1.25.0-beta.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.25.0": {
+    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bNj5I+Oet/qmIH14JoJUTKi2XgAEbrqLdadD5pwKw49nW/AZCXb7znQMbmAOqF1hdN5mHbQgaHHZOfyelc9Pzw==",
-      "path": "microsoft.semantickernel.connectors.azureopenai/1.25.0",
-      "hashPath": "microsoft.semantickernel.connectors.azureopenai.1.25.0.nupkg.sha512"
+      "sha512": "sha512-oNlsNMab7R+Lvi4buienT7FqRnsTUcPKrA7z4Z7OWKvU1oVw3vjUnyWBh3nMlzdNkuEx0dZK/kKTbAuq8bpqJQ==",
+      "path": "microsoft.semantickernel.connectors.azureopenai/1.28.0",
+      "hashPath": "microsoft.semantickernel.connectors.azureopenai.1.28.0.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.Connectors.OpenAI/1.25.0": {
+    "Microsoft.SemanticKernel.Connectors.OpenAI/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Romtcq7S6ttjhSoUVB4zvwRsvhjh88HR0h7fa5Vxu3XIZ6Nqg8X7DsiZXycE0pynNJBUDm7jNhoKZDG7uwdjPQ==",
-      "path": "microsoft.semantickernel.connectors.openai/1.25.0",
-      "hashPath": "microsoft.semantickernel.connectors.openai.1.25.0.nupkg.sha512"
+      "sha512": "sha512-yFkb3/7Irk0GbdIEj0/2Av1DOOgDj9IiDFRy08MQTED8yRAb36ZGsXCAkSy/cDzLKfL6+yGF4Wewt/j7ZkJEFA==",
+      "path": "microsoft.semantickernel.connectors.openai/1.28.0",
+      "hashPath": "microsoft.semantickernel.connectors.openai.1.28.0.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.Core/1.25.0": {
+    "Microsoft.SemanticKernel.Core/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sJtmZHLqKmdhLEggUQ4TvhZXZn81rUSJyjPRBgcOoLS3U1QW31RCfFewxE0kTFpiSDsV7Ott1RQ7bMH+y3Rdlg==",
-      "path": "microsoft.semantickernel.core/1.25.0",
-      "hashPath": "microsoft.semantickernel.core.1.25.0.nupkg.sha512"
+      "sha512": "sha512-EwoccqlvW5a53ZC2u0fyrKcOyylus8EDFZjexUW6nJnlbX6AvmiEFNFEIOaRLDa6cftDX7oaypRS19wYdhya2g==",
+      "path": "microsoft.semantickernel.core/1.28.0",
+      "hashPath": "microsoft.semantickernel.core.1.28.0.nupkg.sha512"
     },
     "Microsoft.SemanticKernel.Plugins.Core/1.25.0-alpha": {
       "type": "package",
@@ -4327,12 +4342,12 @@
       "path": "microsoft.semantickernel.plugins.web/1.25.0-alpha",
       "hashPath": "microsoft.semantickernel.plugins.web.1.25.0-alpha.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.25.0": {
+    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7aJ0ZHNxgt/ThlMorYvN3iptVZ+JE+AsbEIqU6GgjpC57JqLTQwPFT+tXSEz6waSlU/TOmhVq7+SQ3NO8H/4Gw==",
-      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.25.0",
-      "hashPath": "microsoft.semantickernel.prompttemplates.handlebars.1.25.0.nupkg.sha512"
+      "sha512": "sha512-1jNHKemQc+xXJmC7NNMonkATYTwt3xZq6NDJSICtPYzunHYvdYGJ2UWoV6s0rPA/IblNIdQ2Rlta/tLeIzj6Pw==",
+      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.28.0",
+      "hashPath": "microsoft.semantickernel.prompttemplates.handlebars.1.28.0.nupkg.sha512"
     },
     "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.25.0-alpha": {
       "type": "package",
@@ -4348,12 +4363,12 @@
       "path": "microsoft.semantickernel.prompty/1.25.0-alpha",
       "hashPath": "microsoft.semantickernel.prompty.1.25.0-alpha.nupkg.sha512"
     },
-    "Microsoft.SemanticKernel.Yaml/1.25.0": {
+    "Microsoft.SemanticKernel.Yaml/1.28.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cl84oMahvS3x1HwWm8oglplJCpvB9TpwuVwU1bb+JKQjzP2lt66NWX7nkt2NIxNKroPDoW7S5W8c6SfLUYWaWA==",
-      "path": "microsoft.semantickernel.yaml/1.25.0",
-      "hashPath": "microsoft.semantickernel.yaml.1.25.0.nupkg.sha512"
+      "sha512": "sha512-EB2DRwwErRGuKv9lzN9aKRP/wWtC2appfJnlWfeCuGvIzcpqOYQLwv5Xli6bnRWwno1QIGRbIbwG8NvqCF3kxw==",
+      "path": "microsoft.semantickernel.yaml/1.28.0",
+      "hashPath": "microsoft.semantickernel.yaml.1.28.0.nupkg.sha512"
     },
     "Microsoft.TypeChat/0.1.240227.3-preview": {
       "type": "package",
@@ -4397,40 +4412,40 @@
       "path": "openai/2.1.0-beta.1",
       "hashPath": "openai.2.1.0-beta.1.nupkg.sha512"
     },
-    "OpenTelemetry/1.9.0": {
+    "OpenTelemetry/1.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7scS6BUhwYeSXEDGhCxMSezmvyCoDU5kFQbmfyW9iVvVTcWhec+1KIN33/LOCdBXRkzt2y7+g03mkdAB0XZ9Fw==",
-      "path": "opentelemetry/1.9.0",
-      "hashPath": "opentelemetry.1.9.0.nupkg.sha512"
+      "sha512": "sha512-YUWnKsu0qsD7SO45r6a6nm6dAB3kVZ4Qf5DClU9xG+ObKV2beg0VJwX3U85pAaEhE/IBFp1C8Fj7L3F6gNjpeg==",
+      "path": "opentelemetry/1.10.0",
+      "hashPath": "opentelemetry.1.10.0.nupkg.sha512"
     },
-    "OpenTelemetry.Api/1.9.0": {
+    "OpenTelemetry.Api/1.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Xz8ZvM1Lm0m7BbtGBnw2JlPo++YKyMp08zMK5p0mf+cIi5jeMt2+QsYu9X6YEAbjCxBQYwEak5Z8sY6Ig2WcwQ==",
-      "path": "opentelemetry.api/1.9.0",
-      "hashPath": "opentelemetry.api.1.9.0.nupkg.sha512"
+      "sha512": "sha512-HcmxppwGFna1oY8cLX6hZ/nU1dw07UutfOVCltrbVE3RNYwRD7qFdQRtQQAoKZnbXE9yW4QMdtohcLClNFOk8w==",
+      "path": "opentelemetry.api/1.10.0",
+      "hashPath": "opentelemetry.api.1.10.0.nupkg.sha512"
     },
-    "OpenTelemetry.Api.ProviderBuilderExtensions/1.9.0": {
+    "OpenTelemetry.Api.ProviderBuilderExtensions/1.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-L0D4LBR5JFmwLun5MCWVGapsJLV0ANZ+XXu9NEI3JE/HRKkRuUO+J2MuHD5DBwiU//QMYYM4B22oev1hVLoHDQ==",
-      "path": "opentelemetry.api.providerbuilderextensions/1.9.0",
-      "hashPath": "opentelemetry.api.providerbuilderextensions.1.9.0.nupkg.sha512"
+      "sha512": "sha512-cu+jYs6WdZjNohM1LriHRBs9JvpuWrdU8/Iz+DRoC0DkfKIlFubsp4lsoiKJm/aCgDBLAyvLmMna3Y3pMM8WpA==",
+      "path": "opentelemetry.api.providerbuilderextensions/1.10.0",
+      "hashPath": "opentelemetry.api.providerbuilderextensions.1.10.0.nupkg.sha512"
     },
-    "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.9.0": {
+    "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qzFOP3V2eYIVbug3U4BJzzidHe9JhAJ42WZ/H8pUp/45Ry3MQQg/+e/ZieClJcxKnpbkXi7dUq1rpvuNp+yBYA==",
-      "path": "opentelemetry.exporter.opentelemetryprotocol/1.9.0",
-      "hashPath": "opentelemetry.exporter.opentelemetryprotocol.1.9.0.nupkg.sha512"
+      "sha512": "sha512-kdSehZAg5Q1CJPoOFPmq4eLSsWOn/ETtP4hsGum6ymM3FgIhklXZEXB61u8WaVdJNkk050CGUgQjGRGCt5UEqQ==",
+      "path": "opentelemetry.exporter.opentelemetryprotocol/1.10.0",
+      "hashPath": "opentelemetry.exporter.opentelemetryprotocol.1.10.0.nupkg.sha512"
     },
-    "OpenTelemetry.Extensions.Hosting/1.9.0": {
+    "OpenTelemetry.Extensions.Hosting/1.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QBQPrKDVCXxTBE+r8tgjmFNKKHi4sKyczmip2XGUcjy8kk3quUNhttnjiMqC4sU50Hemmn4i5752Co26pnKe3A==",
-      "path": "opentelemetry.extensions.hosting/1.9.0",
-      "hashPath": "opentelemetry.extensions.hosting.1.9.0.nupkg.sha512"
+      "sha512": "sha512-luLe3deRmThvJd8+Oav4ohg+S3DoXnxDx06+GBinAgmVi873C9YPzA0dJlXG1Zeh7uFajzMtLhskaDejQYCFWw==",
+      "path": "opentelemetry.extensions.hosting/1.10.0",
+      "hashPath": "opentelemetry.extensions.hosting.1.10.0.nupkg.sha512"
     },
     "OpenTelemetry.Instrumentation.AspNetCore/1.9.0": {
       "type": "package",
@@ -4698,12 +4713,12 @@
       "path": "system.diagnostics.debug/4.3.0",
       "hashPath": "system.diagnostics.debug.4.3.0.nupkg.sha512"
     },
-    "System.Diagnostics.DiagnosticSource/8.0.1": {
+    "System.Diagnostics.DiagnosticSource/9.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vaoWjvkG1aenR2XdjaVivlCV9fADfgyhW5bZtXT23qaEea0lWiUljdQuze4E31vKM7ZWJaSUsbYIKE3rnzfZUg==",
-      "path": "system.diagnostics.diagnosticsource/8.0.1",
-      "hashPath": "system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512"
+      "sha512": "sha512-ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
+      "path": "system.diagnostics.diagnosticsource/9.0.0",
+      "hashPath": "system.diagnostics.diagnosticsource.9.0.0.nupkg.sha512"
     },
     "System.Diagnostics.Tracing/4.3.0": {
       "type": "package",
@@ -4719,12 +4734,12 @@
       "path": "system.drawing.common/6.0.0",
       "hashPath": "system.drawing.common.6.0.0.nupkg.sha512"
     },
-    "System.Formats.Asn1/9.0.0-rc.1.24431.7": {
+    "System.Formats.Asn1/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kS5iyU1z26jsivJuaSYNL2W4wZSuTxFG6C1pvy/R7Y0svqN32A8kkNWk3/47ADksTGGsIvLzQBkX1Y5GDqq4nw==",
-      "path": "system.formats.asn1/9.0.0-rc.1.24431.7",
-      "hashPath": "system.formats.asn1.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-T7T1kH5MU5pd3jo+lPxKOvcUrvsNiGJpOVOM641CRWAy8HRdk55fmmOqcGYZQ2p8+qDOeMUikQyi5dbNVGEJjg==",
+      "path": "system.formats.asn1/9.0.0-rc.2.24473.5",
+      "hashPath": "system.formats.asn1.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
     "System.Globalization/4.3.0": {
       "type": "package",
@@ -4747,12 +4762,12 @@
       "path": "system.globalization.extensions/4.3.0",
       "hashPath": "system.globalization.extensions.4.3.0.nupkg.sha512"
     },
-    "System.IdentityModel.Tokens.Jwt/8.1.2": {
+    "System.IdentityModel.Tokens.Jwt/8.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UoidlNYjML1ZbV5s8bLP84VpxDzv8uhHzyt5YkZwqLmFTmtOQheNuTKpR/5UWmO5Ka4JT3kVmhUNq5Li733wTg==",
-      "path": "system.identitymodel.tokens.jwt/8.1.2",
-      "hashPath": "system.identitymodel.tokens.jwt.8.1.2.nupkg.sha512"
+      "sha512": "sha512-M61kEnR2ljMFL2vLHmHrodCqPO/zKsYsaRu3jdagYOP/y0ZdFoFoATyfwR0bJ5quBsWEPL5y8QU7CJiEh2kq+Q==",
+      "path": "system.identitymodel.tokens.jwt/8.2.0",
+      "hashPath": "system.identitymodel.tokens.jwt.8.2.0.nupkg.sha512"
     },
     "System.IO/4.3.0": {
       "type": "package",
@@ -4796,12 +4811,12 @@
       "path": "system.linq.async/6.0.1",
       "hashPath": "system.linq.async.6.0.1.nupkg.sha512"
     },
-    "System.Memory/4.5.4": {
+    "System.Memory/4.5.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
-      "path": "system.memory/4.5.4",
-      "hashPath": "system.memory.4.5.4.nupkg.sha512"
+      "sha512": "sha512-XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
+      "path": "system.memory/4.5.5",
+      "hashPath": "system.memory.4.5.5.nupkg.sha512"
     },
     "System.Memory.Data/6.0.0": {
       "type": "package",
@@ -4957,12 +4972,12 @@
       "path": "system.security.cryptography.openssl/4.3.0",
       "hashPath": "system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
-    "System.Security.Cryptography.Pkcs/9.0.0-rc.1.24431.7": {
+    "System.Security.Cryptography.Pkcs/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-XA3T9vBuue+toObeoloe5bb6ix7K6bK3RDzuASgY9hi1JiGGGDTHHaQQBcUG9BchOb5xn0+uUDw+wasGbr/s7g==",
-      "path": "system.security.cryptography.pkcs/9.0.0-rc.1.24431.7",
-      "hashPath": "system.security.cryptography.pkcs.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-OGtdLGaHS+6IUg1aQE+6n4IC8NNE0vIYBr7rVorayW1sJeDxOXNOt/ZDm5cNEJF9ErZZen7j4Tg4Nrzfx4nmOA==",
+      "path": "system.security.cryptography.pkcs/9.0.0-rc.2.24473.5",
+      "hashPath": "system.security.cryptography.pkcs.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
     "System.Security.Cryptography.Primitives/4.3.0": {
       "type": "package",
@@ -4985,12 +5000,12 @@
       "path": "system.security.cryptography.x509certificates/4.3.0",
       "hashPath": "system.security.cryptography.x509certificates.4.3.0.nupkg.sha512"
     },
-    "System.Security.Cryptography.Xml/9.0.0-rc.1.24431.7": {
+    "System.Security.Cryptography.Xml/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-44tMmPZr4EB/grKKbffFZrFyuICmnry+CUkTS+62sBT6f85a6doi76oEFWqt4aQ3JPA/YYV5wCgX6P+S6DKO1w==",
-      "path": "system.security.cryptography.xml/9.0.0-rc.1.24431.7",
-      "hashPath": "system.security.cryptography.xml.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-egl1hxO8LRzhM8NftHafY9vJPg4Xkq2exXGHEz45giMUUXv2RPKXfgiHs8zFsaJoWKyDUa4kRKhFUrXBc5TEFw==",
+      "path": "system.security.cryptography.xml/9.0.0-rc.2.24473.5",
+      "hashPath": "system.security.cryptography.xml.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
     "System.Security.Permissions/6.0.0": {
       "type": "package",
@@ -5020,12 +5035,12 @@
       "path": "system.text.encodings.web/6.0.0",
       "hashPath": "system.text.encodings.web.6.0.0.nupkg.sha512"
     },
-    "System.Text.Json/9.0.0-rc.1.24431.7": {
+    "System.Text.Json/9.0.0-rc.2.24473.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-f6EHMnCjPQbwIftWreac1RsDolPpRT47lBfdHM/7Y/phtdewEtn3+XKWUVZ5gpB04tpab5y/XaZRkq28p3xzFQ==",
-      "path": "system.text.json/9.0.0-rc.1.24431.7",
-      "hashPath": "system.text.json.9.0.0-rc.1.24431.7.nupkg.sha512"
+      "sha512": "sha512-IsQCD+zBcFhteX7fUrS4cU/GvfLPy8F4oLtC9VBcF1U1qu1gZB/zlAxW8G0kqmAiXI84/gowZtcX1MjLk2QWoQ==",
+      "path": "system.text.json/9.0.0-rc.2.24473.5",
+      "hashPath": "system.text.json.9.0.0-rc.2.24473.5.nupkg.sha512"
     },
     "System.Text.RegularExpressions/4.3.1": {
       "type": "package",

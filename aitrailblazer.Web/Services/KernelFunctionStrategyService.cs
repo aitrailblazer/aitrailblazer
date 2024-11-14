@@ -1,8 +1,14 @@
 using AITrailblazer.net.Models;
+using AITrailblazer.net.Services;
+
+using OpenAI.Chat;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Agents.Chat;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.TemplateEngine;
+using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -12,8 +18,7 @@ using System.Threading.Tasks;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-using Microsoft.SemanticKernel.TemplateEngine;
-using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+
 
 
 #pragma warning disable SKEXP0110
@@ -102,7 +107,7 @@ namespace AITrailblazer.net.Services
 
                 // Invoke chat and capture messages
                 var accumulatedMessages = new List<object>();
-                chat.AddChatMessage(new ChatMessageContent(AuthorRole.User, input));
+                chat.AddChatMessage(new Microsoft.SemanticKernel.ChatMessageContent(AuthorRole.User, input));
 
                 await foreach (var content in chat.InvokeAsync())
                 {
@@ -123,54 +128,45 @@ namespace AITrailblazer.net.Services
             }
         }
 
-        /// <summary>
-        /// Executes a chat interaction between a writer, an editor, and a reviewer agent.
-        /// </summary>
-        /// <param name="input">The initial input provided by the user.</param>
-        /// <param name="agentsConfig">The list of agent configurations defining their roles and instructions.</param>
-        /// <param name="terminationPrompt">The prompt used to determine when the chat should end.</param>
-        /// <param name="maxIterations">The maximum number of iterations (turns) allowed in the chat.</param>
-        /// <returns>A string representing all chat messages accumulated during the interaction.</returns>
-        public async Task<string> ExecuteAgentChatWriterEditorReviewerAsync(
-            string input,
-            List<ChatAgentConfig> agentsConfig,
-            string terminationPrompt,
-            int maxIterations)
+        public async Task<(string response, TokenCounts? tokenUsage)> ExecuteAgentChatWriterEditorReviewerAsync(
+           string input,
+           List<ChatAgentConfig> agentsConfig,
+           string terminationPrompt,
+           int maxIterations)
         {
+            // Validate input
             if (string.IsNullOrWhiteSpace(input))
             {
-                return ReturnErrorMessage("Input cannot be null or empty.");
+                return (ReturnErrorMessage("Input cannot be null or empty."), null);
             }
 
             if (agentsConfig == null || agentsConfig.Count < 3)
             {
-                return ReturnErrorMessage("At least three agent configurations must be provided.");
+                return (ReturnErrorMessage("At least three agent configurations must be provided."), null);
             }
 
             try
             {
-                // Create agents using their specific configurations
+                // Create agents and validate
                 var agents = CreateAgents(agentsConfig);
                 if (agents == null || agents.Count < 3)
                 {
-                    return ReturnErrorMessage("Failed to create all required agents.");
+                    return (ReturnErrorMessage("Failed to create all required agents."), null);
                 }
 
-                // Get the writer, editor, and reviewer agents
+                // Assign writer, editor, and reviewer agents
                 var agentWriter = agents[0];
                 var agentEditor = agents[1];
-                var reviewerConfig = agentsConfig.FirstOrDefault(c => c.IsReviewer);
-                var agentReviewer = agents.LastOrDefault(agent => agent.Name == reviewerConfig?.Name);
+                var agentReviewer = agents.LastOrDefault(agent => agent.Name == agentsConfig.FirstOrDefault(c => c.IsReviewer)?.Name);
 
                 if (agentReviewer == null)
                 {
-                    return ReturnErrorMessage("Reviewer agent not found.");
+                    return (ReturnErrorMessage("Reviewer agent not found."), null);
                 }
 
-                // Define the termination function using the provided prompt
+                // Set up termination function and chat configuration
                 var terminationFunction = KernelFunctionFactory.CreateFromPrompt(terminationPrompt);
 
-                // Create a chat for agent interaction
                 var chat = new AgentGroupChat(agentWriter, agentEditor, agentReviewer)
                 {
                     ExecutionSettings = new()
@@ -185,28 +181,53 @@ namespace AITrailblazer.net.Services
                     }
                 };
 
-                // Invoke chat and capture messages
+                // Prepare message accumulation and token counts
                 var accumulatedMessages = new List<object>();
-                chat.AddChatMessage(new ChatMessageContent(AuthorRole.User, input));
+                int totalInputTokens = 0, totalOutputTokens = 0, totalTokens = 0;
 
-                await foreach (var content in chat.InvokeAsync())
+                chat.AddChatMessage(new Microsoft.SemanticKernel.ChatMessageContent(AuthorRole.User, input));
+
+                // Process each response in the chat session
+                await foreach (var response in chat.InvokeAsync())
                 {
+                    // Extract token counts and accumulate totals
+                    // Inside KernelFunctionStrategyService.cs
+                    var tokenCounts = TokenUsageParser.ParseTokenCounts(response);
+
+                    if (tokenCounts != null)
+                    {
+                        totalInputTokens += tokenCounts.PromptTokens;
+                        totalOutputTokens += tokenCounts.CompletionTokens;
+                        totalTokens += tokenCounts.TotalTokens;
+                    }
+
                     var message = new
                     {
-                        Author = content.AuthorName ?? "*",
-                        Content = content.Content
+                        Author = response.AuthorName ?? "*",
+                        Content = response.Content
                     };
                     accumulatedMessages.Add(message);
                 }
 
-                return SerializeToJson(accumulatedMessages);
+                // Serialize accumulated messages to JSON format
+                string responseContent = SerializeToJson(accumulatedMessages);
+
+                // Create a TokenCounts instance to return total token usage
+                var totalTokenUsage = new TokenCounts(
+                    completionTokens: totalOutputTokens,
+                    promptTokens: totalInputTokens,
+                    totalTokens: totalTokens
+                );
+
+                return (responseContent, totalTokenUsage);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred during the chat interaction.");
-                return ReturnErrorMessage("An unexpected error occurred. Please try again later.");
+                return (ReturnErrorMessage("An unexpected error occurred. Please try again later."), null);
             }
         }
+
 
         /// <summary>
         /// Creates a list of chat completion agents based on the provided agent configurations.

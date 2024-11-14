@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -129,15 +129,15 @@
           "dependencies": {
             "Microsoft.Extensions.Http.Resilience": {
               "target": "Package",
-              "version": "[8.10.0, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.Extensions.ServiceDiscovery": {
               "target": "Package",
-              "version": "[8.2.1, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Emoji": {
               "target": "Package",
@@ -145,15 +145,15 @@
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.10.0, )"
             },
             "OpenTelemetry.Extensions.Hosting": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.10.0, )"
             },
             "OpenTelemetry.Instrumentation.AspNetCore": {
               "target": "Package",
@@ -187,7 +187,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -244,11 +244,11 @@
           "dependencies": {
             "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[12.22.2, )"
+              "version": "[12.23.0, )"
             },
             "HtmlAgilityPack": {
               "target": "Package",
-              "version": "[1.11.67, )"
+              "version": "[1.11.71, )"
             },
             "Humanizer": {
               "target": "Package",
@@ -256,15 +256,15 @@
             },
             "Markdig": {
               "target": "Package",
-              "version": "[0.37.0, )"
+              "version": "[0.38.0, )"
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
-              "version": "[9.0.0-rc.1.24452.1, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.Azure.Cosmos": {
               "target": "Package",
-              "version": "[3.44.1, )"
+              "version": "[3.45.1, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
@@ -276,35 +276,35 @@
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
-              "version": "[3.2.2, )"
+              "version": "[3.3.1, )"
             },
             "Microsoft.Identity.Web.GraphServiceClientBeta": {
               "target": "Package",
-              "version": "[3.2.2, )"
+              "version": "[3.3.1, )"
             },
             "Microsoft.Identity.Web.UI": {
               "target": "Package",
-              "version": "[3.2.2, )"
+              "version": "[3.3.1, )"
             },
             "Microsoft.Kiota.Abstractions": {
               "target": "Package",
-              "version": "[1.13.2, )"
+              "version": "[1.14.0, )"
             },
             "Microsoft.Kiota.Serialization.Form": {
               "target": "Package",
-              "version": "[1.13.1, )"
+              "version": "[1.14.0, )"
             },
             "Microsoft.Kiota.Serialization.Json": {
               "target": "Package",
-              "version": "[1.13.1, )"
+              "version": "[1.14.0, )"
             },
             "Microsoft.Kiota.Serialization.Multipart": {
               "target": "Package",
-              "version": "[1.13.1, )"
+              "version": "[1.14.0, )"
             },
             "Microsoft.Kiota.Serialization.Text": {
               "target": "Package",
-              "version": "[1.13.1, )"
+              "version": "[1.14.0, )"
             },
             "Microsoft.ML.Tokenizers": {
               "target": "Package",
@@ -312,7 +312,7 @@
             },
             "Microsoft.SemanticKernel": {
               "target": "Package",
-              "version": "[1.25.0, )"
+              "version": "[1.28.0, )"
             },
             "Microsoft.SemanticKernel.Agents.Abstractions": {
               "target": "Package",
@@ -344,7 +344,7 @@
             },
             "Microsoft.SemanticKernel.PromptTemplates.Handlebars": {
               "target": "Package",
-              "version": "[1.25.0, )"
+              "version": "[1.28.0, )"
             },
             "Microsoft.SemanticKernel.Prompty": {
               "target": "Package",
@@ -352,7 +352,7 @@
             },
             "Microsoft.SemanticKernel.Yaml": {
               "target": "Package",
-              "version": "[1.25.0, )"
+              "version": "[1.28.0, )"
             },
             "Microsoft.TypeChat": {
               "target": "Package",
@@ -398,7 +398,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -464,7 +464,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

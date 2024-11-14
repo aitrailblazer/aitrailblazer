@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using AITrailblazer.net.Services;
 using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
 using Microsoft.Azure.Cosmos;
 using System.Diagnostics;
@@ -82,20 +81,20 @@ namespace Cosmos.Copilot.Services
 
 
         /// <summary>
-        /// Retrieves all chat sessions for a user.
+        /// Retrieves all chat Threads for a user.
         /// </summary>
-        public async Task<List<SessionChat>> GetAllChatSessionsAsync(string tenantId, string userId)
+        public async Task<List<ThreadChat>> GetAllChatThreadsAsync(string tenantId, string userId)
         {
-            _logger.LogInformation("Retrieving all chat sessions for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
+            _logger.LogInformation("Retrieving all chat Threads for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
             try
             {
-                var sessions = await _cosmosDbService.GetSessionsAsync(tenantId, userId);
-                _logger.LogInformation("Retrieved {Count} chat sessions.", sessions.Count);
-                return sessions;
+                var Threads = await _cosmosDbService.GetThreadsAsync(tenantId, userId);
+                _logger.LogInformation("Retrieved {Count} chat Threads.", Threads.Count);
+                return Threads;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to retrieve chat sessions for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
+                _logger.LogError(ex, "Failed to retrieve chat Threads for TenantId={TenantId}, UserId={UserId}.", tenantId, userId);
                 throw;
             }
         }
@@ -119,214 +118,211 @@ namespace Cosmos.Copilot.Services
             }
         }
         /// <summary>
-        /// Retrieves chat messages for a specific session.
+        /// Retrieves chat messages for a specific Thread.
         /// </summary>
-        public async Task<List<Message>> GetChatSessionMessagesAsync(
+        public async Task<List<Message>> GetChatThreadMessagesAsync(
             string tenantId,
             string userId,
-            string? sessionId)
+            string? threadId)
         {
-            // Retrieving chat messages for 
-            // TenantId=2e58c7ce-9814-4e3d-9e88-467669ba3f5c, UserId=8f22704e-0396-4263-84a7-63310d3f39e7, SessionId=ChatSession-ASAP_Semantic_Caching_vs__Google's_Gemini_Context_Caching__An_Ad-20241107-190609-3570
-            // GetChatSessionContextWindow: Fetching context window for 
-            // TenantId=2e58c7ce-9814-4e3d-9e88-467669ba3f5c, UserId=8f22704e-0396-4263-84a7-63310d3f39e7, SessionId=ChatSession-ASAP_Semantic_Caching_vs__Google's_Gemini_Context_Caching__An_Ad-20241107-190609-3570
-            _logger.LogInformation("Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
+             _logger.LogInformation("GetChatThreadMessagesAsync: Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
                 ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                ArgumentNullException.ThrowIfNull(threadId);
 
-                var messages = await _cosmosDbService.GetSessionMessagesAsync(
+                var messages = await _cosmosDbService.GetThreadMessagesAsync(
                     tenantId,
                     userId,
-                    sessionId);
-                _logger.LogInformation("GetChatSessionMessagesAsync Retrieved {Count} messages for SessionId={SessionId}.", messages.Count, sessionId);
+                    threadId);
+                _logger.LogInformation("GetChatThreadMessagesAsync: Retrieved {Count} messages for ThreadId={threadId}.", messages.Count, threadId);
                 return messages;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to retrieve chat messages for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
+                _logger.LogError(ex, "GetChatThreadMessagesAsync:  Failed to retrieve chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
                 throw;
             }
         }
 
         /// <summary>
-        /// Creates a new chat session.
+        /// Creates a new chat Thread.
         /// </summary>
         /// <param name="tenantId">Tenant identifier.</param>
         /// <param name="userId">User identifier.</param>
-        /// <param name="title">Title of the session.</param>
-        /// <returns>The created SessionChat object.</returns>
-        public async Task<SessionChat> CreateNewSessionChatAsync(
+        /// <param name="title">Title of the Thread.</param>
+        /// <returns>The created ThreadChat object.</returns>
+        public async Task<ThreadChat> CreateNewThreadChatAsync(
             string tenantId,
             string userId,
             string title)
         {
-            _logger.LogInformation("CreateNewSessionChatAsync started for TenantId={TenantId}, UserId={UserId}, Title={Title}.", tenantId, userId, title);
+            _logger.LogInformation("CreateNewThreadChatAsync started for TenantId={TenantId}, UserId={UserId}, Title={Title}.", tenantId, userId, title);
 
             try
             {
-                // Create a new SessionChat instance, which generates a unique Id
-                var session = new SessionChat(
+                // Create a new ThreadChat instance, which generates a unique Id
+                var Thread = new ThreadChat(
                     tenantId: tenantId,
                     userId: userId,
                     title: title
                 );
-                // Ensure that the session timestamp is fully initialized
-                session.TimeStamp = DateTime.UtcNow;
+                // Ensure that the Thread timestamp is fully initialized
+                Thread.TimeStamp = DateTime.UtcNow;
 
-                _logger.LogDebug("CreateNewSessionChatAsync SessionChat instance created with Id={sessionId}.", session.SessionId);
+                _logger.LogDebug("CreateNewThreadChatAsync ThreadChat instance created with Id={ThreadId}.", Thread.ThreadId);
 
-                // Insert the new session into Cosmos DB
-                await _cosmosDbService.InsertSessionChatAsync(tenantId, userId, session);
-                _logger.LogInformation("CreateNewSessionChatAsync: New chat session successfully inserted into Cosmos DB. SessionId={sessionId}, TenantId={TenantId}, UserId={UserId}, Title={Title}.",
-                    session.SessionId, tenantId, userId, title);
+                // Insert the new Thread into Cosmos DB
+                await _cosmosDbService.InsertThreadChatAsync(tenantId, userId, Thread);
+                _logger.LogInformation("CreateNewThreadChatAsync: New chat Thread successfully inserted into Cosmos DB. ThreadId={ThreadId}, TenantId={TenantId}, UserId={UserId}, Title={Title}.",
+                    Thread.ThreadId, tenantId, userId, title);
 
-                return session;
+                return Thread;
             }
             catch (CosmosException cosmosEx)
             {
                 // Handle specific Cosmos DB exceptions if necessary
-                _logger.LogError(cosmosEx, "Cosmos DB error while creating new chat session. TenantId={TenantId}, UserId={UserId}, Title={Title}. StatusCode={StatusCode}, Message={Message}.",
+                _logger.LogError(cosmosEx, "Cosmos DB error while creating new chat Thread. TenantId={TenantId}, UserId={UserId}, Title={Title}. StatusCode={StatusCode}, Message={Message}.",
                     tenantId, userId, title, cosmosEx.StatusCode, cosmosEx.Message);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error occurred while creating new chat session. TenantId={TenantId}, UserId={UserId}, Title={Title}.",
+                _logger.LogError(ex, "Unexpected error occurred while creating new chat Thread. TenantId={TenantId}, UserId={UserId}, Title={Title}.",
                     tenantId, userId, title);
                 throw;
             }
         }
 
         /// <summary>
-        /// Updates an existing SessionChat in Cosmos DB.
+        /// Updates an existing ThreadChat in Cosmos DB.
         /// </summary>
-        /// <param name="session">SessionChat object to update.</param>
+        /// <param name="Thread">ThreadChat object to update.</param>
         /// <param name="tenantId">Tenant identifier.</param>
         /// <param name="userId">User identifier.</param>
-        /// <param name="title">Title of the session.</param>
+        /// <param name="title">Title of the Thread.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task UpdateSessionAsync(
-            string partitionKey,
-            SessionChat session)
+        public async Task UpdateThreadAsync(
+            PartitionKey partitionKey,
+            ThreadChat Thread)
         {
-            _logger.LogInformation("Updating session with ID: {Id}", session.Id);
+            _logger.LogInformation("Updating Thread with ID: {Id}", Thread.Id);
             try
             {
-                await _cosmosDbService.UpdateSessionAsync(
+                await _cosmosDbService.UpdateThreadAsync(
                     partitionKey,
-                    session
+                    Thread
                 );
-                _logger.LogInformation("Updated session with ID: {Id}.", session.Id);
+                _logger.LogInformation("Updated Thread with ID: {Id}.", Thread.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating session with ID: {Id}.", session.Id);
+                _logger.LogError(ex, "Error updating Thread with ID: {Id}.", Thread.Id);
                 throw;
             }
         }
         /// <summary>
-        /// Renames an existing chat session.
+        /// Renames an existing chat Thread.
         /// </summary>
-        public async Task RenameChatSessionAsync(
+        public async Task RenameChatThreadAsync(
             string tenantId,
             string userId,
-            string sessionId,
-            string newChatSessionName)
+            string ThreadId,
+            string newChatThreadName)
         {
-            string partitionKey = $"{tenantId}|{userId}|{sessionId}";
-            _logger.LogInformation("Renaming chat session SessionId={SessionId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", sessionId, newChatSessionName, tenantId, userId);
+            PartitionKey partitionKey = CosmosDbService.GetPK(tenantId, userId, ThreadId);
+
+            _logger.LogInformation("Renaming chat Thread ThreadId={ThreadId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", ThreadId, newChatThreadName, tenantId, userId);
 
             try
             {
                 // Validate input parameters
                 ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
                 ArgumentNullException.ThrowIfNull(userId, nameof(userId));
-                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
-                ArgumentNullException.ThrowIfNull(newChatSessionName, nameof(newChatSessionName));
+                ArgumentNullException.ThrowIfNull(ThreadId, nameof(ThreadId));
+                ArgumentNullException.ThrowIfNull(newChatThreadName, nameof(newChatThreadName));
 
-                // Retrieve the existing session
-                var session = await _cosmosDbService.GetSessionAsync(
+                // Retrieve the existing Thread
+                var Thread = await _cosmosDbService.GetThreadAsync(
                     tenantId,
                     userId,
-                    sessionId);
+                    ThreadId);
 
-                if (session == null)
+                if (Thread == null)
                 {
-                    _logger.LogWarning("Chat session with SessionId={SessionId} not found for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
-                    throw new KeyNotFoundException($"Chat session with SessionId={sessionId} not found.");
+                    _logger.LogWarning("Chat Thread with ThreadId={ThreadId} not found for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
+                    throw new KeyNotFoundException($"Chat Thread with ThreadId={ThreadId} not found.");
                 }
 
-                // Use the Rename method to update the session name
-                session.Rename(newChatSessionName);
+                // Use the Rename method to update the Thread name
+                Thread.Rename(newChatThreadName);
 
-                // Update the session in the database
-                await _cosmosDbService.UpdateSessionAsync(
+                // Update the Thread in the database
+                await _cosmosDbService.UpdateThreadAsync(
                     partitionKey,
-                    session
+                    Thread
                 );
 
-                _logger.LogInformation("Chat session SessionId={SessionId} renamed to '{NewName}'.", sessionId, newChatSessionName);
+                _logger.LogInformation("Chat Thread ThreadId={ThreadId} renamed to '{NewName}'.", ThreadId, newChatThreadName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to rename chat session SessionId={SessionId} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                _logger.LogError(ex, "Failed to rename chat Thread ThreadId={ThreadId} for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
                 throw;
             }
         }
 
         /// <summary>
-        /// Deletes a specific message within a chat session.
+        /// Deletes a specific message within a chat Thread.
         /// </summary>
         /// <param name="tenantId">Tenant identifier.</param>
         /// <param name="userId">User identifier.</param>
-        /// <param name="sessionId">Session Chat identifier.</param>
+        /// <param name="ThreadId">Thread Chat identifier.</param>
         /// <param name="messageId">Message identifier to delete.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task DeleteMessageAsync(string tenantId, string userId, string sessionId, string messageId)
+        public async Task DeleteMessageAsync(string tenantId, string userId, string ThreadId, string messageId)
         {
-            _logger.LogInformation("Deleting message with ID: {MessageId} in session: {SessionId} for TenantId={TenantId}, UserId={UserId}.", messageId, sessionId, tenantId, userId);
+            _logger.LogInformation("Deleting message with ID: {MessageId} in Thread: {ThreadId} for TenantId={TenantId}, UserId={UserId}.", messageId, ThreadId, tenantId, userId);
             try
             {
                 // Validate input parameters
                 ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
                 ArgumentNullException.ThrowIfNull(userId, nameof(userId));
-                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
+                ArgumentNullException.ThrowIfNull(ThreadId, nameof(ThreadId));
                 ArgumentNullException.ThrowIfNull(messageId, nameof(messageId));
 
                 // Call the CosmosDbService to delete the message
-                await _cosmosDbService.DeleteMessageAsync(tenantId, userId, sessionId, messageId);
+                await _cosmosDbService.DeleteMessageAsync(tenantId, userId, ThreadId, messageId);
 
-                _logger.LogInformation("Message with ID: {MessageId} deleted successfully in session: {SessionId}.", messageId, sessionId);
+                _logger.LogInformation("Message with ID: {MessageId} deleted successfully in Thread: {ThreadId}.", messageId, ThreadId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to delete message with ID: {MessageId} in session: {SessionId} for TenantId={TenantId}, UserId={UserId}.", messageId, sessionId, tenantId, userId);
+                _logger.LogError(ex, "Failed to delete message with ID: {MessageId} in Thread: {ThreadId} for TenantId={TenantId}, UserId={UserId}.", messageId, ThreadId, tenantId, userId);
                 throw;
             }
         }
 
 
         /// <summary>
-        /// Deletes a chat session and its messages.
+        /// Deletes a chat Thread and its messages.
         /// </summary>
-        public async Task DeleteChatSessionAsync(string tenantId, string userId, string sessionId)
+        public async Task DeleteChatThreadAsync(string tenantId, string userId, string ThreadId)
         {
-            _logger.LogInformation("Deleting chat session SessionId={SessionId} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+            _logger.LogInformation("Deleting chat Thread ThreadId={ThreadId} for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
                 ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                ArgumentNullException.ThrowIfNull(ThreadId);
 
-                await _cosmosDbService.DeleteSessionAndMessagesAsync(tenantId, userId, sessionId);
-                _logger.LogInformation("Chat session SessionId={SessionId} and its messages deleted successfully.", sessionId);
+                await _cosmosDbService.DeleteThreadAndMessagesAsync(tenantId, userId, ThreadId);
+                _logger.LogInformation("Chat Thread ThreadId={ThreadId} and its messages deleted successfully.", ThreadId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to delete chat session SessionId={SessionId} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                _logger.LogError(ex, "Failed to delete chat Thread ThreadId={ThreadId} for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
                 throw;
             }
         }
@@ -335,22 +331,22 @@ namespace Cosmos.Copilot.Services
         /// Retrieves the context window for the current conversation.
         /// </summary>
         /// 
-        public async Task<List<Message>> GetChatSessionContextWindow(string tenantId, string userId, string sessionId)
+        public async Task<List<Message>> GetChatThreadContextWindow(string tenantId, string userId, string ThreadId)
         {
-            _logger.LogInformation("GetChatSessionContextWindow: Fetching context window for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
+            _logger.LogInformation("GetChatThreadContextWindow: Fetching context window for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
                 ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                ArgumentNullException.ThrowIfNull(ThreadId);
 
                 int tokensUsed = 0;
-                var allMessages = await _cosmosDbService.GetSessionMessagesAsync(
+                var allMessages = await _cosmosDbService.GetThreadMessagesAsync(
                     tenantId,
                     userId,
-                    sessionId);
+                    ThreadId);
                 var contextWindow = new List<Message>();
-                _logger.LogInformation("GetChatSessionContextWindow Retrieved {Count} messages for SessionId={SessionId}.", allMessages.Count, sessionId);
+                _logger.LogInformation("GetChatThreadContextWindow Retrieved {Count} messages for ThreadId={ThreadId}.", allMessages.Count, ThreadId);
 
                 // Start at the end of the list and work backwards
                 for (int i = allMessages.Count - 1; i >= 0; i--)
@@ -366,132 +362,132 @@ namespace Cosmos.Copilot.Services
 
                 // Invert the chat messages to put back into chronological order 
                 contextWindow.Reverse();
-                _logger.LogInformation("GetChatSessionContextWindow: Context window prepared with {Count} messages.", contextWindow.Count);
+                _logger.LogInformation("GetChatThreadContextWindow: Context window prepared with {Count} messages.", contextWindow.Count);
                 return contextWindow;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "GetChatSessionContextWindow: Failed to retrieve context window for TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.", tenantId, userId, sessionId);
+                _logger.LogError(ex, "GetChatThreadContextWindow: Failed to retrieve context window for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
                 throw;
             }
         }
 
 
 
-        public async Task<SessionChat> GetSessionAsync(
+        public async Task<ThreadChat> GetThreadAsync(
            string tenantId,
            string userId,
-           string sessionId)
+           string threadId)
         {
-            _logger.LogInformation("Retrieving session with ID: {Id} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+            _logger.LogInformation("Retrieving Thread with ID: {Id} for TenantId={threadId}, UserId={UserId}.", threadId, tenantId, userId);
             try
             {
-                // Call the non-generic GetSessionAsync method from CosmosDbService
-                SessionChat session = await _cosmosDbService.GetSessionAsync(tenantId, userId, sessionId);
+                // Call the non-generic GetThreadAsync method from CosmosDbService
+                ThreadChat Thread = await _cosmosDbService.GetThreadAsync(tenantId, userId, threadId);
 
-                if (session == null)
+                if (Thread == null)
                 {
-                    _logger.LogWarning("Session with ID {Id} does not exist.", sessionId);
+                    _logger.LogWarning("Thread with ID {Id} does not exist.", threadId);
                     return null;
                 }
 
-                _logger.LogInformation("Retrieved session with ID: {Id}.", session.Id);
-                return session;
+                _logger.LogInformation("Retrieved Thread with ID: {Id}.", Thread.Id);
+                return Thread;
             }
 
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving session with ID: {Id} for TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                _logger.LogError(ex, "Error retrieving Thread with ID: {Id} for TenantId={TenantId}, UserId={UserId}.", threadId, tenantId, userId);
                 throw;
             }
         }
 
-        public async Task UpsertSessionAndMessageAsync(
+        public async Task UpsertThreadAndMessageAsync(
            string tenantId,
            string userId,
-           string sessionId,
+           string threadId,
            Message chatMessage)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             var correlationId = Guid.NewGuid();
 
-            _logger.LogDebug("UpsertSessionAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}.",
-                correlationId, tenantId, userId, sessionId, chatMessage.Id);
+            _logger.LogDebug("UpsertThreadAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}.",
+                correlationId, tenantId, userId, threadId, chatMessage.Id);
 
             try
             {
                 // Validate input parameters
                 ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
                 ArgumentNullException.ThrowIfNull(userId, nameof(userId));
-                ArgumentNullException.ThrowIfNull(sessionId, nameof(sessionId));
+                ArgumentNullException.ThrowIfNull(threadId, nameof(threadId));
                 ArgumentNullException.ThrowIfNull(chatMessage, nameof(chatMessage));
 
-                // Retrieve the current session from the database
-                _logger.LogDebug("Retrieving session from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.",
-                    correlationId, tenantId, userId, sessionId);
+                // Retrieve the current Thread from the database
+                _logger.LogDebug("Retrieving Thread from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
+                    correlationId, tenantId, userId, threadId);
 
-                var session = await _cosmosDbService.GetSessionAsync(
+                var Thread = await _cosmosDbService.GetThreadAsync(
                     tenantId,
                     userId,
-                    sessionId);
+                    threadId);
 
-                if (session == null)
+                if (Thread == null)
                 {
-                    _logger.LogWarning("Session not found. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}.",
-                        correlationId, tenantId, userId, sessionId);
-                    throw new KeyNotFoundException($"Session with ID {sessionId} does not exist.");
+                    _logger.LogWarning("Thread not found. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
+                        correlationId, tenantId, userId, threadId);
+                    throw new KeyNotFoundException($"Thread with ID {threadId} does not exist.");
                 }
 
-                // Set the session timestamp first
-                //session.TimeStamp = DateTime.UtcNow;
+                // Set the Thread timestamp first
+                //Thread.TimeStamp = DateTime.UtcNow;
 
                 // Set the message timestamp slightly later
-                chatMessage.TimeStamp = session.TimeStamp.AddMilliseconds(1);
+                chatMessage.TimeStamp = Thread.TimeStamp.AddMilliseconds(1);
 
-                // Add the message to the session
-                session.AddMessage(chatMessage);
+                // Add the message to the Thread
+                Thread.AddMessage(chatMessage);
 
-                _logger.LogDebug("Session tokens updated. CorrelationId={CorrelationId}, SessionId={SessionId}, NewTotalTokens={NewTotalTokens}.",
-                    correlationId, sessionId, session.TotalTokenCount);
+                _logger.LogDebug("Thread tokens updated. CorrelationId={CorrelationId}, ThreadId={ThreadId}, NewTotalTokens={NewTotalTokens}.",
+                    correlationId, threadId, Thread.TotalTokenCount);
 
                 // Prepare items for batch upsert
                 var itemsToUpsert = new object[]
                 {
-                    session,      // Upsert the updated session
+                    Thread,      // Upsert the updated Thread
                     chatMessage   // Upsert the new message
                 };
 
-                _logger.LogDebug("Performing transactional batch upsert. CorrelationId={CorrelationId}, SessionId={SessionId}, MessageId={MessageId}.",
-                    correlationId, sessionId, chatMessage.Id);
+                _logger.LogDebug("Performing transactional batch upsert. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}.",
+                    correlationId, threadId, chatMessage.Id);
 
-                await _cosmosDbService.UpsertSessionBatchAsync(
+                await _cosmosDbService.UpsertThreadBatchAsync(
                     tenantId,
                     userId,
-                    sessionId,
+                    threadId,
                     itemsToUpsert
                 );
 
-                _logger.LogInformation("Session and message upserted successfully. CorrelationId={CorrelationId}, SessionId={SessionId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
-                    correlationId, sessionId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
+                _logger.LogInformation("Thread and message upserted successfully. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                    correlationId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
             }
             catch (CosmosException cosmosEx)
             {
                 stopwatch.Stop();
-                _logger.LogError(cosmosEx, "Cosmos DB error while upserting session and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}, StatusCode={StatusCode}, Message={Message}.",
-                    correlationId, tenantId, userId, sessionId, chatMessage.Id, cosmosEx.StatusCode, cosmosEx.Message);
+                _logger.LogError(cosmosEx, "Cosmos DB error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, StatusCode={StatusCode}, Message={Message}.",
+                    correlationId, tenantId, userId, threadId, chatMessage.Id, cosmosEx.StatusCode, cosmosEx.Message);
                 throw;
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                _logger.LogError(ex, "Unexpected error while upserting session and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, SessionId={SessionId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
-                    correlationId, tenantId, userId, sessionId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
+                _logger.LogError(ex, "Unexpected error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                    correlationId, tenantId, userId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
                 throw;
             }
             finally
             {
                 stopwatch.Stop();
-                _logger.LogDebug("UpsertSessionAndMessageAsync completed. CorrelationId={CorrelationId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                _logger.LogDebug("UpsertThreadAndMessageAsync completed. CorrelationId={CorrelationId}, ElapsedTimeMs={ElapsedTimeMs}.",
                     correlationId, stopwatch.ElapsedMilliseconds);
             }
         }
@@ -733,19 +729,19 @@ namespace Cosmos.Copilot.Services
         }
 
         /// <summary>
-        /// Summarizes the chat session to generate a relevant name.
+        /// Summarizes the chat Thread to generate a relevant name.
         /// </summary>
-        public async Task<string> SummarizeChatSessionNameAsync(string tenantId, string userId, string? sessionId)
+        public async Task<string> SummarizeChatThreadNameAsync(string tenantId, string userId, string? ThreadId)
         {
-            _logger.LogInformation("Summarizing chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+            _logger.LogInformation("Summarizing chat Thread name for ThreadId={ThreadId}, TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
                 ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(sessionId);
+                ArgumentNullException.ThrowIfNull(ThreadId);
 
-                // Get the messages for the session
-                var messages = await _cosmosDbService.GetSessionMessagesAsync(tenantId, userId, sessionId);
+                // Get the messages for the Thread
+                var messages = await _cosmosDbService.GetThreadMessagesAsync(tenantId, userId, ThreadId);
                 _logger.LogDebug("Retrieved {Count} messages for summarization.", messages.Count);
 
                 // Create a conversation string from the messages
@@ -756,14 +752,14 @@ namespace Cosmos.Copilot.Services
                 var completionText = await _semanticKernelService.SummarizeConversationAsync(conversationText);
                 _logger.LogInformation("Summarization completed with summary: '{Summary}'.", completionText);
 
-                await RenameChatSessionAsync(tenantId, userId, sessionId, completionText);
-                _logger.LogInformation("Chat session renamed based on summarization.");
+                await RenameChatThreadAsync(tenantId, userId, ThreadId, completionText);
+                _logger.LogInformation("Chat Thread renamed based on summarization.");
 
                 return completionText;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to summarize chat session name for SessionId={SessionId}, TenantId={TenantId}, UserId={UserId}.", sessionId, tenantId, userId);
+                _logger.LogError(ex, "Failed to summarize chat Thread name for ThreadId={ThreadId}, TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
                 throw;
             }
         }

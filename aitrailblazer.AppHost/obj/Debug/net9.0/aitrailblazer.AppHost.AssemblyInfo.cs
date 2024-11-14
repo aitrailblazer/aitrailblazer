@@ -12,19 +12,20 @@ using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("24e40f1a-0b70-4d48-b81b-d03726374e90")]
 [assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
-    "64/8.2.1/tools/dcp"))]
+    "64/9.0.0/tools/dcp"))]
 [assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
-    "64/8.2.1/tools/ext/"))]
+    "64/9.0.0/tools/ext/"))]
 [assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("/Users/constantinevassilev02/.nuget/packages/aspire.hosting.orchestration.osx-arm" +
-    "64/8.2.1/tools/ext/bin/"))]
+    "64/9.0.0/tools/ext/bin/"))]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailbl" +
     "azer.AppHost"))]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("/Users/constantinevassilev02/.nuget/packages/aspire.dashboard.sdk.osx-arm64/8.2.1" +
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "aitrailblazer.AppHost.csproj")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("/Users/constantinevassilev02/.nuget/packages/aspire.dashboard.sdk.osx-arm64/9.0.0" +
     "/tools/Aspire.Dashboard.dll"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b750aea6fbfa6678c874b137d2151a0a7d943e93")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51fabe8ddb5cd2e8a8df7777915b6f870b30e549")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

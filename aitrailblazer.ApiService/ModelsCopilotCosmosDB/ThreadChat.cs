@@ -1,91 +1,87 @@
-// SessionChat.cs
-
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Cosmos.Copilot.Models
 {
     /// <summary>
-    /// Represents a chat session with associated messages and metadata.
+    /// Represents a chat thread with associated messages and metadata.
     /// </summary>
-    public class SessionChat
+    public class ThreadChat
     {
         /// <summary>
-        /// Unique identifier for the session.
-        /// Format: "ChatSession-{sanitizedTitle}-{currentTime}-{uniqueSuffix}"
-        /// Example: "ChatSession-ProjectDiscussion-20240427-153000-ABCD"
+        /// Unique identifier for the thread.
+        /// Format: "ChatThread-{sanitizedTitle}-{currentTime}-{uniqueSuffix}"
+        /// Example: "ChatThread-ProjectDiscussion-20240427-153000-ABCD"
         /// </summary>
         [JsonProperty("id")]
-        public string Id { get;  set; } // Ensures the ID cannot be modified externally
+        public string Id { get; set; }
 
         /// <summary>
         /// Type of the document. Useful for distinguishing between different document types in the same container.
         /// </summary>
         [JsonProperty("type")]
-        public string Type { get;  set; } // Ensures the Type cannot be modified externally
+        public string Type { get; set; }
 
         /// <summary>
         /// Tenant ID.
         /// </summary>
         [JsonProperty("tenantId")]
-        public string TenantId { get;  set; } // Ensures the TenantId cannot be modified externally
+        public string TenantId { get; set; }
 
         /// <summary>
         /// User ID.
         /// </summary>
         [JsonProperty("userId")]
-        public string UserId { get;  set; } // Ensures the UserId cannot be modified externally
+        public string UserId { get; set; }
 
         /// <summary>
-        /// Partition key - unique per session.
+        /// Partition key - unique per thread.
         /// </summary>
-        [JsonProperty("sessionId")]
-        public string SessionId { get;  set; } // Changed from sessionChatId to sessionId
+        [JsonProperty("threadId")]
+        public string ThreadId { get; set; }
 
         /// <summary>
-        /// Title of the session.
+        /// Title of the thread.
         /// </summary>
         [JsonProperty("title")]
-        public string Title { get;  set; } // Ensures the Title cannot be modified externally
+        public string Title { get; set; }
 
         /// <summary>
-        /// Total tokens used in the session.
+        /// Total tokens used in the thread.
         /// </summary>
         [JsonProperty("totalTokenCount")]
-        public int TotalTokenCount { get;  set; } // Ensures the Tokens count cannot be modified externally
+        public int TotalTokenCount { get; set; }
 
         /// <summary>
-        /// Timestamp of the last activity in the session.
+        /// Timestamp of the last activity in the thread.
         /// </summary>
         [JsonProperty("timeStamp")]
-        public DateTime TimeStamp { get;  set; } // Ensures the TimeStamp cannot be modified externally
+        public DateTime TimeStamp { get; set; }
 
         /// <summary>
-        /// List of messages in the session. Ignored by Cosmos DB for storage.
+        /// List of messages in the thread. Ignored by Cosmos DB for storage.
         /// </summary>
         [JsonIgnore]
-        public List<Message> Messages { get;  set; } // Ensures the Messages list cannot be modified externally
+        public List<Message> Messages { get; set; }
 
         /// <summary>
         /// Default constructor for deserialization.
         /// </summary>
         [JsonConstructor]
-         SessionChat()
+        private ThreadChat()
         {
-            // Required for deserialization
             Messages = new List<Message>();
         }
 
         /// <summary>
-        /// Constructor for creating a new session.
+        /// Constructor for creating a new thread.
         /// </summary>
         /// <param name="tenantId">Tenant identifier.</param>
         /// <param name="userId">User identifier.</param>
-        /// <param name="title">Title of the session.</param>
-        public SessionChat(string tenantId, string userId, string title)
+        /// <param name="title">Title of the thread.</param>
+        public ThreadChat(string tenantId, string userId, string title)
         {
             // Validate input parameters
             if (string.IsNullOrWhiteSpace(tenantId))
@@ -101,12 +97,12 @@ namespace Cosmos.Copilot.Models
             string currentTime = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
             string uniqueSuffix = Guid.NewGuid().ToString("N").Substring(0, 4); // 4-character unique suffix
             string sanitizedTitle = SanitizeTitle(title);
-            Id = $"ChatSession-{sanitizedTitle}-{currentTime}-{uniqueSuffix}"; // Ensures uniqueness
+            Id = $"ChatThread-{sanitizedTitle}-{currentTime}-{uniqueSuffix}";
 
-            Type = nameof(SessionChat);
+            Type = nameof(ThreadChat);
             TenantId = tenantId;
             UserId = userId;
-            SessionId = Id; // Set SessionId to Id for uniqueness and alignment with partition key
+            ThreadId = Id;
             Title = title;
 
             TotalTokenCount = 0;
@@ -119,7 +115,7 @@ namespace Cosmos.Copilot.Models
         /// </summary>
         /// <param name="title">Original title.</param>
         /// <returns>Sanitized title.</returns>
-         string SanitizeTitle(string title)
+        private string SanitizeTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be null or empty.", nameof(title));
@@ -136,9 +132,7 @@ namespace Cosmos.Copilot.Models
             title = title.Replace(" ", "_");
 
             // Optionally, truncate the title to ensure the 'id' does not exceed 255 characters
-            // Considering the prefix and unique suffix added in the constructor
-            // Example: "ChatSession-{sanitizedTitle}-{currentTime}-{uniqueSuffix}"
-            int maxTitleLength = 255 - "ChatSession-".Length - "yyyyMMdd-HHmmss".Length - 1 - 4; // Adjust as needed
+            int maxTitleLength = 255 - "ChatThread-".Length - "yyyyMMdd-HHmmss".Length - 1 - 4;
             if (title.Length > maxTitleLength)
             {
                 title = title.Substring(0, maxTitleLength);
@@ -148,7 +142,7 @@ namespace Cosmos.Copilot.Models
         }
 
         /// <summary>
-        /// Adds a message to the session and updates the token count and timestamp.
+        /// Adds a message to the thread and updates the token count and timestamp.
         /// </summary>
         /// <param name="message">The message to add.</param>
         public void AddMessage(Message message)
@@ -162,7 +156,7 @@ namespace Cosmos.Copilot.Models
         }
 
         /// <summary>
-        /// Updates an existing message in the session and refreshes the timestamp.
+        /// Updates an existing message in the thread and refreshes the timestamp.
         /// </summary>
         /// <param name="message">The updated message.</param>
         public void UpdateMessage(Message message)
@@ -173,11 +167,8 @@ namespace Cosmos.Copilot.Models
             var existingMessage = Messages.SingleOrDefault(m => m.Id == message.Id);
             if (existingMessage != null)
             {
-                // Update token counts
-                TotalTokenCount = TotalTokenCount - existingMessage.TotalTokenCount
-                         + message.TotalTokenCount;
+                TotalTokenCount = TotalTokenCount - existingMessage.TotalTokenCount + message.TotalTokenCount;
 
-                // Replace the existing message with the updated one
                 var index = Messages.IndexOf(existingMessage);
                 Messages[index] = message;
 
@@ -185,12 +176,12 @@ namespace Cosmos.Copilot.Models
             }
             else
             {
-                throw new InvalidOperationException($"Message with Id {message.Id} does not exist in the session.");
+                throw new InvalidOperationException($"Message with Id {message.Id} does not exist in the thread.");
             }
         }
 
         /// <summary>
-        /// Removes a message from the session and updates the token count and timestamp.
+        /// Removes a message from the thread and updates the token count and timestamp.
         /// </summary>
         /// <param name="messageId">The ID of the message to remove.</param>
         public void RemoveMessage(string messageId)
@@ -207,7 +198,7 @@ namespace Cosmos.Copilot.Models
             }
             else
             {
-                throw new InvalidOperationException($"Message with Id {messageId} does not exist in the session.");
+                throw new InvalidOperationException($"Message with Id {messageId} does not exist in the thread.");
             }
         }
 
@@ -225,7 +216,7 @@ namespace Cosmos.Copilot.Models
         }
 
         /// <summary>
-        /// Retrieves all messages in the session.
+        /// Retrieves all messages in the thread.
         /// </summary>
         /// <returns>A read-only list of messages.</returns>
         public IReadOnlyList<Message> GetAllMessages()
@@ -234,16 +225,35 @@ namespace Cosmos.Copilot.Models
         }
 
         /// <summary>
-        /// Renames the chat session.
+        /// Renames the chat thread.
         /// </summary>
-        /// <param name="newName">The new name for the chat session.</param>
+        /// <param name="newTitle">The new title for the chat thread.</param>
         public void Rename(string newTitle)
         {
             if (string.IsNullOrWhiteSpace(newTitle))
-                throw new ArgumentException("New Title cannot be null or empty.", nameof(newTitle));
+                throw new ArgumentException("New title cannot be null or empty.", nameof(newTitle));
 
             Title = newTitle;
             TimeStamp = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Returns a sanitized copy of the ThreadChat object with tenantId and userId replaced.
+        /// </summary>
+        public ThreadChat GetSanitizedCopy()
+        {
+            return new ThreadChat
+            {
+                Id = this.Id,
+                Type = this.Type,
+                TenantId = "SANITIZED_TENANT_ID",
+                UserId = "SANITIZED_USER_ID",
+                ThreadId = this.ThreadId,
+                Title = this.Title,
+                TotalTokenCount = this.TotalTokenCount,
+                TimeStamp = this.TimeStamp,
+                Messages = this.Messages // Messages can also be sanitized if needed
+            };
         }
     }
 }

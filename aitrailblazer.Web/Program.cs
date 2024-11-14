@@ -27,6 +27,7 @@ using aitrailblazer.Web.Components;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.JSInterop;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Key Vault Configuration

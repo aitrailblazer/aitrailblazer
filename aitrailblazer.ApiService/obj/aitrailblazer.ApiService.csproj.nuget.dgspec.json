@@ -48,6 +48,110 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Azure.Cosmos": {
+              "target": "Package",
+              "version": "[3.45.2, )"
+            },
+            "Microsoft.Extensions.ApiDescription.Server": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Identity.Web": {
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Microsoft.Kiota.Abstractions": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.Kiota.Serialization.Form": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.Kiota.Serialization.Json": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.Kiota.Serialization.Multipart": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.Kiota.Serialization.Text": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.ML.Tokenizers": {
+              "target": "Package",
+              "version": "[0.22.0, )"
+            },
+            "Microsoft.SemanticKernel": {
+              "target": "Package",
+              "version": "[1.29.0, )"
+            },
+            "Microsoft.SemanticKernel.Agents.Abstractions": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Agents.Core": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
+              "target": "Package",
+              "version": "[1.29.0-beta, )"
+            },
+            "Microsoft.SemanticKernel.Plugins.Core": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Plugins.OpenApi": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Plugins.Web": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.PromptTemplates.Handlebars": {
+              "target": "Package",
+              "version": "[1.29.0, )"
+            },
+            "Microsoft.SemanticKernel.Prompty": {
+              "target": "Package",
+              "version": "[1.29.0-alpha, )"
+            },
+            "Microsoft.SemanticKernel.Yaml": {
+              "target": "Package",
+              "version": "[1.29.0, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.1.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,7 +171,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -114,15 +218,15 @@
           "dependencies": {
             "Microsoft.Extensions.Http.Resilience": {
               "target": "Package",
-              "version": "[8.10.0, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.Extensions.ServiceDiscovery": {
               "target": "Package",
-              "version": "[8.2.1, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Emoji": {
               "target": "Package",
@@ -130,15 +234,15 @@
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.10.2, )"
+              "version": "[4.10.3, )"
             },
             "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.10.0, )"
             },
             "OpenTelemetry.Extensions.Hosting": {
               "target": "Package",
-              "version": "[1.9.0, )"
+              "version": "[1.10.0, )"
             },
             "OpenTelemetry.Instrumentation.AspNetCore": {
               "target": "Package",
@@ -172,7 +276,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

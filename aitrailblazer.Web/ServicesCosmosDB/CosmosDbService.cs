@@ -1,10 +1,11 @@
-﻿using Azure.Core;
-using Azure.Identity;
+﻿
 using Cosmos.Copilot.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 using Microsoft.Extensions.Logging;
+using Azure.Core;
+using Azure.Identity;
 using Newtonsoft.Json;
 using System.Text.Json;
 using Container = Microsoft.Azure.Cosmos.Container;
@@ -101,16 +102,19 @@ public class CosmosDbService
     /// <param name="userId">Id of User.</param>
     /// <param name="categoryId">Category Id of the item.</param>
     /// <returns>Newly created partition key.</returns>
-    private static PartitionKey GetPK(string tenantId, string userId, string sessionId = null)
+    public static PartitionKey GetPK(
+        string tenantId, 
+        string userId, 
+        string threadId = null)
     {
         var partitionKeyBuilder = new PartitionKeyBuilder()
             .Add(tenantId ?? string.Empty)   // Add tenantId, defaulting to empty if null
             .Add(userId ?? string.Empty);    // Add userId, defaulting to empty if null
 
-        // Only add sessionId if it is not null or empty
-        if (!string.IsNullOrEmpty(sessionId))
+        // Only add threadId if it is not null or empty
+        if (!string.IsNullOrEmpty(threadId))
         {
-            partitionKeyBuilder.Add(sessionId);
+            partitionKeyBuilder.Add(threadId);
         }
 
         return partitionKeyBuilder.Build();
@@ -118,44 +122,44 @@ public class CosmosDbService
 
 
     /// <summary>
-    /// Inserts a new SessionChat into Cosmos DB.
+    /// Inserts a new ThreadChat into Cosmos DB.
     /// </summary>
     /// <param name="tenantId">Tenant identifier.</param>
     /// <param name="userId">User identifier.</param>
-    /// <param name="session">SessionChat object to insert.</param>
-    /// <returns>The inserted SessionChat object.</returns>
-    public async Task InsertSessionChatAsync(
+    /// <param name="thread">ThreadChat object to insert.</param>
+    /// <returns>The inserted ThreadChat object.</returns>
+    public async Task InsertThreadChatAsync(
         string tenantId,
         string userId,
-        SessionChat session)
+        ThreadChat thread)
     {
-        _logger.LogInformation("Inserting new session with sessionId: {sessionId}", session.SessionId);
+        _logger.LogInformation("Inserting new thread with threadId: {threadId}", thread.ThreadId);
         try
         {
-            PartitionKey partitionKey = GetPK(tenantId, userId, session.SessionId); ;
+            PartitionKey partitionKey = GetPK(tenantId, userId, thread.ThreadId); ;
             // Avoid logging the entire partition key to protect sensitive information
             _logger.LogDebug("PartitionKey constructed for insertion.");
 
-            await _chatContainer.CreateItemAsync<SessionChat>(
-                item: session,
+            await _chatContainer.CreateItemAsync<ThreadChat>(
+                item: thread,
                 partitionKey: partitionKey
             );
 
-            _logger.LogInformation("Inserted session with sessionId: {sessionId}", session.SessionId);
+            _logger.LogInformation("Inserted thread with threadId: {threadId}", thread.ThreadId);
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
         {
-            _logger.LogError(ex, "A session with sessionId {sessionId} already exists.", session.SessionId);
-            throw new InvalidOperationException($"A session with sessionId '{session.SessionId}' already exists.");
+            _logger.LogError(ex, "A thread with threadId {threadId} already exists.", thread.ThreadId);
+            throw new InvalidOperationException($"A thread with threadId '{thread.ThreadId}' already exists.");
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
         {
-            _logger.LogError(ex, "Bad request while inserting session with sessionId {sessionId}.", session.SessionId);
+            _logger.LogError(ex, "Bad request while inserting thread with threadId {threadId}.", thread.ThreadId);
             throw;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error inserting session with sessionId: {sessionId}", session.SessionId);
+            _logger.LogError(ex, "Error inserting thread with threadId: {threadId}", thread.ThreadId);
             throw;
         }
     }
@@ -192,56 +196,56 @@ public class CosmosDbService
     }
 
     /// <summary>
-    /// Gets a list of all current chat sessions.
+    /// Gets a list of all current chat threads.
     /// </summary>
     /// <param name="tenantId">Id of Tenant.</param>
     /// <param name="userId">Id of User.</param>
-    /// <returns>List of distinct chat session items.</returns>
-    public async Task<List<SessionChat>> GetSessionsAsync(string tenantId, string userId)
+    /// <returns>List of distinct chat thread items.</returns>
+    public async Task<List<ThreadChat>> GetThreadsAsync(string tenantId, string userId)
     {
-        _logger.LogInformation("Retrieving sessions for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
+        _logger.LogInformation("Retrieving threads for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
 
         PartitionKey partitionKey = GetPK(tenantId, userId);
 
         QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.type = @type")
-            .WithParameter("@type", nameof(SessionChat));
+            .WithParameter("@type", nameof(ThreadChat));
 
-        FeedIterator<SessionChat> response = _chatContainer.GetItemQueryIterator<SessionChat>(
+        FeedIterator<ThreadChat> response = _chatContainer.GetItemQueryIterator<ThreadChat>(
             query,
             requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
         );
 
-        List<SessionChat> output = new();
+        List<ThreadChat> output = new();
         while (response.HasMoreResults)
         {
-            FeedResponse<SessionChat> results = await response.ReadNextAsync();
+            FeedResponse<ThreadChat> results = await response.ReadNextAsync();
             output.AddRange(results);
-            _logger.LogInformation("Retrieved {Count} sessions in current batch.", results.Count);
+            _logger.LogInformation("Retrieved {Count} threads in current batch.", results.Count);
         }
 
-        _logger.LogInformation("Total sessions retrieved: {TotalCount}", output.Count);
+        _logger.LogInformation("Total threads retrieved: {TotalCount}", output.Count);
         return output;
     }
 
 
     /// <summary>
-    /// Gets a list of all current chat messages for a specified session identifier.
+    /// Gets a list of all current chat messages for a specified thread identifier.
     /// </summary>
     /// <param name="tenantId">Id of Tenant.</param>
     /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
-    /// <returns>List of chat message items for the specified session.</returns>
-    public async Task<List<Message>> GetSessionMessagesAsync(
+    /// <param name="threadId">Chat thread identifier used to filter messages.</param>
+    /// <returns>List of chat message items for the specified thread.</returns>
+    public async Task<List<Message>> GetThreadMessagesAsync(
         string tenantId,
         string userId,
-        string sessionId)
+        string threadId)
     {
-        _logger.LogInformation("Retrieving messages for Session ID: {sessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+        _logger.LogInformation("Retrieving messages for thread ID: {threadId}", threadId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
         QueryDefinition query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
-            .WithParameter("@sessionId", sessionId)
+                "SELECT * FROM c WHERE c.threadId = @threadId AND c.type = @type")
+            .WithParameter("@threadId", threadId)
             .WithParameter("@type", nameof(Message));
 
         FeedIterator<Message> results = _chatContainer.GetItemQueryIterator<Message>(
@@ -257,111 +261,113 @@ public class CosmosDbService
             {
                 FeedResponse<Message> response = await results.ReadNextAsync();
                 output.AddRange(response);
-                _logger.LogInformation("Retrieved {Count} messages in current batch for Session ID: {sessionId}", response.Count, sessionId);
+                _logger.LogInformation("Retrieved {Count} messages in current batch for thread ID: {threadId}", response.Count, threadId);
             }
 
-            _logger.LogInformation("Total messages retrieved for Session ID {sessionId}: {TotalCount}", sessionId, output.Count);
+            _logger.LogInformation("Total messages retrieved for thread ID {threadId}: {TotalCount}", threadId, output.Count);
             return output;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving messages for Session ID: {sessionId}", sessionId);
+            _logger.LogError(ex, "Error retrieving messages for thread ID: {threadId}", threadId);
             throw;
         }
     }
 
     /// <summary>
-    /// Updates an existing SessionChat in Cosmos DB.
+    /// Updates an existing ThreadChat in Cosmos DB.
     /// </summary>
-    /// <param name="session">SessionChat object to update.</param>
+    /// <param name="thread">ThreadChat object to update.</param>
     /// <param name="partitionKey">Partition key value.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task UpdateSessionAsync(string partitionKey, SessionChat session)
+    public async Task UpdateThreadAsync(
+        PartitionKey partitionKey, 
+        ThreadChat thread)
     {
-        _logger.LogInformation("Updating session with ID: {sessionId}", session.Id);
+        _logger.LogInformation("Updating thread with ID: {threadId}", thread.Id);
         try
         {
-            await _chatContainer.ReplaceItemAsync<SessionChat>(
-                item: session,
-                id: session.Id,
-                partitionKey: new PartitionKey(partitionKey)
-            );
-
-            _logger.LogInformation("Updated session with ID: {sessionId}.", session.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error updating session with ID: {sessionId}.", session.Id);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Retrieves an existing chat session.
-    /// </summary>
-    /// <param name="tenantId">Id of Tenant.</param>
-    /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session id for the session to return.</param>
-    /// <returns>Get chat session item to rename.</returns>
-    public async Task<SessionChat> GetSessionAsync(
-        string tenantId,
-        string userId,
-        string sessionId)
-    {
-        _logger.LogInformation("Retrieving session with sessionId: {sessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
-
-        try
-        {
-            ItemResponse<SessionChat> response = await _chatContainer.ReadItemAsync<SessionChat>(
-                id: sessionId,
+            await _chatContainer.ReplaceItemAsync<ThreadChat>(
+                item: thread,
+                id: thread.Id,
                 partitionKey: partitionKey
             );
 
-            _logger.LogInformation("Retrieved session with sessionId: {sessionId}", sessionId);
+            _logger.LogInformation("Updated thread with ID: {threadId}.", thread.Id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating thread with ID: {threadId}.", thread.Id);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Retrieves an existing chat thread.
+    /// </summary>
+    /// <param name="tenantId">Id of Tenant.</param>
+    /// <param name="userId">Id of User.</param>
+    /// <param name="threadId">Chat thread id for the thread to return.</param>
+    /// <returns>Get chat thread item to rename.</returns>
+    public async Task<ThreadChat> GetThreadAsync(
+        string tenantId,
+        string userId,
+        string threadId)
+    {
+        _logger.LogInformation("Retrieving thread with threadId: {threadId}", threadId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
+
+        try
+        {
+            ItemResponse<ThreadChat> response = await _chatContainer.ReadItemAsync<ThreadChat>(
+                id: threadId,
+                partitionKey: partitionKey
+            );
+
+            _logger.LogInformation("Retrieved thread with threadId: {threadId}", threadId);
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            _logger.LogWarning("Session with sessionId {sessionId} not found.", sessionId);
-            throw new KeyNotFoundException($"Session with ID {sessionId} not found.", ex);
+            _logger.LogWarning("thread with threadId {threadId} not found.", threadId);
+            throw new KeyNotFoundException($"thread with ID {threadId} not found.", ex);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving session with sessionId: {sessionId}", sessionId);
+            _logger.LogError(ex, "Error retrieving thread with threadId: {threadId}", threadId);
             throw;
         }
     }
 
     /// <summary>
-    /// Batch upserts chat session and messages within a single transactional batch.
+    /// Batch upserts chat thread and messages within a single transactional batch.
     /// </summary>
     /// <param name="tenantId">Tenant identifier.</param>
     /// <param name="userId">User identifier.</param>
-    /// <param name="sessionId">Session Chat identifier.</param>
-    /// <param name="itemsToUpsert">Array of SessionChat and Message objects to upsert.</param>
-    public async Task UpsertSessionBatchAsync(
+    /// <param name="threadId">thread Chat identifier.</param>
+    /// <param name="itemsToUpsert">Array of ThreadChat and Message objects to upsert.</param>
+    public async Task UpsertThreadBatchAsync(
         string tenantId,
         string userId,
-        string sessionId,
+        string threadId,
         params object[] itemsToUpsert)
     {
         if (itemsToUpsert == null || itemsToUpsert.Length == 0)
         {
-            _logger.LogWarning("No items provided to UpsertSessionBatchAsync.");
+            _logger.LogWarning("No items provided to UpsertthreadBatchAsync.");
             throw new ArgumentException("At least one item must be provided.", nameof(itemsToUpsert));
         }
 
-        _logger.LogInformation("Starting UpsertSessionBatchAsync with {Count} items.", itemsToUpsert.Length);
+        _logger.LogInformation("Starting UpsertthreadBatchAsync with {Count} items.", itemsToUpsert.Length);
 
         // Ensure all items share the same partition key
-        if (itemsToUpsert.Select(m => GetsessionId(m)).Distinct().Count() > 1)
+        if (itemsToUpsert.Select(m => GetThreadId(m)).Distinct().Count() > 1)
         {
             _logger.LogError("All items must have the same partition key.");
             throw new ArgumentException("All items must have the same partition key.");
         }
 
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
         TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
 
         foreach (var item in itemsToUpsert)
@@ -374,47 +380,47 @@ public class CosmosDbService
             TransactionalBatchResponse response = await batch.ExecuteAsync();
             if (response.IsSuccessStatusCode)
             {
-                _logger.LogInformation("UpsertSessionBatchAsync completed successfully.");
+                _logger.LogInformation("UpsertthreadBatchAsync completed successfully.");
             }
             else
             {
-                _logger.LogError("UpsertSessionBatchAsync failed with status code: {StatusCode}. Reason: {ReasonPhrase}", response.StatusCode, response.ErrorMessage);
+                _logger.LogError("UpsertthreadBatchAsync failed with status code: {StatusCode}. Reason: {ReasonPhrase}", response.StatusCode, response.ErrorMessage);
                 throw new CosmosException("Batch upsert failed.", response.StatusCode, 0, response.ErrorMessage, 0);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error executing batch upsert in UpsertSessionBatchAsync.");
+            _logger.LogError(ex, "Error executing batch upsert in UpsertthreadBatchAsync.");
             throw;
         }
     }
     /// <summary>
-    /// Helper function to extract sessionId from an object.
+    /// Helper function to extract threadId from an object.
     /// </summary>
     /// <param name="item">The object to extract from.</param>
-    /// <returns>sessionId if available; otherwise, string.Empty.</returns>
-    private string GetsessionId(object item)
+    /// <returns>threadId if available; otherwise, string.Empty.</returns>
+    private string GetThreadId(object item)
     {
         return item switch
         {
-            SessionChat session => session.SessionId,
-            Message message => message.SessionId,
+            ThreadChat thread => thread.ThreadId,
+            Message message => message.ThreadId,
             _ => string.Empty
         };
     }
     /// <summary>
-    /// Batch deletes an existing chat session and all related messages.
+    /// Batch deletes an existing chat thread and all related messages.
     /// </summary>
     /// <param name="tenantId">Id of Tenant.</param>
     /// <param name="userId">Id of User.</param>
-    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
-    public async Task DeleteSessionAndMessagesAsync(string tenantId, string userId, string sessionId)
+    /// <param name="threadId">Chat thread identifier used to flag messages and threads for deletion.</param>
+    public async Task DeleteThreadAndMessagesAsync(string tenantId, string userId, string threadId)
     {
-        _logger.LogInformation("Deleting session and messages for Session ID: {sessionId}", sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+        _logger.LogInformation("Deleting thread and messages for thread ID: {threadId}", threadId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
-        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.sessionId = @sessionId")
-                .WithParameter("@sessionId", sessionId);
+        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.threadId = @threadId")
+                .WithParameter("@threadId", threadId);
 
         FeedIterator<string> response = _chatContainer.GetItemQueryIterator<string>(query);
 
@@ -435,46 +441,46 @@ public class CosmosDbService
             TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
             if (batchResponse.IsSuccessStatusCode)
             {
-                _logger.LogInformation("Deleted session and all related messages for Session ID: {sessionId}", sessionId);
+                _logger.LogInformation("Deleted thread and all related messages for thread ID: {threadId}", threadId);
             }
             else
             {
-                _logger.LogError("Failed to delete session and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
+                _logger.LogError("Failed to delete thread and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
                 throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, "", 0);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting session and messages for Session ID: {sessionId}", sessionId);
+            _logger.LogError(ex, "Error deleting thread and messages for thread ID: {threadId}", threadId);
             throw;
         }
     }
     /// <summary>
-    /// Deletes a specific message within a session.
+    /// Deletes a specific message within a thread.
     /// </summary>
     /// <param name="tenantId">Tenant identifier.</param>
     /// <param name="userId">User identifier.</param>
-    /// <param name="sessionId">Session Chat identifier.</param>
+    /// <param name="threadId">thread Chat identifier.</param>
     /// <param name="messageId">Message identifier to delete.</param>
-    public async Task DeleteMessageAsync(string tenantId, string userId, string sessionId, string messageId)
+    public async Task DeleteMessageAsync(string tenantId, string userId, string threadId, string messageId)
     {
-        _logger.LogInformation("Deleting message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
-        PartitionKey partitionKey = GetPK(tenantId, userId, sessionId);
+        _logger.LogInformation("Deleting message with ID: {MessageId} in thread: {threadId}", messageId, threadId);
+        PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
         try
         {
             // Delete the message item in the container based on ID and partition key
             await _chatContainer.DeleteItemAsync<Message>(messageId, partitionKey);
-            _logger.LogInformation("Deleted message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
+            _logger.LogInformation("Deleted message with ID: {MessageId} in thread: {threadId}", messageId, threadId);
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            _logger.LogWarning("Message with ID: {MessageId} not found in session: {SessionId}", messageId, sessionId);
-            throw new KeyNotFoundException($"Message with ID {messageId} not found in session {sessionId}.", ex);
+            _logger.LogWarning("Message with ID: {MessageId} not found in thread: {threadId}", messageId, threadId);
+            throw new KeyNotFoundException($"Message with ID {messageId} not found in thread {threadId}.", ex);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting message with ID: {MessageId} in session: {SessionId}", messageId, sessionId);
+            _logger.LogError(ex, "Error deleting message with ID: {MessageId} in thread: {threadId}", messageId, threadId);
             throw;
         }
     }
@@ -878,7 +884,7 @@ public class CosmosDbService
             c.type,
             c.tenantId,
             c.userId,
-            c.sessionId,
+            c.ThreadId,
             c.title,
             c.timeStamp,
             c.prompt,

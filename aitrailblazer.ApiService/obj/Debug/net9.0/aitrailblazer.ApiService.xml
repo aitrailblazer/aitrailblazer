@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aitrailblazer.ApiService</name>
+    </assembly>
+    <members>
+        <member name="T:CosmosContainers.ApiService.ApiEndpoints">
+            <summary>
+            Extension methods for mapping API endpoints for chat-related operations.
+            </summary>
+        </member>
+        <member name="M:CosmosContainers.ApiService.ApiEndpoints.MapItemsApi(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Maps chat thread and message-related API endpoints.
+            </summary>
+            <param name="app">The web application instance.</param>
+            <returns>The configured web application.</returns>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.CacheItem.Id">
+            <summary>
+            Unique identifier
+            </summary>
+        </member>
+        <member name="T:Cosmos.Copilot.Models.Message">
+            <summary>
+            Represents a single message within a chat thread.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.Message.#ctor">
+            <summary>
+            Default constructor for deserialization.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.Message.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Constructor for creating a new message.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.Message.GetSanitizedCopy">
+            <summary>
+            Creates a sanitized copy of the message with tenant and user IDs replaced.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.Message.SanitizeTitle(System.String)">
+            <summary>
+            Sanitizes the title to remove or replace characters that might interfere with identifier formatting.
+            </summary>
+        </member>
+        <member name="T:Cosmos.Copilot.Models.ThreadChat">
+            <summary>
+            Represents a chat thread with associated messages and metadata.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.Id">
+            <summary>
+            Unique identifier for the thread.
+            Format: "ChatThread-{sanitizedTitle}-{currentTime}-{uniqueSuffix}"
+            Example: "ChatThread-ProjectDiscussion-20240427-153000-ABCD"
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.Type">
+            <summary>
+            Type of the document. Useful for distinguishing between different document types in the same container.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.TenantId">
+            <summary>
+            Tenant ID.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.UserId">
+            <summary>
+            User ID.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.ThreadId">
+            <summary>
+            Partition key - unique per thread.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.Title">
+            <summary>
+            Title of the thread.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.TotalTokenCount">
+            <summary>
+            Total tokens used in the thread.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.TimeStamp">
+            <summary>
+            Timestamp of the last activity in the thread.
+            </summary>
+        </member>
+        <member name="P:Cosmos.Copilot.Models.ThreadChat.Messages">
+            <summary>
+            List of messages in the thread. Ignored by Cosmos DB for storage.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.#ctor">
+            <summary>
+            Default constructor for deserialization.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructor for creating a new thread.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="title">Title of the thread.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.SanitizeTitle(System.String)">
+            <summary>
+            Sanitizes the title to remove or replace characters that might interfere with identifier formatting.
+            </summary>
+            <param name="title">Original title.</param>
+            <returns>Sanitized title.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.AddMessage(Cosmos.Copilot.Models.Message)">
+            <summary>
+            Adds a message to the thread and updates the token count and timestamp.
+            </summary>
+            <param name="message">The message to add.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.UpdateMessage(Cosmos.Copilot.Models.Message)">
+            <summary>
+            Updates an existing message in the thread and refreshes the timestamp.
+            </summary>
+            <param name="message">The updated message.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.RemoveMessage(System.String)">
+            <summary>
+            Removes a message from the thread and updates the token count and timestamp.
+            </summary>
+            <param name="messageId">The ID of the message to remove.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.GetMessage(System.String)">
+            <summary>
+            Retrieves a message by its ID.
+            </summary>
+            <param name="messageId">The ID of the message to retrieve.</param>
+            <returns>The message if found; otherwise, null.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.GetAllMessages">
+            <summary>
+            Retrieves all messages in the thread.
+            </summary>
+            <returns>A read-only list of messages.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.Rename(System.String)">
+            <summary>
+            Renames the chat thread.
+            </summary>
+            <param name="newTitle">The new title for the chat thread.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.ThreadChat.GetSanitizedCopy">
+            <summary>
+            Returns a sanitized copy of the ThreadChat object with tenantId and userId replaced.
+            </summary>
+        </member>
+        <member name="T:Cosmos.Copilot.Models.EmailMessageRecipientInfo">
+            <summary>
+            Represents recipient information for an email.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.OrganizerCategory.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the OrganizerCategory class.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.InitializeAsync">
+            <summary>
+            Initializes the ChatService by loading product data.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetAllChatThreadsAsync(System.String,System.String)">
+            <summary>
+            Retrieves all chat Threads for a user.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetMessageByIdAsync(System.String)">
+            <summary>
+            Retrieves a single message by its unique identifier.
+            </summary>
+            <param name="messageId">The unique identifier of the message.</param>
+            <returns>The Message object if found; otherwise, null.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetChatThreadMessagesAsync(System.String,System.String,System.String)">
+            <summary>
+            Retrieves chat messages for a specific Thread.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.CreateNewThreadChatAsync(System.String,System.String,System.String)">
+            <summary>
+            Creates a new chat Thread.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="title">Title of the Thread.</param>
+            <returns>The created ThreadChat object.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.UpdateThreadAsync(Microsoft.Azure.Cosmos.PartitionKey,Cosmos.Copilot.Models.ThreadChat)">
+            <summary>
+            Updates an existing ThreadChat in Cosmos DB.
+            </summary>
+            <param name="Thread">ThreadChat object to update.</param>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="title">Title of the Thread.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.RenameChatThreadAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            Renames an existing chat Thread.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.DeleteMessageAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            Deletes a specific message within a chat Thread.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="ThreadId">Thread Chat identifier.</param>
+            <param name="messageId">Message identifier to delete.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.DeleteChatThreadAsync(System.String,System.String,System.String)">
+            <summary>
+            Deletes a chat Thread and its messages.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetChatThreadContextWindow(System.String,System.String,System.String)">
+            <summary>
+            Retrieves the context window for the current conversation.
+            </summary>
+            
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetTokens(System.String)">
+            <summary>
+            Calculates the number of tokens in the user prompt.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetCacheAsync(System.Collections.Generic.List{Cosmos.Copilot.Models.Message})">
+            <summary>
+            Retrieves cached response if available.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.CachePutAsync(System.String,System.Single[],System.String)">
+            <summary>
+            Caches the generated completion.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.ClearCacheAsync">
+            <summary>
+            Clears the semantic cache.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetEmailCompletionAsync(System.String,System.String,System.String,System.String,System.Collections.Generic.List{Cosmos.Copilot.Models.EmailMessage})">
+            <summary>
+            Retrieves a completion based on a user prompt for an email context, with optional categoryId and context window.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.SummarizeChatThreadNameAsync(System.String,System.String,System.String)">
+            <summary>
+            Summarizes the chat Thread to generate a relevant name.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.SanitizePromptText(System.String)">
+            <summary>
+            Sanitizes the prompt text to prevent logging sensitive information.
+            </summary>
+            <param name="promptText">The original prompt text.</param>
+            <returns>A sanitized version of the prompt text.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.TestAsync">
+            <summary>
+            Test method for ChatService.
+            </summary>
+        </member>
+        <member name="T:Cosmos.Copilot.Services.CosmosDbService">
+            <summary>
+            Service to access Azure Cosmos DB for NoSQL.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger{Cosmos.Copilot.Services.CosmosDbService})">
+            <summary>
+            Creates a new instance of the service.
+            </summary>
+            <param name="endpoint">Endpoint URI.</param>
+            <param name="databaseName">Name of the database to access.</param>
+            <param name="chatContainerName">Name of the chat container to access.</param>
+            <param name="cacheContainerName">Name of the cache container to access.</param>
+            <param name="productContainerName">Name of the product container to access.</param>
+            <param name="productDataSourceURI">URI to the product data source.</param>
+            <param name="logger">Logger instance for logging.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when any required parameter is null or empty.</exception>
+            <remarks>
+            This constructor will validate credentials and create a service client instance.
+            </remarks>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetPK(System.String,System.String,System.String)">
+            <summary>
+            Helper function to generate a hierarchical partition key based on tenantId, userId, and categoryId.
+            All parameters are required and will be included in the partition key, even if they are empty strings.
+            </summary>
+            <param name="tenantId">Id of Tenant.</param>
+            <param name="userId">Id of User.</param>
+            <param name="categoryId">Category Id of the item.</param>
+            <returns>Newly created partition key.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.InsertThreadChatAsync(System.String,System.String,Cosmos.Copilot.Models.ThreadChat)">
+            <summary>
+            Inserts a new ThreadChat into Cosmos DB.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="thread">ThreadChat object to insert.</param>
+            <returns>The inserted ThreadChat object.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetThreadsAsync(System.String,System.String)">
+            <summary>
+            Gets a list of all current chat threads.
+            </summary>
+            <param name="tenantId">Id of Tenant.</param>
+            <param name="userId">Id of User.</param>
+            <returns>List of distinct chat thread items.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetThreadMessagesAsync(System.String,System.String,System.String)">
+            <summary>
+            Gets a list of all current chat messages for a specified thread identifier.
+            </summary>
+            <param name="tenantId">Id of Tenant.</param>
+            <param name="userId">Id of User.</param>
+            <param name="threadId">Chat thread identifier used to filter messages.</param>
+            <returns>List of chat message items for the specified thread.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.UpdateThreadAsync(Microsoft.Azure.Cosmos.PartitionKey,Cosmos.Copilot.Models.ThreadChat)">
+            <summary>
+            Updates an existing ThreadChat in Cosmos DB.
+            </summary>
+            <param name="thread">ThreadChat object to update.</param>
+            <param name="partitionKey">Partition key value.</param>
+            <returns>A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetThreadAsync(System.String,System.String,System.String)">
+            <summary>
+            Retrieves an existing chat thread.
+            </summary>
+            <param name="tenantId">Id of Tenant.</param>
+            <param name="userId">Id of User.</param>
+            <param name="threadId">Chat thread id for the thread to return.</param>
+            <returns>Get chat thread item to rename.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.UpsertThreadBatchAsync(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            Batch upserts chat thread and messages within a single transactional batch.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="threadId">thread Chat identifier.</param>
+            <param name="itemsToUpsert">Array of ThreadChat and Message objects to upsert.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetThreadId(System.Object)">
+            <summary>
+            Helper function to extract threadId from an object.
+            </summary>
+            <param name="item">The object to extract from.</param>
+            <returns>threadId if available; otherwise, string.Empty.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.DeleteThreadAndMessagesAsync(System.String,System.String,System.String)">
+            <summary>
+            Batch deletes an existing chat thread and all related messages.
+            </summary>
+            <param name="tenantId">Id of Tenant.</param>
+            <param name="userId">Id of User.</param>
+            <param name="threadId">Chat thread identifier used to flag messages and threads for deletion.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.DeleteMessageAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            Deletes a specific message within a thread.
+            </summary>
+            <param name="tenantId">Tenant identifier.</param>
+            <param name="userId">User identifier.</param>
+            <param name="threadId">thread Chat identifier.</param>
+            <param name="messageId">Message identifier to delete.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.TestAsync">
+            <summary>
+            Test method to run a sample query.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.LoadProductDataAsync">
+            <summary>
+            Loads product data from the data source URI into Cosmos DB.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.InsertProductAsync(Cosmos.Copilot.Models.Product)">
+            <summary>
+            Upserts a new product.
+            </summary>
+            <param name="product">Product item to create or update.</param>
+            <returns>Newly created or updated product item.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.DeleteProductAsync(Cosmos.Copilot.Models.Product)">
+            <summary>
+            Delete a product.
+            </summary>
+            <param name="product">Product item to delete.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.SearchProductsAsync(System.Single[],System.Int32)">
+            <summary>
+            Search vectors for similar products.
+            </summary>
+            <param name="vectors">Vectors to search against.</param>
+            <param name="productMaxResults">Maximum number of products to return.</param>
+            <returns>List of similar product items.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.GetCacheAsync(System.Single[],System.Double)">
+            <summary>
+            Find a cache item based on vector similarity.
+            </summary>
+            <param name="vectors">Vectors to perform the semantic search in the cache.</param>
+            <param name="similarityScore">Minimum similarity score to consider.</param>
+            <returns>Completion text from the cache if found; otherwise, an empty string.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.CachePutAsync(Cosmos.Copilot.Models.CacheItem)">
+            <summary>
+            Add a new cache item.
+            </summary>
+            <param name="cacheItem">Cache item to add or update.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.CacheRemoveAsync(System.Single[])">
+            <summary>
+            Remove a cache item using its vectors.
+            </summary>
+            <param name="vectors">Vectors used to perform the semantic search. Similarity Score is set to 0.99 for exact match.</param>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.CacheClearAsync">
+            <summary>
+            Clear the cache of all cache items.
+            </summary>
+        </member>
+        <member name="T:Cosmos.Copilot.Services.SemanticKernelService">
+            <summary>
+            Semantic Kernel implementation for Azure OpenAI.
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPrompt">
+            <summary>
+            System prompt to send with user prompts to instruct the model for chat session
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPromptRetailAssistant">
+            <summary>
+            System prompt to send with user prompts as a Retail AI Assistant for chat session
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPromptEmail">
+            <summary>
+            System prompt to guide the model as an email assistant with specific output formatting
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._summarizePrompt">
+            <summary>    
+            System prompt to send with user prompts to instruct the model for summarization
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._logger">
+            <summary>
+            Creates a new instance of the Semantic Kernel.
+            </summary>
+            <param name="endpoint">Endpoint URI.</param>
+            <param name="completionDeploymentName">Name of the deployed Azure OpenAI completion model.</param>
+            <param name="embeddingDeploymentName">Name of the deployed Azure OpenAI embedding model.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when endpoint, key, or modelName is either null or empty.</exception>
+            <remarks>
+            This constructor will validate credentials and create a Semantic Kernel instance.
+            </remarks>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.SemanticKernelService.GetRagCompletionAsync(System.String,System.Collections.Generic.List{Cosmos.Copilot.Models.Message},System.Collections.Generic.List{Cosmos.Copilot.Models.Product})">
+            <summary>
+            Generates a completion using a user prompt with chat history and vector search results to Semantic Kernel and returns the response.
+            </summary>
+            <param name="sessionId">Chat session identifier for the current conversation.</param>
+            <param name="contextWindow">List of Message objects containing the context window (chat history) to send to the model.</param>
+            <param name="products">List of Product objects containing vector search results to send to the model.</param>
+            <returns>Generated response along with tokens used to generate it.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.SemanticKernelService.GetRagEmailCompletionAsync``1(System.String,System.Collections.Generic.List{Cosmos.Copilot.Models.EmailMessage},System.Collections.Generic.List{``0},System.Boolean)">
+            <summary>
+            Generates a completion using a user prompt with optional chat history and context data, returning the response.
+            </summary>
+            <typeparam name="T">The type of contextual data (e.g., EmailMessage, Product).</typeparam>
+            <param name="sessionId">Chat session identifier for the current conversation.</param>
+            <param name="contextWindow">List of Message objects containing the context window (chat history) to send to the model.</param>
+            <param name="contextData">List of contextual data objects (e.g., EmailMessage, Product) to provide model context.</param>
+            <param name="useChatHistory">Flag to enable or disable including chat history.</param>
+            <returns>Generated response along with tokens used to generate it.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.SemanticKernelService.GetEmbeddingsAsync(System.String)">
+            <summary>
+            Generates embeddings from the deployed OpenAI embeddings model using Semantic Kernel.
+            </summary>
+            <param name="input">Text to send to OpenAI.</param>
+            <returns>Array of vectors from the OpenAI embedding model deployment.</returns>
+        </member>
+        <member name="M:Cosmos.Copilot.Services.SemanticKernelService.SummarizeConversationAsync(System.String)">
+            <summary>
+            Sends the existing conversation to the Semantic Kernel and returns a two word summary.
+            </summary>
+            <param name="sessionId">Chat session identifier for the current conversation.</param>
+            <param name="conversationText">conversation history to send to Semantic Kernel.</param>
+            <returns>Summarization response from the OpenAI completion model deployment.</returns>
+        </member>
+    </members>
+</doc>

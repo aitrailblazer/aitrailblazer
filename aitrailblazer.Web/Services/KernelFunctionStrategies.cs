@@ -1,6 +1,21 @@
+using OpenAI.Chat;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Agents.Chat;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.TemplateEngine;
+using Microsoft.SemanticKernel.Plugins.OpenApi;
+using Microsoft.SemanticKernel.Plugins.OpenApi.Extensions;
+using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Plugins.Web;
+using Microsoft.SemanticKernel.Data;
+using Microsoft.SemanticKernel.Plugins.Web.Bing;
+using Microsoft.SemanticKernel.Plugins.Core;
+using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -85,8 +100,8 @@ namespace AITrailblazer.net.Services
         /// <param name="reviewerSettings">Settings for the reviewer (art director) agent.</param>
         /// <param name="terminationPrompt">The prompt used to determine when the chat should terminate (optional).</param>
         /// <param name="maxIterations">Maximum number of iterations (turns) allowed in the chat (optional, default is 10).</param>
-        /// <returns>A JSON string representing the chat messages or an error message.</returns>
-        public async Task<string> ExecuteAgentChatWriterEditorReviewerAsync(
+        /// <returns>A tuple containing a JSON string representing the chat messages and the token usage information or an error message.</returns>
+        public async Task<(string response, TokenCounts? tokenUsage)> ExecuteAgentChatWriterEditorReviewerAsync(
             string initialUserInput,
             ChatAgentSettings writerSettings,
             ChatAgentSettings editorSettings,
@@ -99,7 +114,7 @@ namespace AITrailblazer.net.Services
                 var validationMessage = ValidateInput(initialUserInput);
                 if (!string.IsNullOrEmpty(validationMessage))
                 {
-                    return validationMessage;
+                    return (validationMessage, null);
                 }
 
                 terminationPrompt = SetDefaultTerminationPrompt(terminationPrompt);
@@ -108,7 +123,8 @@ namespace AITrailblazer.net.Services
 
                 _logger.LogInformation("Starting chat session between writer, editor, and reviewer.");
 
-                string messages = await _kernelFunctionStrategyService.ExecuteAgentChatWriterEditorReviewerAsync(
+                // Execute the chat session and get both messages and token usage as TokenCounts
+                (string messages, TokenCounts? tokenUsage) = await _kernelFunctionStrategyService.ExecuteAgentChatWriterEditorReviewerAsync(
                     input: initialUserInput,
                     agentsConfig: agentsConfig,
                     terminationPrompt: terminationPrompt,
@@ -116,15 +132,14 @@ namespace AITrailblazer.net.Services
 
                 _logger.LogInformation("Chat session completed successfully.");
 
-                return messages;
+                return (messages, tokenUsage);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred during the chat session.");
-                return "An error occurred during the chat session. Please try again.";
+                return ("An error occurred during the chat session. Please try again.", null);
             }
         }
-
         /// <summary>
         /// Validates the initial user input.
         /// </summary>
