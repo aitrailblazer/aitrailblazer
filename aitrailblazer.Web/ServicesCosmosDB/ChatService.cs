@@ -508,6 +508,7 @@ namespace Cosmos.Copilot.Services
         public async Task<Message> SearchClosestMessageAsync(
            string tenantId,
            string userId,
+           double similarityScore,
            string featureNameProject,
            string searchQuery,
            string responseLengthVal,
@@ -527,7 +528,7 @@ namespace Cosmos.Copilot.Services
                 _logger.LogInformation("Embeddings generated for the search query.");
 
                 // Define the similarity threshold (adjust as needed)
-                double similarityScore = 0.9;
+                //double similarityScore = 0.9;
 
                 // Search for the closest message with additional parameters
                 var closestMessage = await _cosmosDbService.SearchClosestMessageAsync(

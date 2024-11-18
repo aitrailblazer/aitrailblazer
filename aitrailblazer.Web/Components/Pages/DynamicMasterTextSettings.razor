@@ -4,12 +4,13 @@
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
             VerticalAlignment="@Vertical">
-            <!--
+            
             <FluentIcon Value="@(new Icons.Regular.Size24.TaskListSquareRtl())" Color="@Color.Accent" Slot="start" />
          
             <FluentLabel Typo="Typography.Body" class="status-font-size">Tasks</FluentLabel>
       
-               <FluentCheckbox Value="IsMyKnowledgeBaseChecked" ValueChanged="OnCheckStateChanged">Search My Knowledge Base</FluentCheckbox>
+               <FluentCheckbox Value="IsMyKnowledgeBaseChecked" ValueChanged="OnCheckStateChanged" class="status-font-size">Search My Knowledge Base</FluentCheckbox>
+                <!--
                 @if (IsMyKnowledgeBaseChecked)
                 {
                     <FluentTextArea 
@@ -19,6 +20,7 @@
                     Placeholder="filename"></FluentTextArea>
                 }
                 -->
+                
         </FluentStack>
 
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"

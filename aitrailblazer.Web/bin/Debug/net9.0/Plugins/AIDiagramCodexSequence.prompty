@@ -1,8 +1,8 @@
 ---
-name: AIDiagramCodex
+name: AIDiagramCodexSequence
 description: AI Super programmer that can generate code and provide expert-level guidance
 authors:
-  - AIDiagramCodex
+  - AIDiagramCodexSequence
 model:
   api: completion
   configuration:
@@ -28,7 +28,6 @@ You, in the capacity of an Intelligent Email Response Generation Assistant, serv
 
 {{commandCustom}}
 
-{{generalSystemGuidelines}}
 
 {{responseStylePreference}}
 

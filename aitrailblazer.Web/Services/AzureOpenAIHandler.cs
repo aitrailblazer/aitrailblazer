@@ -305,7 +305,7 @@ namespace AITrailblazer.net.Services
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
-            
+
             string responseOutput = string.Empty;
             TokenCounts tokenUsage = null;
 
@@ -343,17 +343,341 @@ namespace AITrailblazer.net.Services
             _timer.Stop();
             _logger.LogInformation($"Time: {_timer.ElapsedMilliseconds / 1000} secs");
 
-             return (responseOutput, tokenUsage);
+            return (responseOutput, tokenUsage);
+        }
+
+        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsync(
+       bool isNewThread,
+       bool isMyKnowledgeBaseChecked,
+       string currentUserTenantID,
+       string currentUserIdentityID,
+       string featureNameWorkflowName,
+       string featureNameProject,
+       string panelInput,
+       string userInput,
+       string tags,
+       string masterTextSetting,
+       string responseLengthVal,
+       string creativeAdjustmentsVal,
+       string audienceLevelVal,
+       string writingStyleVal,
+       string relationSettingsVal,
+       string responseStyleVal,
+       string existingThreadTitle,
+       string existingThreadId)
+        {
+            var timer = Stopwatch.StartNew();
+            _logger.LogInformation(
+                "HandleSubmitAsync initiated for Feature: {existingThreadId}, Project: {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+                existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+
+            // Validate input
+            if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
+            {
+                _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
+                    currentUserIdentityID, currentUserTenantID);
+                return ("Panel Input and User Input cannot both be empty.", 0);
+            }
+
+            try
+            {
+                // Retrieve agent settings
+                var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
+                _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
+
+                // Process panel input for URLs
+                var webPageContentService = new WebPageContentExtractionService(new HttpClient());
+                panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
+                _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
+
+                // Clean inputs
+                string cleanedUserInput = CleanInput(userInput);
+                string cleanedPanelInput = CleanInput(panelInput);
+                _logger.LogInformation("Cleaned user input and panel input.");
+
+                // Determine thread title
+                string title = string.IsNullOrWhiteSpace(existingThreadTitle)
+                    ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
+                    : existingThreadTitle;
+                _logger.LogInformation("Thread title determined: {Title}", title);
+
+                // Prepare input request
+                string inputRequest = $"{userInput}\n\n{panelInput}";
+                string requestTitle = CleanAndShortenRequestResponseTitle(inputRequest);
+                _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
+
+                // Get or create thread
+                ThreadChat thread = await GetOrCreateThreadAsync(
+                    isNewThread, currentUserTenantID, currentUserIdentityID, existingThreadId, requestTitle);
+
+                // Initialize response variables
+                string responseOutput = string.Empty;
+                bool cacheHit = false;
+                int inputTokenCount = 0, outputTokenCount = 0, totalTokenCount = 0;
+
+                // Determine similarity score
+                double similarityScore = featureNameWorkflowName == "CodeAndDocumentation" ? 0.99 : 0.9;
+
+                // Perform semantic search if knowledge base is checked
+                if (isMyKnowledgeBaseChecked)
+                {
+                    (responseOutput, cacheHit) = await SearchClosestMessageAsync(
+                        currentUserTenantID, currentUserIdentityID, featureNameProject, inputRequest, similarityScore,
+                        responseLengthVal, creativeAdjustmentsVal, audienceLevelVal, writingStyleVal, relationSettingsVal,
+                        responseStyleVal);
+                }
+
+                // Generate new response if cache miss
+                if (!cacheHit)
+                {
+                    if (agentSettings != null)
+                    {
+                        // Handle response via Writer/Editor/Reviewer flow
+                        TokenCounts? tokenUsage = null;
+                        (responseOutput, tokenUsage) = await HandleSubmitAsyncWriterEditorReviewer(
+                            featureNameProject,
+                            panelInput,
+                            userInput,
+                            masterTextSetting,
+                            responseLengthVal,
+                            creativeAdjustmentsVal,
+                            audienceLevelVal,
+                            writingStyleVal,
+                            relationSettingsVal,
+                            responseStyleVal
+                        );
+
+                        if (tokenUsage != null)
+                        {
+                            inputTokenCount = tokenUsage.PromptTokens;
+                            outputTokenCount = tokenUsage.CompletionTokens;
+                            totalTokenCount = tokenUsage.TotalTokens;
+                            _logger.LogInformation("Token usage (Writer/Editor/Reviewer) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
+                                inputTokenCount, outputTokenCount, totalTokenCount);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("TokenUsage returned null from HandleSubmitAsyncWriterEditorReviewer. Defaulting token counts to zero.");
+                        }
+                    }
+                    else
+                    {
+                        // Handle response via Prompty flow
+                        OpenAI.Chat.ChatTokenUsage? chatTokenUsagePrompty = null;
+                        (responseOutput, chatTokenUsagePrompty) = await GenerateWithPromptyAsync(
+                            featureNameProject,
+                            panelInput,
+                            userInput,
+                            masterTextSetting,
+                            responseLengthVal,
+                            creativeAdjustmentsVal,
+                            audienceLevelVal,
+                            writingStyleVal,
+                            relationSettingsVal,
+                            responseStyleVal
+                        );
+
+                        if (chatTokenUsagePrompty != null)
+                        {
+                            inputTokenCount = chatTokenUsagePrompty.InputTokenCount;
+                            outputTokenCount = chatTokenUsagePrompty.OutputTokenCount;
+                            totalTokenCount = chatTokenUsagePrompty.TotalTokenCount;
+                            _logger.LogInformation("Token usage (Prompty) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
+                                inputTokenCount, outputTokenCount, totalTokenCount);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("TokenUsage returned null from GenerateWithPromptyAsync. Defaulting token counts to zero.");
+                        }
+                    }
+
+                    // Enhance inputs with citations and append them to the response
+                    _logger.LogInformation("Enhancing inputs with citations.");
+                    var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+                    if (enhancedInputs.AllCitations.Any())
+                    {
+                        var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                        responseOutput += $"\n\nReferences:\n{citationsText}";
+                        _logger.LogInformation("Citations appended to the response.");
+                    }
+                }
+
+                // Save the chat message
+                await SaveChatMessageAsync(
+                    thread, currentUserTenantID, currentUserIdentityID, featureNameWorkflowName, featureNameProject,
+                    requestTitle, panelInput, userInput, responseOutput, cacheHit, inputTokenCount, outputTokenCount,
+                    totalTokenCount, masterTextSetting, writingStyleVal, audienceLevelVal, responseLengthVal,
+                    creativeAdjustmentsVal, relationSettingsVal, responseStyleVal);
+
+                timer.Stop();
+                _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
+                    timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
+
+                return (responseOutput, timer.Elapsed.TotalSeconds);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
+                    currentUserIdentityID, currentUserTenantID);
+                throw;
+            }
+        }
+
+        private async Task<ThreadChat> GetOrCreateThreadAsync(
+            bool isNewThread,
+            string tenantId,
+            string userId,
+            string existingThreadId,
+            string title)
+        {
+            if (isNewThread)
+            {
+                _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, userId);
+                return await _chatService.CreateNewThreadChatAsync(tenantId, userId, title);
+            }
+
+            _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, userId);
+            var thread = await _chatService.GetThreadAsync(tenantId, userId, existingThreadId);
+            if (thread == null)
+            {
+                throw new InvalidOperationException($"Thread with ID {existingThreadId} does not exist.");
+            }
+
+            return thread;
+        }
+
+        private async Task<(string responseOutput, bool cacheHit)> SearchClosestMessageAsync(
+            string tenantId,
+            string userId,
+            string featureNameProject,
+            string inputRequest,
+            double similarityScore,
+            string responseLengthVal,
+            string creativeAdjustmentsVal,
+            string audienceLevelVal,
+            string writingStyleVal,
+            string relationSettingsVal,
+            string responseStyleVal)
+        {
+            _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+
+            var closestMessage = await _chatService.SearchClosestMessageAsync(
+                tenantId, userId, similarityScore, featureNameProject, inputRequest,
+                responseLengthVal, creativeAdjustmentsVal, audienceLevelVal, writingStyleVal,
+                relationSettingsVal, responseStyleVal);
+
+            if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
+            {
+                _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
+                return (closestMessage.Output, true);
+            }
+
+            _logger.LogInformation("No similar message found. Cache miss.");
+            return (string.Empty, false);
         }
 
 
-        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsync(
-            bool isNewThread,
-            bool isMyKnowledgeBaseChecked,
+        private async Task<string> GenerateResponseAsync(
+            string featureNameProject,
+            string panelInput,
+            string userInput,
+            string masterTextSetting,
+            string responseLengthVal,
+            string creativeAdjustmentsVal,
+            string audienceLevelVal,
+            string writingStyleVal,
+            string relationSettingsVal,
+            string responseStyleVal)
+        {
+            _logger.LogInformation("Generating response with HandleSubmitAsyncWriterEditorReviewer.");
+            var (responseOutput, tokenUsage) = await HandleSubmitAsyncWriterEditorReviewer(
+                featureNameProject, panelInput, userInput, masterTextSetting,
+                responseLengthVal, creativeAdjustmentsVal, audienceLevelVal,
+                writingStyleVal, relationSettingsVal, responseStyleVal);
+
+            if (tokenUsage != null)
+            {
+                _logger.LogInformation("Token usage: PromptTokens={PromptTokens}, CompletionTokens={CompletionTokens}, TotalTokens={TotalTokens}",
+                    tokenUsage.PromptTokens, tokenUsage.CompletionTokens, tokenUsage.TotalTokens);
+            }
+
+            return responseOutput;
+        }
+
+        private async Task SaveChatMessageAsync(
+            ThreadChat thread,
             string currentUserTenantID,
             string currentUserIdentityID,
             string featureNameWorkflowName,
             string featureNameProject,
+            string requestTitle,
+            string panelInput,
+            string userInput,
+            string responseOutput,
+            bool cacheHit,
+            int inputTokenCount,
+            int outputTokenCount,
+            int totalTokenCount,
+            string masterTextSetting,
+            string writingStyleVal,
+            string audienceLevelVal,
+            string responseLengthVal,
+            string creativeAdjustmentsVal,
+            string relationSettingsVal,
+            string responseStyleVal)
+        {
+            // Create the completed chat message
+            var completedChatMessage = new Cosmos.Copilot.Models.Message(
+                threadId: thread.ThreadId,               // threadId
+                tenantId: currentUserTenantID,           // tenantId
+                userId: currentUserIdentityID,           // userId
+                featureNameWorkflowName: featureNameWorkflowName,
+                featureNameProject: featureNameProject,
+                title: requestTitle,                     // title
+                prompt: panelInput,                      // prompt
+                userInput: userInput,                    // userInput
+                inputTokenCount: inputTokenCount,        // inputTokenCount
+                outputTokenCount: outputTokenCount,      // outputTokenCount
+                totalTokenCount: totalTokenCount,        // totalTokenCount
+                output: responseOutput,                  // output
+                cacheHit: cacheHit,                      // cacheHit
+                masterTextSetting: masterTextSetting,    // masterTextSetting
+                writingStyleVal: writingStyleVal,        // writingStyleVal
+                audienceLevelVal: audienceLevelVal,      // audienceLevelVal
+                responseLengthVal: responseLengthVal,    // responseLengthVal
+                creativeAdjustmentsVal: creativeAdjustmentsVal, // creativeAdjustmentsVal
+                relationSettingsVal: relationSettingsVal,       // relationSettingsVal
+                responseStyleVal: responseStyleVal              // responseStyleVal
+            );
+
+            // Generate embeddings for new messages if not a cache hit
+            if (!cacheHit)
+            {
+                _logger.LogInformation("Generating embeddings for the new message.");
+                completedChatMessage.Vectors = await _semanticKernelService.GetEmbeddingsAsync($"{userInput}\n\n{panelInput}");
+            }
+
+            _logger.LogInformation("Upserting the thread and message to the database. ThreadId: {ThreadId}", thread.ThreadId);
+
+            // Save the message to the database
+            await _chatService.UpsertThreadAndMessageAsync(
+                tenantId: currentUserTenantID,
+                userId: currentUserIdentityID,
+                threadId: thread.ThreadId,
+                chatMessage: completedChatMessage
+            );
+
+            _logger.LogInformation("Chat message successfully saved. ThreadId: {ThreadId}, Title: {Title}", thread.ThreadId, requestTitle);
+        }
+
+
+        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsyncOLD(
+            bool isNewThread,
+            bool isMyKnowledgeBaseChecked,
+            string currentUserTenantID,
+            string currentUserIdentityID,
+            string featureNameWorkflowName, // CodeAndDocumentation
+            string featureNameProject, //FeatureNameProject=AIDiagramCodexActivity 
             string panelInput,
             string userInput,
             string tags,
@@ -388,31 +712,31 @@ namespace AITrailblazer.net.Services
                 panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
                 _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
 
-/*
-                if (featureNameProject == "AIMessageOptimizer")
-                {
-                    _logger.LogDebug("Handling submission for AIMessageOptimizer.");
-                    var response = await HandleSubmitAsyncWriterReviewer(
-                        isNewSession,
-                        isMyKnowledgeBaseChecked,
-                        currentUserIdentityID,
-                        featureNameWorkflowName,
-                        featureNameProject,
-                        panelInput,
-                        userInput,
-                        tags,
-                        masterTextSetting,
-                        responseLengthVal,
-                        creativeAdjustmentsVal,
-                        audienceLevelVal,
-                        writingStyleVal,
-                        relationSettingsVal,
-                        responseStyleVal,
-                        existingSessionTitle);
-                    _logger.LogInformation("Submission handled by WriterReviewer for AIMessageOptimizer. User: {UserIdentityID}", currentUserIdentityID);
-                    return (response,0);
-                }
-*/
+                /*
+                                if (featureNameProject == "AIMessageOptimizer")
+                                {
+                                    _logger.LogDebug("Handling submission for AIMessageOptimizer.");
+                                    var response = await HandleSubmitAsyncWriterReviewer(
+                                        isNewSession,
+                                        isMyKnowledgeBaseChecked,
+                                        currentUserIdentityID,
+                                        featureNameWorkflowName,
+                                        featureNameProject,
+                                        panelInput,
+                                        userInput,
+                                        tags,
+                                        masterTextSetting,
+                                        responseLengthVal,
+                                        creativeAdjustmentsVal,
+                                        audienceLevelVal,
+                                        writingStyleVal,
+                                        relationSettingsVal,
+                                        responseStyleVal,
+                                        existingSessionTitle);
+                                    _logger.LogInformation("Submission handled by WriterReviewer for AIMessageOptimizer. User: {UserIdentityID}", currentUserIdentityID);
+                                    return (response,0);
+                                }
+                */
                 string cleanedUserInput = CleanInput(userInput);
                 string cleanedPanelInput = CleanInput(panelInput);
                 _logger.LogInformation("User input and panel input cleaned.");
@@ -470,29 +794,42 @@ namespace AITrailblazer.net.Services
                 string responseOutput = string.Empty;
                 ChatTokenUsage tokenUsage = null;
 
-                _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}", currentUserIdentityID, currentUserTenantID);
-
-                // Perform a semantic search to see if a similar message already exists
-                _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
-                Cosmos.Copilot.Models.Message closestMessage = await _chatService.SearchClosestMessageAsync(
-                    tenantId: currentUserTenantID,
-                    userId: currentUserIdentityID,
-                    featureNameProject: featureNameProject,
-                    searchQuery: inputRequest,
-                    responseLengthVal: responseLengthVal,
-                    creativeAdjustmentsVal: creativeAdjustmentsVal,
-                    audienceLevelVal: audienceLevelVal,
-                    writingStyleVal: writingStyleVal,
-                    relationSettingsVal: relationSettingsVal,
-                    responseStyleVal: responseStyleVal
-                );
+                _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}, featureNameProject: {featureNameProject}", currentUserIdentityID, currentUserTenantID, featureNameProject);
+                double similarityScore = 0.9;
+                if (featureNameWorkflowName == "CodeAndDocumentation")
+                {
+                    similarityScore = 0.99;
+                }
+                else
+                {
+                    similarityScore = 0.9;
+                }
+                Cosmos.Copilot.Models.Message? closestMessage = null;
+                if (isMyKnowledgeBaseChecked)
+                {
+                    // Perform a semantic search to see if a similar message already exists
+                    _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+                    closestMessage = await _chatService.SearchClosestMessageAsync(
+                        tenantId: currentUserTenantID,
+                        userId: currentUserIdentityID,
+                        similarityScore: similarityScore,
+                        featureNameProject: featureNameProject,
+                        searchQuery: inputRequest,
+                        responseLengthVal: responseLengthVal,
+                        creativeAdjustmentsVal: creativeAdjustmentsVal,
+                        audienceLevelVal: audienceLevelVal,
+                        writingStyleVal: writingStyleVal,
+                        relationSettingsVal: relationSettingsVal,
+                        responseStyleVal: responseStyleVal
+                    );
+                }
 
 
                 // Initialize variables for the new message
                 bool cacheHit = false;
-                var inputTokenCount=0;     // inputTokenCount
-                var outputTokenCount=0;  // outputTokenCount
-                var totalTokenCount=0;    // totalTokenCount
+                var inputTokenCount = 0;     // inputTokenCount
+                var outputTokenCount = 0;  // outputTokenCount
+                var totalTokenCount = 0;    // totalTokenCount
 
                 // Check if a similar message was found
                 if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
@@ -506,7 +843,8 @@ namespace AITrailblazer.net.Services
                 else
                 {
 
-                    if (agentSettings != null){
+                    if (agentSettings != null)
+                    {
                         // Cache miss, generate a new response
                         _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
                         TokenCounts? tokenUsageTc = null;
@@ -523,10 +861,20 @@ namespace AITrailblazer.net.Services
                             relationSettingsVal,
                             responseStyleVal
                         );
-                        responseOutput=responseOutputTc;
-                        inputTokenCount = tokenUsageTc.PromptTokens;
-                        outputTokenCount = tokenUsageTc.CompletionTokens;
-                        totalTokenCount = tokenUsageTc.TotalTokens;
+                        responseOutput = responseOutputTc;
+                        if (tokenUsageTc != null)
+                        {
+                            inputTokenCount = tokenUsageTc.PromptTokens;
+                            outputTokenCount = tokenUsageTc.CompletionTokens;
+                            totalTokenCount = tokenUsageTc.TotalTokens;
+                        }
+                        else
+                        {
+                            _logger.LogWarning("TokenCounts returned null from HandleSubmitAsyncWriterEditorReviewer. Defaulting token counts to zero.");
+                            inputTokenCount = 0;
+                            outputTokenCount = 0;
+                            totalTokenCount = 0;
+                        }
 
                         // Enhance inputs with citations and generate response
                         _logger.LogInformation("Enhancing inputs with citations.");
@@ -539,7 +887,9 @@ namespace AITrailblazer.net.Services
                             responseOutput += $"\n\nReferences:\n{citationsText}";
                             _logger.LogInformation("Citations appended to the response.");
                         }
-                    } else {
+                    }
+                    else
+                    {
                         // Cache miss, generate a new response
                         _logger.LogInformation("Cache miss: Generating response with Prompty.");
                         (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
@@ -748,10 +1098,10 @@ namespace AITrailblazer.net.Services
             return timestamp.ToString("MMMM dd, yyyy");
         }
 
-  
+
         public async Task<List<ITreeViewItem>> LoadThreadMessagesAsync(
-            string tenantId, 
-            string userId, 
+            string tenantId,
+            string userId,
             string threadId)
         {
             var items = new List<ITreeViewItem>();
@@ -1544,7 +1894,6 @@ namespace AITrailblazer.net.Services
                     "",
                     "",
                     "",
-                    "",
                     maxTokensStr);
                 _logger.LogInformation($"GetASAPQuick promptyTemplate: {promptyTemplate}");
 
@@ -1775,7 +2124,6 @@ namespace AITrailblazer.net.Services
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
                 input,
-                "",
                 "",
                 "",
                 "",
@@ -2185,7 +2533,6 @@ namespace AITrailblazer.net.Services
                 promptyTemplate,
                 input,
                 PanelInput,
-                GeneralSystemGuidelines,
                 creativityStr,
                 audienceLevelStr,
                 writingStyleStr,
@@ -2346,7 +2693,7 @@ namespace AITrailblazer.net.Services
             {
                 var response = await kernel.InvokeAsync(kernelFunction, arguments);
                 _logger.LogInformation($"GenerateWithPromptyAsync: Metadata: {string.Join(",", response.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
-               
+
                 var usage = response.Metadata?["Usage"] as ChatTokenUsage;
 
                 if (usage != null)
@@ -2375,13 +2722,13 @@ namespace AITrailblazer.net.Services
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
                 _logger.LogInformation($"Invalid operation: {ex.Message}");
-                return ("",null);
+                return ("", null);
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
                 _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
-                return ("",null);
+                return ("", null);
             }
 
         }
@@ -2423,7 +2770,6 @@ namespace AITrailblazer.net.Services
         string promptyTemplate,
         string input,
         string panelInput,
-        string generalSystemGuidelines,
         string creativity,
         string audienceLevel,
         string writingStyle,
@@ -2441,15 +2787,15 @@ namespace AITrailblazer.net.Services
                 //{ "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"# Customer Context\n\nUse the provided\n<context>{panelInput}</context>\nto shape your response.\nThe <context> provides background information essential for tailoring the content to the specific needs and objectives." },
                 { "{{input}}", string.IsNullOrEmpty(input) ? "" : $"\n# Input:\n<input>{input}</input>" },
                 { "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"\n# Context:\n<context>{panelInput}</context>"},
-                { "{{generalSystemGuidelines}}", string.IsNullOrEmpty(generalSystemGuidelines) ? "" : $"\n# Guidelines:\n<generalSystemGuidelines>{generalSystemGuidelines}</generalSystemGuidelines>" },
-                { "{{creativity}}", string.IsNullOrEmpty(creativity) ? "" : $"\n# Creativity:\n<creativity>{creativity}</creativity>" },
-                { "{{targetAudienceReadingLevel}}", string.IsNullOrEmpty(audienceLevel) ? "" : $"\n# Target Audience Reading Level\n<targetAudienceReadingLevel>{audienceLevel}</targetAudienceReadingLevel>" },
-                { "{{style}}", string.IsNullOrEmpty(writingStyle) ? "" : $"\n# Writing Style\n<style>{writingStyle}</style>" },
-                { "{{relationSettings}}", string.IsNullOrEmpty(relationSettings) ? "" : $"\n# Relations\n<relationSettings>{relationSettings}</relationSettings>" },
-                { "{{commandCustom}}", string.IsNullOrEmpty(commandsCustom) ? "" : $"\n# Instructions\n<commandCustom>{commandsCustom}</commandCustom>" },
+                //{ "{{generalSystemGuidelines}}", string.IsNullOrEmpty(generalSystemGuidelines) ? " " : $"\n# Guidelines:\n<generalSystemGuidelines>{generalSystemGuidelines}</generalSystemGuidelines>" },
+                { "{{creativity}}", string.IsNullOrEmpty(creativity) ? " " : $"\n# Creativity:\n<creativity>{creativity}</creativity>" },
+                { "{{targetAudienceReadingLevel}}", string.IsNullOrEmpty(audienceLevel) ? " " : $"\n# Target Audience Reading Level\n<targetAudienceReadingLevel>{audienceLevel}</targetAudienceReadingLevel>" },
+                { "{{style}}", string.IsNullOrEmpty(writingStyle) ? " " : $"\n# Writing Style\n<style>{writingStyle}</style>" },
+                { "{{relationSettings}}", string.IsNullOrEmpty(relationSettings) ? " " : $"\n# Relations\n<relationSettings>{relationSettings}</relationSettings>" },
+                { "{{commandCustom}}", string.IsNullOrEmpty(commandsCustom) ? " " : $"\n# Instructions\n<commandCustom>{commandsCustom}</commandCustom>" },
                 { "{{responseStylePreference}}", string.IsNullOrEmpty(responseStylePreference) ? "" : $"\n# Instructions:\n<responseStylePreference>{responseStylePreference}</responseStylePreference>" },
-                { "{{masterSetting}}", string.IsNullOrEmpty(masterSetting) ? "" : $"\n# Master Settings:\n<masterSetting>{masterSetting} fit in {maxTokens}</masterSetting>" },
-                { "{{maxTokens}}", string.IsNullOrEmpty(maxTokens) ? "" : $"\n# Settings:\n<maxTokens>{maxTokens}</maxTokens>" }
+                { "{{masterSetting}}", string.IsNullOrEmpty(masterSetting) ? " " : $"\n# Master Settings:\n<masterSetting>{masterSetting} fit in {maxTokens}</masterSetting>" },
+                { "{{maxTokens}}", string.IsNullOrEmpty(maxTokens) ? " " : $"\n# Settings:\n<maxTokens>{maxTokens}</maxTokens>" }
             };
             // Replace placeholders in YAML content with corresponding values
             foreach (var replacement in replacements)

@@ -123,7 +123,7 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred during the chat interaction.");
+                _logger.LogError(ex, "ExecuteChatWriterReviewerAsync An unexpected error occurred during the chat interaction.");
                 return ReturnErrorMessage("An unexpected error occurred. Please try again later.");
             }
         }
@@ -192,12 +192,15 @@ namespace AITrailblazer.net.Services
                 {
                     // Extract token counts and accumulate totals
                     // Inside KernelFunctionStrategyService.cs
-                    var tokenCounts = TokenUsageParser.ParseTokenCounts(response);
-
+                    TokenCounts tokenCounts = TokenUsageParser.ParseTokenCounts(response);
+                    
+                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.CompletionTokens: " + tokenCounts.CompletionTokens);
+                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.PromptTokens: " + tokenCounts.PromptTokens);
+                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.TotalTokens: " + tokenCounts.TotalTokens);
                     if (tokenCounts != null)
                     {
-                        totalInputTokens += tokenCounts.PromptTokens;
                         totalOutputTokens += tokenCounts.CompletionTokens;
+                        totalInputTokens += tokenCounts.PromptTokens;
                         totalTokens += tokenCounts.TotalTokens;
                     }
 
@@ -223,7 +226,7 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred during the chat interaction.");
+                _logger.LogError(ex, "ExecuteAgentChatWriterEditorReviewerAsync An unexpected error occurred during the chat interaction.");
                 return (ReturnErrorMessage("An unexpected error occurred. Please try again later."), null);
             }
         }

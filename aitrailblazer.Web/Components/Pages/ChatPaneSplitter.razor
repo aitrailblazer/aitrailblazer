@@ -1961,7 +1961,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         {
             ProcessedPanelOutputFinal = PanelOutputFinal;
             Console.WriteLine($"Processed ProcessedPanelOutputFinal: {ProcessedPanelOutputFinal}");
-        } else if ((FeatureNamePipeline == "AIDiagramCodex") || (FeatureNameProject == "AIDiagramCodex")) {
+        } else if ((FeatureNamePipeline == "AIDiagramCodexSequence") || (FeatureNameProject == "AIDiagramCodexSequence")) {
             string remainderString = FormattingUtility.ExtractRemainderString(inputString1, "##########");
             ProcessedPanelOutputFinal = remainderString;
  
@@ -2271,7 +2271,8 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
                 new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AISoftwareDocGen"), WorkflowName = "CodeAndDocumentation", Id = "AISoftwareDocGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
                 new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AISoftwareCodeGen"), WorkflowName = "CodeAndDocumentation", Id = "AISoftwareCodeGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
                 new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("COSE"), WorkflowName = "CodeAndDocumentation", Id = "COSE", Icon = new Icons.Regular.Size20.BrainCircuit() },
-                //new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIDiagramCodex"), Id = "AIDiagramCodex", Icon = new Icons.Regular.Size20.BrainCircuit() }
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIDiagramCodexSequence"), WorkflowName = "CodeAndDocumentation", Id = "AIDiagramCodexSequence", Icon = new Icons.Regular.Size20.BrainCircuit() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIDiagramCodexActivity"), WorkflowName = "CodeAndDocumentation", Id = "AIDiagramCodexActivity", Icon = new Icons.Regular.Size20.BrainCircuit() }
             }
         },
         new ComponentModel

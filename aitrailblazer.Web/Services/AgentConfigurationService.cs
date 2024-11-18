@@ -271,7 +271,47 @@ public class AgentConfigurationService
                 }
             },
             {
-                "AIDiagramCodex", new AgentSettings
+                "AIDiagramCodexSequence", new AgentSettings
+                {
+                    WriterRoleName = "DiagramCreator",
+                    WriterRoleDescription = "A Latex TikZ diagram expert and UML expert who generates precise diagrams for software system design and development. Specializes in converting input into accurate Latex TikZ code without explanations.",
+
+                    EditorRoleName = "DiagramRefiner",
+                    EditorRoleDescription = "Refines and ensures the accuracy of generated diagrams, focusing on correct syntax and clear representation of the desired software structure or process.",
+
+                    ReviewerRoleName = "DiagramEvaluator",
+                    ReviewerRoleDescription = "Evaluates the final diagram to ensure it meets the highest standards of precision, clarity, and compliance with the provided instructions. Confirms the diagram is ready for implementation.",
+
+                    WriterInstructions = "You are a DiagramCreator responsible for generating Latex TikZ code based on provided input. " +
+                                         "Your goal is to convert the input into accurate, well-structured diagrams without providing natural language explanations. " +
+                                         "Ensure all elements are correctly represented and formatted according to the specified examples.",
+
+                    EditorInstructions = "You are a DiagramRefiner tasked with ensuring the accuracy and clarity of generated diagrams. " +
+                                         "Focus on correct syntax, proper formatting, and clear representation of the desired software structure or process. " +
+                                         "Make any necessary adjustments to improve the diagram's overall quality.",
+
+                    ReviewerInstructions = "You are a DiagramEvaluator responsible for critically assessing the final diagram. " +
+                                           "Ensure it meets the highest standards of precision, clarity, and compliance with the provided instructions. " +
+                                           "Confirm the diagram is ready for implementation and accurately represents the intended design.",
+
+                    TerminationPrompt = """
+                        Determine if the diagram is ready for implementation. If it meets all standards of precision, clarity, and compliance with instructions, respond with a single word: yes.
+
+                        History:
+                        {{$history}}
+                        """,
+
+                    WriterTemperature = 0.7,
+                    WriterTopP = 0.7,
+                    EditorTemperature = 0.5,
+                    EditorTopP = 0.5,
+                    ReviewerTemperature = 0.1,
+                    ReviewerTopP = 0.1,
+                    MaxTokens = 100
+                }
+            },           
+            {
+                "AIDiagramCodexActivity", new AgentSettings
                 {
                     WriterRoleName = "DiagramCreator",
                     WriterRoleDescription = "A Latex TikZ diagram expert and UML expert who generates precise diagrams for software system design and development. Specializes in converting input into accurate Latex TikZ code without explanations.",
@@ -310,6 +350,7 @@ public class AgentConfigurationService
                     MaxTokens = 100
                 }
             }
+
         };
     }
 

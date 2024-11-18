@@ -181,13 +181,13 @@ builder.Services.AddSwaggerGen(options =>
   options.EnableAnnotations();
   options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "ASAP Knowledge Navigator OpenAPI",
+        Title = "AITrailblazer ASAP Knowledge Navigator OpenAPI",
         Version = "v1",
         Description = "A robust API providing Cosmos DB-backed data management and retrieval for the AITrailblazer ASAP Knowledge Navigator, supporting advanced chat sessions and knowledge organization.",
          Contact = new OpenApiContact
         {
             Name = "Developer Support",
-            Email = "support@aitrailblazer.com",
+            Email = "constantine@aitrailblazer.com",
             Url = new Uri("https://aitrailblazer.com/contact")
         },
         License = new OpenApiLicense
@@ -214,8 +214,10 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "ASAP Knowledge Navigator OpenAPI v1");
         options.RoutePrefix = "swagger";
+        options.DocumentTitle = "AITrailblazer ASAP Knowledge Navigator API";
+
     });
-    
+
 }
 
 // Map API endpoints
