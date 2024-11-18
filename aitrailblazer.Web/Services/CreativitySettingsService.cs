@@ -8,6 +8,7 @@ public class CreativitySettingsService
     {
         return temperature switch
         {
+            "Exact" => 0.0F,
             "Focused" => 0.1F,
             "Analytical" => 0.2F,
             "Balanced" => 0.3F,
@@ -26,6 +27,7 @@ public class CreativitySettingsService
     {
         return temperature switch
         {
+            0.0F => "Deterministic: Highly deterministic and precise, eliminating randomness to ensure accuracy and relevance. Ideal for tasks demanding strict adherence to a given topic or style.",
             0.1F => "Focused: Highly deterministic and precise, minimizing randomness in favor of accuracy and relevance. Best for tasks requiring strict adherence to a topic or style.",
             0.2F => "Analytical: Outputs are logical and detailed, with a slight increase in diversity to accommodate complex reasoning or explanations.",
             0.3F => "Balanced: A middle ground, offering a blend of predictability and creativity that's suitable for a wide range of tasks.",
