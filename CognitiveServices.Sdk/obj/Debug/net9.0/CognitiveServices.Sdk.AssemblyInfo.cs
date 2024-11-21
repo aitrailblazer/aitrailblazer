@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CognitiveServices.Sdk")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e6a0d2908aedb556af011f5f8ef57d8ccd801bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b08e7b432e18be754eaf6c1a8ab2d34ee4188e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CognitiveServices.Sdk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CognitiveServices.Sdk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1277,7 +1277,20 @@
                 // Set Thread-related settings based on message details
                 CurrentFeatureWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
                 CurrentFeatureName = message.FeatureNameProject ?? string.Empty;
+                agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
+                // Parse the JSON response into a list of messages
+                ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
 
+                // Format the final CopyWriter content with more prominent styling
+                if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
+                    PanelOutput = FormatProminentWriterContent(
+                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
+                    );
+                } else {
+                    PanelOutput = FormatProminentWriterContent(
+                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
+                    );
+                }
                 AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
                 AICopilotSettings.AudienceLevelVal = message.AudienceLevelVal ?? string.Empty;
                 AICopilotSettings.ResponseLengthVal = message.ResponseLengthVal ?? string.Empty;
