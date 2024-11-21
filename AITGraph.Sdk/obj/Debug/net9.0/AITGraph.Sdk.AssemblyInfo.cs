@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AITGraph.Sdk")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d6770c5b8801a361b979c0f8e195511eea22f553")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad3d7eb75a4dea5a2233b20d3170ecde1b8662ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("AITGraph.Sdk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AITGraph.Sdk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
