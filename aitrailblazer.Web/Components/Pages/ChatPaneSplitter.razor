@@ -13,6 +13,9 @@
 @using System.Text
 @using Markdig
 @using OntologyTreeApp.Models
+@using Newtonsoft.Json.Linq;
+
+@using System.Text.RegularExpressions;
 @inject AITGraphService GraphService
 @inject NavigationManager Navigation
 @inject ILogger<User> Logger
@@ -1265,6 +1268,11 @@
                 // Display the message content
                 PanelInput = message.Prompt;
                 PanelOutput = message.Output;
+                // Step 2: Remove control characters
+                PanelOutput = Regex.Replace(PanelOutput, @"\p{C}+", string.Empty);
+
+                // Step 3: Escape special characters
+                PanelOutput = PanelOutput.Replace("\\", "\\\\").Replace("\"", "\\\"");
 
                 inputTokenCount = message.InputTokenCount;
                 outputTokenCount = message.OutputTokenCount;
@@ -1279,17 +1287,35 @@
                 CurrentFeatureName = message.FeatureNameProject ?? string.Empty;
                 agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
                 // Parse the JSON response into a list of messages
-                ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
+                Console.WriteLine("PanelOutput content:");
+                Console.WriteLine(PanelOutput);
+                // Check if PanelOutput is JSON
+                bool isJson = false;
+                try
+                {
+                    JToken.Parse(PanelOutput);
+                    isJson = true;
+                }
+                catch (JsonReaderException)
+                {
+                    isJson = false;
+                }
 
-                // Format the final CopyWriter content with more prominent styling
-                if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
-                    PanelOutput = FormatProminentWriterContent(
-                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
-                    );
-                } else {
-                    PanelOutput = FormatProminentWriterContent(
-                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
-                    );
+                if (isJson)
+                {
+
+                                ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
+
+                                // Format the final CopyWriter content with more prominent styling
+                                if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
+                                    PanelOutput = FormatProminentWriterContent(
+                                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
+                                    );
+                                } else {
+                                    PanelOutput = FormatProminentWriterContent(
+                                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
+                                    );
+                                }
                 }
                 AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
                 AICopilotSettings.AudienceLevelVal = message.AudienceLevelVal ?? string.Empty;
