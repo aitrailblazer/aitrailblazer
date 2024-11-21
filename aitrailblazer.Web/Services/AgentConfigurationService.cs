@@ -12,19 +12,26 @@ public class AgentConfigurationService
                 "AIMessageOptimizer", new AgentSettings
                 {
                     WriterRoleName = "CopyWriter",
-                    WriterRoleDescription = "Expert copywriter with a decade of experience, crafting concise, targeted marketing messages that drive engagement and action.",
+                    WriterRoleDescription = "An expert copywriter with a decade of experience, crafting concise, targeted marketing messages that drive engagement and action.",
+
+                    EditorRoleName = "CopyEditor",
+                    EditorRoleDescription = "A seasoned copy editor who refines and polishes marketing messages, ensuring clarity, tone, and alignment with brand voice.",
 
                     ReviewerRoleName = "MarketingDirector",
-                    ReviewerRoleDescription = "Expert in evaluating and refining marketing messages, ensuring they are engaging, emotionally resonant, and strategically sound.",
+                    ReviewerRoleDescription = "An expert in evaluating and refining marketing messages, ensuring they are engaging, emotionally resonant, and strategically sound.",
 
                     WriterInstructions = "You are a copywriter with ten years of experience and are known for brevity and dry humor. " +
-                                         "The goal is to refine and decide on the single best copy as an expert in the field. " +
-                                         "Only provide a single proposal per response. Stay laser-focused on the goal at hand. " +
-                                         "Avoid chit chat and consider suggestions when refining an idea.",
+                                        "Your goal is to refine and present the single best copy as an expert in the field. " +
+                                        "Provide only one proposal per response. Stay laser-focused on the goal at hand. " +
+                                        "Avoid chit chat and consider suggestions when refining an idea.",
 
-                    ReviewerInstructions = "You are a marketing director with strong opinions about copywriting, influenced by a love for David Ogilvy. " +
-                                           "The goal is to determine if the given copy is acceptable for print. " +
-                                           "If so, state that it is approved. If not, provide insight on how to refine the suggested copy without examples.",
+                    EditorInstructions = "You are a CopyEditor responsible for refining and polishing the copy provided by the CopyWriter. " +
+                                        "Focus on ensuring clarity, proper tone, and alignment with the brand voice. " +
+                                        "Make any necessary adjustments to improve the copy's overall quality.",
+
+                    ReviewerInstructions = "You are a MarketingDirector with strong opinions about copywriting, influenced by a love for David Ogilvy. " +
+                                        "Your goal is to determine if the given copy is acceptable for print. " +
+                                        "If it meets the standards, state that it is approved. If not, provide insight on how to refine the suggested copy without examples.",
 
                     TerminationPrompt = """
                         Determine if the copy has been approved. If so, respond with a single word: yes.
@@ -35,11 +42,14 @@ public class AgentConfigurationService
 
                     WriterTemperature = 0.7,
                     WriterTopP = 0.9,
+                    EditorTemperature = 0.5,
+                    EditorTopP = 0.5,
                     ReviewerTemperature = 0.1,
                     ReviewerTopP = 0.1,
                     MaxTokens = 100
                 }
             },
+
             {
                 "AIBrandWizard", new AgentSettings
                 {
@@ -309,7 +319,7 @@ public class AgentConfigurationService
                     ReviewerTopP = 0.1,
                     MaxTokens = 100
                 }
-            },           
+            },
             {
                 "AIDiagramCodexActivity", new AgentSettings
                 {
@@ -359,10 +369,12 @@ public class AgentConfigurationService
         if (_agentConfigurations.TryGetValue(featureNameProject, out var agentSettings))
         {
             return agentSettings;
-        } else {
+        }
+        else
+        {
             return null;
         }
 
     }
 }
-  
+

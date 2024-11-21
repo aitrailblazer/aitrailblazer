@@ -404,3 +404,4 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIDiagramCodexSequenceReviewer.prompty
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIDiagramCodexSequenceWriter.prompty
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIDiagramCodexSequence.prompty
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIMessageOptimizerEditor.prompty
