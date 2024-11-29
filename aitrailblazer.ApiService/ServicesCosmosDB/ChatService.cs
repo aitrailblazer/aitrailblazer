@@ -123,25 +123,25 @@ namespace Cosmos.Copilot.Services
         public async Task<List<Message>> GetChatThreadMessagesAsync(
             string tenantId,
             string userId,
-            string? ThreadId)
+            string? threadId)
         {
-             _logger.LogInformation("Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
+             _logger.LogInformation("GetChatThreadMessagesAsync: Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
                 ArgumentNullException.ThrowIfNull(userId);
-                ArgumentNullException.ThrowIfNull(ThreadId);
+                ArgumentNullException.ThrowIfNull(threadId);
 
                 var messages = await _cosmosDbService.GetThreadMessagesAsync(
                     tenantId,
                     userId,
-                    ThreadId);
-                _logger.LogInformation("GetChatThreadMessagesAsync Retrieved {Count} messages for ThreadId={ThreadId}.", messages.Count, ThreadId);
+                    threadId);
+                _logger.LogInformation("GetChatThreadMessagesAsync: Retrieved {Count} messages for ThreadId={threadId}.", messages.Count, threadId);
                 return messages;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to retrieve chat messages for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
+                _logger.LogError(ex, "GetChatThreadMessagesAsync:  Failed to retrieve chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
                 throw;
             }
         }
@@ -508,6 +508,7 @@ namespace Cosmos.Copilot.Services
         public async Task<Message> SearchClosestMessageAsync(
            string tenantId,
            string userId,
+           double similarityScore,
            string featureNameProject,
            string searchQuery,
            string responseLengthVal,
@@ -527,7 +528,7 @@ namespace Cosmos.Copilot.Services
                 _logger.LogInformation("Embeddings generated for the search query.");
 
                 // Define the similarity threshold (adjust as needed)
-                double similarityScore = 0.9;
+                //double similarityScore = 0.9;
 
                 // Search for the closest message with additional parameters
                 var closestMessage = await _cosmosDbService.SearchClosestMessageAsync(
@@ -680,6 +681,7 @@ namespace Cosmos.Copilot.Services
             string userId,
             string categoryId,
             string promptText,
+            double similarityScore,
             List<EmailMessage>? contextWindow = null)
         {
             // Adjusted logging syntax to remove argument issues
@@ -703,7 +705,8 @@ namespace Cosmos.Copilot.Services
                     tenantId,
                     userId,
                     categoryId,
-                    _emailMaxResults);
+                    _emailMaxResults,
+                    similarityScore);
                 _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
                 _logger.LogInformation($"SearchEmailsAsync {similarEmails}", similarEmails);
 

@@ -103,8 +103,8 @@ public class CosmosDbService
     /// <param name="categoryId">Category Id of the item.</param>
     /// <returns>Newly created partition key.</returns>
     public static PartitionKey GetPK(
-        string tenantId, 
-        string userId, 
+        string tenantId,
+        string userId,
         string threadId = null)
     {
         var partitionKeyBuilder = new PartitionKeyBuilder()
@@ -281,7 +281,7 @@ public class CosmosDbService
     /// <param name="partitionKey">Partition key value.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     public async Task UpdateThreadAsync(
-        PartitionKey partitionKey, 
+        PartitionKey partitionKey,
         ThreadChat thread)
     {
         _logger.LogInformation("Updating thread with ID: {threadId}", thread.Id);
@@ -462,7 +462,11 @@ public class CosmosDbService
     /// <param name="userId">User identifier.</param>
     /// <param name="threadId">thread Chat identifier.</param>
     /// <param name="messageId">Message identifier to delete.</param>
-    public async Task DeleteMessageAsync(string tenantId, string userId, string threadId, string messageId)
+    public async Task DeleteMessageAsync(
+        string tenantId,
+        string userId,
+        string threadId,
+        string messageId)
     {
         _logger.LogInformation("Deleting message with ID: {MessageId} in thread: {threadId}", messageId, threadId);
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
@@ -694,24 +698,25 @@ public class CosmosDbService
         string tenantId,
         string userId,
         string categoryId,
-        int emailMaxResults)
+        int emailMaxResults,
+        double similarityScore)
     {
-
-        emailMaxResults = 1;
-        _logger.LogInformation("Searching for similar emails with max results: {MaxResults} for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}", emailMaxResults, tenantId, userId, categoryId ?? "None");
+        _logger.LogInformation("Searching for similar emails with max results: {MaxResults}, similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
+            emailMaxResults, similarityScore, tenantId, userId, categoryId ?? "None");
 
         List<EmailMessage> results = new();
 
         // Construct SQL query with optional categoryId filtering
         string queryText = $"""
-        SELECT 
-            TOP @maxResults
-            c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
-            c.keypoints, c.conversationId, c.webLink, c.categoryIds,
-            VectorDistance(c.vectors, @vectors) as similarityScore
-        FROM c 
-        WHERE c.type = 'EmailMessage' AND c.tenantId = @tenantId AND c.userId = @userId
-        """;
+    SELECT 
+        TOP @maxResults
+        c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
+        c.keypoints, c.conversationId, c.webLink, c.categoryIds,
+        VectorDistance(c.vectors, @vectors) as similarityScore
+    FROM c 
+    WHERE c.type = 'EmailMessage' AND c.tenantId = @tenantId AND c.userId = @userId
+          AND VectorDistance(c.vectors, @vectors) > @similarityScore
+    """;
 
         if (!string.IsNullOrEmpty(categoryId))
         {
@@ -720,10 +725,11 @@ public class CosmosDbService
 
         queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
 
-        // Set up a query definition with parameters for tenantId, userId, categoryId, and vectors
+        // Set up a query definition with parameters for tenantId, userId, categoryId, vectors, and similarity score
         var queryDef = new QueryDefinition(queryText)
             .WithParameter("@maxResults", emailMaxResults)
             .WithParameter("@vectors", vectors)
+            .WithParameter("@similarityScore", similarityScore)
             .WithParameter("@tenantId", tenantId)
             .WithParameter("@userId", userId);
 
@@ -745,7 +751,7 @@ public class CosmosDbService
                     _logger.LogInformation("Email ID: {EmailId}, Subject: {Subject}, ConversationId: {ConversationId}, WebLink: {WebLink}, KeyPoints: {KeyPoints}",
                         email.Id, email.Subject, email.ConversationId ?? "N/A", email.WebLink ?? "N/A", email.KeyPoints ?? "N/A");
 
-                    // Convert the email object to JSON and log it to see all fields
+                    // Log the email object as JSON for debugging
                     string emailJson = JsonConvert.SerializeObject(email, Formatting.Indented);
                     _logger.LogInformation("Email JSON: {EmailJson}", emailJson);
 
@@ -755,7 +761,7 @@ public class CosmosDbService
                 _logger.LogInformation("Retrieved {Count} emails in current batch.", response.Count);
             }
 
-            _logger.LogInformation("SearchEmailsAsync found {TotalCount} similar emails.", results.Count);
+            _logger.LogInformation("SearchEmailsAsync completed with {TotalCount} similar emails found.", results.Count);
             return results;
         }
         catch (Exception ex)
@@ -863,10 +869,10 @@ public class CosmosDbService
     }
 
     public async Task<Message> SearchClosestMessageAsync(
-    string tenantId, 
-    string userId, 
-    string featureNameProject, 
-    float[] vectors, 
+    string tenantId,
+    string userId,
+    string featureNameProject,
+    float[] vectors,
     double similarityScore,
     string responseLengthVal,
     string creativeAdjustmentsVal,

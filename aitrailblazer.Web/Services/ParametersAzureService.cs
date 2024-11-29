@@ -13,6 +13,8 @@ namespace AITrailblazer.net.Services
 
         //public required string KernelMemoryServiceEndpoint{ get; set; }
         //public required string KernelMemoryServiceApiKey { get; set; }
+        public required string StorageAccountName { get; set; }
+        
         public required string StorageConnectionString { get; set; }
         public required string StorageContainerName { get; set; }
 
@@ -31,6 +33,8 @@ namespace AITrailblazer.net.Services
         public required string AzureOpenAIModelName02 { get; set; }
 
         public required string AzureOpenAIModelName03 { get; set; }
+        public required string AzureSearchApiKey { get; set; }
+        public required string AzureSearchEndpoint { get; set; }
 
         public required string AzureOpenAIMaxCompletionTokens { get; set; }
         public required string AzureEmbeddingsModelName03 { get; set; }

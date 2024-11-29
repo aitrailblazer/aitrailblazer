@@ -264,15 +264,19 @@
             },
             "Microsoft.Azure.Cosmos": {
               "target": "Package",
-              "version": "[3.45.1, )"
+              "version": "[3.46.0, )"
+            },
+            "Microsoft.Extensions.VectorData.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0-preview.1.24523.1, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components": {
               "target": "Package",
-              "version": "[4.10.3, )"
+              "version": "[4.10.4, )"
             },
             "Microsoft.FluentUI.AspNetCore.Components.Icons": {
               "target": "Package",
-              "version": "[4.10.3, )"
+              "version": "[4.10.4, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
@@ -308,7 +312,7 @@
             },
             "Microsoft.ML.Tokenizers": {
               "target": "Package",
-              "version": "[0.21.1, )"
+              "version": "[1.0.0, )"
             },
             "Microsoft.SemanticKernel": {
               "target": "Package",
@@ -325,6 +329,10 @@
             "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
               "target": "Package",
               "version": "[1.25.0-beta, )"
+            },
+            "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL": {
+              "target": "Package",
+              "version": "[1.30.0-preview, )"
             },
             "Microsoft.SemanticKernel.Plugins.Core": {
               "target": "Package",
@@ -377,6 +385,14 @@
             "TimeZoneConverter": {
               "target": "Package",
               "version": "[6.1.0, )"
+            },
+            "UglyToad.PdfPig": {
+              "target": "Package",
+              "version": "[1.7.0-custom-5, )"
+            },
+            "UglyToad.PdfPig.DocumentLayoutAnalysis": {
+              "target": "Package",
+              "version": "[1.7.0-custom-5, )"
             }
           },
           "imports": [

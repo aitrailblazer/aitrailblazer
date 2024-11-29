@@ -22,6 +22,7 @@
 @using GraphMessage = AITGraph.Sdk.Models.Message
 
 @using Microsoft.AspNetCore.Components.Web
+@using VectorStoreRAG
 
 @inject ILogger<User> Logger
 @inject PluginService PluginService
@@ -31,6 +32,7 @@
 @inject AzureOpenAIHandler azureOpenAIHandler
 @inject TimeFunctions _timeFunctions
 @inject UserIDsService UserIDsService
+@inject RAGChatService<string> RagChatService
 
 
 <IsInteractiveIndicator />
@@ -168,9 +170,9 @@ else
                                 Multiple="true"
                                 AnchorId="MyUploadBuffer"
                                 MaximumFileCount="10"
-                                MaximumFileSize="@(100 * 1024)" 
+                                MaximumFileSize="@(100*1024*1024)" 
                                 
-                                Accept=".json, .txt, .html, .md"
+                                Accept=".pdf, .docx, .xlsx, .pptx, .jpg, .jpeg, .png, .json, .txt, .html, .md"
                                 @bind-ProgressPercent="@ProgressPercent"
                                 OnCompleted="@OnCompletedAsync"
                                 Style="height: 300px; width: 840px; border: 1px dashed var(--accent-fill-rest);" > 
@@ -1048,8 +1050,10 @@ else
             {
                 var manager = azureOpenAIHandler.BlobStorageManagerCreate();
                 string directory = FeatureNameProject + "FileInput";
+                string tenantId = currentUserTenantID;
                 string userId = currentUserIdentityID;
-                string destination = $"{userId}-{directory}/";
+
+                string destination = $"{tenantId}-{userId}-{directory}/";
 
                 var blobs = await manager.ListBlobsAsync(destination);
 
@@ -1134,8 +1138,13 @@ else
             // Attempting to read blob at path: 
             // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md
             // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md/AITrailblazer_AIAssistantSettings.md
+            
+            string tenantId = currentUserTenantID;
+            string userId = currentUserIdentityID;
+
             SelectedFileContent = await azureOpenAIHandler.ReadBlobContentAsync(
-                currentUserIdentityID,
+                tenantId,
+                userId,
                 FeatureNameProject + "FileInput",
                 SelectedFolder,
                 SelectedFile.FileName + "/" + SelectedFile.FileName
@@ -1224,7 +1233,9 @@ else
         {
             submittingInput = true;
             Console.WriteLine($"HandleInputSubmit userInput {userInput}");
-            var userID   = currentUserIdentityID;
+            string tenantId = currentUserTenantID;
+            string userId   = currentUserIdentityID;
+
             var manager = azureOpenAIHandler.BlobStorageManagerCreate();
             string fileName = fileViewName;
 
@@ -1243,7 +1254,8 @@ else
 
             // Call the UploadStringToBlobAsync method
             await manager.UploadStringToBlobAsync(
-                currentUserIdentityID, 
+                tenantId, 
+                userId,
                 directory, 
                 blobName, 
                 contentName,
@@ -1304,9 +1316,14 @@ else
 
         this._timer = new Stopwatch();
         this._timer.Restart();
-    
+           
+        string tenantId = currentUserTenantID;
+        string userId = currentUserIdentityID;
+        
         fileViewName = null;
         Files = files.ToArray();
+        Console.WriteLine($"OnCompletedAsync: {Files.Length} files uploaded."); 
+
         Console.WriteLine($"OnCompletedAsync: {"hello"}"); 
         // Clear any previous error messages
         ErrorMessage = string.Empty;
@@ -1314,15 +1331,13 @@ else
         <!-- ".pdf", ".docx", ".xlsx", ".pptx", ".jpg", ".jpeg", ".png" -->
         var allowedExtensions = new HashSet<string>
         {
-            ".json", ".txt", ".html", ".md"
+            ".pdf", ".docx", ".xlsx", ".pptx", ".jpg", ".jpeg", ".png", ".json", ".txt", ".html", ".md"
         };
-        <!--
         var imageExtensions = new HashSet<string>
         {
             ".pdf", ".docx", ".xlsx", ".pptx", 
             ".jpg", ".jpeg", ".png"
         };
-        -->
         foreach (var file in Files)
         {
             // Get the file extension
@@ -1331,179 +1346,93 @@ else
             // Validate file extension
             if (!allowedExtensions.Contains(fileExtension))
             {
-                ErrorMessage = "Invalid file type. Only .json, .txt, .html, or .md files are allowed.";
+                ErrorMessage = "Invalid file type. Only .pdf, .docx, .xlsx, .pptx, .jpg, .jpeg, .png, .json, .txt, .html, .md files are allowed.";
                 continue;
             }
             //try
             //{
                 var filePath = file.LocalFile?.FullName;
-                Console.WriteLine($"filePath: {filePath}");
+                
                 if (filePath != null)
                 {
-                    submitting = true;
-                    var AITHelpID   = "AITrailblazer";
-                    var userID   = currentUserIdentityID;
-
+                    submitting = true; 
                     //Console.WriteLine($"fileContent: {fileContent}");
                     Console.WriteLine($"file.Name: {file.Name}");
 
-                    /*
-                    indexName = $"{currentUserIdentityID}-{"Documents"}";
-                    if (file.Name.StartsWith("AITrailblazer_"))
+                    if (allowedExtensions.Contains(fileExtension))
                     {
-                        userID   = AITHelpID;
-                        indexName = $"{AITHelpID}-{"Ontology"}";
-                        // AITrailblazer_help
-                       if (!string.IsNullOrEmpty(tags))
-                        {
-                            tags = "AITrailblazer_help," + tags;
-                        }
-                        else
-                        {
-                            tags = "AITrailblazer_help";
-                        }
-                    }
-
-                    if (imageExtensions.Contains(fileExtension))
-                    {
-                        // Read the PDF file into a MemoryStream
-                        //using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                        using var memoryStream = new MemoryStream();
-                        using Stream fileStream = File.OpenRead(filePath);
-                        await fileStream.CopyToAsync(memoryStream);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
-
-                        // Process PDF file as MemoryStream
-                        MarkdownContentFile = await HandleInputFileInMemory(
-                            userID, 
-                            indexName, 
-                            memoryStream, 
-                            file.Name, 
-                            fileExtension, 
-                            tags);
-                        MarkdownContentFile = AddNewLinesAfterEveryLine(MarkdownContentFile);
-                    }
-                    else
-                    {
-                        */
-                        // Process text files
-                        //using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                        //using var reader = new StreamReader(stream);
-                        //var fileContent = await reader.ReadToEndAsync();
-                        //MarkdownContentFile = await HandleInputTextInMemory(
-                        //    userID, 
-                        //    indexName, 
-                        //    file.Name, 
-                        //    fileExtension, 
-                        //    fileContent, 
-                        //    tags);
-                        // Define parameters for the upload
-
-                        var input = inputPrompt;
-                        if (input == "")
-                        {
-                        input = @"summarize effectively, ensuring clarity and conciseness.";
-                        }
-                        Console.WriteLine($"OnCompletedAsync input {input}");
-
-                        var manager = azureOpenAIHandler.BlobStorageManagerCreate();
-                        
-                        string directory = FeatureNameProject+"FileInput"; // Directory structure in which the blob will be stored
-
-                        // Extract subdirectory from filename
-                        string[] parts = file.Name.Split('_');
-                        string subdirectory = parts.Length > 1 ? parts[0] : "Default";
-
-                        string blobName = $"{subdirectory}/{file.Name}";
-
-                        string contentName = "Input"; // Name of the content to be stored in the blob
-                        string content = input;
-                        var jsonParameters = new
-                        {
-                            Input = input,
-                        };
-                        string jsonContent = JsonConvert.SerializeObject(jsonParameters, Formatting.Indented);
-
-                        // Call the UploadStringToBlobAsync method
-                        await manager.UploadStringToBlobAsync(
-                            currentUserIdentityID, 
-                            directory, 
-                            blobName, 
-                            contentName,
-                            content);
-                        
-                        // Open the file stream for reading
-                        await using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
-                        string fileName = file.Name;
-                        // Upload the file stream to Azure Blob Storage
-                        await manager.UploadBlobFromStreamAsync(
-                            currentUserIdentityID, 
-                            directory, 
-                            blobName,
-                            fileName, 
-                            fs);
-
-                        string PanelInput = "Summarizes effectively, ensuring clarity and conciseness.";
-                        //string input;
-                        string masterTextSetting = "Content";
-                        string responseLengthVal = "8192";
-                        string creativeAdjustmentsVal = "Analytical";
-                        string audienceLevelVal = "";
-                        string writingStyleVal = "";
-                        string relationSettingsVal = "";
-                        string responseStyleVal = "";
-
-                        var fileContent = await manager.ReadBlobContentAsync(
-                            currentUserIdentityID, 
-                            directory, 
-                            blobName,
-                            file.Name);
-
-                        //Console.WriteLine($"fileContent: {fileContent}");
-                        /*
-                        string encodedData = EncodeToBase64(fileContent); 
-                        if (!IsBase64String(encodedData))
-                        {
-                            Console.WriteLine("EncodedInlineData is not a valid base64 string.");
-                        } else {
-                            string Feature = "AIImportFiles";//"AIImportFiles"; AIClearNote
-                            var response = await azureOpenAIHandler.GenerateGeminiWithPrompty(
-                                PanelInput,
-                                Feature,
-                                input,
-                                fileName,
-                                encodedData,
-                                masterTextSetting,
-                                responseLengthVal,
-                                creativeAdjustmentsVal,
-                                audienceLevelVal,
-                                writingStyleVal,
-                                relationSettingsVal,
-                                responseStyleVal);
-                            
-                            blobName = file.Name; // Name of the blob to be created
-                            contentName = "Output"; // Name of the content to be stored in the blob
-                            content = response;
-
-                            // Call the UploadStringToBlobAsync method
-                            await manager.UploadStringToBlobAsync(
-                                currentUserIdentityID, 
-                                directory, 
-                                blobName, 
-                                contentName,
-                                content);  
+                        try
+                            {
+                                Console.WriteLine($"Processing file: {filePath}");
                                 
-                                fileViewName = fileName;
+                                // Open the file as a stream and pass it to the data loader
+                                using FileStream fileStream = new FileStream(
+                                    filePath,
+                                    FileMode.Open,
+                                    FileAccess.Read,
+                                    FileShare.Read,
+                                    bufferSize:  524288  // 512 KB buffer
+                                );    
+                                // Set the stream position to the beginning
+                                fileStream.Position = 0;                            
+                                string fileName = file.Name;
+                                
+                                var manager = azureOpenAIHandler.BlobStorageManagerCreate();
+                                // Extract subdirectory from filename
+                                //string[] parts = file.Name.Split('_');
+                                string directory = "Documents";//FeatureNameProject+"FileInput"; // Directory structure in which the blob will be stored
+                                string subdirectory = "Default";//parts.Length > 1 ? parts[0] : "Default";
 
-                            HtmlContent = Markdown.ToHtml(response);
+                                string blobName = subdirectory;//$"{subdirectory}/{file.Name}";
 
-                        }
-                         */
+                                fileName = azureOpenAIHandler.CreateValidFilename(fileName);
 
-                        this._timer.Stop();
-                        Console.WriteLine($"Time: {this._timer.ElapsedMilliseconds / 1000} secs");
+                                // Upload the file stream to Azure Blob Storage
+                                await manager.UploadBlobFromStreamAsync(
+                                    tenantId, 
+                                    userId,
+                                    directory, 
+                                    blobName,
+                                    fileName, 
+                                    fileStream);
+                                //SelectedFileContent = await azureOpenAIHandler.ReadBlobContentAsync(
+                                //    tenantId,
+                                //    userId,
+                                //    FeatureNameProject + "FileInput",
+                                //    SelectedFolder,
+                                //    SelectedFile.FileName + "/" + SelectedFile.FileName
+                                //);
+
+                                //string destination = $"{tenantId}/{userId}/{directory}/{blobName}/{fileName}";
+                                //string filePathDestination = destination;
+                                // Directly process the file using its path
+                                fileStream.Position = 0;                            
+
+                                MarkdownContentFile = await HandleInputFileFromStream(
+                                    tenantId,
+                                    userId,
+                                    directory,
+                                    blobName,
+                                    fileStream,
+                                    fileName,
+                                    fileExtension,
+                                    tags);
+
+                                // Format the content with new lines after each line
+                                if (!string.IsNullOrEmpty(MarkdownContentFile))
+                                {
+                                    MarkdownContentFile = AddNewLinesAfterEveryLine(MarkdownContentFile);
+                                }
+                                
+
+                                Console.WriteLine($"File processed successfully: {file.Name}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error processing file {file.Name}: {ex.Message}");
+                                ErrorMessage = $"Failed to process the file: {file.Name}. Error: {ex.Message}";
+                            }
                     }
-
                     //Console.WriteLine($"MarkdownContentFile: {MarkdownContentFile}");
                     // Convert Markdown to HTML
                     //HtmlContent = Markdown.ToHtml(MarkdownContentFile);
@@ -1512,13 +1441,107 @@ else
 
                     //Console.WriteLine($"HtmlContent: {HtmlContent}");
                     submitting = false;
-                //}
+                }
             //}
             //catch (Exception ex)
             //{
             //    ErrorMessage = $"Error reading file: {ex.Message}";
             //}        
         }
+        /*
+        async Task<string> HandleInputFileFromPath(
+            string tenantID,
+            string userID, 
+            string indexName, 
+            string filePath, 
+            string fileName, 
+            string fileExtension, 
+            string tags)
+        {
+            this._timer = new Stopwatch();
+            this._timer.Restart();
+
+            Console.WriteLine($"HandleInputFileFromPath index: {indexName}");
+
+            // Generate a memoryKey based on tenantID, userID, and fileName
+            fileName = azureOpenAIHandler.CreateValidFilename(fileName);
+            var memoryKey = $"{tenantID}-{userID}-{fileName}";
+            Console.WriteLine($"HandleInputFileFromPath memoryKey: {memoryKey}");
+
+            try
+            {
+                // Call ProcessPdfAsync directly
+                Console.WriteLine($"Calling ProcessPdfAsync for {filePath}");
+                await RagChatService.ProcessPdfAsync(
+                    filePath, 
+                    tenantID, 
+                    userID, 
+                    CancellationToken.None);
+
+                Console.WriteLine("ProcessPdfAsync completed successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HandleInputFileFromPath: {ex}");
+                throw;
+            }
+            finally
+            {
+                this._timer.Stop();
+                Console.WriteLine($"HandleInputFileFromPath completed in {this._timer.ElapsedMilliseconds / 1000} seconds");
+            }
+
+            return $"Successfully processed file: {fileName}";
+        }
+        */
+        async Task<string> HandleInputFileFromStream(
+            string tenantID,
+            string userID, 
+            string directory,
+            string blobName,
+            Stream fileStream,
+            string fileName, 
+            string fileExtension, 
+            string tags)
+        {
+            this._timer = new Stopwatch();
+            this._timer.Restart();
+
+            // Generate a memoryKey based on tenantID, userID, and fileName
+            //fileName = azureOpenAIHandler.CreateValidFilename(fileName);
+            var memoryKey = $"{tenantID}-{userID}-{fileName}";
+            Console.WriteLine($"HandleInputFileFromStream memoryKey: {memoryKey}");
+
+            try
+            {
+                // Call ProcessPdfAsync directly
+                Console.WriteLine($"Calling HandleInputFileFromStream for {fileName}");
+                await RagChatService.ProcessPdfStreamAsync(
+                    tenantID, 
+                    userID, 
+                    fileName,                    
+                    directory, 
+                    blobName,
+                    memoryKey,
+                    fileStream,
+                    CancellationToken.None);
+
+                Console.WriteLine("ProcessPdfStreamAsync completed successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HandleInputFileFromStream: {ex}");
+                throw;
+            }
+            finally
+            {
+                this._timer.Stop();
+                Console.WriteLine($"HandleInputFileFromStream completed in {this._timer.ElapsedMilliseconds / 1000} seconds");
+            }
+
+            return $"Successfully processed file: {fileName}";
+        }
+
         bool IsBase64String(string s)
         {
             s = s.Trim();

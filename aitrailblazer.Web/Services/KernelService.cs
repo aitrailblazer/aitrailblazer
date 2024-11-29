@@ -1,5 +1,4 @@
 
-
 namespace AITrailblazer.net.Services
 {
 #pragma warning disable CS8602 // memory is initialized before usage
@@ -8,7 +7,7 @@ namespace AITrailblazer.net.Services
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.Connectors.AzureAIInference;
     using Microsoft.TypeChat;
-    
+
 
 
     public class KernelService
@@ -43,7 +42,7 @@ namespace AITrailblazer.net.Services
             string endpoint;
 
             //string modelId;  gpt-4o-mini gpt-4o
-            
+
 
             deploymentName = modelId;
             // Convert the string endpoint to a Uri
@@ -60,7 +59,7 @@ namespace AITrailblazer.net.Services
             //Console.WriteLine($"API Key: {apiKey}");
             //Console.WriteLine($"Model ID: {modelId}");
 
-              // Create HttpClient with custom headers and timeout
+            // Create HttpClient with custom headers and timeout
             var httpClient = new HttpClient();
             //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
             httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
@@ -71,7 +70,7 @@ namespace AITrailblazer.net.Services
                 endpoint: endpoint,
                 apiKey: apiKey,
                 modelId: modelId, // Optional name of the underlying model if the deployment name doesn't match the model name
-                //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                                  //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
                 httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
                 );
             kernelBuilder.AddAzureOpenAITextEmbeddingGeneration(
@@ -79,7 +78,7 @@ namespace AITrailblazer.net.Services
                 endpoint: endpoint,
                 apiKey: apiKey,
                 modelId: "text-embedding-3-large", // Optional name of the underlying model if the deployment name doesn't match the model name
-                //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                                                   //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
                 httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
                 );
 
@@ -93,15 +92,6 @@ namespace AITrailblazer.net.Services
 
             return kernelBuilder;
         }
-
-        // var memory = new MemoryWebClient("http://127.0.0.1:9001"); // <== URL where the web service is running
-
-        //public IKernelMemory GetMemoryClient()
-        //{
-        //    string endpoint = _parametersAzureService.KernelMemoryServiceEndpoint;
-        //    string? apiKey = _parametersAzureService.KernelMemoryServiceApiKey;
-        //    return new MemoryWebClient(endpoint, apiKey: apiKey);
-        //}
 
     }
 }

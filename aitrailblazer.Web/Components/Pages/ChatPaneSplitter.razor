@@ -21,7 +21,7 @@
 @inject ILogger<User> Logger
 @inject AITGraphService graphService
 
-
+@inject IMessageService MessageService
 @inject PluginService PluginService
 
 @inject AzureOpenAIHandler azureOpenAIHandler
@@ -29,6 +29,8 @@
 @inject AICopilotSettingsService AICopilotSettings
 
 @inject AgentConfigurationService _agentConfigurationService
+@inject IToastService ToastService
+
 @inject IJSRuntime JSRuntime
 @implements IAsyncDisposable
                     <!--
@@ -60,7 +62,6 @@
                         Address: <span class="value-text">@GetUserAddress()</span>
                     </FluentTextBlock>
                 -->
-
 <FluentTabs @bind-ActiveTabId="@activeid1" OnTabChange="HandleOnMainTabChange" Class="top-tabs-font-size">
     <FluentTab Id="Work-id">
         <Header>
@@ -411,13 +412,16 @@
                                         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
                                         VerticalAlignment="@Vertical">
 
-                                            <DynamicMasterTextSettings 
-                                                FeatureName=@CurrentFeatureName
-                                                CurrentSetting=@masterTextSetting
-                                                OnMasterTextSettingRadioChange="@HandleMasterTextSettingRadioChange" 
-                                                OnMyKnowledgeBaseCheckedChange="@HandleMyKnowledgeBaseCheckedChange" 
-                                                OnTagsChange="@HandleTagsChange"
-                                                Tags="@Tags"/>
+                                <DynamicMasterTextSettings 
+                                    FeatureName="@CurrentFeatureName"
+                                    CurrentSetting="@masterTextSetting"
+                                    Tags="@Tags"
+                                    OnMasterTextSettingRadioChange="@HandleMasterTextSettingRadioChange" 
+                                    OnMyKnowledgeBaseCheckedChange="@HandleMyKnowledgeBaseCheckedChange"
+                                    OnTagsChange="@HandleTagsChange"
+                                    OnSearchCacheCheckedChange="@HandleSearchCacheCheckedChange"
+                                    OnSearchMicrosoftCheckedChange="@HandleSearchMicrosoftCheckedChange" />
+
 
                                             <DynamicAIMode 
                                                 FeatureName=@CurrentFeatureName
@@ -570,6 +574,7 @@
         </Content>
     </FluentTab>
 </FluentTabs> 
+ <FluentToastProvider />
 <style>
     .splitter-container {
         height: 100vh;
@@ -837,7 +842,7 @@
 
 
     bool webSearchUse = false;
-    bool IsMyKnowledgeBaseChecked = false;
+
 
     private string pluginDir = "";
     string imageSettingMenu = "Text To Photo";
@@ -895,10 +900,26 @@
         }       
         await Task.CompletedTask;
     }
+    private bool IsMyKnowledgeBaseChecked { get; set; } = false;
+    private bool IsSearchCacheChecked { get; set; } = false;
+    private bool IsSearchMicrosoftChecked { get; set; } = false;
+
     private async Task HandleMyKnowledgeBaseCheckedChange(bool isChecked)
     {
         IsMyKnowledgeBaseChecked = isChecked;
         Console.WriteLine($"IsMyKnowledgeBaseChecked: {IsMyKnowledgeBaseChecked}");
+    }
+
+    private async Task HandleSearchCacheCheckedChange(bool isChecked)
+    {
+        IsSearchCacheChecked = isChecked;
+        Console.WriteLine($"IsSearchCacheChecked: {IsSearchCacheChecked}");
+    }
+
+    private async Task HandleSearchMicrosoftCheckedChange(bool isChecked)
+    {
+        IsSearchMicrosoftChecked = isChecked;
+        Console.WriteLine($"IsSearchMicrosoftChecked: {IsSearchMicrosoftChecked}");
     }
     private async Task HandleChatSettingRadioChange(ChatSettings settings)
     {
@@ -990,98 +1011,118 @@
     }
     string timeTaken;
     public List<ChatMessageM> ChatMessages { get; set; } = new();
+
     private async Task HandleSubmit()
     {
         string userInput = UserInput;
         string panelInput = PanelInput;
 
         Submitting = true;
-        //@if (selectedSectionContentFinal != null)
-        //{
-        //    panelInput = "Reference: " + selectedSectionContentFinal + "\n\n" + panelInput+ "\n\n" ;
-        //}
         Console.WriteLine($"HandleSubmit userInput: {userInput}");
-        Console.WriteLine($"HandleSubmit threadSelectedName {threadSelectedName}");
+        Console.WriteLine($"HandleSubmit threadSelectedName: {threadSelectedName}");
+
+        ToastService.ShowSuccess("Submitting...");
+
+        // Append selected file content if available
         if (SelectedFile != null)
         {
-            panelInput = SelectedFileContent + "\n\n" + panelInput;
+            panelInput = $"{SelectedFileContent}\n\n{panelInput}";
         }
-        // Concatenate values into a pipe-delimited string
-        string pipeDelimitedString = string.Join("|",
-            currentUserIdentityID,
-            CurrentFeatureWorkflowName,
-            CurrentFeatureName,
-            panelInput,
-            userInput,
-            masterTextSetting,
-            AICopilotSettings.ResponseLengthVal,
-            AICopilotSettings.CreativeAdjustmentsVal,
-            AICopilotSettings.AudienceLevelVal,
-            AICopilotSettings.WritingStyleVal,
-            AICopilotSettings.RelationSettingsVal,
-            AICopilotSettings.ResponseStyleVal
-        );
 
-        Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
-        // Get the output from AzureOpenAIHandler
-        (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
-            isNewThread,
-            IsMyKnowledgeBaseChecked,
-            currentUserTenantID,
-            currentUserIdentityID,
-            CurrentFeatureWorkflowName,
-            CurrentFeatureName,
-            panelInput,
-            userInput,
-            Tags,
-            masterTextSetting,
-            AICopilotSettings.ResponseLengthVal,
-            AICopilotSettings.CreativeAdjustmentsVal,
-            AICopilotSettings.AudienceLevelVal,
-            AICopilotSettings.WritingStyleVal,
-            AICopilotSettings.RelationSettingsVal,
-            AICopilotSettings.ResponseStyleVal,
-            threadSelectedName,
-            currentChatThreadId
-        );
-        // Format a user-friendly string with the response and time spent
-        /// Format the time taken as a user-friendly string
-        timeTaken = timeSpent < 60 
-            ? $"{timeSpent:F2} seconds" 
-            : $"{(timeSpent / 60):F2} minutes";
+        // Subscribe to OnLogUpdate for real-time updates
+        azureOpenAIHandler.OnLogUpdate += ShowToastMessage;
 
-        Submitting = false;
-        PanelOutput = responseOutput;
-        agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
-
-        if (agentSettings != null)
+        try
         {
-            // Retrieve agent settings for the given project feature
+            // Prepare and concatenate values into a pipe-delimited string (not currently used)
+            string pipeDelimitedString = string.Join("|",
+                currentUserIdentityID,
+                CurrentFeatureWorkflowName,
+                CurrentFeatureName,
+                panelInput,
+                userInput,
+                masterTextSetting,
+                AICopilotSettings.ResponseLengthVal,
+                AICopilotSettings.CreativeAdjustmentsVal,
+                AICopilotSettings.AudienceLevelVal,
+                AICopilotSettings.WritingStyleVal,
+                AICopilotSettings.RelationSettingsVal,
+                AICopilotSettings.ResponseStyleVal
+            );
 
-            try
+            Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
+
+            // Call HandleSubmitAsync to process the request
+            (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
+                isNewThread,
+                IsMyKnowledgeBaseChecked,
+                IsSearchCacheChecked,
+                IsSearchMicrosoftChecked,
+                currentUserTenantID,
+                currentUserIdentityID,
+                CurrentFeatureWorkflowName,
+                CurrentFeatureName,
+                panelInput,
+                userInput,
+                Tags,
+                masterTextSetting,
+                AICopilotSettings.ResponseLengthVal,
+                AICopilotSettings.CreativeAdjustmentsVal,
+                AICopilotSettings.AudienceLevelVal,
+                AICopilotSettings.WritingStyleVal,
+                AICopilotSettings.RelationSettingsVal,
+                AICopilotSettings.ResponseStyleVal,
+                threadSelectedName,
+                currentChatThreadId
+            );
+
+            // Calculate time taken and display a success toast
+            timeTaken = timeSpent < 60
+                ? $"{timeSpent:F2} seconds"
+                : $"{(timeSpent / 60):F2} minutes";
+
+            // Process the response
+            PanelOutput = responseOutput;
+
+            // Load agent settings for the current feature
+            agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
+
+            if (agentSettings != null)
             {
-                // Parse the JSON response into a list of messages
-                ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
+                try
+                {
+                    // Parse JSON response into ChatMessages
+                    ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
 
-                // Format the final CopyWriter content with more prominent styling
-                if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
-                    PanelOutput = FormatProminentWriterContent(
-                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
-                    );
-                } else {
-                    PanelOutput = FormatProminentWriterContent(
-                        ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
-                    );
+                    // Extract and format prominent content
+                    string prominentContent = !string.IsNullOrEmpty(agentSettings.EditorRoleName)
+                        ? ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content
+                        : ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content;
+
+                    PanelOutput = FormatProminentWriterContent(prominentContent ?? "No message from CopyWriter found.");
+                }
+                catch (Newtonsoft.Json.JsonSerializationException ex)
+                {
+                    Console.WriteLine($"Error deserializing response JSON: {ex.Message}");
+                    PanelOutput = "Failed to process the response. Please try again later.";
                 }
             }
-            catch (Newtonsoft.Json.JsonSerializationException ex)
-            {
-                Console.WriteLine($"Error deserializing response JSON: {ex.Message}");
-                PanelOutput = "Failed to process the response. Please try again later.";
-            }
-        }
 
-        await LoadThreadsAsync(currentChatThreadId);
+            // Reload threads to update the UI
+            await LoadThreadsAsync(currentChatThreadId);
+        }
+        finally
+        {
+            // Ensure OnLogUpdate is unsubscribed
+            azureOpenAIHandler.OnLogUpdate -= ShowToastMessage;
+            Submitting = false;
+        }
+    }
+
+    private void ShowToastMessage(string message)
+    {
+        // Update the UI with toast messages
+        InvokeAsync(() => ToastService.ShowInfo(message));
     }
     private Icon IconCollapsed = new Icons.Regular.Size20.Folder();
     private Icon IconExpanded = new Icons.Regular.Size20.FolderOpen();
@@ -1267,6 +1308,8 @@
                 threadSelectedItemName = message.Title;
                 // Display the message content
                 PanelInput = message.Prompt;
+                UserInput = message.UserInput;
+
                 PanelOutput = message.Output;
      
                 inputTokenCount = message.InputTokenCount;
@@ -1280,6 +1323,8 @@
                 // Set Thread-related settings based on message details
                 CurrentFeatureWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
                 CurrentFeatureName = message.FeatureNameProject ?? string.Empty;
+                Console.WriteLine($"OnItemSelectedAsync CurrentFeatureName content:{CurrentFeatureName}");
+
                 agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
                 // Parse the JSON response into a list of messages
                 Console.WriteLine("PanelOutput content:");
@@ -1302,14 +1347,25 @@
                     ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
 
                     // Format the final CopyWriter content with more prominent styling
-                    if (!string.IsNullOrEmpty(agentSettings.EditorRoleName)) {
-                        PanelOutput = FormatProminentWriterContent(
-                            ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
-                        );
-                    } else {
-                        PanelOutput = FormatProminentWriterContent(
-                            ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
-                        );
+                    if (agentSettings != null && ChatMessages != null && ChatMessages.Any())
+                    {
+                        if (!string.IsNullOrEmpty(agentSettings.EditorRoleName))
+                        {
+                            PanelOutput = FormatProminentWriterContent(
+                                ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
+                            );
+                        }
+                        else if (!string.IsNullOrEmpty(agentSettings.WriterRoleName))
+                        {
+                            PanelOutput = FormatProminentWriterContent(
+                                ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
+                            );
+                        }
+                        else
+                        {
+                            PanelOutput = "No role name defined in agentSettings.";
+                            Console.WriteLine("No EditorRoleName or WriterRoleName defined in agentSettings.");
+                        }
                     }
                 }
                 AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;

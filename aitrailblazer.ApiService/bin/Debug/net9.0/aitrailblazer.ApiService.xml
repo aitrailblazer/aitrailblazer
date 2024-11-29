@@ -257,7 +257,7 @@
             Clears the semantic cache.
             </summary>
         </member>
-        <member name="M:Cosmos.Copilot.Services.ChatService.GetEmailCompletionAsync(System.String,System.String,System.String,System.String,System.Collections.Generic.List{Cosmos.Copilot.Models.EmailMessage})">
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetEmailCompletionAsync(System.String,System.String,System.String,System.String,System.Double,System.Collections.Generic.List{Cosmos.Copilot.Models.EmailMessage})">
             <summary>
             Retrieves a completion based on a user prompt for an email context, with optional categoryId and context window.
             </summary>

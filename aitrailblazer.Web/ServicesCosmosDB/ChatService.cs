@@ -681,6 +681,7 @@ namespace Cosmos.Copilot.Services
             string userId,
             string categoryId,
             string promptText,
+            double similarityScore,
             List<EmailMessage>? contextWindow = null)
         {
             // Adjusted logging syntax to remove argument issues
@@ -704,7 +705,8 @@ namespace Cosmos.Copilot.Services
                     tenantId,
                     userId,
                     categoryId,
-                    _emailMaxResults);
+                    _emailMaxResults,
+                    similarityScore);
                 _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
                 _logger.LogInformation($"SearchEmailsAsync {similarEmails}", similarEmails);
 

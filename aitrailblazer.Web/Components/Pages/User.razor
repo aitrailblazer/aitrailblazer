@@ -1597,15 +1597,17 @@ private async Task LoadUserDataAsync()
             //responseQuery = await azureOpenAIHandler.GetASAPTime(userQuery);
 
 
-           string subject = "";
+            string subject = "";
             string promptText = userQuery;
             string categoryId = "";
+            double similarityScore = 0.9;
 
             (responseQuery, subject) = await chatService.GetEmailCompletionAsync(
                 currentUserTenantID,
                 currentUserIdentityID,
                 categoryId,
-                promptText
+                promptText,
+                similarityScore
             );
             formattedResponse = Markdown.ToHtml(responseQuery);
             // Dynamically adjust height based on response length

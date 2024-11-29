@@ -1,50 +1,31 @@
 @using AITrailblazer.net.Services
 @using AITrailblazer.net.Models
+
 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
-        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
-            VerticalAlignment="@Vertical">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
             
             <FluentIcon Value="@(new Icons.Regular.Size24.TaskListSquareRtl())" Color="@Color.Accent" Slot="start" />
          
             <FluentLabel Typo="Typography.Body" class="status-font-size">Tasks</FluentLabel>
-      
-               <FluentCheckbox Value="IsMyKnowledgeBaseChecked" ValueChanged="OnCheckStateChanged" class="status-font-size">Search My Knowledge Base</FluentCheckbox>
-                <!--
-                @if (IsMyKnowledgeBaseChecked)
-                {
-                    <FluentTextArea 
-                    Value="@Tags" 
-                    ValueChanged="@OnTagsChanged" 
-                    Appearance="FluentInputAppearance.Filled" 
-                    Placeholder="filename"></FluentTextArea>
-                }
-                -->
-                
+            
+            <FluentCheckbox Value="IsSearchCacheChecked" ValueChanged="OnSearchCacheCheckedChanged" class="status-font-size">Cache</FluentCheckbox>
+            <FluentCheckbox Value="IsSearchMicrosoftChecked" ValueChanged="OnSearchMicrosoftCheckedChanged" class="status-font-size">Organizer</FluentCheckbox>
+            <FluentCheckbox Value="IsMyKnowledgeBaseChecked" ValueChanged="OnMyKnowledgeBaseCheckedChanged" class="status-font-size">My Knowledge Base</FluentCheckbox>
         </FluentStack>
 
-        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal"
-            VerticalAlignment="@Vertical" Width="500px">
-            <FluentRadioGroup Required="true" Name="MasterTextSettin" @bind-Value=CurrentSetting
-                @onchange="HandleMasterTextSettingRadioChange" Style="border: 1px solid var(--accent-fill-rest)"
-                class="menu-font-size">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" Width="500px">
+            <FluentRadioGroup Required="true" Name="MasterTextSettin" @bind-Value=CurrentSetting @onchange="HandleMasterTextSettingRadioChange" Style="border: 1px solid var(--accent-fill-rest)" class="menu-font-size">
                 <FluentRadio Id="Ask" Value=@("Ask")>Ask</FluentRadio>
-                <FluentTooltip Anchor="Ask" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Ask")
-                </FluentTooltip>
+                <FluentTooltip Anchor="Ask" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Ask")</FluentTooltip>
                 <FluentRadio Id="Correct" Value=@("Correct")>Correct</FluentRadio>
-                <FluentTooltip Anchor="Correct" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Correct")
-                </FluentTooltip>
+                <FluentTooltip Anchor="Correct" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Correct")</FluentTooltip>
                 <FluentRadio Id="Improve" Value=@("Improve")>Improve</FluentRadio>
-                <FluentTooltip Anchor="Improve" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Improve")
-                </FluentTooltip>
+                <FluentTooltip Anchor="Improve" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Improve")</FluentTooltip>
                 <FluentRadio Id="Content" Value=@("Content")>Content</FluentRadio>
-                <FluentTooltip Anchor="Content" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Content")
-                </FluentTooltip>
+                <FluentTooltip Anchor="Content" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Content")</FluentTooltip>
                 <FluentRadio Id="Help" Value=@("Help")>Help</FluentRadio>
-                <FluentTooltip Anchor="Help" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Help")
-                </FluentTooltip>                <!--
-                <FluentRadio Id="Image" Value=@("Image")>Image</FluentRadio>
-                -->
+                <FluentTooltip Anchor="Help" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Help")</FluentTooltip>
             </FluentRadioGroup>
         </FluentStack>
     </FluentStack>
@@ -56,28 +37,47 @@
     [Parameter] public string Tags { get; set; } = ""; // Default setting
     [Parameter] public EventCallback<string> OnMasterTextSettingRadioChange { get; set; }
     [Parameter] public EventCallback<bool> OnMyKnowledgeBaseCheckedChange { get; set; } 
-    [Parameter] public EventCallback<string> OnTagsChange { get; set; } // Add this
+    [Parameter] public EventCallback<bool> OnSearchCacheCheckedChange { get; set; } // For Search Cache
+    [Parameter] public EventCallback<bool> OnSearchMicrosoftCheckedChange { get; set; } // For Search Microsoft 365
+    [Parameter] public EventCallback<string> OnTagsChange { get; set; }
+    
     private bool IsMyKnowledgeBaseChecked { get; set; } = false;     
+    private bool IsSearchCacheChecked { get; set; } = false; // Checkbox for Search Cache
+    private bool IsSearchMicrosoftChecked { get; set; } = false; // Checkbox for Search Microsoft 365
+
     private async Task HandleMasterTextSettingRadioChange(ChangeEventArgs e)
     {
         CurrentSetting = e.Value.ToString();
-
-        // Invoke the callback with the new setting
         await OnMasterTextSettingRadioChange.InvokeAsync(CurrentSetting);
     }
- 
-    private async Task OnCheckStateChanged(bool isChecked)
+
+    private async Task OnMyKnowledgeBaseCheckedChanged(bool isChecked)
     {
         IsMyKnowledgeBaseChecked = isChecked;
         await OnMyKnowledgeBaseCheckedChange.InvokeAsync(isChecked);
     }
+
+    private async Task OnSearchCacheCheckedChanged(bool isChecked)
+    {
+        IsSearchCacheChecked = isChecked;
+        Console.WriteLine($"DynamicMasterTextSettings - Search Cache Checked: {isChecked}");
+        await OnSearchCacheCheckedChange.InvokeAsync(isChecked);
+    }
+
+    private async Task OnSearchMicrosoftCheckedChanged(bool isChecked)
+    {
+        IsSearchMicrosoftChecked = isChecked;
+        Console.WriteLine($"DynamicMasterTextSettings - Search Microsoft 365 Checked: {isChecked}");
+        await OnSearchMicrosoftCheckedChange.InvokeAsync(isChecked);
+    }
+
     private async Task OnTagsChanged(string newTags)
     {
         Tags = newTags;
         Console.WriteLine($"DynamicMasterTextSettings Tags: {Tags}");
-       await OnTagsChange.InvokeAsync(newTags); // Notify parent of the change
+        await OnTagsChange.InvokeAsync(newTags);
     }
+
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
-
 }
