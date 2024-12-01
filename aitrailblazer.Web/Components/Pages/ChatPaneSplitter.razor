@@ -1270,6 +1270,9 @@
             var lastChatItem = threadItem.Items.LastOrDefault();
             if (lastChatItem != null)
             {
+                // Assign to currentSelectedTreeItemMessages to trigger the setter logic
+                currentSelectedTreeItemMessages = lastChatItem;
+
                 await OnItemSelectedAsync(lastChatItem.Id);
             }
         }
@@ -1306,18 +1309,6 @@
     }
 
     string threadSelectedName;
-    //private void HandleSelectedThreadItemChanged(FluentTreeItem selectedTreeItem)
-    //{
-    //    if (selectedTreeItem == null)
-    //    {
-   //         Console.WriteLine("Error: No item selected.");
-    //        return;
-    //    }
-    //    _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
-    //    isNewThread = false;
-    //}
-
-
     private string currentChatThreadId = string.Empty; 
     private string currentChatThreadItemMessageId = string.Empty; 
 
