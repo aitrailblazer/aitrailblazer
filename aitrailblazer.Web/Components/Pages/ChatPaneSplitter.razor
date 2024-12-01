@@ -84,13 +84,15 @@
                                                     </Header>
                                                     <Content>
                                                             <FluentCard MinimalStyle="true" Width="calc(100% - 1px)" Height="100%">
-                                                                <FluentButton Id="NewThread" IconStart="@(new Icons.Regular.Size16.Add())" Title="New Thread" OnClick="@StartNewThread">New Thread</FluentButton>
-                                                                @if (ItemsThreads != null && ItemsThreads.Any())
-                                                                {
-                                                                    <FluentTreeView Items="@ItemsThreads" @bind-SelectedItem="@currentSelectedTreeItemMessages" OnSelectedChange="@HandleSelectedThreadItemChanged" OnExpandedAsync="OnExpandedAsync" Class="session-tree-font-size">
-
-                                                                    </FluentTreeView>
-                                                                }
+<FluentButton Id="NewThread" IconStart="@(new Icons.Regular.Size16.Add())" Title="New Thread" OnClick="@StartNewThread">New Thread</FluentButton>
+@if (ItemsThreads != null && ItemsThreads.Any())
+{
+    <FluentTreeView 
+        Items="@ItemsThreads" 
+        @bind-SelectedItem="@currentSelectedTreeItemMessages" 
+        Class="session-tree-font-size">
+    </FluentTreeView>
+}
                                                                 
                                                             </FluentCard>
                                                     </Content>
@@ -264,6 +266,28 @@
                                                 }
                                                 </FluentToolbar>
                                             </div>
+@if (!string.IsNullOrEmpty(pdfUrl))
+{
+    <div style="height: 100%; width: 100%; position: relative;">
+        <button @onclick="ClosePdfView" 
+                style="position: absolute; top: 10px; right: 10px; z-index: 1000; 
+                       padding: 8px; border-radius: 4px; background-color: #f44336; 
+                       color: white; border: none; cursor: pointer;">
+            ✕
+        </button>
+        <object 
+            data="@pdfUrl"
+            type="application/pdf"
+            style="width: 100%; height: 100%;">
+            <iframe 
+                src="@pdfUrl"
+                style="width: 100%; height: 100%; border: none;"
+                title="PDF Viewer">
+            </iframe>
+        </object>
+    </div>
+}
+
                                         }
                                             <FluentLabel Typo="Typography.Subject">
                                             </FluentLabel>
@@ -400,6 +424,17 @@
                                                 <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
                                                     @((MarkupString)ConvertMarkdownToHtml(PanelOutput))
                                                 </div>
+
+                                                @if (!string.IsNullOrWhiteSpace(extractedReferenceLink))
+                                                {
+                                                    <div style="margin-bottom: 10px; text-align: right;">
+                                                        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => OpenPdfAsync(extractedReferenceLink, extractedPageFragment))">
+                                                            @(!string.IsNullOrWhiteSpace(extractedFileName) ? extractedFileName : "PDF")
+                                                        </FluentButton>
+                                                    </div>
+                                                }
+
+
                                             }
                                             </FluentCard>
                                         </FluentMultiSplitterPane>
@@ -772,7 +807,6 @@
     public bool Autofocus { get; set; } = true;
     private bool Submitting { get; set; } = false;
 
-   private ITreeViewItem? currentSelectedTreeItemMessages = null;
 
     private FluentTreeItem? currentSelectedTreeItemAICopilotSettings = null;
     private FluentTreeItem? currentSelectedTreeItemAICopilots = null;
@@ -1083,8 +1117,20 @@
 
             // Process the response
             PanelOutput = responseOutput;
+            Console.WriteLine("PanelOutput content:");
+            Console.WriteLine(PanelOutput);
+            // Extract and remove reference link
+            (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
+                = ExtractAndRemoveReferenceLink(PanelOutput);
 
-            // Load agent settings for the current feature
+            // Update PanelOutput with the cleaned content
+            PanelOutput = cleanedOutput;
+
+            Console.WriteLine($"Cleaned PanelOutput: {PanelOutput}");
+            Console.WriteLine($"Extracted Reference Link: {extractedReferenceLink}");
+            Console.WriteLine($"Extracted Page Fragment: {extractedPageFragment}");
+            Console.WriteLine($"Extracted File Name: {extractedFileName}");
+                        // Load agent settings for the current feature
             agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
             if (agentSettings != null)
@@ -1229,30 +1275,63 @@
         }
     }
 
+    private ITreeViewItem? _currentSelectedTreeItemMessages = null;
 
-
-    string threadSelectedName;
-    private void HandleSelectedThreadItemChanged(FluentTreeItem selectedTreeItem)
+    // Property with custom logic in the setter, including logging
+    private ITreeViewItem? currentSelectedTreeItemMessages
     {
-        if (selectedTreeItem == null)
+        get => _currentSelectedTreeItemMessages;
+        set
         {
-            Console.WriteLine("Error: No item selected.");
-            return;
+            if (_currentSelectedTreeItemMessages != value) // Detect changes
+            {
+                Console.WriteLine($"Property Change Detected: Previous Value: {_currentSelectedTreeItemMessages?.Text ?? "null"}, New Value: {value?.Text ?? "null"}");
+
+                _currentSelectedTreeItemMessages = value;
+
+                // Add detailed logging for the new value
+                if (value == null)
+                {
+                    Console.WriteLine("currentSelectedTreeItemMessages: Value set to null.");
+                }
+                else
+                {
+                    Console.WriteLine($"currentSelectedTreeItemMessages: New Value Set - Id: {value.Id}, Text: {value.Text}");
+                }
+
+                // Uncomment this line if you want to handle the change
+                OnItemSelectedAsync(value.Id);
+            }
         }
-        timeTaken="";
-        _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
-        isNewThread = false;
     }
 
+    string threadSelectedName;
+    //private void HandleSelectedThreadItemChanged(FluentTreeItem selectedTreeItem)
+    //{
+    //    if (selectedTreeItem == null)
+    //    {
+   //         Console.WriteLine("Error: No item selected.");
+    //        return;
+    //    }
+    //    _ = OnItemSelectedAsync(selectedTreeItem.Id); // Fire-and-forget to avoid blocking UI
+    //    isNewThread = false;
+    //}
 
-     private string currentChatThreadId = string.Empty; 
+
+    private string currentChatThreadId = string.Empty; 
     private string currentChatThreadItemMessageId = string.Empty; 
 
 
     string threadSelectedItemName;
+    string extractedReferenceLink; // Global variable to store the extracted link
+    string extractedPageFragment; // Global variable to store the extracted page fragment
+    string extractedFileName; // Global variable to store the extracted filename
+
     private async Task OnItemSelectedAsync(string selectedItemId)
     {
         Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
+        timeTaken="";
+        isNewThread = false;
 
         // Split the ID by '|' to isolate the parts
         var parts = selectedItemId.Split('|');
@@ -1262,14 +1341,14 @@
             isNewThread = false;
 
             currentChatThreadId = parts[0];
-             var selectedThreadChat = await azureOpenAIHandler.GetThreadAsync(
+            var selectedThreadChat = await azureOpenAIHandler.GetThreadAsync(
                 currentUserTenantID,
-                currentUserIdentityID, 
+                currentUserIdentityID,
                 currentChatThreadId);
+
             if (selectedThreadChat != null)
             {
                 threadSelectedName = selectedThreadChat.Title;
-                //StateHasChanged();
             }
 
             Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatThreadId}");
@@ -1285,51 +1364,57 @@
         // Check if there's a second part which should be the message ID
         if (parts.Length >= 2)
         {
-            var messageIdPart = parts[1];
-            if (messageIdPart.StartsWith("Message-"))
-            {
-                messageId = messageIdPart;
-                Console.WriteLine($"Extracted Message ID: {messageId}");
-            }
-            else
-            {
-                Console.WriteLine("Warning: Second part does not start with 'Message-'. Ignoring message ID.");
-            }
+            messageId = parts[1];
+            Console.WriteLine($"Extracted Message ID: {messageId}");
         }
 
         if (!string.IsNullOrEmpty(messageId))
         {
             currentChatThreadItemMessageId = messageId;
-            // **Message Selection Scenario**
+
             // Fetch the message details using the extracted message ID
             var message = await azureOpenAIHandler.GetMessageByIdAsync(messageId);
             if (message != null)
             {
                 threadSelectedItemName = message.Title;
-                // Display the message content
                 PanelInput = message.Prompt;
                 UserInput = message.UserInput;
-
                 PanelOutput = message.Output;
-     
+
                 inputTokenCount = message.InputTokenCount;
                 outputTokenCount = message.OutputTokenCount;
                 totalTokenCount = message.TotalTokenCount;
-
                 cacheHit = message.CacheHit;
 
-                //StateHasChanged();
-
-                // Set Thread-related settings based on message details
                 CurrentFeatureWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
                 CurrentFeatureName = message.FeatureNameProject ?? string.Empty;
-                Console.WriteLine($"OnItemSelectedAsync CurrentFeatureName content:{CurrentFeatureName}");
 
                 agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
-                // Parse the JSON response into a list of messages
+
                 Console.WriteLine("PanelOutput content:");
                 Console.WriteLine(PanelOutput);
-                // Check if PanelOutput is JSON
+                pdfUrl = "";
+                // Extract and remove reference link
+                (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
+                    = ExtractAndRemoveReferenceLink(PanelOutput);
+
+                // Update PanelOutput with the cleaned content
+                PanelOutput = cleanedOutput;
+
+                Console.WriteLine($"Cleaned PanelOutput: {PanelOutput}");
+                Console.WriteLine($"Extracted Reference Link: {extractedReferenceLink}");
+                Console.WriteLine($"Extracted Page Fragment: {extractedPageFragment}");
+                Console.WriteLine($"Extracted File Name: {extractedFileName}");
+
+                // Update AI Copilot settings
+                AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
+                AICopilotSettings.AudienceLevelVal = message.AudienceLevelVal ?? string.Empty;
+                AICopilotSettings.ResponseLengthVal = message.ResponseLengthVal ?? string.Empty;
+                AICopilotSettings.CreativeAdjustmentsVal = message.CreativeAdjustmentsVal ?? string.Empty;
+                AICopilotSettings.RelationSettingsVal = message.RelationSettingsVal ?? string.Empty;
+                AICopilotSettings.ResponseStyleVal = message.ResponseStyleVal ?? string.Empty;
+
+                // If the PanelOutput contains JSON, deserialize it into ChatMessages
                 bool isJson = false;
                 try
                 {
@@ -1343,40 +1428,17 @@
 
                 if (isJson)
                 {
-
                     ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
 
-                    // Format the final CopyWriter content with more prominent styling
                     if (agentSettings != null && ChatMessages != null && ChatMessages.Any())
                     {
-                        if (!string.IsNullOrEmpty(agentSettings.EditorRoleName))
-                        {
-                            PanelOutput = FormatProminentWriterContent(
-                                ChatMessages.LastOrDefault(m => m.Author == agentSettings.EditorRoleName)?.Content ?? "No message from CopyWriter found."
-                            );
-                        }
-                        else if (!string.IsNullOrEmpty(agentSettings.WriterRoleName))
-                        {
-                            PanelOutput = FormatProminentWriterContent(
-                                ChatMessages.LastOrDefault(m => m.Author == agentSettings.WriterRoleName)?.Content ?? "No message from CopyWriter found."
-                            );
-                        }
-                        else
-                        {
-                            PanelOutput = "No role name defined in agentSettings.";
-                            Console.WriteLine("No EditorRoleName or WriterRoleName defined in agentSettings.");
-                        }
+                        string writerContent = ChatMessages
+                            .LastOrDefault(m => m.Author == agentSettings.WriterRoleName || m.Author == agentSettings.EditorRoleName)
+                            ?.Content ?? "No message from CopyWriter found.";
+
+                        PanelOutput = FormatProminentWriterContent(writerContent);
                     }
                 }
-                AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
-                AICopilotSettings.AudienceLevelVal = message.AudienceLevelVal ?? string.Empty;
-                AICopilotSettings.ResponseLengthVal = message.ResponseLengthVal ?? string.Empty;
-                AICopilotSettings.CreativeAdjustmentsVal = message.CreativeAdjustmentsVal ?? string.Empty;
-                AICopilotSettings.RelationSettingsVal = message.RelationSettingsVal ?? string.Empty;
-                AICopilotSettings.ResponseStyleVal = message.ResponseStyleVal ?? string.Empty;
-
-                // Update UI with new data
-                //StateHasChanged();
             }
             else
             {
@@ -1385,11 +1447,93 @@
         }
         else
         {
-            // **No Message Selected Scenario**
-            // Optionally, you can handle cases where only the Thread ID is present
-            // Since you mentioned not needing the else block, we leave this section empty
-            // However, you might still want to perform some actions or simply acknowledge the selection
             Console.WriteLine($"Selected Item is a Thread with ID: {currentChatThreadId}, but no specific message selected.");
+        }
+        // Notify UI to update
+        StateHasChanged();
+    }
+
+    private string pdfUrl;
+    private void ClosePdfView()
+    {
+        pdfUrl = string.Empty;
+        StateHasChanged();
+    }
+    private async Task OpenPdfAsync(string referenceLink, string pageFragment)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(referenceLink))
+            {
+                Console.WriteLine("Error: Reference link is empty.");
+                return;
+            }
+
+            // Generate the SAS URL
+            var sasUrl = await azureOpenAIHandler.GetBlobSasUrlAsync(referenceLink);
+
+            if (!string.IsNullOrEmpty(sasUrl))
+            {
+                // Append the page fragment
+                pdfUrl = !string.IsNullOrEmpty(pageFragment) ? $"{sasUrl}#{pageFragment}" : sasUrl;
+                Console.WriteLine($"Embedded PDF URL: {pdfUrl}");
+            }
+            else
+            {
+                Console.WriteLine("Failed to generate SAS URL for the file.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error opening PDF: {ex.Message}");
+        }
+    }
+
+
+    private (string cleanedOutput, string extractedReferenceLink, string extractedPageFragment, string extractedFileName) ExtractAndRemoveReferenceLink(string panelOutput)
+    {
+        if (string.IsNullOrWhiteSpace(panelOutput))
+        {
+            Console.WriteLine("PanelOutput is empty.");
+            return (panelOutput, string.Empty, string.Empty, string.Empty);
+        }
+
+        try
+        {
+            // Define regex to match the reference link format
+            const string pattern = @"Reference:\s*\[.*?\]\((.+?)(#page=(\d+))?\)";
+
+            // Match the reference link in the panelOutput
+            var match = Regex.Match(panelOutput, pattern);
+
+            if (match.Success)
+            {
+                // Extract the main link and optional page fragment
+                string fullLink = match.Groups[1].Value.Trim(); // Extracted link before "#page="
+                string pageFragment = match.Groups[3].Success ? match.Groups[3].Value.Trim() : string.Empty; // Extracted page number
+
+                // Extract the file name with extension
+                string fileName = Path.GetFileName(fullLink);
+
+                // Remove the Reference line from the PanelOutput
+                string cleanedOutput = Regex.Replace(panelOutput, pattern, string.Empty, RegexOptions.Multiline).Trim();
+
+                Console.WriteLine($"Extracted Reference Link: {fullLink}");
+                Console.WriteLine($"Extracted Page Fragment: {pageFragment}");
+                Console.WriteLine($"Extracted File Name: {fileName}");
+
+                return (cleanedOutput, fullLink, pageFragment, fileName);
+            }
+            else
+            {
+                Console.WriteLine("No reference link found in PanelOutput.");
+                return (panelOutput, string.Empty, string.Empty, string.Empty);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error extracting and cleaning reference link: {ex.Message}");
+            return (panelOutput, string.Empty, string.Empty, string.Empty);
         }
     }
 

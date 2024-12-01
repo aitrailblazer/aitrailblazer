@@ -21,6 +21,46 @@
             Unique identifier
             </summary>
         </member>
+        <member name="T:Cosmos.Copilot.Models.KnowledgeBaseItem">
+            <summary>
+            Represents a knowledge base item.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.KnowledgeBaseItem.#ctor">
+            <summary>
+            Default constructor for deserialization.
+            </summary>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.KnowledgeBaseItem.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Single[])">
+            <summary>
+            Constructor for creating a new knowledge base item with a unique Id.
+            </summary>
+            <param name="uniqueKey">The unique identifier for the knowledge base item.</param>
+            <param name="tenantId">The tenant ID.</param>
+            <param name="userId">The user ID.</param>
+            <param name="category">The category of the item.</param>
+            <param name="title">The title of the item.</param>
+            <param name="content">The content of the item.</param>
+            <param name="referenceDescription">Description for referencing the item.</param>
+            <param name="referenceLink">Link for referencing the item.</param>
+            <param name="vectors">Embedding vectors for the item.</param>
+            <exception cref="T:System.ArgumentException">Thrown if any required parameter is null or empty.</exception>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.KnowledgeBaseItem.UpdateContent(System.String,System.String,System.String)">
+            <summary>
+            Updates the content of the knowledge base item and refreshes the updated timestamp.
+            </summary>
+            <param name="newContent">The new content for the item.</param>
+            <param name="newReferenceDescription">Optional new reference description.</param>
+            <param name="newReferenceLink">Optional new reference link.</param>
+            <exception cref="T:System.ArgumentException">Thrown if newContent is null or empty.</exception>
+        </member>
+        <member name="M:Cosmos.Copilot.Models.KnowledgeBaseItem.GetSanitizedCopy">
+            <summary>
+            Creates a sanitized copy of the knowledge base item with tenant and user IDs replaced.
+            </summary>
+            <returns>A sanitized copy of the knowledge base item.</returns>
+        </member>
         <member name="T:Cosmos.Copilot.Models.Message">
             <summary>
             Represents a single message within a chat thread.
@@ -242,6 +282,11 @@
             Calculates the number of tokens in the user prompt.
             </summary>
         </member>
+        <member name="M:Cosmos.Copilot.Services.ChatService.GetKnowledgeBaseCompletionAsync(System.String,System.String,System.String,System.String,System.Double,System.Collections.Generic.List{Cosmos.Copilot.Models.KnowledgeBaseItem})">
+            <summary>
+            Retrieves a completion based on a user prompt for a knowledge base context, with optional categoryId and context window.
+            </summary>
+        </member>
         <member name="M:Cosmos.Copilot.Services.ChatService.GetCacheAsync(System.Collections.Generic.List{Cosmos.Copilot.Models.Message})">
             <summary>
             Retrieves cached response if available.
@@ -284,7 +329,7 @@
             Service to access Azure Cosmos DB for NoSQL.
             </summary>
         </member>
-        <member name="M:Cosmos.Copilot.Services.CosmosDbService.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger{Cosmos.Copilot.Services.CosmosDbService})">
+        <member name="M:Cosmos.Copilot.Services.CosmosDbService.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger{Cosmos.Copilot.Services.CosmosDbService})">
             <summary>
             Creates a new instance of the service.
             </summary>
@@ -447,11 +492,6 @@
             Semantic Kernel implementation for Azure OpenAI.
             </summary>
         </member>
-        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPrompt">
-            <summary>
-            System prompt to send with user prompts to instruct the model for chat session
-            </summary>
-        </member>
         <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPromptRetailAssistant">
             <summary>
             System prompt to send with user prompts as a Retail AI Assistant for chat session
@@ -460,6 +500,11 @@
         <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPromptEmail">
             <summary>
             System prompt to guide the model as an email assistant with specific output formatting
+            </summary>
+        </member>
+        <member name="F:Cosmos.Copilot.Services.SemanticKernelService._systemPromptKnowledgeBase">
+            <summary>
+            System prompt to guide the model as a knowledge base assistant with specific context and formatting.
             </summary>
         </member>
         <member name="F:Cosmos.Copilot.Services.SemanticKernelService._summarizePrompt">

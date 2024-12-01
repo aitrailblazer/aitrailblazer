@@ -69,6 +69,7 @@ string chatContainerName ="chat";
 string cacheContainerName ="cache";
 string productContainerName= "products";
 string organizerContainerName= "organizer";
+string knowledgeBaseContainerName= "rag";
 
 string productDataSourceURI = "https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-vectorized/product-text-3-large-1536.json";
 
@@ -105,6 +106,7 @@ builder.Services.AddSingleton<CosmosDbService>((provider) =>
             cacheContainerName: cacheContainerName ?? string.Empty,
             productContainerName: productContainerName ?? string.Empty,
             organizerContainerName: organizerContainerName ?? string.Empty,
+            knowledgeBaseContainerName: knowledgeBaseContainerName ?? string.Empty,
             productDataSourceURI: productDataSourceURI ?? string.Empty,
             logger: logger // Pass the logger to the constructor
         );

@@ -22,7 +22,7 @@ public class CosmosDbService
     private readonly Container _chatContainer;
     private readonly Container _cacheContainer;
     private readonly Container _organizerContainer;
-
+    private readonly Container _knowledgeBaseContainer;
     private readonly Container _productContainer;
     private readonly string _productDataSourceURI;
     private readonly ILogger<CosmosDbService> _logger;
@@ -47,6 +47,7 @@ public class CosmosDbService
         string chatContainerName,
         string cacheContainerName,
         string organizerContainerName,
+        string knowledgeBaseContainerName,
         string productContainerName,
         string productDataSourceURI,
         ILogger<CosmosDbService> logger)
@@ -59,6 +60,8 @@ public class CosmosDbService
         ArgumentNullException.ThrowIfNullOrEmpty(chatContainerName, nameof(chatContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(cacheContainerName, nameof(cacheContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(organizerContainerName);
+        ArgumentNullException.ThrowIfNullOrEmpty(knowledgeBaseContainerName);
+
         ArgumentNullException.ThrowIfNullOrEmpty(productContainerName, nameof(productContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(productDataSourceURI, nameof(productDataSourceURI));
 
@@ -84,6 +87,7 @@ public class CosmosDbService
             _chatContainer = database.GetContainer(chatContainerName) ?? throw new ArgumentException("Chat container not found.");
             _cacheContainer = database.GetContainer(cacheContainerName) ?? throw new ArgumentException("Cache container not found.");
             _organizerContainer = database.GetContainer(organizerContainerName) ?? throw new ArgumentException("Cache container not found.");
+            _knowledgeBaseContainer = database.GetContainer(knowledgeBaseContainerName); // Initialize knowledge base container
             _productContainer = database.GetContainer(productContainerName) ?? throw new ArgumentException("Product container not found.");
 
             _logger.LogInformation("CosmosDbService initialized successfully.");
@@ -118,6 +122,42 @@ public class CosmosDbService
         }
 
         return partitionKeyBuilder.Build();
+    }
+    public async Task UpsertKnowledgeBaseItemAsync(
+        string tenantId,
+        string userId,
+        string categoryId,
+        KnowledgeBaseItem knowledgeBaseItem)
+    {
+        _logger.LogInformation("Upserting knowledge base item with ID: {KnowledgeBaseItemId} in category: {Category}", knowledgeBaseItem.Id, categoryId);
+
+        // Generate a partition key using the category as the primary identifier
+        //PartitionKey partitionKey = GetPK(tenantId, userId, categoryId);
+        PartitionKey partitionKey = new PartitionKeyBuilder()
+                        .Add(tenantId)
+                        .Add(userId)
+                        .Add(categoryId)
+                        .Build();
+        try
+        {
+            // Upsert the knowledge base item into the specified container
+            ItemResponse<KnowledgeBaseItem> response = await _knowledgeBaseContainer.UpsertItemAsync(
+                item: knowledgeBaseItem,
+                partitionKey: partitionKey);
+
+            _logger.LogInformation("Upserted KnowledgeBaseItem: {KnowledgeBaseItemId} (Title: {Title}) in category: {Category}",
+                response.Resource.Id, response.Resource.Title, categoryId);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Cosmos DB Exception for KnowledgeBaseItem ID {KnowledgeBaseItemId} in category: {Category}", knowledgeBaseItem.Id, categoryId);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error while upserting knowledge base item with ID: {KnowledgeBaseItemId}", knowledgeBaseItem.Id);
+            throw;
+        }
     }
 
 
@@ -309,32 +349,38 @@ public class CosmosDbService
     /// <param name="userId">Id of User.</param>
     /// <param name="threadId">Chat thread id for the thread to return.</param>
     /// <returns>Get chat thread item to rename.</returns>
-    public async Task<ThreadChat> GetThreadAsync(
+    public async Task<ThreadChat?> GetThreadAsync(
         string tenantId,
         string userId,
         string threadId)
     {
-        _logger.LogInformation("Retrieving thread with threadId: {threadId}", threadId);
+        _logger.LogInformation("Retrieving thread with threadId: {threadId}, tenantId: {tenantId}, userId: {userId}.", threadId, tenantId, userId);
+
+        // Generate the partition key
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
+        _logger.LogDebug("Generated PartitionKey for retrieval: {partitionKey}.", partitionKey);
 
         try
         {
+            // Attempt to read the thread from Cosmos DB
             ItemResponse<ThreadChat> response = await _chatContainer.ReadItemAsync<ThreadChat>(
                 id: threadId,
                 partitionKey: partitionKey
             );
 
-            _logger.LogInformation("Retrieved thread with threadId: {threadId}", threadId);
+            _logger.LogInformation("Thread retrieved successfully with threadId: {threadId}.", threadId);
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            _logger.LogWarning("thread with threadId {threadId} not found.", threadId);
-            throw new KeyNotFoundException($"thread with ID {threadId} not found.", ex);
+            // Log a warning and return null if the thread is not found
+            _logger.LogWarning("Thread with threadId {threadId} not found in Cosmos DB.", threadId);
+            return null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving thread with threadId: {threadId}", threadId);
+            // Log and rethrow unexpected exceptions
+            _logger.LogError(ex, "Unexpected error while retrieving thread with threadId: {threadId}.", threadId);
             throw;
         }
     }
@@ -419,34 +465,46 @@ public class CosmosDbService
         _logger.LogInformation("Deleting thread and messages for thread ID: {threadId}", threadId);
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
-        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.threadId = @threadId")
-                .WithParameter("@threadId", threadId);
+        QueryDefinition query = new QueryDefinition(
+            "SELECT VALUE c.id FROM c WHERE c.threadId = @threadId AND c.type IN ('ThreadChat', 'Message')")
+            .WithParameter("@threadId", threadId);
 
         FeedIterator<string> response = _chatContainer.GetItemQueryIterator<string>(query);
 
         TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
+        bool hasOperations = false;
 
         try
         {
             while (response.HasMoreResults)
             {
                 FeedResponse<string> results = await response.ReadNextAsync();
+
                 foreach (var itemId in results)
                 {
                     batch.DeleteItem(id: itemId);
+                    hasOperations = true;
                     _logger.LogDebug("Added DeleteItem to batch for ID: {ItemId}", itemId);
                 }
             }
 
-            TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
-            if (batchResponse.IsSuccessStatusCode)
+            if (hasOperations)
             {
-                _logger.LogInformation("Deleted thread and all related messages for thread ID: {threadId}", threadId);
+                TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
+                if (batchResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Deleted thread and all related messages for thread ID: {threadId}", threadId);
+                }
+                else
+                {
+                    _logger.LogError("Batch delete failed with status code: {StatusCode}. Reason: {ReasonPhrase}",
+                        batchResponse.StatusCode, batchResponse.ErrorMessage);
+                    throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, batchResponse.ErrorMessage, 0);
+                }
             }
             else
             {
-                _logger.LogError("Failed to delete thread and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
-                throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, "", 0);
+                _logger.LogWarning("No messages or threads found for deletion with thread ID: {threadId}", threadId);
             }
         }
         catch (Exception ex)
@@ -455,6 +513,7 @@ public class CosmosDbService
             throw;
         }
     }
+
     /// <summary>
     /// Deletes a specific message within a thread.
     /// </summary>
@@ -867,19 +926,18 @@ public class CosmosDbService
             throw;
         }
     }
-
     public async Task<Message> SearchClosestMessageAsync(
-    string tenantId,
-    string userId,
-    string featureNameProject,
-    float[] vectors,
-    double similarityScore,
-    string responseLengthVal,
-    string creativeAdjustmentsVal,
-    string audienceLevelVal,
-    string writingStyleVal,
-    string relationSettingsVal,
-    string responseStyleVal)
+ string tenantId,
+ string userId,
+ string featureNameProject,
+ float[] vectors,
+ double similarityScore,
+ string responseLengthVal,
+ string creativeAdjustmentsVal,
+ string audienceLevelVal,
+ string writingStyleVal,
+ string relationSettingsVal,
+ string responseStyleVal)
     {
 
         _logger.LogInformation("Searching for the closest message with similarity score above {similarityScore} and FeatureNameProject={FeatureNameProject}", similarityScore, featureNameProject);
@@ -962,6 +1020,73 @@ public class CosmosDbService
             throw;
         }
     }
+    public async Task<KnowledgeBaseItem?> SearchKnowledgeBaseAsync(
+        float[] vectors,
+        string tenantId,
+        string userId,
+        string categoryId,
+        double similarityScore)
+    {
+        _logger.LogInformation("Searching closest knowledge base item with : similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
+            similarityScore, tenantId, userId, categoryId ?? "None");
+
+        try
+        {
+            // Construct SQL query with optional categoryId filtering
+            string queryText = $"""
+            SELECT 
+                TOP 1
+                c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, 
+                c.referenceDescription, c.referenceLink, 
+                VectorDistance(c.vectors, @vectors) as similarityScore
+            FROM c 
+            WHERE c.type = 'KnowledgeBaseItem' AND c.tenantId = @tenantId AND c.userId = @userId
+                AND VectorDistance(c.vectors, @vectors) > @similarityScore
+            """;
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryText += " AND c.categoryId = @categoryId";
+            }
+
+            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+            // Set up a query definition with parameters
+            var queryDef = new QueryDefinition(queryText)
+                .WithParameter("@vectors", vectors)
+                .WithParameter("@similarityScore", similarityScore)
+                .WithParameter("@tenantId", tenantId)
+                .WithParameter("@userId", userId);
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryDef = queryDef.WithParameter("@categoryId", categoryId);
+            }
+
+            using FeedIterator<KnowledgeBaseItem> resultSet = _knowledgeBaseContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
+
+            if (resultSet.HasMoreResults)
+            {
+                FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
+                var closestItem = response.FirstOrDefault();
+
+                if (closestItem != null)
+                {
+                    _logger.LogInformation("Found closest knowledge base item with ID: {ItemId}", closestItem.Id);
+                    return closestItem;
+                }
+            }
+
+            _logger.LogInformation("No knowledge base items found within the similarity threshold.");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching for the closest knowledge base item.");
+            throw;
+        }
+    }
+
 
     /// <summary>
     /// Find a cache item based on vector similarity.

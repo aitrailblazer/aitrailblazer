@@ -20,6 +20,7 @@ namespace Cosmos.Copilot.Services
         private readonly double _cacheSimilarityScore;
         private readonly int _productMaxResults;
         private readonly int _emailMaxResults;
+        private readonly int _knowledgeBaseMaxResults;
 
         private readonly ILogger<ChatService> _logger; // Logger instance
 
@@ -56,6 +57,7 @@ namespace Cosmos.Copilot.Services
             //}
             _productMaxResults = 10;
             _emailMaxResults = 10;
+            _knowledgeBaseMaxResults = 10;
 
             _logger.LogInformation("ChatService initialized with MaxConversationTokens={MaxConversationTokens}, CacheSimilarityScore={CacheSimilarityScore}, ProductMaxResults={ProductMaxResults}",
                 _maxConversationTokens, _cacheSimilarityScore, _productMaxResults);
@@ -125,7 +127,7 @@ namespace Cosmos.Copilot.Services
             string userId,
             string? threadId)
         {
-             _logger.LogInformation("GetChatThreadMessagesAsync: Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
+            _logger.LogInformation("GetChatThreadMessagesAsync: Retrieving chat messages for TenantId={TenantId}, UserId={UserId}, threadId={threadId}.", tenantId, userId, threadId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
@@ -562,6 +564,65 @@ namespace Cosmos.Copilot.Services
             {
                 stopwatch.Stop();
                 _logger.LogError(ex, "Failed to perform semantic search.");
+                throw;
+            }
+        }
+        /// <summary>
+        /// Retrieves a completion based on a user prompt for a knowledge base context, with optional categoryId and context window.
+        /// </summary>
+     public async Task<(string completion, string? title)> GetKnowledgeBaseCompletionAsync(
+            string tenantId,
+            string userId,
+            string categoryId,
+            string promptText,
+            double similarityScore,
+            List<KnowledgeBaseItem>? contextWindow = null)
+        {
+            // Logging tenant and user details
+            _logger.LogInformation("Generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+
+            try
+            {
+                // Ensure necessary parameters are not null
+                ArgumentNullException.ThrowIfNull(tenantId);
+                ArgumentNullException.ThrowIfNull(userId);
+
+                // Initialize contextWindow as an empty list if not provided
+                contextWindow ??= new List<KnowledgeBaseItem>();
+
+                // Generate embeddings for the user prompt
+                float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
+                _logger.LogDebug("Embeddings generated for the prompt.");
+
+                // Search for similar knowledge base items using embeddings
+                var similarItems = await _cosmosDbService.SearchKnowledgeBaseAsync(
+                    promptVectors,
+                    tenantId,
+                    userId,
+                    categoryId,
+                    _knowledgeBaseMaxResults, // Replace with appropriate max result setting
+                    similarityScore);
+
+                _logger.LogDebug("Retrieved {Count} similar knowledge base items for RAG completion.", similarItems.Count);
+
+                // Extract the title of the top item, if available
+                string? title = similarItems.FirstOrDefault()?.Title;
+
+                // Create a summary for the knowledge base content
+                (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagKnowledgeBaseCompletionAsync(
+                    categoryId: categoryId ?? "", // Use "general" if categoryId is null
+                    contextWindow: contextWindow,
+                    contextData: similarItems,
+                    useChatHistory: false);
+
+
+                _logger.LogInformation("Completion generated using Semantic Kernel for knowledge base.");
+
+                return (generatedCompletion, title);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
                 throw;
             }
         }

@@ -22,7 +22,7 @@ public class CosmosDbService
     private readonly Container _chatContainer;
     private readonly Container _cacheContainer;
     private readonly Container _organizerContainer;
-
+    private readonly Container _knowledgeBaseContainer;
     private readonly Container _productContainer;
     private readonly string _productDataSourceURI;
     private readonly ILogger<CosmosDbService> _logger;
@@ -47,6 +47,7 @@ public class CosmosDbService
         string chatContainerName,
         string cacheContainerName,
         string organizerContainerName,
+        string knowledgeBaseContainerName,
         string productContainerName,
         string productDataSourceURI,
         ILogger<CosmosDbService> logger)
@@ -59,6 +60,8 @@ public class CosmosDbService
         ArgumentNullException.ThrowIfNullOrEmpty(chatContainerName, nameof(chatContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(cacheContainerName, nameof(cacheContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(organizerContainerName);
+        ArgumentNullException.ThrowIfNullOrEmpty(knowledgeBaseContainerName);
+
         ArgumentNullException.ThrowIfNullOrEmpty(productContainerName, nameof(productContainerName));
         ArgumentNullException.ThrowIfNullOrEmpty(productDataSourceURI, nameof(productDataSourceURI));
 
@@ -84,6 +87,7 @@ public class CosmosDbService
             _chatContainer = database.GetContainer(chatContainerName) ?? throw new ArgumentException("Chat container not found.");
             _cacheContainer = database.GetContainer(cacheContainerName) ?? throw new ArgumentException("Cache container not found.");
             _organizerContainer = database.GetContainer(organizerContainerName) ?? throw new ArgumentException("Cache container not found.");
+            _knowledgeBaseContainer = database.GetContainer(knowledgeBaseContainerName); // Initialize knowledge base container
             _productContainer = database.GetContainer(productContainerName) ?? throw new ArgumentException("Product container not found.");
 
             _logger.LogInformation("CosmosDbService initialized successfully.");
@@ -118,6 +122,42 @@ public class CosmosDbService
         }
 
         return partitionKeyBuilder.Build();
+    }
+    public async Task UpsertKnowledgeBaseItemAsync(
+        string tenantId,
+        string userId,
+        string categoryId,
+        KnowledgeBaseItem knowledgeBaseItem)
+    {
+        _logger.LogInformation("Upserting knowledge base item with ID: {KnowledgeBaseItemId} in category: {Category}", knowledgeBaseItem.Id, categoryId);
+
+        // Generate a partition key using the category as the primary identifier
+        //PartitionKey partitionKey = GetPK(tenantId, userId, categoryId);
+        PartitionKey partitionKey = new PartitionKeyBuilder()
+                        .Add(tenantId)
+                        .Add(userId)
+                        .Add(categoryId)
+                        .Build();
+        try
+        {
+            // Upsert the knowledge base item into the specified container
+            ItemResponse<KnowledgeBaseItem> response = await _knowledgeBaseContainer.UpsertItemAsync(
+                item: knowledgeBaseItem,
+                partitionKey: partitionKey);
+
+            _logger.LogInformation("Upserted KnowledgeBaseItem: {KnowledgeBaseItemId} (Title: {Title}) in category: {Category}",
+                response.Resource.Id, response.Resource.Title, categoryId);
+        }
+        catch (CosmosException ex)
+        {
+            _logger.LogError(ex, "Cosmos DB Exception for KnowledgeBaseItem ID {KnowledgeBaseItemId} in category: {Category}", knowledgeBaseItem.Id, categoryId);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error while upserting knowledge base item with ID: {KnowledgeBaseItemId}", knowledgeBaseItem.Id);
+            throw;
+        }
     }
 
 
@@ -194,6 +234,85 @@ public class CosmosDbService
             throw;
         }
     }
+
+   public async Task<List<KnowledgeBaseItem>> SearchKnowledgeBaseAsync(
+        float[] vectors,
+        string tenantId,
+        string userId,
+        string categoryId,
+        int maxResults,
+        double similarityScore)
+    {
+        _logger.LogInformation("Searching knowledge base with max results: {MaxResults}, similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
+            maxResults, similarityScore, tenantId, userId, categoryId ?? "None");
+
+        List<KnowledgeBaseItem> results = new();
+
+        // Construct SQL query with optional categoryId filtering
+        string queryText = $"""
+    SELECT 
+        TOP @maxResults
+        c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, 
+        c.referenceDescription, c.referenceLink, 
+        VectorDistance(c.vectors, @vectors) as similarityScore
+    FROM c 
+    WHERE c.type = 'KnowledgeBaseItem' AND c.tenantId = @tenantId AND c.userId = @userId
+          AND VectorDistance(c.vectors, @vectors) > @similarityScore
+    """;
+
+        if (!string.IsNullOrEmpty(categoryId))
+        {
+            queryText += " AND c.categoryId = @categoryId";
+        }
+
+        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+        // Set up a query definition with parameters for tenantId, userId, categoryId, vectors, and similarity score
+        var queryDef = new QueryDefinition(queryText)
+            .WithParameter("@maxResults", maxResults)
+            .WithParameter("@vectors", vectors)
+            .WithParameter("@similarityScore", similarityScore)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@userId", userId);
+
+        if (!string.IsNullOrEmpty(categoryId))
+        {
+            queryDef = queryDef.WithParameter("@categoryId", categoryId);
+        }
+
+        using FeedIterator<KnowledgeBaseItem> resultSet = _organizerContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
+
+        try
+        {
+            while (resultSet.HasMoreResults)
+            {
+                FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
+
+                foreach (var item in response)
+                {
+                    _logger.LogInformation("KnowledgeBaseItem ID: {Id}, Title: {Title}, CategoryId: {CategoryId}, ReferenceLink: {ReferenceLink}",
+                        item.Id, item.Title, item.CategoryId, item.ReferenceLink);
+
+                    // Log the knowledge base item object as JSON for debugging
+                    string itemJson = JsonConvert.SerializeObject(item, Formatting.Indented);
+                    _logger.LogInformation("KnowledgeBaseItem JSON: {ItemJson}", itemJson);
+
+                    results.Add(item);
+                }
+
+                _logger.LogInformation("Retrieved {Count} items in current batch.", response.Count);
+            }
+
+            _logger.LogInformation("SearchKnowledgeBaseAsync completed with {TotalCount} similar items found.", results.Count);
+            return results;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching the knowledge base.");
+            throw;
+        }
+    }
+
 
     /// <summary>
     /// Gets a list of all current chat threads.
@@ -867,8 +986,7 @@ public class CosmosDbService
             throw;
         }
     }
-
-    public async Task<Message> SearchClosestMessageAsync(
+       public async Task<Message> SearchClosestMessageAsync(
     string tenantId,
     string userId,
     string featureNameProject,
@@ -962,7 +1080,7 @@ public class CosmosDbService
             throw;
         }
     }
-
+ 
     /// <summary>
     /// Find a cache item based on vector similarity.
     /// </summary>

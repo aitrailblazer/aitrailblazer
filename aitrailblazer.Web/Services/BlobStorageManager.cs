@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using Azure.Storage.Blobs.Models;
 using System;
 using System.IO;
@@ -329,6 +330,105 @@ public class BlobStorageManager
         }
 
         return sessionTitles;
+    }
+
+    // 2e58c7ce-9814-4e3d-9e88-467669ba3f5c/
+    // 8f22704e-0396-4263-84a7-63310d3f39e7/
+    // Documents/
+    // Default/
+    // Las_Vegas_Brochure.pdf#page=1
+    public async Task<string> ReadBlobContentByPathAsync(string blobPath)
+    {
+        try
+        {
+            // Sanitize the path by removing any fragment starting with '#'
+            string sanitizedPath = blobPath.Split('#')[0];
+            Console.WriteLine($"Sanitized blob path: {sanitizedPath}");
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_storageConnectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+
+            Console.WriteLine($"Attempting to read blob at path: {sanitizedPath}");
+
+            BlobClient blobClient = containerClient.GetBlobClient(sanitizedPath);
+
+            if (await blobClient.ExistsAsync())
+            {
+                using var blobStream = await blobClient.OpenReadAsync();
+                using var reader = new StreamReader(blobStream);
+                return await reader.ReadToEndAsync();
+            }
+            else
+            {
+                Console.WriteLine($"Blob does not exist at path: {sanitizedPath}");
+                return string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error reading blob content: {ex.Message}");
+            return string.Empty;
+        }
+    }
+    public async Task<string> GetBlobSasUrlAsync(string blobPath, int expirationMinutes = 30)
+    {
+        try
+        {
+            // Sanitize the path
+            string sanitizedPath = blobPath.Split('#')[0];
+            string extension = Path.GetExtension(sanitizedPath).ToLowerInvariant();
+
+            // Determine the Content-Type
+            string contentType = extension switch
+            {
+                ".pdf" => "application/pdf",
+                ".txt" => "text/plain",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".doc" or ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                ".xls" or ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                ".ppt" or ".pptx" => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                ".html" or ".htm" => "text/html",
+                ".json" => "application/json",
+                ".xml" => "application/xml",
+                _ => "application/octet-stream" // Default fallback
+            };
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_storageConnectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+            BlobClient blobClient = containerClient.GetBlobClient(sanitizedPath);
+
+            if (await blobClient.ExistsAsync())
+            {
+                // Create the SAS URL
+                var sasBuilder = new BlobSasBuilder
+                {
+                    BlobContainerName = _containerName,
+                    BlobName = sanitizedPath,
+                    Resource = "b",
+                    ExpiresOn = DateTime.UtcNow.AddMinutes(expirationMinutes),
+                    ContentType = contentType,
+                    ContentDisposition = $"inline; filename=\"{Path.GetFileName(sanitizedPath)}\""
+                };
+                sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+                Uri sasUri = blobClient.GenerateSasUri(sasBuilder);
+
+                // Append Content-Disposition and Content-Type to force inline view
+                string contentDisposition = "inline; filename=" + Uri.EscapeDataString(Path.GetFileName(sanitizedPath));
+                return $"{sasUri}&response-content-disposition={Uri.EscapeDataString(contentDisposition)}&response-content-type={Uri.EscapeDataString(contentType)}";
+            }
+            else
+            {
+                Console.WriteLine($"Blob does not exist: {sanitizedPath}");
+                return string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error generating SAS URL: {ex.Message}");
+            return string.Empty;
+        }
     }
 
     public async Task<string> ReadBlobContentAsync(

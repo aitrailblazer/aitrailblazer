@@ -6,6 +6,8 @@ using Azure.AI.OpenAI;
 using Azure.Core;
 using Azure.Identity;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+
 using AITrailblazer.net.Services;
 
 namespace Cosmos.Copilot.Services;
@@ -18,12 +20,6 @@ public class SemanticKernelService
     //Semantic Kernel
     readonly Kernel kernel;
 
-    /// <summary>
-    /// System prompt to send with user prompts to instruct the model for chat session
-    /// </summary>
-    private readonly string _systemPrompt = @"
-        You are an AI assistant that helps people find information.
-        Provide concise answers that are polite and professional.";
 
     /// <summary>
     /// System prompt to send with user prompts as a Retail AI Assistant for chat session
@@ -62,6 +58,24 @@ public class SemanticKernelService
         - **Web Link**: {webLink}
     ";
 
+    /// <summary>
+    /// System prompt to guide the model as a knowledge base assistant with specific context and formatting.
+    /// </summary>
+    private readonly string _systemPromptKnowledgeBase = @"
+You are an intelligent assistant designed to extract relevant and concise information from a knowledge base context.
+Use the provided knowledge base context below to answer accurately and concisely. Follow these instructions:
+
+- Extract key details such as title, description, and reference link.
+- Do not include unrelated information or make assumptions beyond the context provided.
+- If no relevant answer exists, respond with: ""I could not find an answer in the knowledge base.""
+
+Format the response clearly as follows:
+- **Title**: {Title}
+- **Content Summary**: {A summary of the content, including key points or highlights}
+
+Knowledge base context is provided below:
+";
+
 
     /// <summary>    
     /// System prompt to send with user prompts to instruct the model for summarization
@@ -83,14 +97,14 @@ public class SemanticKernelService
     private readonly ILogger<SemanticKernelService> _logger;
 
     public SemanticKernelService(
-        string endpoint, 
-        string completionDeploymentName, 
+        string endpoint,
+        string completionDeploymentName,
         string embeddingDeploymentName,
         string apiKey,
         ILogger<SemanticKernelService> logger) // Add logger parameter
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Initialize logger
-        
+
         kernel = Kernel.CreateBuilder()
             .AddAzureOpenAIChatCompletion(deploymentName: completionDeploymentName, endpoint: endpoint, apiKey: apiKey)
             .AddAzureOpenAITextEmbeddingGeneration(deploymentName: embeddingDeploymentName, endpoint: endpoint, apiKey: apiKey)
@@ -98,7 +112,7 @@ public class SemanticKernelService
     }
 
 
-  
+
     /// <summary>
     /// Generates a completion using a user prompt with chat history and vector search results to Semantic Kernel and returns the response.
     /// </summary>
@@ -107,8 +121,8 @@ public class SemanticKernelService
     /// <param name="products">List of Product objects containing vector search results to send to the model.</param>
     /// <returns>Generated response along with tokens used to generate it.</returns>
     public async Task<(string completion, int tokens)> GetRagCompletionAsync(
-        string sessionId, 
-        List<Message> contextWindow, 
+        string sessionId,
+        List<Message> contextWindow,
         List<Product> products)
     {
         //Serialize List<Product> to a JSON string to send to OpenAI
@@ -116,7 +130,7 @@ public class SemanticKernelService
 
         var skChatHistory = new ChatHistory();
         skChatHistory.AddSystemMessage(_systemPromptRetailAssistant + productsString);
-        
+
 
         foreach (var message in contextWindow)
         {
@@ -145,7 +159,7 @@ public class SemanticKernelService
 
         var usage = result.Metadata?["Usage"];
         //var promptTokens = usage?.InputTokens ?? 0;
-        var completionTokens =0;// = usage?.OutputTokens ?? 0;
+        var completionTokens = 0;// = usage?.OutputTokens ?? 0;
 
         //CompletionsUsage completionUsage = (CompletionsUsage)result.Metadata!["Usage"]!;
 
@@ -165,30 +179,30 @@ public class SemanticKernelService
     /// <param name="useChatHistory">Flag to enable or disable including chat history.</param>
     /// <returns>Generated response along with tokens used to generate it.</returns>
     public async Task<(string completion, int tokens)> GetRagEmailCompletionAsync<T>(
-        string categoryId, 
-        List<EmailMessage> contextWindow, 
-        List<T> contextData, 
+        string categoryId,
+        List<EmailMessage> contextWindow,
+        List<T> contextData,
         bool useChatHistory)
     {
         // Initialize the chat history with context data only if the flag is enabled
         var skChatHistory = new ChatHistory();
-        
-            // Serialize context data to JSON format if chat history is enabled
-            string contextDataString = JsonConvert.SerializeObject(contextData);
-            skChatHistory.AddSystemMessage($"{_systemPromptEmail}{contextDataString}");
-            /*
-            if (useChatHistory)
+
+        // Serialize context data to JSON format if chat history is enabled
+        string contextDataString = JsonConvert.SerializeObject(contextData);
+        skChatHistory.AddSystemMessage($"{_systemPromptEmail}{contextDataString}");
+        /*
+        if (useChatHistory)
+        {
+            // Add context from the chat history
+            foreach (var message in contextWindow)
             {
-                // Add context from the chat history
-                foreach (var message in contextWindow)
-                {
-                    skChatHistory.AddUserMessage(message.Prompt);
-                    if (!string.IsNullOrEmpty(message.Completion))
-                        skChatHistory.AddAssistantMessage(message.Completion);
-                }
+                skChatHistory.AddUserMessage(message.Prompt);
+                if (!string.IsNullOrEmpty(message.Completion))
+                    skChatHistory.AddAssistantMessage(message.Completion);
             }
-            */
-        
+        }
+        */
+
 
         // Define execution settings
         PromptExecutionSettings settings = new()
@@ -210,12 +224,12 @@ public class SemanticKernelService
         //{
         //    _logger.LogInformation("GetRagEmailCompletionAsync generated response successfully:\n{responseResult}", responseResult);
 
-            //return responseResult;
+        //return responseResult;
         //}
         //else
         //{
         //    _logger.LogError("GetASAPTime failed to generate a valid response.");
-            //return "ERROR";
+        //return "ERROR";
         //}
         // Extract usage metrics
         var usage = response.Metadata?["Usage"];
@@ -224,6 +238,73 @@ public class SemanticKernelService
         return (completion, completionTokens);
     }
 
+    public async Task<(string generatedCompletion, int tokens)> GetRagKnowledgeBaseCompletionAsync<T>(
+        string categoryId,
+        List<KnowledgeBaseItem> contextWindow,
+        KnowledgeBaseItem contextData,
+        bool useChatHistory)
+    {
+        // Initialize the chat history with structured context data
+        var skChatHistory = new ChatHistory();
+
+        // Create a structured context for the model (exclude ReferenceDescription and ReferenceLink)
+        string structuredContext = $"""
+            "Title": "{contextData.Title}",
+            "Content": "{contextData.Content}"
+        """;
+
+        _logger.LogInformation($"GetRagKnowledgeBaseCompletionAsync structuredContext: {structuredContext}");
+
+        skChatHistory.AddSystemMessage($"{_systemPromptKnowledgeBase}{structuredContext}");
+
+        // Define execution settings
+        PromptExecutionSettings settings = new()
+        {
+            ExtensionData = new Dictionary<string, object>()
+            {
+                { "Temperature", 0.3 },
+                { "TopP", 0.8 },
+                { "MaxTokens", 1000 }
+            }
+        };
+
+        try
+        {
+            // Generate the response using the configured kernel service
+            var response = await kernel.GetRequiredService<IChatCompletionService>()
+                                    .GetChatMessageContentAsync(skChatHistory, settings);
+
+            string completion = response.Items[0].ToString()!;
+
+            // Extract usage metrics if available
+            var usage = response.Metadata?["Usage"];
+            int completionTokens = 0; // usage != null ? Convert.ToInt32(usage["CompletionTokens"]) : 0;
+
+            // Extract the page number if available
+            string pageNumber = "";
+            if (contextData.ReferenceLink.Contains("#page="))
+            {
+                var match = Regex.Match(contextData.ReferenceLink, @"#page=(\d+)");
+                if (match.Success)
+                {
+                    pageNumber = $" (Page {match.Groups[1].Value})";
+                }
+            }
+
+            // Append the reference link and page number to the completion
+            string formattedReference = $"\n\nReference: [{contextData.ReferenceDescription}]({contextData.ReferenceLink}){pageNumber}";
+            completion += formattedReference;
+
+            _logger.LogInformation("Generated response successfully with {Tokens} tokens.", completionTokens);
+
+            return (completion, completionTokens);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating knowledge base completion.");
+            throw;
+        }
+    }
 
     /// <summary>
     /// Generates embeddings from the deployed OpenAI embeddings model using Semantic Kernel.

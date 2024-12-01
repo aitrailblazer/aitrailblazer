@@ -43,7 +43,9 @@ using CognitiveServices.Sdk.Models;
 using Newtonsoft.Json;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Caching.Memory;
+
 using Microsoft.FluentUI.AspNetCore.Components;
+
 using Microsoft.Extensions.Logging;
 using AITrailblazer.net.Models;
 
@@ -421,12 +423,10 @@ namespace AITrailblazer.net.Services
             try
             {
                 // Retrieve agent settings
-                RaiseLogUpdate("Retrieving agent settings...");
                 var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
                 _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
 
                 // Process panel input for URLs
-                RaiseLogUpdate("Checking for URLs in panel input...");
                 if (ContainsUrl(panelInput))
                 {
                     RaiseLogUpdate("Processing URLs in panel input...");
@@ -442,13 +442,11 @@ namespace AITrailblazer.net.Services
                 }
 
                 // Clean inputs
-                RaiseLogUpdate("Cleaning inputs...");
                 string cleanedUserInput = CleanInput(userInput);
                 string cleanedPanelInput = CleanInput(panelInput);
                 _logger.LogInformation("Cleaned user input and panel input.");
 
                 // Determine thread title
-                RaiseLogUpdate("Determining thread title...");
                 string title = string.IsNullOrWhiteSpace(existingThreadTitle)
                     ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
                     : existingThreadTitle;
@@ -456,16 +454,13 @@ namespace AITrailblazer.net.Services
                 _logger.LogInformation("Thread title determined: {Title}", title);
 
                 // Prepare input request
-                RaiseLogUpdate("Preparing input request...");
                 string inputRequest = $"{userInput}\n\n{panelInput}";
                 string requestTitle = CleanAndShortenRequestResponseTitle(inputRequest);
                 _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
 
                 // Get or create thread
-                RaiseLogUpdate("Getting or creating thread...");
                 ThreadChat thread = await GetOrCreateThreadAsync(
                     isNewThread, currentUserTenantID, currentUserIdentityID, existingThreadId, requestTitle);
-                RaiseLogUpdate("Thread ready.");
 
                 // Initialize response variables
                 string responseOutput = string.Empty;
@@ -479,7 +474,7 @@ namespace AITrailblazer.net.Services
                     double similarityScore = featureNameWorkflowName == "CodeAndDocumentation" ? 0.99 : 0.9;
                     _logger.LogInformation($"HandleSubmitAsync similarity score set to: {similarityScore}");
 
-                    RaiseLogUpdate("Performing semantic cache search for Closest Message...");
+                    RaiseLogUpdate("Performing semantic search for message...");
                     (responseOutput, cacheHit) = await SearchClosestMessageAsync(
                         currentUserTenantID,
                         currentUserIdentityID,
@@ -495,12 +490,12 @@ namespace AITrailblazer.net.Services
 
                     if (cacheHit)
                     {
-                        RaiseLogUpdate("Response retrieved from cache.");
+                        RaiseLogUpdate("Search Closest Message Response retrieved from cache.");
                         _logger.LogInformation("Cache hit: Response retrieved.");
                     }
                     else
                     {
-                        RaiseLogUpdate("Cache miss: Generating a new response...");
+                        RaiseLogUpdate("Search Closest Message Response Cache miss: Generating a new response...");
                     }
                 }
 
@@ -511,7 +506,7 @@ namespace AITrailblazer.net.Services
                     double similarityScore = 0.6;
                     _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
 
-                    RaiseLogUpdate("Performing semantic cache search for the closest email message...");
+                    RaiseLogUpdate("Performing semantic search for email message...");
 
                     (responseOutput, cacheHit) = await SearchClosestEmailMessageAsync(
                         currentUserTenantID,
@@ -522,12 +517,38 @@ namespace AITrailblazer.net.Services
 
                     if (cacheHit)
                     {
-                        RaiseLogUpdate("Response retrieved from cache.");
+                        RaiseLogUpdate("Search Closest Email Message Response retrieved from cache.");
                         _logger.LogInformation("Cache hit: Response retrieved.");
                     }
                     else
                     {
-                        RaiseLogUpdate("Cache miss: Generating a new response...");
+                        RaiseLogUpdate("Search Closest Email Message Response Cache miss: Generating a new response...");
+                    }
+                }
+               // Perform semantic search if knowledge base is checked
+                if (isMyKnowledgeBaseChecked)
+                {
+                    // Determine similarity score
+                    double similarityScore = 0.6;
+                    _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
+
+                    RaiseLogUpdate("Performing semantic search in my knowledge base...");
+
+                    (responseOutput, cacheHit) = await SearchClosestKnowledgeBaseItemAsync(
+                        currentUserTenantID,
+                        currentUserIdentityID,
+                        featureNameProject,
+                        inputRequest,
+                        similarityScore);
+
+                    if (cacheHit)
+                    {
+                        RaiseLogUpdate("Search Closest Knowledge Base Item Response retrieved from cache.");
+                        _logger.LogInformation("Cache hit: Response retrieved.");
+                    }
+                    else
+                    {
+                        RaiseLogUpdate("Search Closest Knowledge Base Item  Cache miss: Generating a new response...");
                     }
                 }
 
@@ -585,7 +606,6 @@ namespace AITrailblazer.net.Services
                     }
 
                     // Enhance inputs with citations and append to response
-                    RaiseLogUpdate("Enhancing response with citations...");
                     var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
                     if (enhancedInputs.AllCitations.Any())
                     {
@@ -597,7 +617,6 @@ namespace AITrailblazer.net.Services
                 }
 
                 // Save the chat message
-                RaiseLogUpdate("Saving chat message...");
                 await SaveChatMessageAsync(
                     thread, currentUserTenantID, currentUserIdentityID, featureNameWorkflowName, featureNameProject,
                     requestTitle, panelInput, userInput, responseOutput, cacheHit, inputTokenCount, outputTokenCount,
@@ -720,6 +739,45 @@ namespace AITrailblazer.net.Services
             }
         }
 
+        private async Task<(string responseOutput, bool cacheHit)> SearchClosestKnowledgeBaseItemAsync(
+            string tenantId,
+            string userId,
+            string featureNameProject,
+            string inputRequest,
+            double similarityScore)
+        {
+            _logger.LogInformation("Checking for similar items using SearchClosestKnowledgeBaseItemAsync with similarity score: {SimilarityScore}.", similarityScore);
+
+            // Use the featureNameProject as a categoryId if applicable
+            string categoryId = "Document";
+
+            try
+            {
+                // Perform the semantic search to retrieve the closest matching knowledge base item
+                var (completion, title) = await _chatService.GetKnowledgeBaseCompletionAsync(
+                    tenantId: tenantId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    promptText: inputRequest,
+                    similarityScore: similarityScore);
+
+                if (!string.IsNullOrEmpty(completion))
+                {
+                    _logger.LogInformation("SearchClosestKnowledgeBaseItemAsync Cache hit: Found similar item with title: {Title}.", title ?? "N/A");
+
+                    // Return the generated response output and indicate a cache hit
+                    return (completion, true);
+                }
+
+                _logger.LogInformation("No similar item found. Cache miss.");
+                return (string.Empty, false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while searching for the closest knowledge base item.");
+                throw;
+            }
+        }
 
         private async Task<string> GenerateResponseAsync(
             string featureNameProject,
@@ -1162,6 +1220,14 @@ namespace AITrailblazer.net.Services
                 threadDirectory,
                 fileName);
         }
+        public async Task<string> GetBlobSasUrlAsync(string blobPath, int expirationMinutes = 30)
+        {
+            // Create an instance of the BlobStorageManager
+            var manager = BlobStorageManagerCreate();
+
+            // Call the method to get the SAS URL
+            return await manager.GetBlobSasUrlAsync(blobPath, expirationMinutes);
+        }
 
         public async Task<List<Cosmos.Copilot.Models.ThreadChat>> LoadThreadsAsync(
             string tenantId,
@@ -1246,20 +1312,18 @@ namespace AITrailblazer.net.Services
                 {
                     try
                     {
-                        // Create a user-friendly title for the TreeView item
-                        //var userFriendlyText = $"{message.Title} - {message.TimeStamp:yyyy-MM-dd HH:mm:ss}";
+                        // Map the FeatureName to the corresponding icon
+                        var featureIcon = GetIconForFeatureName(message.FeatureNameProject);
 
                         // Create a unique ID for the TreeView item using the message ID
                         var combinedId = $"{threadId}|{message.Id}";
 
-                        // write it user friendly
-                        var userFriendlyText = $"{message.Title}";
-
-                        // Add a new TreeViewItem with just the title
+                        // Add a new TreeViewItem with the title and icon
                         items.Add(new TreeViewItem
                         {
-                            Text = userFriendlyText,
-                            Id = combinedId
+                            Text = message.Title,
+                            Id = combinedId,
+                            IconExpanded = featureIcon
                         });
                     }
                     catch (Exception ex)
@@ -1275,6 +1339,78 @@ namespace AITrailblazer.net.Services
 
             return items;
         }
+
+        private Icon GetIconForFeatureName(string featureName)
+        {
+            var components = new List<ComponentModel>
+            {
+                new ComponentModel
+                {
+                    WorkflowName = "Writing",
+                    Name = "Writing",
+                    SubComponents = new List<ComponentModel>
+                    {
+                        new ComponentModel { Id = "AIWritingAssistant", Icon = new Icons.Regular.Size20.Pen() },
+                        new ComponentModel { Id = "AIKeyPointsWizard", Icon = new Icons.Regular.Size20.AppsList() },
+                        new ComponentModel { Id = "AIClearNote", Icon = new Icons.Regular.Size20.BookStar() },
+                        new ComponentModel { Id = "AIEmailWizard", Icon = new Icons.Regular.Size20.Mail() },
+                        new ComponentModel { Id = "AIInternalMemo", Icon = new Icons.Regular.Size20.StarEmphasis() },
+                        new ComponentModel { Id = "AIMessageOptimizer", Icon = new Icons.Regular.Size20.EmojiEdit() },
+                        new ComponentModel { Id = "AINamesGen", Icon = new Icons.Regular.Size20.TextCaseTitle() },
+                        new ComponentModel { Id = "AiTaskWizard", Icon = new Icons.Regular.Size20.TextCaseTitle() }
+                    }
+                },
+                new ComponentModel
+                {
+                    WorkflowName = "CodeAndDocumentation",
+                    Name = "Code & Documentation",
+                    SubComponents = new List<ComponentModel>
+                    {
+                        new ComponentModel { Id = "AIOntologyGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
+                        new ComponentModel { Id = "AIReportGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
+                        new ComponentModel { Id = "AISoftwareDocGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
+                        new ComponentModel { Id = "AISoftwareCodeGen", Icon = new Icons.Regular.Size20.DocumentBulletListMultiple() },
+                        new ComponentModel { Id = "COSE", Icon = new Icons.Regular.Size20.BrainCircuit() },
+                        new ComponentModel { Id = "AIDiagramCodexSequence", Icon = new Icons.Regular.Size20.BrainCircuit() },
+                        new ComponentModel { Id = "AIDiagramCodexActivity", Icon = new Icons.Regular.Size20.BrainCircuit() }
+                    }
+                },
+                new ComponentModel
+                {
+                    WorkflowName = "StrategicInsights",
+                    Name = "Strategic Insights",
+                    SubComponents = new List<ComponentModel>
+                    {
+                        new ComponentModel { Id = "AIStrategiX", Icon = new Icons.Regular.Size20.Chess() },
+                        new ComponentModel { Id = "AIInSightOut", Icon = new Icons.Regular.Size20.BuildingLighthouse() }
+                    }
+                },
+                new ComponentModel
+                {
+                    WorkflowName = "Visuals",
+                    Name = "Visuals",
+                    SubComponents = new List<ComponentModel>
+                    {
+                        new ComponentModel { Id = "AILightRayArt", Icon = new Icons.Regular.Size20.DesignIdeas() },
+                        new ComponentModel { Id = "AIVideoPromptGen", Icon = new Icons.Regular.Size20.VideoChat() }
+                    }
+                }
+            };
+
+            // Find the matching icon for the FeatureName
+            foreach (var component in components)
+            {
+                var subComponent = component.SubComponents?.FirstOrDefault(sc => sc.Id == featureName);
+                if (subComponent != null)
+                {
+                    return subComponent.Icon;
+                }
+            }
+
+            // Default icon if no match is found
+            return new Icons.Regular.Size20.FolderOpen();
+        }
+
 
         public string CreatePipeDelimitedString(string requestBlob)
         {
