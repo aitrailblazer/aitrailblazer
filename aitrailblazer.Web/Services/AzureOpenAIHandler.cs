@@ -1346,8 +1346,8 @@ namespace AITrailblazer.net.Services
             {
                 new ComponentModel
                 {
-                    WorkflowName = "Writing",
-                    Name = "Writing",
+                    WorkflowName = "Creative Writing",
+                    Name = "Creative Writing",
                     SubComponents = new List<ComponentModel>
                     {
                         new ComponentModel { Id = "AIWritingAssistant", Icon = new Icons.Regular.Size20.Pen() },

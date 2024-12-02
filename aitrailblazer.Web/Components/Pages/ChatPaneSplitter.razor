@@ -550,7 +550,10 @@
                                         </FluentLabel>
                                         <FluentAccordionItem Heading="Tasks" Class="accordion-heading fluent-accordion-item">
                                             <FluentIcon Value="@(new Icons.Regular.Size20.SparkleCircle())" Color="@Color.Accent" Slot="start" />
-                                            <FluentTreeView bind-CurrentSelected="currentSelectedTreeItemAICopilots" OnSelectedChange="HandleOnSelectedChangeAICopilots" Class="tree-font-size">
+                                            <FluentTreeView 
+                                            bind-CurrentSelected="currentSelectedTreeItemAICopilots" 
+                                            OnSelectedChange="HandleOnSelectedChangeAICopilots" 
+                                            Class="tree-font-size">
                                                 @foreach (var component in filteredComponentsAICopilots)
                                                 {
                                                     <FluentTreeItem InitiallyExpanded="false" Text="@component.Name">
@@ -571,7 +574,9 @@
                                                 <b>@currentSelectedTreeItemAICopilotSettings?.Text</b> 
                                             </FluentLabel>
                                             <div style="max-height: 640px; overflow-y: auto;">
-                                                <FluentTreeView bind-CurrentSelected=currentSelectedTreeItemAICopilotSettings OnSelectedChange="HandleOnSelectedChangeAICopilotSettings" >
+                                                <FluentTreeView 
+                                                bind-CurrentSelected=currentSelectedTreeItemAICopilotSettings 
+                                                OnSelectedChange="HandleOnSelectedChangeAICopilotSettings" >
                                                     @foreach (var component in componentsAICopilotSettings)
                                                     {
                                                         <FluentTreeItem InitiallyExpanded="false" Text="@component.Name" Class="tree-font-size">
@@ -787,7 +792,7 @@
         isRightPaneCollapsed = !isRightPaneCollapsed;
     }
     private bool isShowFullAgentsChatThreadVisible = false;
-    public string CurrentFeatureWorkflowName { get; set; } = "Writing";
+    public string CurrentFeatureWorkflowName { get; set; } = "Creative Writing";
 
     public string CurrentFeatureName { get; set; } = "AIWritingAssistant";
     //public string CurrentTaskWorkflowName { get; set; } = "Current Task";
@@ -2311,11 +2316,13 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     {
         changed = item;
     }
-        private void HandleOnSelectedChangeAICopilotSettings(FluentTreeItem selectedTreeItem)
+    
+    
+    private void HandleOnSelectedChangeAICopilotSettings(FluentTreeItem selectedTreeItem)
     {
 
         currentSelectedTreeItemAICopilotSettings = selectedTreeItem;
-        // Console.WriteLine($"currentSelectedTreeItemAICopilotSettings: {currentSelectedTreeItemAICopilotSettings.Id}");
+        Console.WriteLine($"currentSelectedTreeItemAICopilotSettings: {currentSelectedTreeItemAICopilotSettings.Id}");
 
         var parts = currentSelectedTreeItemAICopilotSettings.Id.Split('_');
         if (parts.Length == 2)
@@ -2488,19 +2495,19 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     {
         new ComponentModel
         {
-            WorkflowName = "Writing",
-            Name = "Writing",
+            WorkflowName = "Creative Writing",
+            Name = "Creative Writing",
             Icon = new Icons.Regular.Size20.DocumentOnePageSparkle(),
             SubComponents = new List<ComponentModel>
             {
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIWritingAssistant"), WorkflowName = "Writing", Id = "AIWritingAssistant", Icon = new Icons.Regular.Size20.Pen() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIKeyPointsWizard"), WorkflowName = "Writing", Id = "AIKeyPointsWizard", Icon = new Icons.Regular.Size20.AppsList() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIClearNote"), WorkflowName = "Writing", Id = "AIClearNote", Icon = new Icons.Regular.Size20.BookStar() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIEmailWizard"), WorkflowName = "Writing", Id = "AIEmailWizard", Icon = new Icons.Regular.Size20.Mail() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIInternalMemo"), WorkflowName = "Writing", Id = "AIInternalMemo", Icon = new Icons.Regular.Size20.StarEmphasis() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIMessageOptimizer"), WorkflowName = "Writing",  Id = "AIMessageOptimizer", Icon = new Icons.Regular.Size20.EmojiEdit() },
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AINamesGen"), WorkflowName = "Writing", Id = "AINamesGen", Icon = new Icons.Regular.Size20.TextCaseTitle()},  
-                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AiTaskWizard"), WorkflowName = "Writing", Id = "AiTaskWizard", Icon = new Icons.Regular.Size20.TextCaseTitle()}
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIWritingAssistant"), WorkflowName = "Creative Writing", Id = "AIWritingAssistant", Icon = new Icons.Regular.Size20.Pen() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIKeyPointsWizard"), WorkflowName = "Creative Writing", Id = "AIKeyPointsWizard", Icon = new Icons.Regular.Size20.AppsList() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIClearNote"), WorkflowName = "Creative Writing", Id = "AIClearNote", Icon = new Icons.Regular.Size20.BookStar() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIEmailWizard"), WorkflowName = "Creative Writing", Id = "AIEmailWizard", Icon = new Icons.Regular.Size20.Mail() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIInternalMemo"), WorkflowName = "Creative Writing", Id = "AIInternalMemo", Icon = new Icons.Regular.Size20.StarEmphasis() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AIMessageOptimizer"), WorkflowName = "Creative Writing",  Id = "AIMessageOptimizer", Icon = new Icons.Regular.Size20.EmojiEdit() },
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AINamesGen"), WorkflowName = "Creative Writing", Id = "AINamesGen", Icon = new Icons.Regular.Size20.TextCaseTitle()},  
+                new ComponentModel { Name = AICopilotDescriptionService.GetFriendlyNameForAICopilotService("AiTaskWizard"), WorkflowName = "Creative Writing", Id = "AiTaskWizard", Icon = new Icons.Regular.Size20.TextCaseTitle()}
             }
         },
         new ComponentModel
@@ -2549,17 +2556,17 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         {
             CurrentFeatureName="AIWritingAssistant";
             filteredComponentsAICopilots = componentsAICopilots
-                .Where(component => component.Name == "Writing" || 
+                .Where(component => component.Name == "Creative Writing" || 
                 component.Name == "Code & Documentation" ||
                 component.Name == "Strategic Insights"
                 )
                 .ToList();
         } 
     }
-    private async Task  HandleOnSelectedChangeAICopilots(FluentTreeItem selectedTreeItem)
+    private async Task HandleOnSelectedChangeAICopilots(FluentTreeItem selectedTreeItem)
     {
         // Check if the selected tree item text is one of the values to skip
-        var skipTexts = new[] { "Writing", "Code & Documentation", "Strategic Insights", "Visuals" };
+        var skipTexts = new[] { "Creative Writing", "Code & Documentation", "Strategic Insights", "Visuals" };
         if (skipTexts.Contains(selectedTreeItem.Text))
         {
             // If the text is in the skip list, exit the method without assigning or processing further
@@ -2567,10 +2574,12 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         }
 
         currentSelectedTreeItemAICopilots = selectedTreeItem;
-        // Console.WriteLine($"currentSelectedTreeItemAICopilots Text: {currentSelectedTreeItemAICopilots.Text}");
+        Console.WriteLine($"currentSelectedTreeItemAICopilots: {currentSelectedTreeItemAICopilots.Id}");
+
+        Console.WriteLine($"currentSelectedTreeItemAICopilots Text: {currentSelectedTreeItemAICopilots.Text}");
 
         // Console.WriteLine($"currentSelectedTreeItemAICopilots Id: {currentSelectedTreeItemAICopilots.Id}");
-        // CurrentFeatureName=currentSelectedTreeItemAICopilots.Id;
+        CurrentFeatureName=currentSelectedTreeItemAICopilots.Id;
         // Console.WriteLine($"HandleOnSelectedChangeAICopilots CurrentFeatureName: {CurrentFeatureName}");
         await OnFeatureNameChanged.InvokeAsync(CurrentFeatureName);
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
