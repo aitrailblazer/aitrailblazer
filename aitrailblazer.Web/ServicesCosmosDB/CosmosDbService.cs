@@ -752,84 +752,77 @@ public class CosmosDbService
         Console.WriteLine($"[Query metrics]: (Total RUs: {totalRequestCharge})");
     }
 
-    public async Task<List<EmailMessage>> SearchEmailsAsync(
+    public async Task<EmailMessage?> SearchEmailsAsync(
         float[] vectors,
         string tenantId,
         string userId,
         string categoryId,
-        int emailMaxResults,
         double similarityScore)
     {
-        _logger.LogInformation("Searching for similar emails with max results: {MaxResults}, similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
-            emailMaxResults, similarityScore, tenantId, userId, categoryId ?? "None");
-
-        List<EmailMessage> results = new();
-
-        // Construct SQL query with optional categoryId filtering
-        string queryText = $"""
-    SELECT 
-        TOP @maxResults
-        c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
-        c.keypoints, c.conversationId, c.webLink, c.categoryIds,
-        VectorDistance(c.vectors, @vectors) as similarityScore
-    FROM c 
-    WHERE c.type = 'EmailMessage' AND c.tenantId = @tenantId AND c.userId = @userId
-          AND VectorDistance(c.vectors, @vectors) > @similarityScore
-    """;
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryText += " AND c.categoryId = @categoryId";
-        }
-
-        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-
-        // Set up a query definition with parameters for tenantId, userId, categoryId, vectors, and similarity score
-        var queryDef = new QueryDefinition(queryText)
-            .WithParameter("@maxResults", emailMaxResults)
-            .WithParameter("@vectors", vectors)
-            .WithParameter("@similarityScore", similarityScore)
-            .WithParameter("@tenantId", tenantId)
-            .WithParameter("@userId", userId);
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryDef = queryDef.WithParameter("@categoryId", categoryId);
-        }
-
-        using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
+        _logger.LogInformation(
+            "Searching for the most similar email with similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}.",
+            similarityScore, tenantId, userId, categoryId ?? "None");
 
         try
         {
-            while (resultSet.HasMoreResults)
+            // Construct SQL query with optional categoryId filtering
+            string queryText = $"""
+            SELECT 
+                TOP 1
+                c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
+                c.keypoints, c.conversationId, c.webLink, c.categoryIds,
+                VectorDistance(c.vectors, @vectors) as similarityScore
+            FROM c 
+            WHERE c.type = 'EmailMessage' 
+                AND c.tenantId = @tenantId 
+                AND c.userId = @userId
+                AND VectorDistance(c.vectors, @vectors) > @similarityScore
+            """;
+
+            if (!string.IsNullOrEmpty(categoryId))
             {
-                FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
-
-                foreach (var email in response)
-                {
-                    _logger.LogInformation("Email ID: {EmailId}, Subject: {Subject}, ConversationId: {ConversationId}, WebLink: {WebLink}, KeyPoints: {KeyPoints}",
-                        email.Id, email.Subject, email.ConversationId ?? "N/A", email.WebLink ?? "N/A", email.KeyPoints ?? "N/A");
-
-                    // Log the email object as JSON for debugging
-                    string emailJson = JsonConvert.SerializeObject(email, Formatting.Indented);
-                    _logger.LogInformation("Email JSON: {EmailJson}", emailJson);
-
-                    results.Add(email);
-                }
-
-                _logger.LogInformation("Retrieved {Count} emails in current batch.", response.Count);
+                queryText += " AND c.categoryId = @categoryId";
             }
 
-            _logger.LogInformation("SearchEmailsAsync completed with {TotalCount} similar emails found.", results.Count);
-            return results;
+            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+            // Set up a query definition with parameters
+            var queryDef = new QueryDefinition(queryText)
+                .WithParameter("@vectors", vectors)
+                .WithParameter("@similarityScore", similarityScore)
+                .WithParameter("@tenantId", tenantId)
+                .WithParameter("@userId", userId);
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryDef = queryDef.WithParameter("@categoryId", categoryId);
+            }
+
+            // Execute query and fetch results
+            using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
+
+            if (resultSet.HasMoreResults)
+            {
+                FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
+                var closestEmail = response.FirstOrDefault();
+
+                if (closestEmail != null)
+                {
+                    _logger.LogInformation(
+                        $"Found the most similar email with ID: {closestEmail.Id}, Subject: {closestEmail.Subject}, Similarity Score: {closestEmail.SimilarityScore}.");
+                    return closestEmail;
+                }
+            }
+
+            _logger.LogInformation("No similar emails found with similarity score > {SimilarityScore}.", similarityScore);
+            return null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error searching for similar emails.");
+            _logger.LogError(ex, "Error searching for the most similar email.");
             throw;
         }
     }
-
 
     /// <summary>
     /// Upserts a new product.
@@ -1072,7 +1065,8 @@ public class CosmosDbService
 
                 if (closestItem != null)
                 {
-                    _logger.LogInformation("Found closest knowledge base item with ID: {ItemId}", closestItem.Id);
+                    _logger.LogInformation(
+                        $"Found the most similar email with ID: {closestItem.Id}, Title: {closestItem.Title}, Similarity Score: {closestItem.SimilarityScore}.");
                     return closestItem;
                 }
             }

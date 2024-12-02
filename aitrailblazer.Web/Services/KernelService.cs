@@ -40,6 +40,7 @@ namespace AITrailblazer.net.Services
             string deploymentName;
             string apiKey;
             string endpoint;
+            int embeddingsdDimensions;
 
             //string modelId;  gpt-4o-mini gpt-4o
 
@@ -50,6 +51,8 @@ namespace AITrailblazer.net.Services
             endpoint = _parametersAzureService.AzureOpenAIEndpoint03;
 
             apiKey = _parametersAzureService.AzureOpenAIKey03;
+            embeddingsdDimensions = _parametersAzureService.AzureEmbeddingsdDimensions;
+
             modelId = modelId;
             //Console.WriteLine($"Deployment Name: {deploymentName}");
             //Console.WriteLine($"Endpoint: {endpoint}");
@@ -79,6 +82,7 @@ namespace AITrailblazer.net.Services
                 apiKey: apiKey,
                 modelId: "text-embedding-3-large", // Optional name of the underlying model if the deployment name doesn't match the model name
                                                    //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                dimensions: embeddingsdDimensions,
                 httpClient: httpClient // Optional; if not provided, the HttpClient from the kernel will be used
                 );
 

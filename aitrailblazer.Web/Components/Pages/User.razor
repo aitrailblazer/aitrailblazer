@@ -1,4 +1,3 @@
-@page "/organizer"
 @rendermode InteractiveServer
 
 @attribute [Authorize]
@@ -35,6 +34,7 @@
 @inject UserIDsService UserIDsService
 @inject IHttpContextAccessor HttpContextAccessor
 @inject CosmosDbService cosmosDbService
+@inject SemanticKernelService semanticKernelService
 
 
 
@@ -1221,42 +1221,42 @@ private async Task LoadUserDataAsync()
         var mailboxSettings = await graphService.GetMailboxSettingsAsync();
         if (mailboxSettings != null)
         {
-            Console.WriteLine($"Time Zone: {mailboxSettings.TimeZone}");
-            Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
-            Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
+            // Console.WriteLine($"Time Zone: {mailboxSettings.TimeZone}");
+            // Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
+            // Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
             
             // Accessing other properties
-            Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
+            // Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
             
             if (mailboxSettings.AutomaticRepliesSetting != null)
             {
-                Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
-                Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
+                // Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
+                // Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
                 // Add more properties as needed
             }
             
             if (mailboxSettings.Language != null)
             {
-                Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
-                Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
+                // Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
+                // Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
             }
             
             if (mailboxSettings.WorkingHours != null)
             {
-                Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
-                Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
-                Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
+                // Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
+                // Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
+                // Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
             }
             
-            Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
-            Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
-            Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
+            // Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
+            // Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
+            // Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
         }
         userTimeZone = await UserIDsService.GetTimeZoneAsync();
-        Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
+        // Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
 
         timeZoneInfo = _timeFunctions.GetUserTimeZone();
-        Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
+        // Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
 
         // Get the current UTC time
         DateTime utcNow = DateTime.UtcNow;
@@ -1266,15 +1266,15 @@ private async Task LoadUserDataAsync()
 
         //input= "Tonights gonna be a good night! A good good night!";
         //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
-        //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
+        //// Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
         
-        string inputStr= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
-        string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(inputStr);
-        Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
+        //string inputStr= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
+        //string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(inputStr);
+        //// Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
 
-        inputStr= "What will the date be in 5 days?";
-        response = await azureOpenAIHandler.GetIntent(inputStr);
-        Console.WriteLine($"LoadUserDataAsync GetIntent JSON Response: {response}");
+        //inputStr= "What will the date be in 5 days?";
+        //response = await azureOpenAIHandler.GetIntent(inputStr);
+        // Console.WriteLine($"LoadUserDataAsync GetIntent JSON Response: {response}");
 
         //await chatService.TestAsync();
         //await chatService.InitializeAsync(); // load products
@@ -1305,7 +1305,7 @@ private async Task LoadUserDataAsync()
             string startOfWeekString = startOfWeek.ToString("o");
             string endOfWeekString = endOfWeek.ToString("o");
 
-            Console.WriteLine($"Fetching calendar events from {startOfWeekString} to {endOfWeekString}");
+            // Console.WriteLine($"Fetching calendar events from {startOfWeekString} to {endOfWeekString}");
 
             // Call the method with string parameters
             List<EventViewModel> events = await graphService.GetCalendarViewAsync(20, startOfWeekString, endOfWeekString);
@@ -1313,7 +1313,7 @@ private async Task LoadUserDataAsync()
             if (events == null || !events.Any())
             {
                 calendarEventsWithComputedProperties = new List<EventViewModel>();
-                Console.WriteLine("No events found. Initialized an empty list.");
+                // Console.WriteLine("No events found. Initialized an empty list.");
             }
             else
             {
@@ -1324,31 +1324,31 @@ private async Task LoadUserDataAsync()
                 int nullEventsCount = events.Count - validEvents.Count;
                 if (nullEventsCount > 0)
                 {
-                    Console.WriteLine($"Found {nullEventsCount} null event(s) in the fetched data.");
+                    // Console.WriteLine($"Found {nullEventsCount} null event(s) in the fetched data.");
                 }
 
                 // Assign the valid events to the calendarEventsWithComputedProperties
                 calendarEventsWithComputedProperties = validEvents;
 
-                Console.WriteLine($"Successfully loaded {calendarEventsWithComputedProperties.Count} event(s).");
+                // Console.WriteLine($"Successfully loaded {calendarEventsWithComputedProperties.Count} event(s).");
             }
         }
         catch (AuthenticationRequiredException authEx)
         {
-            Console.WriteLine($"Authentication is required: {authEx.Message}");
+            // Console.WriteLine($"Authentication is required: {authEx.Message}");
             // Optionally, redirect to login or prompt user
         }
         catch (InvalidOperationException invOpEx)
         {
-            Console.WriteLine($"Invalid operation: {invOpEx.Message}");
+            // Console.WriteLine($"Invalid operation: {invOpEx.Message}");
         }
         catch (JsonException jsonEx)
         {
-            Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
+            // Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            // Console.WriteLine($"An unexpected error occurred: {ex.Message}");
         }
         finally
         {
@@ -1410,10 +1410,10 @@ private async Task LoadUserDataAsync()
         var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
         // Get the value of the "myParameter" query string parameter
         Tenant = queryString["Tenant"];
-        Console.WriteLine($"Tenant: {Tenant}");
+        // Console.WriteLine($"Tenant: {Tenant}");
    
         // Log the returnUrl for debugging purposes
-        Console.WriteLine($"uri: {uri}");
+        // Console.WriteLine($"uri: {uri}");
 
         // Navigate to the sign-in page with the encoded returnUrl
         NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={uri}", forceLoad: true);
@@ -1574,7 +1574,7 @@ private async Task LoadUserDataAsync()
     private async Task OnButtonASAPTimeClicked()
     {
 
-        Console.WriteLine($"OnButtonASAPTimeClicked User Query: {userQuery}");
+        // Console.WriteLine($"OnButtonASAPTimeClicked User Query: {userQuery}");
         if (string.IsNullOrWhiteSpace(userQuery))
         {
             responseQuery = "Please enter a valid query.";
@@ -1590,7 +1590,7 @@ private async Task LoadUserDataAsync()
             error = null;
 
             // Call the Azure OpenAI handler with the user's query
-            Console.WriteLine($"call azureOpenAIHandler.HandleUserQueryAsync User Query: {userQuery}");
+            // Console.WriteLine($"call azureOpenAIHandler.HandleUserQueryAsync User Query: {userQuery}");
             
             //responseQuery = await azureOpenAIHandler.HandleUserQueryAsync(userQuery);
 
@@ -1600,7 +1600,7 @@ private async Task LoadUserDataAsync()
             string subject = "";
             string promptText = userQuery;
             string categoryId = "";
-            double similarityScore = 0.9;
+            double similarityScore = 0.4;
 
             (responseQuery, subject) = await chatService.GetEmailCompletionAsync(
                 currentUserTenantID,
@@ -1649,7 +1649,7 @@ private async Task LoadUserDataAsync()
         var jsonResponse = await azureOpenAIHandler.ShowNewsAsync(userQuery);
 
         // Log the JSON response for debugging
-        Console.WriteLine($"JSON Response: {jsonResponse}");
+        // Console.WriteLine($"JSON Response: {jsonResponse}");
 
         var newsResponse = JsonConvert.DeserializeObject<NewsResponse>(jsonResponse);
         if (newsResponse != null)
@@ -1753,9 +1753,9 @@ private async Task LoadUserDataAsync()
             // Generate KQL query from natural language input
             //string kqlQuery = await azureOpenAIHandler.GenerateKQLQuery(searchQuery);
 
-            Console.WriteLine($"SearchEmails searchQuery: {searchQuery}");
+            // Console.WriteLine($"SearchEmails searchQuery: {searchQuery}");
             var searchResultsJson = await graphService.SearchMessagesAsync(searchQuery, 20);
-            Console.WriteLine($"SearchEmails searchResultsJson: {searchResultsJson}");
+            // Console.WriteLine($"SearchEmails searchResultsJson: {searchResultsJson}");
 
             if (!string.IsNullOrWhiteSpace(searchResultsJson))
             {
@@ -1862,10 +1862,10 @@ private async Task LoadUserDataAsync()
 
     private void OpenEmailDialog(PureEmailViewBasicModel PureEmailViewBasicModel)
     {
-        Console.WriteLine($"OpenEmailDialog");
+        // Console.WriteLine($"OpenEmailDialog");
 
         selectedEmail = PureEmailViewBasicModel;
-        Console.WriteLine($"Selected email: {selectedEmail?.Subject}");
+        // Console.WriteLine($"Selected email: {selectedEmail?.Subject}");
     }
 
     // Changed parameter type from 'Event' to 'EventViewModel'
@@ -1891,13 +1891,13 @@ private async Task LoadUserDataAsync()
             StateHasChanged(); // Update the UI
 
             // Optionally, log the successful deletion
-            Console.WriteLine($"Event with ID {eventId} deleted successfully.");
+            // Console.WriteLine($"Event with ID {eventId} deleted successfully.");
 
         }
         catch (Exception ex)
         {
-            // Replace Console.WriteLine with ILogger for better logging
-            Console.WriteLine($"Error deleting event: {ex.Message}");
+            // Replace // Console.WriteLine with ILogger for better logging
+            // Console.WriteLine($"Error deleting event: {ex.Message}");
 
             // Use JS alert to notify the user of the error
             await JS.InvokeVoidAsync("alert", $"Error deleting event: {ex.Message}");
@@ -2025,7 +2025,7 @@ private async Task SaveContactAsync()
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error saving contact: {ex.Message}");
+        // Console.WriteLine($"Error saving contact: {ex.Message}");
     }
 }
 private string GetAddressFormatted(AITGraph.Sdk.Models.PhysicalAddress address)
@@ -2069,7 +2069,7 @@ private async Task DeleteContactAsync(string contactId)
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error deleting contact: {ex.Message}");
+        // Console.WriteLine($"Error deleting contact: {ex.Message}");
         await JS.InvokeVoidAsync("alert", $"Error deleting contact: {ex.Message}");
     }
     finally
@@ -2154,7 +2154,7 @@ private async Task DeleteContactAsync(string contactId)
         clipboardContent = await JS.InvokeAsync<string>("getClipboardText");
 
         // You can now use clipboardContent in your logic
-        Console.WriteLine("Clipboard content: " + clipboardContent);
+        // Console.WriteLine("Clipboard content: " + clipboardContent);
     }
     private DateTime RoundToNext30MinuteInterval(DateTime dateTime)
     {
@@ -2197,7 +2197,7 @@ private async Task DeleteContactAsync(string contactId)
         // Ensure newEvent is not null before proceeding
         if (newEvent == null)
         {
-            Console.WriteLine("Event object is null.");
+            // Console.WriteLine("Event object is null.");
             return false;
         }
 
@@ -2205,14 +2205,14 @@ private async Task DeleteContactAsync(string contactId)
         bool hasValidSubject = !string.IsNullOrWhiteSpace(newEvent.Subject);
         if (!hasValidSubject)
         {
-            Console.WriteLine("Subject is missing.");
+            // Console.WriteLine("Subject is missing.");
         }
 
         // Validate StartDate and EndDate: they must have values
         bool hasValidDates = newEventStartDate.HasValue && newEventEndDate.HasValue;
         if (!hasValidDates)
         {
-            Console.WriteLine("Start or End date is missing.");
+            // Console.WriteLine("Start or End date is missing.");
         }
 
         // Ensure Start and End times are not empty and End time is after Start time
@@ -2223,19 +2223,19 @@ private async Task DeleteContactAsync(string contactId)
             {
                 if (endDateTimeParsed <= startDateTimeParsed)
                 {
-                    Console.WriteLine("End time must be after Start time.");
+                    // Console.WriteLine("End time must be after Start time.");
                     return false;
                 }
             }
             else
             {
-                Console.WriteLine("Invalid Start or End time format.");
+                // Console.WriteLine("Invalid Start or End time format.");
                 return false;
             }
         }
         else
         {
-            Console.WriteLine("Start time or End time is missing.");
+            // Console.WriteLine("Start time or End time is missing.");
             return false;
         }
 
@@ -2243,7 +2243,7 @@ private async Task DeleteContactAsync(string contactId)
         bool hasValidLocation = !string.IsNullOrWhiteSpace(newEvent.Location?.DisplayName);
         if (!hasValidLocation)
         {
-            Console.WriteLine("Location is missing.");
+            // Console.WriteLine("Location is missing.");
         }
 
         // Validate Attendees: there must be at least one valid attendee
@@ -2253,21 +2253,21 @@ private async Task DeleteContactAsync(string contactId)
                                             .Any(email => !string.IsNullOrWhiteSpace(email));
         if (!hasValidAttendees)
         {
-            Console.WriteLine("At least one valid attendee is required.");
+            // Console.WriteLine("At least one valid attendee is required.");
         }
 
         // Validate Body: it must not be empty
         bool hasValidBody = !string.IsNullOrWhiteSpace(newEventBody);
         if (!hasValidBody)
         {
-            Console.WriteLine("Event description (Body) is missing.");
+            // Console.WriteLine("Event description (Body) is missing.");
         }
 
         // Ensure all fields are valid
         bool isValid = hasValidSubject && hasValidDates && hasValidLocation && hasValidAttendees && hasValidBody;
         if (!isValid)
         {
-            Console.WriteLine("Form validation failed. Please ensure all required fields are correctly filled.");
+            // Console.WriteLine("Form validation failed. Please ensure all required fields are correctly filled.");
         }
 
         return isValid;
@@ -2280,7 +2280,7 @@ private async Task SaveEventAsync()
         if (!IsFormValid())
         {
             error = "Please ensure all required fields are filled out correctly.";
-            Console.WriteLine(error);
+            // Console.WriteLine(error);
             return;
         }
 
@@ -2311,14 +2311,14 @@ private async Task SaveEventAsync()
             if (endDateTimeParsed <= startDateTimeParsed)
             {
                 error = "End time must be after the start time.";
-                Console.WriteLine(error);
+                // Console.WriteLine(error);
                 return;
             }
         }
         else
         {
             error = "Invalid date/time format.";
-            Console.WriteLine(error);
+            // Console.WriteLine(error);
             return;
         }
 
@@ -2362,13 +2362,13 @@ private async Task SaveEventAsync()
         if (result.CreatedEvent != null)
         {
             // Log the event properties for verification
-            Console.WriteLine("Event Created:");
-            Console.WriteLine($"Subject: {result.CreatedEvent.Subject}");
-            Console.WriteLine($"Start: {result.CreatedEvent.Start.DateTime} ({result.CreatedEvent.Start.TimeZone})");
-            Console.WriteLine($"End: {result.CreatedEvent.End.DateTime} ({result.CreatedEvent.End.TimeZone})");
-            Console.WriteLine($"Location: {result.CreatedEvent.Location?.DisplayName}");
-            Console.WriteLine($"Attendees: {string.Join(", ", result.CreatedEvent.Attendees.Select(a => a.EmailAddress.Address))}");
-            Console.WriteLine($"BodyPreview: {result.CreatedEvent.BodyPreview}");
+            // Console.WriteLine("Event Created:");
+            // Console.WriteLine($"Subject: {result.CreatedEvent.Subject}");
+            // Console.WriteLine($"Start: {result.CreatedEvent.Start.DateTime} ({result.CreatedEvent.Start.TimeZone})");
+            // Console.WriteLine($"End: {result.CreatedEvent.End.DateTime} ({result.CreatedEvent.End.TimeZone})");
+            // Console.WriteLine($"Location: {result.CreatedEvent.Location?.DisplayName}");
+            // Console.WriteLine($"Attendees: {string.Join(", ", result.CreatedEvent.Attendees.Select(a => a.EmailAddress.Address))}");
+            // Console.WriteLine($"BodyPreview: {result.CreatedEvent.BodyPreview}");
 
             // Add the created event to the list with computed properties
             calendarEventsWithComputedProperties.Add(new EventViewModel
@@ -2390,13 +2390,13 @@ private async Task SaveEventAsync()
         else
         {
             error = result.ErrorMessage ?? "An error occurred while creating the event.";
-            Console.WriteLine(error);
+            // Console.WriteLine(error);
         }
     }
     catch (Exception ex)
     {
         error = $"Error creating event: {ex.Message}";
-        Console.WriteLine(error);
+        // Console.WriteLine(error);
     }
 }
 }
@@ -2456,6 +2456,9 @@ private async Task SaveEventAsync()
                 BccRecipients = selectedEmail.BccRecipients?.Select(r => new EmailMessageRecipientInfo { Name = r.Name, EmailAddress = r.EmailAddress }).ToList() ?? new List<EmailMessageRecipientInfo>(),
                 ReceivedDateTime = selectedEmail.ReceivedDateTime
             };
+            string emailString = JsonConvert.SerializeObject($"{selectedEmail.Subject}\n\n{bodyContent}");
+
+            email.Vectors = await semanticKernelService.GetEmbeddingsAsync(emailString);
 
             // Call the upsert function to save the email
              await cosmosDbService.UpsertEmailMessageAsync(
@@ -2465,7 +2468,7 @@ private async Task SaveEventAsync()
                     email.Subject,
                     email
                 );
-            Console.WriteLine("Email upserted successfully.");
+            // Console.WriteLine("Email upserted successfully.");
 
             await cosmosDbService.QueryEmailMessagesAsync(
                 currentUserTenantID,
@@ -2476,7 +2479,7 @@ private async Task SaveEventAsync()
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error upserting email: {ex.Message}");
+            // Console.WriteLine($"Error upserting email: {ex.Message}");
         }
         finally
         {
@@ -2515,7 +2518,7 @@ private async Task SaveEventAsync()
                             $"Body:\n{bodyContent}";
 
         // Output for debugging (optional)
-        Console.WriteLine("Clipboard Content:\n" + clipboardContent);
+        // Console.WriteLine("Clipboard Content:\n" + clipboardContent);
 
         // Call the JavaScript function to copy the content to the clipboard
         await JS.InvokeVoidAsync("copyToClipboard", clipboardContent);
@@ -2630,7 +2633,7 @@ private async Task RefreshMessagesAsync()
             catch (Exception ex)
             {
                 // Handle or log the exception
-                Console.WriteLine($"Error deleting email: {ex.Message}");
+                // Console.WriteLine($"Error deleting email: {ex.Message}");
             }
         }
     }

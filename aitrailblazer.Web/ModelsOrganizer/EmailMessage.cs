@@ -79,7 +79,9 @@ namespace Cosmos.Copilot.Models
 
         [JsonProperty("webLink")]
         public string WebLink { get; set; }
-
+        
+        [JsonProperty("similarityScore")]
+        public double SimilarityScore { get; set; }
         // Add the Vectors property for embeddings
         [JsonProperty("vectors")]
         public float[] Vectors { get; set; }

@@ -378,7 +378,7 @@ namespace AITrailblazer.net.Services
 
             _timer.Stop();
             RaiseLogUpdate($"Workflow completed in {_timer.ElapsedMilliseconds / 1000} seconds.");
-            _logger.LogInformation($"Time: {_timer.ElapsedMilliseconds / 1000} secs");
+            //_logger.LogInformation($"Time: {_timer.ElapsedMilliseconds / 1000} secs");
 
             return (responseOutput, tokenUsage);
         }
@@ -407,16 +407,16 @@ namespace AITrailblazer.net.Services
         {
             var timer = Stopwatch.StartNew();
             RaiseLogUpdate("Starting submission...");
-            _logger.LogInformation(
-                "HandleSubmitAsync initiated for Feature: {existingThreadId}, Project: {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
-                existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+            //_logger.LogInformation(
+            //    "HandleSubmitAsync initiated for Feature: {existingThreadId}, Project: {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+            //    existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
 
             // Validate input
             if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
             {
                 RaiseLogUpdate("Validation failed: Both panel input and user input are empty.");
-                _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
-                    currentUserIdentityID, currentUserTenantID);
+                //_logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
+                //    currentUserIdentityID, currentUserTenantID);
                 return ("Panel Input and User Input cannot both be empty.", 0);
             }
 
@@ -424,7 +424,7 @@ namespace AITrailblazer.net.Services
             {
                 // Retrieve agent settings
                 var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-                _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
+                //_logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
 
                 // Process panel input for URLs
                 if (ContainsUrl(panelInput))
@@ -433,30 +433,30 @@ namespace AITrailblazer.net.Services
                     var webPageContentService = new WebPageContentExtractionService(new HttpClient());
                     panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
                     RaiseLogUpdate("URL content replacement completed.");
-                    _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
+                    //_logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
                 }
                 else
                 {
                     RaiseLogUpdate("No URLs detected in panel input. Skipping URL processing.");
-                    _logger.LogInformation("No URLs found in panel input. Skipping URL replacement.");
+                    //_logger.LogInformation("No URLs found in panel input. Skipping URL replacement.");
                 }
 
                 // Clean inputs
                 string cleanedUserInput = CleanInput(userInput);
                 string cleanedPanelInput = CleanInput(panelInput);
-                _logger.LogInformation("Cleaned user input and panel input.");
+                //_logger.LogInformation("Cleaned user input and panel input.");
 
                 // Determine thread title
                 string title = string.IsNullOrWhiteSpace(existingThreadTitle)
                     ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
                     : existingThreadTitle;
                 RaiseLogUpdate($"Thread title determined: {title}");
-                _logger.LogInformation("Thread title determined: {Title}", title);
+                // _logger.LogInformation("Thread title determined: {Title}", title);
 
                 // Prepare input request
                 string inputRequest = $"{userInput}\n\n{panelInput}";
                 string requestTitle = CleanAndShortenRequestResponseTitle(inputRequest);
-                _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
+                // _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
 
                 // Get or create thread
                 ThreadChat thread = await GetOrCreateThreadAsync(
@@ -471,8 +471,8 @@ namespace AITrailblazer.net.Services
                 if (IsSearchCacheChecked)
                 {
                     // Determine similarity score
-                    double similarityScore = featureNameWorkflowName == "CodeAndDocumentation" ? 0.99 : 0.9;
-                    _logger.LogInformation($"HandleSubmitAsync similarity score set to: {similarityScore}");
+                    double similarityScore =  0.4;
+                    //  _logger.LogInformation($"HandleSubmitAsync similarity score set to: {similarityScore}");
 
                     RaiseLogUpdate("Performing semantic search for message...");
                     (responseOutput, cacheHit) = await SearchClosestMessageAsync(
@@ -491,7 +491,7 @@ namespace AITrailblazer.net.Services
                     if (cacheHit)
                     {
                         RaiseLogUpdate("Search Closest Message Response retrieved from cache.");
-                        _logger.LogInformation("Cache hit: Response retrieved.");
+                        // _logger.LogInformation("Cache hit: Response retrieved.");
                     }
                     else
                     {
@@ -503,8 +503,8 @@ namespace AITrailblazer.net.Services
                 if (IsSearchMicrosoftChecked)
                 {
                     // Determine similarity score
-                    double similarityScore = 0.6;
-                    _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
+                    double similarityScore = 0.4;
+                    // _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
 
                     RaiseLogUpdate("Performing semantic search for email message...");
 
@@ -518,7 +518,7 @@ namespace AITrailblazer.net.Services
                     if (cacheHit)
                     {
                         RaiseLogUpdate("Search Closest Email Message Response retrieved from cache.");
-                        _logger.LogInformation("Cache hit: Response retrieved.");
+                        // _logger.LogInformation("Cache hit: Response retrieved.");
                     }
                     else
                     {
@@ -529,8 +529,8 @@ namespace AITrailblazer.net.Services
                 if (isMyKnowledgeBaseChecked)
                 {
                     // Determine similarity score
-                    double similarityScore = 0.6;
-                    _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
+                    double similarityScore = 0.4;
+                    // _logger.LogInformation("HandleSubmitAsync similarity score set to: {SimilarityScore}", similarityScore);
 
                     RaiseLogUpdate("Performing semantic search in my knowledge base...");
 
@@ -544,7 +544,7 @@ namespace AITrailblazer.net.Services
                     if (cacheHit)
                     {
                         RaiseLogUpdate("Search Closest Knowledge Base Item Response retrieved from cache.");
-                        _logger.LogInformation("Cache hit: Response retrieved.");
+                        // _logger.LogInformation("Cache hit: Response retrieved.");
                     }
                     else
                     {
@@ -576,8 +576,8 @@ namespace AITrailblazer.net.Services
                             outputTokenCount = tokenUsage.CompletionTokens;
                             totalTokenCount = tokenUsage.TotalTokens;
                             RaiseLogUpdate("Response generated using Writer/Editor/Reviewer.");
-                            _logger.LogInformation("Token usage (Writer/Editor/Reviewer) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
-                                inputTokenCount, outputTokenCount, totalTokenCount);
+                            // _logger.LogInformation("Token usage (Writer/Editor/Reviewer) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
+                             //    inputTokenCount, outputTokenCount, totalTokenCount);
                         }
                     }
                     else
@@ -600,8 +600,8 @@ namespace AITrailblazer.net.Services
                             outputTokenCount = chatTokenUsagePrompty.OutputTokenCount;
                             totalTokenCount = chatTokenUsagePrompty.TotalTokenCount;
                             RaiseLogUpdate("Response generated...");
-                            _logger.LogInformation("Token usage (Prompty) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
-                                inputTokenCount, outputTokenCount, totalTokenCount);
+                            // _logger.LogInformation("Token usage (Prompty) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
+                            //     inputTokenCount, outputTokenCount, totalTokenCount);
                         }
                     }
 
@@ -612,7 +612,7 @@ namespace AITrailblazer.net.Services
                         var citationsText = FormatCitations(enhancedInputs.AllCitations);
                         responseOutput += $"\n\nReferences:\n{citationsText}";
                         RaiseLogUpdate("Citations appended to response.");
-                        _logger.LogInformation("Citations appended to response.");
+                        // _logger.LogInformation("Citations appended to response.");
                     }
                 }
 
@@ -625,16 +625,16 @@ namespace AITrailblazer.net.Services
 
                 timer.Stop();
                 RaiseLogUpdate($"Submission completed in {timer.Elapsed.TotalSeconds:F2} seconds.");
-                _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
-                    timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
+                // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
+                //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
 
                 return (responseOutput, timer.Elapsed.TotalSeconds);
             }
             catch (Exception ex)
             {
                 RaiseLogUpdate("An error occurred during submission. Please try again.");
-                _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
-                    currentUserIdentityID, currentUserTenantID);
+                // _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
+                //     currentUserIdentityID, currentUserTenantID);
                 throw;
             }
         }
@@ -659,11 +659,11 @@ namespace AITrailblazer.net.Services
         {
             if (isNewThread)
             {
-                _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, userId);
+                // _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, userId);
                 return await _chatService.CreateNewThreadChatAsync(tenantId, userId, title);
             }
 
-            _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, userId);
+            // _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, userId);
             var thread = await _chatService.GetThreadAsync(tenantId, userId, existingThreadId);
             if (thread == null)
             {
@@ -686,7 +686,7 @@ namespace AITrailblazer.net.Services
             string relationSettingsVal,
             string responseStyleVal)
         {
-            _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+            // _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
 
             var closestMessage = await _chatService.SearchClosestMessageAsync(
                 tenantId, userId, similarityScore, featureNameProject, inputRequest,
@@ -695,11 +695,11 @@ namespace AITrailblazer.net.Services
 
             if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
             {
-                _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
+                // _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
                 return (closestMessage.Output, true);
             }
 
-            _logger.LogInformation("No similar message found. Cache miss.");
+            // _logger.LogInformation("No similar message found. Cache miss.");
             return (string.Empty, false);
         }
         private async Task<(string responseOutput, bool cacheHit)> SearchClosestEmailMessageAsync(
@@ -709,7 +709,7 @@ namespace AITrailblazer.net.Services
             string inputRequest,
             double similarityScore)
         {
-            _logger.LogInformation("Checking for similar messages using SearchClosestEmailMessageAsync with similarity score: {SimilarityScore}.", similarityScore);
+            // _logger.LogInformation("Checking for similar messages using SearchClosestEmailMessageAsync with similarity score: {SimilarityScore}.", similarityScore);
 
             string categoryId = ""; // Default category ID, can be updated based on requirements.
 
@@ -725,16 +725,16 @@ namespace AITrailblazer.net.Services
 
                 if (!string.IsNullOrEmpty(completion))
                 {
-                    _logger.LogInformation("Cache hit: Found similar message with subject: {Subject}.", subject ?? "N/A");
+                    // _logger.LogInformation("Cache hit: Found similar message with subject: {Subject}.", subject ?? "N/A");
                     return (completion, true); // Use 'completion' as responseOutput
                 }
 
-                _logger.LogInformation("No similar message found. Cache miss.");
+                // _logger.LogInformation("No similar message found. Cache miss.");
                 return (string.Empty, false);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while searching for the closest email message.");
+                // _logger.LogError(ex, "Error while searching for the closest email message.");
                 throw;
             }
         }
@@ -746,7 +746,7 @@ namespace AITrailblazer.net.Services
             string inputRequest,
             double similarityScore)
         {
-            _logger.LogInformation("Checking for similar items using SearchClosestKnowledgeBaseItemAsync with similarity score: {SimilarityScore}.", similarityScore);
+            // _logger.LogInformation("Checking for similar items using SearchClosestKnowledgeBaseItemAsync with similarity score: {SimilarityScore}.", similarityScore);
 
             // Use the featureNameProject as a categoryId if applicable
             string categoryId = "Document";
@@ -763,13 +763,13 @@ namespace AITrailblazer.net.Services
 
                 if (!string.IsNullOrEmpty(completion))
                 {
-                    _logger.LogInformation("SearchClosestKnowledgeBaseItemAsync Cache hit: Found similar item with title: {Title}.", title ?? "N/A");
+                    // _logger.LogInformation("SearchClosestKnowledgeBaseItemAsync Cache hit: Found similar item with title: {Title}.", title ?? "N/A");
 
                     // Return the generated response output and indicate a cache hit
                     return (completion, true);
                 }
 
-                _logger.LogInformation("No similar item found. Cache miss.");
+                // _logger.LogInformation("No similar item found. Cache miss.");
                 return (string.Empty, false);
             }
             catch (Exception ex)
@@ -791,7 +791,7 @@ namespace AITrailblazer.net.Services
             string relationSettingsVal,
             string responseStyleVal)
         {
-            _logger.LogInformation("Generating response with HandleSubmitAsyncWriterEditorReviewer.");
+            // _logger.LogInformation("Generating response with HandleSubmitAsyncWriterEditorReviewer.");
             var (responseOutput, tokenUsage) = await HandleSubmitAsyncWriterEditorReviewer(
                 featureNameProject, panelInput, userInput, masterTextSetting,
                 responseLengthVal, creativeAdjustmentsVal, audienceLevelVal,
@@ -799,8 +799,8 @@ namespace AITrailblazer.net.Services
 
             if (tokenUsage != null)
             {
-                _logger.LogInformation("Token usage: PromptTokens={PromptTokens}, CompletionTokens={CompletionTokens}, TotalTokens={TotalTokens}",
-                    tokenUsage.PromptTokens, tokenUsage.CompletionTokens, tokenUsage.TotalTokens);
+                // _logger.LogInformation("Token usage: PromptTokens={PromptTokens}, CompletionTokens={CompletionTokens}, TotalTokens={TotalTokens}",
+                //     tokenUsage.PromptTokens, tokenUsage.CompletionTokens, tokenUsage.TotalTokens);
             }
 
             return responseOutput;
@@ -855,11 +855,11 @@ namespace AITrailblazer.net.Services
             // Generate embeddings for new messages if not a cache hit
             if (!cacheHit)
             {
-                _logger.LogInformation("Generating embeddings for the new message.");
+                // _logger.LogInformation("Generating embeddings for the new message.");
                 completedChatMessage.Vectors = await _semanticKernelService.GetEmbeddingsAsync($"{userInput}\n\n{panelInput}");
             }
 
-            _logger.LogInformation("Upserting the thread and message to the database. ThreadId: {ThreadId}", thread.ThreadId);
+            // _logger.LogInformation("Upserting the thread and message to the database. ThreadId: {ThreadId}", thread.ThreadId);
 
             // Save the message to the database
             await _chatService.UpsertThreadAndMessageAsync(
@@ -869,7 +869,7 @@ namespace AITrailblazer.net.Services
                 chatMessage: completedChatMessage
             );
 
-            _logger.LogInformation("Chat message successfully saved. ThreadId: {ThreadId}, Title: {Title}", thread.ThreadId, requestTitle);
+            // _logger.LogInformation("Chat message successfully saved. ThreadId: {ThreadId}, Title: {Title}", thread.ThreadId, requestTitle);
         }
 
 
@@ -894,48 +894,48 @@ namespace AITrailblazer.net.Services
             string existingThreadId)
         {
             var timer = Stopwatch.StartNew();
-            _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingThreadId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
-                existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+            // _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingThreadId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+            //     existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
 
             if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
             {
-                _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
-                    currentUserIdentityID, currentUserTenantID);
+                // _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
+                //     currentUserIdentityID, currentUserTenantID);
                 return ("Panel Input and User Input cannot both be empty.", 0);
             }
 
             try
             {
                 var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-                _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
+                // _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
 
                 // Extract content from URLs in panelInput
                 var webPageContentService = new WebPageContentExtractionService(new HttpClient());
                 panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
-                _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
+                // _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
 
                 string cleanedUserInput = CleanInput(userInput);
                 string cleanedPanelInput = CleanInput(panelInput);
-                _logger.LogInformation("User input and panel input cleaned.");
+                // _logger.LogInformation("User input and panel input cleaned.");
 
                 // Generate or use existing Thread title
                 string title = string.IsNullOrWhiteSpace(existingThreadTitle)
                     ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
                     : existingThreadTitle;
-                _logger.LogInformation("Thread title determined: {Title}", title);
+                // _logger.LogInformation("Thread title determined: {Title}", title);
 
                 string inputRequest = $"{userInput}\n\n{panelInput}";
                 string cleanedRequestResponseTitle = CleanAndShortenRequestResponseTitle(inputRequest);
 
                 //string requestTitle = $"{featureNameWorkflowName}-{featureNameProject}-{cleanedRequestResponseTitle}";
                 string requestTitle = cleanedRequestResponseTitle;
-                _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
+                // _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
 
                 ThreadChat thread;
 
                 if (isNewThread)
                 {
-                    _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                    // _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
                     try
                     {
                         thread = await _chatService.CreateNewThreadChatAsync(
@@ -943,7 +943,7 @@ namespace AITrailblazer.net.Services
                             userId: currentUserIdentityID,
                             title: requestTitle
                         );
-                        _logger.LogInformation("New chat Thread created successfully. ThreadId: {ThreadId}, Title: {Title}", thread.Id, title);
+                        // _logger.LogInformation("New chat Thread created successfully. ThreadId: {ThreadId}, Title: {Title}", thread.Id, title);
                     }
                     catch (Exception ex)
                     {
@@ -953,7 +953,7 @@ namespace AITrailblazer.net.Services
                 }
                 else
                 {
-                    _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, currentUserIdentityID);
+                    // _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, currentUserIdentityID);
                     thread = await _chatService.GetThreadAsync(
                         tenantId: currentUserTenantID,
                         userId: currentUserIdentityID,
@@ -966,12 +966,12 @@ namespace AITrailblazer.net.Services
                         throw new InvalidOperationException($"Thread with ID {title} does not exist.");
                     }
 
-                    _logger.LogInformation("Continuing existing Thread. ThreadId: {ThreadId}", thread.Id);
+                    // _logger.LogInformation("Continuing existing Thread. ThreadId: {ThreadId}", thread.Id);
                 }
                 string responseOutput = string.Empty;
                 ChatTokenUsage tokenUsage = null;
 
-                _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}, featureNameProject: {featureNameProject}", currentUserIdentityID, currentUserTenantID, featureNameProject);
+                // _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}, featureNameProject: {featureNameProject}", currentUserIdentityID, currentUserTenantID, featureNameProject);
                 double similarityScore = 0.9;
                 if (featureNameWorkflowName == "CodeAndDocumentation")
                 {
@@ -985,7 +985,7 @@ namespace AITrailblazer.net.Services
                 if (isMyKnowledgeBaseChecked)
                 {
                     // Perform a semantic search to see if a similar message already exists
-                    _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+                    // _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
                     closestMessage = await _chatService.SearchClosestMessageAsync(
                         tenantId: currentUserTenantID,
                         userId: currentUserIdentityID,
@@ -1015,7 +1015,7 @@ namespace AITrailblazer.net.Services
                     responseOutput = closestMessage.Output;
                     cacheHit = true;
 
-                    _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
+                    // _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
                 }
                 else
                 {
@@ -1023,7 +1023,7 @@ namespace AITrailblazer.net.Services
                     if (agentSettings != null)
                     {
                         // Cache miss, generate a new response
-                        _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
+                        // _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
                         TokenCounts? tokenUsageTc = null;
                         string responseOutputTc = string.Empty;
                         (responseOutputTc, tokenUsageTc) = await HandleSubmitAsyncWriterEditorReviewer(
@@ -1054,7 +1054,7 @@ namespace AITrailblazer.net.Services
                         }
 
                         // Enhance inputs with citations and generate response
-                        _logger.LogInformation("Enhancing inputs with citations.");
+                        // _logger.LogInformation("Enhancing inputs with citations.");
                         var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
 
                         // Append citations if available
@@ -1062,13 +1062,13 @@ namespace AITrailblazer.net.Services
                         {
                             var citationsText = FormatCitations(enhancedInputs.AllCitations);
                             responseOutput += $"\n\nReferences:\n{citationsText}";
-                            _logger.LogInformation("Citations appended to the response.");
+                            // _logger.LogInformation("Citations appended to the response.");
                         }
                     }
                     else
                     {
                         // Cache miss, generate a new response
-                        _logger.LogInformation("Cache miss: Generating response with Prompty.");
+                        // _logger.LogInformation("Cache miss: Generating response with Prompty.");
                         (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
                             featureNameProject,
                             panelInput,
@@ -1087,7 +1087,7 @@ namespace AITrailblazer.net.Services
                         totalTokenCount = tokenUsage.TotalTokenCount;
 
                         // Enhance inputs with citations and generate response
-                        _logger.LogInformation("Enhancing inputs with citations.");
+                        // _logger.LogInformation("Enhancing inputs with citations.");
                         var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
 
                         // Append citations if available
@@ -1095,7 +1095,7 @@ namespace AITrailblazer.net.Services
                         {
                             var citationsText = FormatCitations(enhancedInputs.AllCitations);
                             responseOutput += $"\n\nReferences:\n{citationsText}";
-                            _logger.LogInformation("Citations appended to the response.");
+                            // _logger.LogInformation("Citations appended to the response.");
                         }
                     }
 
@@ -1128,12 +1128,12 @@ namespace AITrailblazer.net.Services
                 // If cache miss, set the embeddings
                 if (!cacheHit)
                 {
-                    _logger.LogInformation("Generating embeddings for the new message.");
+                    // _logger.LogInformation("Generating embeddings for the new message.");
                     float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(inputRequest);
                     completedChatMessage.Vectors = promptVectors;
                 }
 
-                _logger.LogInformation("Updating thread and message. threadId: {ThreadId}", thread.ThreadId);
+                // _logger.LogInformation("Updating thread and message. threadId: {ThreadId}", thread.ThreadId);
 
                 // Save the message to the database
                 await _chatService.UpsertThreadAndMessageAsync(
@@ -1143,11 +1143,11 @@ namespace AITrailblazer.net.Services
                     chatMessage: completedChatMessage
                 );
 
-                _logger.LogInformation("Chat message persisted with completion. ThreadId: {threadId}", thread.ThreadId);
+                // _logger.LogInformation("Chat message persisted with completion. ThreadId: {threadId}", thread.ThreadId);
 
                 timer.Stop();
-                _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
-                    timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
+                // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
+                //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
 
                 return (responseOutput, timer.Elapsed.TotalSeconds);
 
@@ -1245,7 +1245,7 @@ namespace AITrailblazer.net.Services
 
         public async Task<Cosmos.Copilot.Models.Message> GetMessageByIdAsync(string messageId)
         {
-            _logger.LogInformation("GetMessageByIdAsync: Retrieving message with ID: {MessageId}", messageId);
+            // _logger.LogInformation("GetMessageByIdAsync: Retrieving message with ID: {MessageId}", messageId);
             try
             {
                 var message = await _chatService.GetMessageByIdAsync(messageId);
@@ -1256,12 +1256,12 @@ namespace AITrailblazer.net.Services
                     return null;
                 }
 
-                _logger.LogInformation("Message retrieved with ID: {MessageId}", messageId);
+                // _logger.LogInformation("Message retrieved with ID: {MessageId}", messageId);
                 return message;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to retrieve message with ID: {MessageId}", messageId);
+                // _logger.LogError(ex, "Failed to retrieve message with ID: {MessageId}", messageId);
                 throw;
             }
         }
@@ -1300,7 +1300,7 @@ namespace AITrailblazer.net.Services
 
                 if (messages == null || !messages.Any())
                 {
-                    _logger.LogInformation($"LoadThreadMessagesAsync No messages found for thread: {threadId}");
+                    // _logger.LogInformation($"LoadThreadMessagesAsync No messages found for thread: {threadId}");
                     return items; // Return an empty list if no messages are found
                 }
 
@@ -1448,7 +1448,7 @@ namespace AITrailblazer.net.Services
             {
                 var requestBlob = group.FirstOrDefault(n => n.StartsWith("Request-"));
                 // var responseBlob = group.FirstOrDefault(n => n.StartsWith("Response-"));
-                _logger.LogInformation($"LoadThreadMessagesPipeAsync requestBlob: {requestBlob}");
+                // _logger.LogInformation($"LoadThreadMessagesPipeAsync requestBlob: {requestBlob}");
 
                 if (requestBlob != null)
                 {
@@ -1470,7 +1470,7 @@ namespace AITrailblazer.net.Services
             // Get the thread and its messages from Cosmos DB
             var thread = await _chatService.GetThreadAsync(tenantId, userId, threadId);
 
-            _logger.LogInformation($"Get thread ID: {threadId}");
+            // _logger.LogInformation($"Get thread ID: {threadId}");
             return thread;
         }
         public async Task DeleteChatThreadAsync(
@@ -1480,7 +1480,7 @@ namespace AITrailblazer.net.Services
         {
             await _chatService.DeleteChatThreadAsync(tenantId, userId, threadId);
 
-            _logger.LogInformation($"Deleted thread and its messages in Cosmos DB for thread ID: {threadId}");
+            // _logger.LogInformation($"Deleted thread and its messages in Cosmos DB for thread ID: {threadId}");
         }
 
         public async Task DeleteMessageAsync(
@@ -1492,7 +1492,7 @@ namespace AITrailblazer.net.Services
             // Delete the specific message in Cosmos DB
             await _chatService.DeleteMessageAsync(tenantId, userId, threadId, messageId);
 
-            _logger.LogInformation($"Deleted message in Cosmos DB for Message ID: {messageId} within thread ID: {threadId}");
+            // _logger.LogInformation($"Deleted message in Cosmos DB for Message ID: {messageId} within thread ID: {threadId}");
         }
 
         public async Task<string> GenerateTitleAsync(
@@ -1501,18 +1501,18 @@ namespace AITrailblazer.net.Services
         {
             string pluginName = "AITitle";
             var input = userInput + "\n\n" + panelInput;
-            _logger.LogInformation($"GenerateTitleAsync: {input}");
+            // _logger.LogInformation($"GenerateTitleAsync: {input}");
 
             int maxTokens = 16;
             input = input.Length > 1000 ? input[..1000] : input;
 
             string title = await GetASAPQuick(pluginName, input, maxTokens);
-            _logger.LogInformation($"Generated title before sanitization: {title}");
+            // _logger.LogInformation($"Generated title before sanitization: {title}");
 
             // Sanitize the title by removing or replacing unwanted characters
             title = SanitizeTitle(title);
 
-            _logger.LogInformation($"Sanitized title: {title}");
+            // _logger.LogInformation($"Sanitized title: {title}");
 
             // Ensure the title doesn't exceed the maximum length
             return title.Length > 1000 ? title[..1000] : title;
@@ -1529,7 +1529,7 @@ namespace AITrailblazer.net.Services
             int maxTokens = 4096;
 
             string result = await GetASAPQuick(pluginName, input, maxTokens);
-            _logger.LogInformation($"Generated aiClearNote : {result}");
+            // _logger.LogInformation($"Generated aiClearNote : {result}");
 
             return result;
         }
@@ -1545,7 +1545,7 @@ namespace AITrailblazer.net.Services
             int maxTokens = 4096;
 
             string result = await GetASAPQuick(pluginName, input, maxTokens);
-            _logger.LogInformation($"Generated AIKeyPointsWizard : {result}");
+            // _logger.LogInformation($"Generated AIKeyPointsWizard : {result}");
 
             return result;
         }
@@ -1662,7 +1662,7 @@ namespace AITrailblazer.net.Services
             if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
                 (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
             {
-                _logger.LogInformation($"Invalid URL format: {url}");
+                // _logger.LogInformation($"Invalid URL format: {url}");
                 return null;
             }
 
@@ -1693,7 +1693,7 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"Error processing URL {url}: {ex.Message}");
+                // _logger.LogInformation($"Error processing URL {url}: {ex.Message}");
                 return null;
             }
         }
@@ -1753,7 +1753,7 @@ namespace AITrailblazer.net.Services
 
             // Step 1: Rephrase the question
             string rephrasedQuestion = await RephraseQuestionAsync(question);
-            _logger.LogInformation($"BingTextSearchAsync: Rephrased question: {rephrasedQuestion}");
+            // _logger.LogInformation($"BingTextSearchAsync: Rephrased question: {rephrasedQuestion}");
 
             // Step 2: Fetch Bing search results
             string bingInformation = await FetchBingSearchResultsWithRetryAsync(kernel, question, 3);
@@ -1812,7 +1812,7 @@ namespace AITrailblazer.net.Services
             {
                 try
                 {
-                    _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} - Fetching information from Bing...");
+                    // _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Attempt {attempt + 1} - Fetching information from Bing...");
                     var function = kernel.Plugins[searchPluginName]["search"];
                     var searchResult = await kernel.InvokeAsync(function, new() { ["query"] = query });
 
@@ -1822,7 +1822,7 @@ namespace AITrailblazer.net.Services
                         throw new Exception("Failed to get a valid response from the web search engine.");
                     }
 
-                    _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Information found from Bing: {bingInformation}");
+                    // _logger.LogInformation($"FetchBingSearchResultsWithRetryAsync: Information found from Bing: {bingInformation}");
                     return bingInformation;
                 }
                 catch (Exception ex)
@@ -1906,12 +1906,12 @@ namespace AITrailblazer.net.Services
             {
                 var finalAnswer = await kernel.InvokeAsync(oracle, arguments);
                 var result = finalAnswer.GetValue<string>();
-                _logger.LogInformation($"GenerateAnswerAsync: Final Answer: {result}");
+                // _logger.LogInformation($"GenerateAnswerAsync: Final Answer: {result}");
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"GenerateAnswerAsync: Error generating the final answer. {ex.Message}");
+                // _logger.LogError($"GenerateAnswerAsync: Error generating the final answer. {ex.Message}");
                 return "An error occurred while generating the final answer. Please try again.";
             }
         }
@@ -1927,7 +1927,7 @@ namespace AITrailblazer.net.Services
             string apiManifest = pluginName + "/github_markdown-apimanifest";
             var pluginPath = _pluginService.GetPluginsPath() + "/" + apiManifest + ".json";
 
-            _logger.LogInformation($"RunImportPluginFromApiManifestAsync file path: {pluginPath}");
+            // _logger.LogInformation($"RunImportPluginFromApiManifestAsync file path: {pluginPath}");
 
             try
             {
@@ -1964,12 +1964,12 @@ namespace AITrailblazer.net.Services
                 var result = await kernel.InvokePromptAsync(prompt, new(settings));
 
                 // Output result
-                _logger.LogInformation("RunImportPluginFromApiManifestAsync result: " + result);
+                // _logger.LogInformation("RunImportPluginFromApiManifestAsync result: " + result);
             }
             catch (Exception ex)
             {
                 // Log detailed error to track down what is causing the issue
-                _logger.LogInformation($"RunImportPluginFromApiManifestAsync Error occurred: {ex.Message}");
+                // _logger.LogInformation($"RunImportPluginFromApiManifestAsync Error occurred: {ex.Message}");
             }
         }
 
@@ -2038,18 +2038,18 @@ namespace AITrailblazer.net.Services
             // *******************************************************************************************************************************
             if (operationExtensions is null || !operationExtensions.TryGetValue("x-openai-isConsequential", out var isConsequential) || isConsequential is null)
             {
-                _logger.LogInformation("We cannot determine if the function has consequences, since the isConsequential extension is not provided, so safer not to run it.");
+                // _logger.LogInformation("We cannot determine if the function has consequences, since the isConsequential extension is not provided, so safer not to run it.");
             }
             else if ((isConsequential as bool?) == true)
             {
-                _logger.LogInformation("This function may have unwanted consequences, so safer not to run it.");
+                // _logger.LogInformation("This function may have unwanted consequences, so safer not to run it.");
             }
             else
             {
                 // Invoke the function and output the result.
                 var functionResult = await kernel.InvokeAsync(function);
                 var result = functionResult.GetValue<RestApiOperationResponse>();
-                _logger.LogInformation($"Function execution result: {result?.Content}");
+                // _logger.LogInformation($"Function execution result: {result?.Content}");
             }
 
             // *******************************************************************************************************************************
@@ -2061,11 +2061,11 @@ namespace AITrailblazer.net.Services
                 // Invoke the function and output the result.
                 var functionResult = await kernel.InvokeAsync(function);
                 var result = functionResult.GetValue<RestApiOperationResponse>();
-                _logger.LogInformation($"Function execution result: {result?.Content}");
+                // _logger.LogInformation($"Function execution result: {result?.Content}");
             }
             else
             {
-                _logger.LogInformation("This is a write operation, so safer not to run it.");
+                // _logger.LogInformation("This is a write operation, so safer not to run it.");
             }
         }
 
@@ -2087,13 +2087,13 @@ namespace AITrailblazer.net.Services
                 // Validate inputs
                 if (string.IsNullOrWhiteSpace(pluginName))
                 {
-                    _logger.LogInformation("Plugin name cannot be null or empty.");
+                    // _logger.LogInformation("Plugin name cannot be null or empty.");
                     return "Invalid plugin name.";
                 }
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    _logger.LogInformation("Input cannot be null or empty.");
+                    // _logger.LogInformation("Input cannot be null or empty.");
                     return "Invalid input.";
                 }
 
@@ -2107,12 +2107,12 @@ namespace AITrailblazer.net.Services
 
                 // Get the path to the prompty file
                 var pluginPath = _pluginService.GetPluginsPath() + "/" + pluginName + ".prompty";
-                _logger.LogInformation($"GetASAPQuick Prompty file path: {pluginPath}");
+                // _logger.LogInformation($"GetASAPQuick Prompty file path: {pluginPath}");
 
                 // Read the prompty template
                 if (!File.Exists(pluginPath))
                 {
-                    _logger.LogInformation("Prompty file not found.");
+                    // _logger.LogInformation("Prompty file not found.");
                     return "Prompty file not found.";
                 }
                 var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
@@ -2120,7 +2120,7 @@ namespace AITrailblazer.net.Services
                 // Validate prompty template
                 if (string.IsNullOrWhiteSpace(promptyTemplate))
                 {
-                    _logger.LogInformation("Prompty template content is empty.");
+                    // _logger.LogInformation("Prompty template content is empty.");
                     return "Prompty template is invalid.";
                 }
 
@@ -2152,7 +2152,7 @@ namespace AITrailblazer.net.Services
                     "",
                     "",
                     maxTokensStr);
-                _logger.LogInformation($"GetASAPQuick promptyTemplate: {promptyTemplate}");
+                // _logger.LogInformation($"GetASAPQuick promptyTemplate: {promptyTemplate}");
 
                 // Create kernel function from prompty
                 KernelFunction kernelFunction;
@@ -2162,32 +2162,32 @@ namespace AITrailblazer.net.Services
                 }
                 catch (ArgumentException ex)
                 {
-                    _logger.LogInformation($"Error creating function from prompty: {ex.Message}");
+                    // _logger.LogInformation($"Error creating function from prompty: {ex.Message}");
                     return "Failed to create function from prompty template. Please check the template content.";
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.LogInformation($"Invalid operation creating function from prompty: {ex.Message}");
+                    // _logger.LogInformation($"Invalid operation creating function from prompty: {ex.Message}");
                     return "Failed to create function from prompty template due to an invalid operation.";
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation($"Unexpected error creating function from prompty: {ex.Message}");
+                    // _logger.LogInformation($"Unexpected error creating function from prompty: {ex.Message}");
                     return "An unexpected error occurred while creating the function from the prompty template.";
                 }
 
-                _logger.LogInformation($"GetASAPQuick Kernel function created from prompty file: {kernelFunction.Name}");
-                _logger.LogInformation($"GetASAPQuick Kernel function description: {kernelFunction.Description}");
-                _logger.LogInformation($"GetASAPQuick Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+                // _logger.LogInformation($"GetASAPQuick Kernel function created from prompty file: {kernelFunction.Name}");
+                // _logger.LogInformation($"GetASAPQuick Kernel function description: {kernelFunction.Description}");
+                // _logger.LogInformation($"GetASAPQuick Kernel function parameters: {kernelFunction.Metadata.Parameters}");
 
-                _logger.LogInformation($"GetASAPQuick input {input}");
+                // _logger.LogInformation($"GetASAPQuick input {input}");
 
                 var arguments = new KernelArguments(executionSettings)
                 {
                     // Custom arguments can be added here
                 };
 
-                _logger.LogInformation($"GetASAPQuick kernel.InvokeAsync ");
+                // _logger.LogInformation($"GetASAPQuick kernel.InvokeAsync ");
 
                 // Execute the kernel function
                 try
@@ -2198,17 +2198,17 @@ namespace AITrailblazer.net.Services
                 }
                 catch (ArgumentException ex)
                 {
-                    _logger.LogInformation($"GetASAPQuick Argument error: {ex.Message}");
+                    // _logger.LogInformation($"GetASAPQuick Argument error: {ex.Message}");
                     return "An error occurred with the arguments. Please try again.";
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.LogInformation($"GetASAPQuick Invalid operation: {ex.Message}");
+                    // _logger.LogInformation($"GetASAPQuick Invalid operation: {ex.Message}");
                     return "An invalid operation occurred during function execution. Please try again.";
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "GetASAPQuick An unexpected error occurred.");
+                    // _logger.LogError(ex, "GetASAPQuick An unexpected error occurred.");
                     if (ex.InnerException != null)
                     {
                         _logger.LogError(ex.InnerException, "Inner Exception Details");
@@ -2218,10 +2218,10 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "GetASAPQuick  A critical error occurred.");
+                // _logger.LogError(ex, "GetASAPQuick  A critical error occurred.");
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError(ex.InnerException, "Inner Exception Details");
+                    // _logger.LogError(ex.InnerException, "Inner Exception Details");
                 }
                 return "A critical error occurred. Please contact support.";
             }
@@ -2245,7 +2245,7 @@ namespace AITrailblazer.net.Services
             Kernel kernel = kernelBuilder.Build();
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + "GetIntent" + ".prompty";
-            _logger.LogInformation($"Prompty file path: {pluginPath}");
+            // _logger.LogInformation($"Prompty file path: {pluginPath}");
 
             var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
             double temperature = 0.0;
@@ -2391,48 +2391,48 @@ namespace AITrailblazer.net.Services
                 "",
                 "",
                 "");
-            _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
+            // _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
             // Create few-shot examples
 
             // Act
             var kernelFunction = new Kernel().CreateFunctionFromPrompty(promptyTemplate);
-            _logger.LogInformation($"Kernel function created from prompty file: {kernelFunction.Name}");
-            _logger.LogInformation($"Kernel function description: {kernelFunction.Description}");
-            _logger.LogInformation($"Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+            // _logger.LogInformation($"Kernel function created from prompty file: {kernelFunction.Name}");
+            // _logger.LogInformation($"Kernel function description: {kernelFunction.Description}");
+            // _logger.LogInformation($"Kernel function parameters: {kernelFunction.Metadata.Parameters}");
 
             input = masterTextSetting + " " + input;
-            _logger.LogInformation($"GetIntent input {input}");
+            // _logger.LogInformation($"GetIntent input {input}");
             var arguments = new KernelArguments(executionSettings)
             {
                 //["input"] = input,
             };
-            _logger.LogInformation($"kernel.InvokeAsync ");
+            // _logger.LogInformation($"kernel.InvokeAsync ");
 
 
             try
             {
                 var result = await kernel.InvokeAsync(kernelFunction, arguments);
 
-                _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                // _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
                 return result.GetValue<string>();
 
             }
             catch (ArgumentException ex)
             {
                 // Handle argument exceptions, which may occur if arguments are incorrect
-                _logger.LogInformation($"Argument error: {ex.Message}");
+                // _logger.LogInformation($"Argument error: {ex.Message}");
                 return "Please try again";
             }
             catch (InvalidOperationException ex)
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
-                _logger.LogInformation($"Invalid operation: {ex.Message}");
+                // _logger.LogInformation($"Invalid operation: {ex.Message}");
                 return "Please try again";
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
-                _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
+                // _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
                 return "Please try again";
             }
 
@@ -2448,7 +2448,7 @@ namespace AITrailblazer.net.Services
             Kernel kernel = kernelBuilder.Build();
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + "GetIntent" + ".yaml";
-            _logger.LogInformation($"Prompty file path: {pluginPath}");
+            // _logger.LogInformation($"Prompty file path: {pluginPath}");
             double temperature = 0.2;
             double topP = 0.2;
             int seed = 356;
@@ -2605,7 +2605,7 @@ namespace AITrailblazer.net.Services
             //_logger.LogInformation($"Kernel function parameters: {kernelFunction.Metadata.Parameters}");
 
             //input = masterTextSetting + " " + input;
-            _logger.LogInformation($"GetIntent input {input}");
+            // _logger.LogInformation($"GetIntent input {input}");
             var arguments = new KernelArguments(executionSettings)
             {
                 //["input"] = input,
@@ -2613,33 +2613,33 @@ namespace AITrailblazer.net.Services
                 { "choices", choices },
                 { "fewShotExamples", fewShotExamples},
             };
-            _logger.LogInformation($"kernel.InvokeAsync ");
+            // _logger.LogInformation($"kernel.InvokeAsync ");
 
 
             try
             {
                 var result = await kernel.InvokeAsync(getIntent, arguments);
 
-                _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                // _logger.LogInformation($"Metadata: {string.Join(",", result.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
                 return result.GetValue<string>();
 
             }
             catch (ArgumentException ex)
             {
                 // Handle argument exceptions, which may occur if arguments are incorrect
-                _logger.LogInformation($"Argument error: {ex.Message}");
+                // _logger.LogInformation($"Argument error: {ex.Message}");
                 return "Please try again";
             }
             catch (InvalidOperationException ex)
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
-                _logger.LogInformation($"Invalid operation: {ex.Message}");
+                // ($"Invalid operation: {ex.Message}");
                 return "Please try again";
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
-                _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
+                // _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
                 return "Please try again";
             }
 
@@ -2663,7 +2663,7 @@ namespace AITrailblazer.net.Services
             // AIMessageOptimizerWriter.prompty
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + AgentFeature + ".prompty";
-            _logger.LogInformation($"Prompty file path: {pluginPath}");
+            // _logger.LogInformation($"Prompty file path: {pluginPath}");
 
             var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
 
@@ -2702,7 +2702,7 @@ namespace AITrailblazer.net.Services
                 responseStylePreferenceStr,
                 masterTextSettingsService,
                 maxTokensLabel);
-            _logger.LogInformation($"AgentTemplate: {promptyTemplate}");
+            // _logger.LogInformation($"AgentTemplate: {promptyTemplate}");
             return promptyTemplate;
         }
 
@@ -2730,7 +2730,7 @@ namespace AITrailblazer.net.Services
 
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + FeatureNameProject + ".prompty";
-            _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
 
             var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
 
@@ -2799,7 +2799,7 @@ namespace AITrailblazer.net.Services
                 responseStylePreferenceStr,
                 masterTextSettingsService,
                 maxTokensLabel);
-            _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
 
             // Enable automatic function calling
             var executionSettings = new AzureOpenAIPromptExecutionSettings
@@ -2929,15 +2929,15 @@ namespace AITrailblazer.net.Services
 
             };
 
-            _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
 
 
             // Act
             var kernelFunction = new Kernel().CreateFunctionFromPrompty(promptyTemplate);
 
-            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function created from prompty file: {kernelFunction.Name}");
-            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function description: {kernelFunction.Description}");
-            _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function created from prompty file: {kernelFunction.Name}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function description: {kernelFunction.Description}");
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Kernel function parameters: {kernelFunction.Metadata.Parameters}");
 
             var arguments = new KernelArguments(executionSettings)
             {
@@ -2950,15 +2950,15 @@ namespace AITrailblazer.net.Services
             try
             {
                 var response = await kernel.InvokeAsync(kernelFunction, arguments);
-                _logger.LogInformation($"GenerateWithPromptyAsync: Metadata: {string.Join(",", response.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
+                // _logger.LogInformation($"GenerateWithPromptyAsync: Metadata: {string.Join(",", response.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
 
                 var usage = response.Metadata?["Usage"] as ChatTokenUsage;
 
                 if (usage != null)
                 {
-                    _logger.LogInformation($"GenerateWithPromptyAsync:InputTokenCount: {usage.InputTokenCount}");
-                    _logger.LogInformation($"GenerateWithPromptyAsync:OutputTokenCount: {usage.OutputTokenCount}");
-                    _logger.LogInformation($"GenerateWithPromptyAsync:TotalTokenCount: {usage.TotalTokenCount}");
+                    // _logger.LogInformation($"GenerateWithPromptyAsync:InputTokenCount: {usage.InputTokenCount}");
+                    // _logger.LogInformation($"GenerateWithPromptyAsync:OutputTokenCount: {usage.OutputTokenCount}");
+                    // _logger.LogInformation($"GenerateWithPromptyAsync:TotalTokenCount: {usage.TotalTokenCount}");
                 }
                 else
                 {
@@ -2973,19 +2973,19 @@ namespace AITrailblazer.net.Services
             catch (ArgumentException ex)
             {
                 // Handle argument exceptions, which may occur if arguments are incorrect
-                _logger.LogInformation($"Argument error: {ex.Message}");
+                // _logger.LogInformation($"Argument error: {ex.Message}");
                 return ("", null);
             }
             catch (InvalidOperationException ex)
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
-                _logger.LogInformation($"Invalid operation: {ex.Message}");
+                // _logger.LogInformation($"Invalid operation: {ex.Message}");
                 return ("", null);
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
-                _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
+                // _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
                 return ("", null);
             }
 
@@ -3155,13 +3155,13 @@ namespace AITrailblazer.net.Services
             string input)
         {
             int maxTokens = 1024;
-            _logger.LogInformation("GetASAPTime");
+            // _logger.LogInformation("GetASAPTime");
 
             try
             {
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    _logger.LogInformation("Input cannot be null or empty.");
+                    // _logger.LogInformation("Input cannot be null or empty.");
                     return "Invalid input.";
                 }
                 //[KernelFunction, Description("Retrieves the current time in UTC.")]
@@ -3210,11 +3210,11 @@ namespace AITrailblazer.net.Services
                 try
                 {
                     timeZoneInfo = _timeFunctions.GetUserTimeZone();
-                    _logger.LogInformation($"Retrieved time zone info: {timeZoneInfo}");
+                    // _logger.LogInformation($"Retrieved time zone info: {timeZoneInfo}");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error retrieving time zone information.");
+                    // _logger.LogError(ex, "Error retrieving time zone information.");
                     timeZoneInfo = "Time zone information could not be retrieved.";
                 }
 
@@ -3231,7 +3231,7 @@ You are a highly capable AI assistant designed to perform various actions based 
                     //["Input"] = input,
                     //["TimeZoneInfo"] = timeZoneInfo
                 };
-                _logger.LogInformation("GetASAPTime kernel.InvokeAsync");
+                // _logger.LogInformation("GetASAPTime kernel.InvokeAsync");
 
                 // Execute the kernel function
                 try
@@ -3239,13 +3239,13 @@ You are a highly capable AI assistant designed to perform various actions based 
                     var result = await kernel.InvokePromptAsync(prompt, arguments);
                     var response = result.GetValue<string>();
 
-                    _logger.LogInformation($"GetASAPTime response: {response}");
+                    // _logger.LogInformation($"GetASAPTime response: {response}");
 
 
                     string responseResult = await StructuredOutputByClassAsync<DateTimeOperationsResponseStructured>(response);
                     if (responseResult != null)
                     {
-                        _logger.LogInformation("GetASAPTime generated news response successfully:\n{responseResult}", responseResult);
+                        // _logger.LogInformation("GetASAPTime generated news response successfully:\n{responseResult}", responseResult);
 
                         return responseResult;
                     }
@@ -3257,23 +3257,23 @@ You are a highly capable AI assistant designed to perform various actions based 
                 }
                 catch (ArgumentException ex)
                 {
-                    _logger.LogInformation($"GetASAPTime Argument error: {ex.Message}");
+                    // _logger.LogInformation($"GetASAPTime Argument error: {ex.Message}");
                     return "An error occurred with the arguments. Please try again.";
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.LogInformation($"GetASAPTime Invalid operation: {ex.Message}");
+                    // _logger.LogInformation($"GetASAPTime Invalid operation: {ex.Message}");
                     return "An invalid operation occurred during function execution. Please try again.";
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogInformation($"GetASAPTime An unexpected error occurred: {ex.Message}");
+                    // _logger.LogInformation($"GetASAPTime An unexpected error occurred: {ex.Message}");
                     return "An unexpected error occurred during execution. Please try again.";
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"GetASAPTime A critical error occurred");
+                // _logger.LogError(ex, $"GetASAPTime A critical error occurred");
                 return "A critical error occurred. Please contact support.";
 
             }
@@ -3319,23 +3319,23 @@ You are a highly capable AI assistant designed to perform various actions based 
             {
                 var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
 
-                _logger.LogInformation($"StruturedOutputTestAsync Generated search Result: {jsonResponse}");
+                // _logger.LogInformation($"StruturedOutputTestAsync Generated search Result: {jsonResponse}");
 
                 return jsonResponse;
             }
             catch (ArgumentException ex)
             {
-                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Argument error: {ex.Message}");
+                // _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Argument error: {ex.Message}");
                 return "An error occurred with the arguments. Please check your input and try again.";
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Invalid operation: {ex.Message}");
+                // _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Invalid operation: {ex.Message}");
                 return "An invalid operation occurred during function execution. Please try again.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Unexpected error: {ex.Message}");
+                // _logger.LogError(ex, $"AzureOpenAIHandler StruturedOutputTestAsync Unexpected error: {ex.Message}");
                 if (ex.InnerException != null)
                 {
                     _logger.LogError(ex.InnerException, "Inner Exception Details");
@@ -3373,13 +3373,13 @@ You are a highly capable AI assistant designed to perform various actions based 
                 // Convert the response to a JSON string
                 var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
 
-                _logger.LogInformation($"StructuredOutputByClassAsync Generated search Result: {jsonResponse}");
+                // _logger.LogInformation($"StructuredOutputByClassAsync Generated search Result: {jsonResponse}");
 
                 return jsonResponse;
             }
             catch (ArgumentException ex)
             {
-                _logger.LogError(ex, $"StructuredOutputByClassAsync Argument error: {ex.Message}");
+                // _logger.LogError(ex, $"StructuredOutputByClassAsync Argument error: {ex.Message}");
                 return "An error occurred with the arguments. Please check your input and try again.";
             }
             catch (InvalidOperationException ex)
@@ -3429,7 +3429,7 @@ You are a highly capable AI assistant designed to perform various actions based 
             {
                 var jsonResponse = Microsoft.TypeChat.Json.Stringify(response);
 
-                _logger.LogInformation($"StruturedOutputCalendarAsync Generated search Result: {jsonResponse}");
+                // _logger.LogInformation($"StruturedOutputCalendarAsync Generated search Result: {jsonResponse}");
 
                 return jsonResponse;
             }
@@ -3472,7 +3472,7 @@ You are a highly capable AI assistant designed to perform various actions based 
                 var result = await kernel.InvokeAsync(jokeFunction, new() { ["input"] = input });
                 var searchResult = result.GetValue<string>();
 
-                _logger.LogInformation($"SKTestAsync Generated search Result: {searchResult}");
+                // _logger.LogInformation($"SKTestAsync Generated search Result: {searchResult}");
 
                 return searchResult;
             }
@@ -3569,18 +3569,18 @@ You are a highly capable AI assistant designed to perform various actions based 
             const double topP = 0.1;
             const int seed = 356;
 
-            _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
+            // _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
 
             // Input validation
             if (string.IsNullOrWhiteSpace(input))
             {
-                _logger.LogWarning("Input cannot be null or empty.");
+                // _logger.LogWarning("Input cannot be null or empty.");
                 return "Invalid input. Please provide a valid search query.";
             }
 
             try
             {
-                _logger.LogInformation("Building kernel and setting up news plugin.");
+                // _logger.LogInformation("Building kernel and setting up news plugin.");
 
                 // Build the kernel
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
@@ -3637,7 +3637,7 @@ After determining the function, execute it, and return the response in JSON form
 **Chosen Action:**
 ";
 
-                _logger.LogInformation("Executing kernel with provided input.");
+                // _logger.LogInformation("Executing kernel with provided input.");
 
                 // Execute the kernel function
                 var result = await kernel.InvokePromptAsync(prompt, arguments);
@@ -3646,7 +3646,7 @@ After determining the function, execute it, and return the response in JSON form
                 string responseResult = await StructuredOutputByClassAsync<NewsResponseStructured>(response);
                 if (responseResult != null)
                 {
-                    _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
+                    // _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
 
                     return responseResult;
                 }
@@ -3694,18 +3694,18 @@ After determining the function, execute it, and return the response in JSON form
             const double topP = 0.1;
             const int seed = 356;
 
-            _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
+            // _logger.LogInformation("AzureOpenAIHandler ShowNewsAsync initiated.");
 
             // Input validation
             if (string.IsNullOrWhiteSpace(input))
             {
-                _logger.LogWarning("Input cannot be null or empty.");
+                // _logger.LogWarning("Input cannot be null or empty.");
                 return "Invalid input. Please provide a valid search query.";
             }
 
             try
             {
-                _logger.LogInformation("Building kernel and setting up news plugin.");
+                // _logger.LogInformation("Building kernel and setting up news plugin.");
 
                 // Build the kernel
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
@@ -3762,7 +3762,7 @@ After determining the function, execute it, and return the response in JSON form
 **Chosen Action:**
 ";
 
-                _logger.LogInformation("Executing kernel with provided input.");
+                // _logger.LogInformation("Executing kernel with provided input.");
 
                 // Execute the kernel function
                 var result = await kernel.InvokePromptAsync(prompt, arguments);
@@ -3771,7 +3771,7 @@ After determining the function, execute it, and return the response in JSON form
                 string responseResult = await StructuredOutputByClassAsync<NewsResponseStructured>(response);
                 if (responseResult != null)
                 {
-                    _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
+                    // _logger.LogInformation("ShowNewsAsync generated news response successfully:\n{responseResult}", responseResult);
 
                     return responseResult;
                 }
@@ -3858,7 +3858,7 @@ After determining the function, execute it, and return the response in JSON form
             const double topP = 0.1;
             const int seed = 356;
 
-            _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync initiated.");
+            // _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync initiated.");
 
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -3868,7 +3868,7 @@ After determining the function, execute it, and return the response in JSON form
 
             try
             {
-                _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Building kernel and setting up email plugin.");
+                // _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Building kernel and setting up email plugin.");
 
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 Kernel kernel = kernelBuilder.Build();
@@ -3918,7 +3918,7 @@ Determines if the email requires immediate action or follow-up, based on phrases
 
 **Action:**";
 
-                _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Executing kernel with provided input.");
+                // _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync Executing kernel with provided input.");
 
                 var result = await kernel.InvokePromptAsync(prompt, arguments);
 
@@ -3926,7 +3926,7 @@ Determines if the email requires immediate action or follow-up, based on phrases
                 {
                     //AzureOpenAIHandler emailResponse  
                     string emailResponse = result.ToString();
-                    _logger.LogInformation("AzureOpenAIHandler emailResponse\n{emailResponse}", emailResponse);
+                    // _logger.LogInformation("AzureOpenAIHandler emailResponse\n{emailResponse}", emailResponse);
 
                     try
                     {
@@ -3936,18 +3936,18 @@ Determines if the email requires immediate action or follow-up, based on phrases
                         if (emailList != null && emailList.Emails.Any())
                         {
                             var formattedEmailResponse = Newtonsoft.Json.JsonConvert.SerializeObject(emailList, Newtonsoft.Json.Formatting.Indented);
-                            _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync generated email response successfully:\n{FormattedEmailResponse}", formattedEmailResponse);
+                            // _logger.LogInformation("AzureOpenAIHandler ShowEmailsAsync generated email response successfully:\n{FormattedEmailResponse}", formattedEmailResponse);
                             return formattedEmailResponse;
                         }
                         else
                         {
-                            _logger.LogWarning("AzureOpenAIHandler ShowEmailsAsync received an empty email list.");
+                            // _logger.LogWarning("AzureOpenAIHandler ShowEmailsAsync received an empty email list.");
                             return "No emails were found based on the provided query.";
                         }
                     }
                     catch (Newtonsoft.Json.JsonException jsonEx)
                     {
-                        _logger.LogError(jsonEx, "AzureOpenAIHandler ShowEmailsAsync Error while deserializing the email response.");
+                        // _logger.LogError(jsonEx, "AzureOpenAIHandler ShowEmailsAsync Error while deserializing the email response.");
                         return emailResponse; // Return the raw response if deserialization fails
                     }
                 }
@@ -3976,13 +3976,13 @@ Determines if the email requires immediate action or follow-up, based on phrases
         public async Task<string> GenerateKQLQuery(string input)
         {
             int maxTokens = 1024;
-            _logger.LogInformation("GenerateKQLQuery initiated.");
+            // _logger.LogInformation("GenerateKQLQuery initiated.");
 
             try
             {
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    _logger.LogInformation("Input cannot be null or empty.");
+                    // _logger.LogInformation("Input cannot be null or empty.");
                     return "Invalid input.";
                 }
 
@@ -4032,7 +4032,7 @@ Natural language description: {{$Input}}
 KQL Query:
 ";
 
-                _logger.LogInformation("GenerateKQLQuery invoking kernel with prompt.");
+                // _logger.LogInformation("GenerateKQLQuery invoking kernel with prompt.");
 
                 // Execute the kernel function
                 try
@@ -4041,7 +4041,7 @@ KQL Query:
 
                     var response = result.ToString().Trim();
 
-                    _logger.LogInformation($"GenerateKQLQuery response: {response}");
+                    // _logger.LogInformation($"GenerateKQLQuery response: {response}");
 
                     return response;
                 }

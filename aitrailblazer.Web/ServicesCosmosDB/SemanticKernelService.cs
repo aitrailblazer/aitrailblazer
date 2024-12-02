@@ -40,23 +40,21 @@ public class SemanticKernelService
     /// <summary>
     /// System prompt to guide the model as an email assistant with specific output formatting
     /// </summary>
-    private readonly string _systemPromptEmail = @"
-        You are an intelligent assistant designed to help users understand and manage their emails.
-        When responding, provide the following structured information if available in the context:
-        
-        **Subject**: The subject of the email.
-        **Key Points**: Briefly summarize the main points of the email.
-        **Web Link**: A direct link to the email.
+private readonly string _systemPromptEmail = @"
+You are an intelligent assistant designed to analyze and summarize email content. 
+Use the provided email context below to generate an accurate and concise summary. Follow these instructions:
 
-        Respond concisely, only referencing information in the provided email context.
-        Avoid making assumptions beyond the provided data.
-        
-        Example response format:
-        - **Subject**: {subject}
-        ---
-        - **Key Points**: {keypoints}
-        - **Web Link**: {webLink}
-    ";
+- Extract key details such as the subject, main points (key takeaways or actionable items), and a web link if available.
+- Do not include unrelated information or make assumptions beyond the context provided.
+- If no relevant information is available, respond with: ""I could not find sufficient information in the email context.""
+
+Format the response clearly as follows:
+- **Subject**: {Subject}
+- **Key Points**: {A brief summary of the main points or actionable items from the email}
+
+Email context is provided below:
+";
+
 
     /// <summary>
     /// System prompt to guide the model as a knowledge base assistant with specific context and formatting.
@@ -101,13 +99,18 @@ Knowledge base context is provided below:
         string completionDeploymentName,
         string embeddingDeploymentName,
         string apiKey,
+        int dimensions,
         ILogger<SemanticKernelService> logger) // Add logger parameter
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Initialize logger
 
         kernel = Kernel.CreateBuilder()
             .AddAzureOpenAIChatCompletion(deploymentName: completionDeploymentName, endpoint: endpoint, apiKey: apiKey)
-            .AddAzureOpenAITextEmbeddingGeneration(deploymentName: embeddingDeploymentName, endpoint: endpoint, apiKey: apiKey)
+            .AddAzureOpenAITextEmbeddingGeneration(
+                deploymentName: embeddingDeploymentName, 
+                endpoint: endpoint, 
+                apiKey: apiKey,
+                dimensions: dimensions)
             .Build();
     }
 
@@ -178,64 +181,77 @@ Knowledge base context is provided below:
     /// <param name="contextData">List of contextual data objects (e.g., EmailMessage, Product) to provide model context.</param>
     /// <param name="useChatHistory">Flag to enable or disable including chat history.</param>
     /// <returns>Generated response along with tokens used to generate it.</returns>
-    public async Task<(string completion, int tokens)> GetRagEmailCompletionAsync<T>(
+    public async Task<(string completion, int tokens)> GetRagEmailCompletionAsync(
         string categoryId,
         List<EmailMessage> contextWindow,
-        List<T> contextData,
+        EmailMessage contextData,
         bool useChatHistory)
     {
-        // Initialize the chat history with context data only if the flag is enabled
-        var skChatHistory = new ChatHistory();
+        _logger.LogInformation("Generating email completion for categoryId={CategoryId}.", categoryId);
 
-        // Serialize context data to JSON format if chat history is enabled
-        string contextDataString = JsonConvert.SerializeObject(contextData);
-        skChatHistory.AddSystemMessage($"{_systemPromptEmail}{contextDataString}");
-        /*
-        if (useChatHistory)
+        try
         {
-            // Add context from the chat history
-            foreach (var message in contextWindow)
+            // Initialize the chat history with structured context data
+            var skChatHistory = new ChatHistory();
+
+            // Create a structured context for the model
+            string structuredContext = $"""
+                "Subject": "{contextData.Subject}",
+                "BodyContentText": "{contextData.BodyContentText}",
+                "From": "{contextData.From?.Name ?? "Unknown"}",
+                "To": "{string.Join(", ", contextData.ToRecipients.Select(r => r.Name))}",
+                "ReceivedDateTime": "{contextData.ReceivedDateTime}",
+                "WebLink": "{contextData.WebLink}"
+            """;
+
+            _logger.LogInformation("Structured context for email completion: {StructuredContext}", structuredContext);
+
+            skChatHistory.AddSystemMessage($"{_systemPromptEmail}{structuredContext}");
+
+            // Add chat history if enabled
+            if (useChatHistory)
             {
-                skChatHistory.AddUserMessage(message.Prompt);
-                if (!string.IsNullOrEmpty(message.Completion))
-                    skChatHistory.AddAssistantMessage(message.Completion);
+                foreach (var email in contextWindow)
+                {
+                    skChatHistory.AddUserMessage($"Subject: {email.Subject}");
+                    skChatHistory.AddAssistantMessage(email.BodyContentText);
+                }
             }
+
+            // Define execution settings
+            PromptExecutionSettings settings = new()
+            {
+                ExtensionData = new Dictionary<string, object>()
+                {
+                    { "Temperature", 0.2 },
+                    { "TopP", 0.7 },
+                    { "MaxTokens", 1000 }
+                }
+            };
+
+            // Generate the response using the configured kernel service
+            var response = await kernel.GetRequiredService<IChatCompletionService>()
+                                        .GetChatMessageContentAsync(skChatHistory, settings);
+
+            string completion = response.Items[0].ToString()!;
+
+            // Extract usage metrics
+            var usage = response.Metadata?["Usage"];
+            int completionTokens = 0;//usage != null ? Convert.ToInt32(usage["CompletionTokens"]) : 0;
+
+            // Format the reference link
+            //string formattedReference = $"\n\nReference: [{contextData.Subject}]({contextData.WebLink})";
+            //completion += formattedReference;
+
+            _logger.LogInformation("Generated response successfully with {Tokens} tokens.", completionTokens);
+
+            return (completion, completionTokens);
         }
-        */
-
-
-        // Define execution settings
-        PromptExecutionSettings settings = new()
+        catch (Exception ex)
         {
-            ExtensionData = new Dictionary<string, object>()
-            {
-                { "Temperature", 0.2 },
-                { "TopP", 0.7 },
-                { "MaxTokens", 1000 }
-            }
-        };
-
-        // Generate the response
-        var response = await kernel.GetRequiredService<IChatCompletionService>().GetChatMessageContentAsync(skChatHistory, settings);
-        string completion = response.Items[0].ToString()!;
-
-        //string responseResult = await _azureOpenAIHandler.StructuredOutputByClassAsync<PureEmailViewBasicModel>(completion);
-        //if (responseResult != null)
-        //{
-        //    _logger.LogInformation("GetRagEmailCompletionAsync generated response successfully:\n{responseResult}", responseResult);
-
-        //return responseResult;
-        //}
-        //else
-        //{
-        //    _logger.LogError("GetASAPTime failed to generate a valid response.");
-        //return "ERROR";
-        //}
-        // Extract usage metrics
-        var usage = response.Metadata?["Usage"];
-        var completionTokens = 0;//usage is not null ? Convert.ToInt32(usage["CompletionTokens"]) : 0;
-
-        return (completion, completionTokens);
+            _logger.LogError(ex, "Error generating email completion.");
+            throw;
+        }
     }
 
     public async Task<(string generatedCompletion, int tokens)> GetRagKnowledgeBaseCompletionAsync<T>(

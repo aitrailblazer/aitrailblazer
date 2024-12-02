@@ -728,7 +728,7 @@
                 {
                     // Clear the OntologyTree if SelectedFileContent is null or empty
                     OntologyTree = null;
-                    Console.WriteLine("SelectedFileContent is empty, clearing OntologyTree");
+                    //Console.WriteLine("SelectedFileContent is empty, clearing OntologyTree");
                 }
 
                 // Trigger a re-render
@@ -900,7 +900,7 @@
     private void HandleTagsChange(string newTags)
     {
         Tags = newTags; // Update the tags
-        Console.WriteLine($"Tags: {Tags}");
+        //Console.WriteLine($"Tags: {Tags}");
     }
 
     public async ValueTask DisposeAsync()
@@ -916,7 +916,7 @@
         var newSettingCommandPlaceholder = MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting(newSetting);
 
         masterTextSetting = newSetting;
-        Console.WriteLine($"MasterTextSetting: {masterTextSetting}");
+        //Console.WriteLine($"MasterTextSetting: {masterTextSetting}");
         if (masterTextSetting == "Help")
         {
             PlaceholderCommandText = $"Ask to {newSettingCommandPlaceholder}";
@@ -942,19 +942,19 @@
     private async Task HandleMyKnowledgeBaseCheckedChange(bool isChecked)
     {
         IsMyKnowledgeBaseChecked = isChecked;
-        Console.WriteLine($"IsMyKnowledgeBaseChecked: {IsMyKnowledgeBaseChecked}");
+        //Console.WriteLine($"IsMyKnowledgeBaseChecked: {IsMyKnowledgeBaseChecked}");
     }
 
     private async Task HandleSearchCacheCheckedChange(bool isChecked)
     {
         IsSearchCacheChecked = isChecked;
-        Console.WriteLine($"IsSearchCacheChecked: {IsSearchCacheChecked}");
+        //Console.WriteLine($"IsSearchCacheChecked: {IsSearchCacheChecked}");
     }
 
     private async Task HandleSearchMicrosoftCheckedChange(bool isChecked)
     {
         IsSearchMicrosoftChecked = isChecked;
-        Console.WriteLine($"IsSearchMicrosoftChecked: {IsSearchMicrosoftChecked}");
+        //Console.WriteLine($"IsSearchMicrosoftChecked: {IsSearchMicrosoftChecked}");
     }
     private async Task HandleChatSettingRadioChange(ChatSettings settings)
     {
@@ -963,7 +963,7 @@
         //ChatSettingRadioChangeResultMessage = $"Chat setting: {settings.ChatSetting}, One-shot: {settings.OneShotSetting}";
         // ChatSetting: OneShot
         // ChatSetting: Pipeline
-        Console.WriteLine($"ChatSetting: {ChatSetting}");
+        //Console.WriteLine($"ChatSetting: {ChatSetting}");
 
         if (ChatSetting == "Workflow")
         {
@@ -1053,8 +1053,8 @@
         string panelInput = PanelInput;
 
         Submitting = true;
-        Console.WriteLine($"HandleSubmit userInput: {userInput}");
-        Console.WriteLine($"HandleSubmit threadSelectedName: {threadSelectedName}");
+        //Console.WriteLine($"HandleSubmit userInput: {userInput}");
+        //Console.WriteLine($"HandleSubmit threadSelectedName: {threadSelectedName}");
 
         ToastService.ShowSuccess("Submitting...");
 
@@ -1085,7 +1085,7 @@
                 AICopilotSettings.ResponseStyleVal
             );
 
-            Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
+            //Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
 
             // Call HandleSubmitAsync to process the request
             (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
@@ -1118,19 +1118,26 @@
 
             // Process the response
             PanelOutput = responseOutput;
-            Console.WriteLine("PanelOutput content:");
-            Console.WriteLine(PanelOutput);
+            //Console.WriteLine("PanelOutput content:");
+            //Console.WriteLine(PanelOutput);
             // Extract and remove reference link
-            (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
-                = ExtractAndRemoveReferenceLink(PanelOutput);
+            extractedReferenceLink = "";
+            // Check if Web Link is present in PanelOutput
+            if (PanelOutput.Contains("Web Link"))
+            {
+                Console.WriteLine("Web Link detected. Skipping reference link extraction.");
+            }
+            else
+            {
+                // Extract and remove reference link
+                Console.WriteLine("No Web Link detected. Performing reference link extraction.");
+                (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
+                    = ExtractAndRemoveReferenceLink(PanelOutput);
 
-            // Update PanelOutput with the cleaned content
-            PanelOutput = cleanedOutput;
+                // Update PanelOutput with the cleaned content
+                PanelOutput = cleanedOutput;
+            }
 
-            Console.WriteLine($"Cleaned PanelOutput: {PanelOutput}");
-            Console.WriteLine($"Extracted Reference Link: {extractedReferenceLink}");
-            Console.WriteLine($"Extracted Page Fragment: {extractedPageFragment}");
-            Console.WriteLine($"Extracted File Name: {extractedFileName}");
                         // Load agent settings for the current feature
             agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
@@ -1150,7 +1157,7 @@
                 }
                 catch (Newtonsoft.Json.JsonSerializationException ex)
                 {
-                    Console.WriteLine($"Error deserializing response JSON: {ex.Message}");
+                    //Console.WriteLine($"Error deserializing response JSON: {ex.Message}");
                     PanelOutput = "Failed to process the response. Please try again later.";
                 }
             }
@@ -1211,8 +1218,8 @@
                 
                 var selectedTreeItem = ItemsThreads.FirstOrDefault(item => item.Id == selectedThreadChat.Id);
                 SelectedItem = selectedTreeItem;
-                Console.WriteLine($"LoadThreadsAsync: CurrentThread Id {CurrentThread.Id}");
-                Console.WriteLine($"LoadThreadsAsync: CurrentThread Title {CurrentThread.Name}");
+                //Console.WriteLine($"LoadThreadsAsync: CurrentThread Id {CurrentThread.Id}");
+                //Console.WriteLine($"LoadThreadsAsync: CurrentThread Title {CurrentThread.Name}");
 
                 await ExpandAndSelectLastChatInThreadAsync(CurrentThread.Id);
             }
@@ -1236,7 +1243,7 @@
     {
         if (e.Expanded)
         {
-            Console.WriteLine($"OnExpandedAsync e.CurrentItem.Id: {e.CurrentItem.Id}");
+            //Console.WriteLine($"OnExpandedAsync e.CurrentItem.Id: {e.CurrentItem.Id}");
 
             e.CurrentItem.Items = await azureOpenAIHandler.LoadThreadMessagesAsync(
             currentUserTenantID,
@@ -1289,19 +1296,19 @@
         {
             if (_currentSelectedTreeItemMessages != value) // Detect changes
             {
-                Console.WriteLine($"Property Change Detected: Previous Value: {_currentSelectedTreeItemMessages?.Text ?? "null"}, New Value: {value?.Text ?? "null"}");
+                //Console.WriteLine($"Property Change Detected: Previous Value: {_currentSelectedTreeItemMessages?.Text ?? "null"}, New Value: {value?.Text ?? "null"}");
 
                 _currentSelectedTreeItemMessages = value;
 
                 // Add detailed logging for the new value
-                if (value == null)
-                {
-                    Console.WriteLine("currentSelectedTreeItemMessages: Value set to null.");
-                }
-                else
-                {
-                    Console.WriteLine($"currentSelectedTreeItemMessages: New Value Set - Id: {value.Id}, Text: {value.Text}");
-                }
+                //if (value == null)
+                //{
+                    //Console.WriteLine("currentSelectedTreeItemMessages: Value set to null.");
+                //}
+                //else
+                //{
+                    //Console.WriteLine($"currentSelectedTreeItemMessages: New Value Set - Id: {value.Id}, Text: {value.Text}");
+                //}
 
                 // Uncomment this line if you want to handle the change
                 OnItemSelectedAsync(value.Id);
@@ -1321,7 +1328,7 @@
 
     private async Task OnItemSelectedAsync(string selectedItemId)
     {
-        Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
+        // Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
         timeTaken="";
         isNewThread = false;
 
@@ -1343,11 +1350,11 @@
                 threadSelectedName = selectedThreadChat.Title;
             }
 
-            Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatThreadId}");
+            // Console.WriteLine($"Current Selected Tree Item Messages ID: {currentChatThreadId}");
         }
         else
         {
-            Console.WriteLine("Error: Invalid ID format. Expected at least one part separated by '|'.");
+            // Console.WriteLine("Error: Invalid ID format. Expected at least one part separated by '|'.");
             return;
         }
 
@@ -1357,7 +1364,7 @@
         if (parts.Length >= 2)
         {
             messageId = parts[1];
-            Console.WriteLine($"Extracted Message ID: {messageId}");
+            // Console.WriteLine($"Extracted Message ID: {messageId}");
         }
 
         if (!string.IsNullOrEmpty(messageId))
@@ -1386,17 +1393,27 @@
                 Console.WriteLine("PanelOutput content:");
                 Console.WriteLine(PanelOutput);
                 pdfUrl = "";
-                // Extract and remove reference link
-                (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
-                    = ExtractAndRemoveReferenceLink(PanelOutput);
+                extractedReferenceLink = "";
+                // Check if Web Link is present in PanelOutput
+                if (PanelOutput.Contains("Web Link"))
+                {
+                    Console.WriteLine("Web Link detected. Skipping reference link extraction.");
+                }
+                else
+                {
+                    // Extract and remove reference link
+                    Console.WriteLine("No Web Link detected. Performing reference link extraction.");
+                    (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
+                        = ExtractAndRemoveReferenceLink(PanelOutput);
 
-                // Update PanelOutput with the cleaned content
-                PanelOutput = cleanedOutput;
+                    // Update PanelOutput with the cleaned content
+                    PanelOutput = cleanedOutput;
+                }
 
-                Console.WriteLine($"Cleaned PanelOutput: {PanelOutput}");
-                Console.WriteLine($"Extracted Reference Link: {extractedReferenceLink}");
-                Console.WriteLine($"Extracted Page Fragment: {extractedPageFragment}");
-                Console.WriteLine($"Extracted File Name: {extractedFileName}");
+                // Console.WriteLine($"Cleaned PanelOutput: {PanelOutput}");
+                // Console.WriteLine($"Extracted Reference Link: {extractedReferenceLink}");
+                // Console.WriteLine($"Extracted Page Fragment: {extractedPageFragment}");
+                // Console.WriteLine($"Extracted File Name: {extractedFileName}");
 
                 // Update AI Copilot settings
                 AICopilotSettings.WritingStyleVal = message.WritingStyleVal ?? string.Empty;
@@ -1434,12 +1451,12 @@
             }
             else
             {
-                Console.WriteLine($"Message not found for ID: {messageId}");
+                // Console.WriteLine($"Message not found for ID: {messageId}");
             }
         }
         else
         {
-            Console.WriteLine($"Selected Item is a Thread with ID: {currentChatThreadId}, but no specific message selected.");
+            // Console.WriteLine($"Selected Item is a Thread with ID: {currentChatThreadId}, but no specific message selected.");
         }
         // Notify UI to update
         StateHasChanged();
@@ -1457,7 +1474,7 @@
         {
             if (string.IsNullOrEmpty(referenceLink))
             {
-                Console.WriteLine("Error: Reference link is empty.");
+                // Console.WriteLine("Error: Reference link is empty.");
                 return;
             }
 
@@ -1468,12 +1485,12 @@
             {
                 // Append the page fragment
                 pdfUrl = !string.IsNullOrEmpty(pageFragment) ? $"{sasUrl}#page={pageFragment}" : sasUrl;
-                Console.WriteLine($"Embedded PDF URL: {pdfUrl}");
+                // Console.WriteLine($"Embedded PDF URL: {pdfUrl}");
             }
-            else
-            {
-                Console.WriteLine("Failed to generate SAS URL for the file.");
-            }
+            // else
+            // {
+                // Console.WriteLine("Failed to generate SAS URL for the file.");
+            // }
         }
         catch (Exception ex)
         {
@@ -1486,7 +1503,7 @@
     {
         if (string.IsNullOrWhiteSpace(panelOutput))
         {
-            Console.WriteLine("PanelOutput is empty.");
+            // Console.WriteLine("PanelOutput is empty.");
             return (panelOutput, string.Empty, string.Empty, string.Empty);
         }
 
@@ -1510,21 +1527,21 @@
                 // Remove the Reference line from the PanelOutput
                 string cleanedOutput = Regex.Replace(panelOutput, pattern, string.Empty, RegexOptions.Multiline).Trim();
 
-                Console.WriteLine($"Extracted Reference Link: {fullLink}");
-                Console.WriteLine($"Extracted Page Fragment: {pageFragment}");
-                Console.WriteLine($"Extracted File Name: {fileName}");
+                // Console.WriteLine($"Extracted Reference Link: {fullLink}");
+                // Console.WriteLine($"Extracted Page Fragment: {pageFragment}");
+                // Console.WriteLine($"Extracted File Name: {fileName}");
 
                 return (cleanedOutput, fullLink, pageFragment, fileName);
             }
             else
             {
-                Console.WriteLine("No reference link found in PanelOutput.");
+                // Console.WriteLine("No reference link found in PanelOutput.");
                 return (panelOutput, string.Empty, string.Empty, string.Empty);
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error extracting and cleaning reference link: {ex.Message}");
+            // Console.WriteLine($"Error extracting and cleaning reference link: {ex.Message}");
             return (panelOutput, string.Empty, string.Empty, string.Empty);
         }
     }
@@ -1552,8 +1569,8 @@
     private void HandleOnSelectedSelectThread(FluentTreeItem selectedItem)
     {
         //SelectedItem = selectedItem;
-        Console.WriteLine($"Selected selectedItem.Id: {selectedItem.Id}");
-        Console.WriteLine($"Selected selectedItem.Text: {selectedItem.Text}");
+        // Console.WriteLine($"Selected selectedItem.Id: {selectedItem.Id}");
+        // Console.WriteLine($"Selected selectedItem.Text: {selectedItem.Text}");
     }
 
     // Method to get background color based on author
@@ -1627,6 +1644,7 @@
         threadSelectedName = null;
         currentChatThreadId = string.Empty;
         threadSelectedItemName = null;
+        extractedReferenceLink = string.Empty;
     }
     HorizontalAlignment Horizontal;
     VerticalAlignment Vertical;
@@ -1644,7 +1662,7 @@
      
         private async Task DeleteThread(string threadStringId)
         {
-            Console.WriteLine($"DeleteThread: {threadStringId}");
+            // Console.WriteLine($"DeleteThread: {threadStringId}");
             var idParts = threadStringId.Split('|');
             // Case 1: Deleting a full Thread
             // Delete the entire Thread and its messages
@@ -1653,7 +1671,7 @@
             await azureOpenAIHandler.DeleteChatThreadAsync(tenantId, userId, threadStringId);
 
             // Log and update UI after deletion
-            Console.WriteLine($"Deleted Thread: {threadStringId}");
+            // Console.WriteLine($"Deleted Thread: {threadStringId}");
 
             threadSelectedName = null;
             currentChatThreadId = string.Empty;
@@ -1664,7 +1682,7 @@
         }
          private async Task DeleteThreadItem(string threadItemId)
         {
-            Console.WriteLine($"threadItemId: {threadItemId}");
+            // Console.WriteLine($"threadItemId: {threadItemId}");
             // Extract tenantId, userId, threadId, and messageId
             string tenantId = currentUserTenantID;
             string userId = currentUserIdentityID;
@@ -1674,7 +1692,7 @@
             await azureOpenAIHandler.DeleteMessageAsync(tenantId, userId, threadId, threadItemId);
 
             // Log and update UI after deletion
-            Console.WriteLine($"Deleted message: {threadItemId}");
+            // Console.WriteLine($"Deleted message: {threadItemId}");
             threadSelectedItemName = null;
 
             await LoadThreadsAsync();
@@ -1847,7 +1865,7 @@ private List<Chapter> ParseOntologyTreeMarkdown(string markdownText)
     // If a root title was found, store it somewhere (e.g., as a separate root item in the tree or metadata)
     if (!string.IsNullOrEmpty(rootTitle))
     {
-        Console.WriteLine($"Root title detected: {rootTitle}");
+        // Console.WriteLine($"Root title detected: {rootTitle}");
         // Optionally, you could add this as a special Chapter or RootItem in your data model
     }
 
@@ -1858,17 +1876,17 @@ private List<Chapter> ParseOntologyTreeMarkdown(string markdownText)
         if (Guid.TryParse(selectedTreeItem.Id, out Guid selectedId))
         {
             // Log the selected TreeItem ID for debugging
-            Console.WriteLine($"HandleOnSelectedChangeOntology selectedTreeItem.Id: {selectedId}");
-            Console.WriteLine($"HandleOnSelectedChangeOntology selectedTreeItem.Text: {selectedTreeItem.Text}");
+            // Console.WriteLine($"HandleOnSelectedChangeOntology selectedTreeItem.Id: {selectedId}");
+            // Console.WriteLine($"HandleOnSelectedChangeOntology selectedTreeItem.Text: {selectedTreeItem.Text}");
             // 1. Introduction
             currentSelectedOntologyTitle = selectedTreeItem.Text;
             // Find and display content based on the selected TreeItem's Guid ID
             FindAndDisplayOntologyContent(selectedId);
         }
-        else
-        {
-            Console.WriteLine($"Failed to parse selectedTreeItem.Id: {selectedTreeItem.Id}");
-        }
+        // else
+        // {
+            // Console.WriteLine($"Failed to parse selectedTreeItem.Id: {selectedTreeItem.Id}");
+        // }
     }
 
     private void FindAndDisplayOntologyContent(Guid selectedId)
@@ -1918,13 +1936,13 @@ private List<Chapter> ParseOntologyTreeMarkdown(string markdownText)
                     break;
             }
 
-            Console.WriteLine($"Displaying content for selected ID: {selectedId}");
-            Console.WriteLine($"Selected Section Content: {selectedSectionContentFinal}");
+            // Console.WriteLine($"Displaying content for selected ID: {selectedId}");
+            // Console.WriteLine($"Selected Section Content: {selectedSectionContentFinal}");
         }
-        else
-        {
-            Console.WriteLine($"No matching item found for selected ID: {selectedId}");
-        }
+        // else
+        // {
+            // Console.WriteLine($"No matching item found for selected ID: {selectedId}");
+        // }
     }
     private bool IsRootChapter(Chapter chapter)
     {
@@ -2098,8 +2116,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     private async Task HandleOnTabChange(FluentTab tab)
     {
         currenttab = tab.Id;
-        Console.WriteLine($"ChatPaneSplitter HandleOnTabChange Tab changed to {tab.Id}");
-
+        // Console.WriteLine($"ChatPaneSplitter HandleOnTabChange Tab changed to {tab.Id}");
 
     }
 
@@ -2131,7 +2148,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
      private void TestDelegate()
     {
         var output = GetPanelOutput();
-        Console.WriteLine($"TestDelegate: {output}");
+        // Console.WriteLine($"TestDelegate: {output}");
     }
 
 
@@ -2144,7 +2161,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     private void HandleOnMainTabChange(FluentTab tab)
     {
         changedto = tab;
-        Console.WriteLine($"HandleOnMainTabChange: Tab changed to: {tab.Id}");
+        // Console.WriteLine($"HandleOnMainTabChange: Tab changed to: {tab.Id}");
         if (tab.Id == "Work-id")
         {
             //activeid = "Work-id";
@@ -2166,17 +2183,18 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         loadingOutput6 = false;
         StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
     }
-        private void HandlePanelOutputFinalSwitch(ChangeEventArgs e)
+    
+    private void HandlePanelOutputFinalSwitch(ChangeEventArgs e)
     {
-        Console.WriteLine($"Switch value: {PanelOutputFinalSwitchValue}");
+        // Console.WriteLine($"Switch value: {PanelOutputFinalSwitchValue}");
 
         if (PanelOutputFinalSwitchValue)
         {
-            Console.WriteLine("Switch on - Edit mode");
+            // Console.WriteLine("Switch on - Edit mode");
         }
         else
         {
-            Console.WriteLine("Switch off - View mode");
+            // Console.WriteLine("Switch off - View mode");
         }
         ProcessPanelOutputFinal();
     }
@@ -2186,17 +2204,16 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         if (masterTextSetting == "Image")
         {
             ProcessedPanelOutputFinal = PanelOutputFinal;
-            Console.WriteLine($"Processed ProcessedPanelOutputFinal: {ProcessedPanelOutputFinal}");
+            // Console.WriteLine($"Processed ProcessedPanelOutputFinal: {ProcessedPanelOutputFinal}");
         } else if ((FeatureNamePipeline == "AIDiagramCodexSequence") || (FeatureNameProject == "AIDiagramCodexSequence")) {
             string remainderString = FormattingUtility.ExtractRemainderString(inputString1, "##########");
             ProcessedPanelOutputFinal = remainderString;
  
-            Console.WriteLine($"Processed PanelOutput: {ProcessedPanelOutputFinal}");
+            // Console.WriteLine($"Processed PanelOutput: {ProcessedPanelOutputFinal}");
         } else {
                 ProcessedPanelOutputFinalHTML= (MarkupString)FormattingUtility.RenderMarkdownToHtml(PanelOutputFinal);
                                 
-                Console.WriteLine($"ProcessedPanelOutputFinalHTML: {ProcessedPanelOutputFinalHTML}");
-
+                // Console.WriteLine($"ProcessedPanelOutputFinalHTML: {ProcessedPanelOutputFinalHTML}");
          }
     }
     [Parameter]
@@ -2298,22 +2315,22 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     {
 
         currentSelectedTreeItemAICopilotSettings = selectedTreeItem;
-        Console.WriteLine($"currentSelectedTreeItemAICopilotSettings: {currentSelectedTreeItemAICopilotSettings.Id}");
+        // Console.WriteLine($"currentSelectedTreeItemAICopilotSettings: {currentSelectedTreeItemAICopilotSettings.Id}");
 
         var parts = currentSelectedTreeItemAICopilotSettings.Id.Split('_');
         if (parts.Length == 2)
         {
             HandleSelectedChangeAICopilotSettings(parts[0], parts[1]);
         }
-        else
-        {
-            Console.WriteLine($"Invalid selected item ID format: {currentSelectedTreeItemAICopilotSettings.Id}");
-        }
+        // else
+        // {
+            // Console.WriteLine($"Invalid selected item ID format: {currentSelectedTreeItemAICopilotSettings.Id}");
+        // }
     }
     private void HandleSelectedChangeAICopilotSettings(string componentName, string value)
     {
         // Log the state before change
-        Console.WriteLine($"Before Change: WritingStyle={AICopilotSettings.WritingStyleVal}, AudienceLevel={AICopilotSettings.AudienceLevelVal}, ResponseLength={AICopilotSettings.ResponseLengthVal}, CreativeAdjustments={AICopilotSettings.CreativeAdjustmentsVal}, RelationSettings={AICopilotSettings.RelationSettingsVal}, ResponseStyle={AICopilotSettings.ResponseStyleVal}");
+        // Console.WriteLine($"Before Change: WritingStyle={AICopilotSettings.WritingStyleVal}, AudienceLevel={AICopilotSettings.AudienceLevelVal}, ResponseLength={AICopilotSettings.ResponseLengthVal}, CreativeAdjustments={AICopilotSettings.CreativeAdjustmentsVal}, RelationSettings={AICopilotSettings.RelationSettingsVal}, ResponseStyle={AICopilotSettings.ResponseStyleVal}");
 
         switch (componentName)
         {
@@ -2336,15 +2353,15 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
                 AICopilotSettings.ResponseStyleVal = value;
                 break;
             default:
-                Console.WriteLine($"Unknown component name: {componentName}");
+                // Console.WriteLine($"Unknown component name: {componentName}");
                 break;
         }
 
         // Log the state after change
-        Console.WriteLine($"After Change: WritingStyle={AICopilotSettings.WritingStyleVal}, AudienceLevel={AICopilotSettings.AudienceLevelVal}, ResponseLength={AICopilotSettings.ResponseLengthVal}, CreativeAdjustments={AICopilotSettings.CreativeAdjustmentsVal}, RelationSettings={AICopilotSettings.RelationSettingsVal}, ResponseStyle={AICopilotSettings.ResponseStyleVal}");
+        // Console.WriteLine($"After Change: WritingStyle={AICopilotSettings.WritingStyleVal}, AudienceLevel={AICopilotSettings.AudienceLevelVal}, ResponseLength={AICopilotSettings.ResponseLengthVal}, CreativeAdjustments={AICopilotSettings.CreativeAdjustmentsVal}, RelationSettings={AICopilotSettings.RelationSettingsVal}, ResponseStyle={AICopilotSettings.ResponseStyleVal}");
 
         string pipeDelimitedString = PipeDelimited();
-        Console.WriteLine($"pipeDelimitedString {pipeDelimitedString}");
+        // Console.WriteLine($"pipeDelimitedString {pipeDelimitedString}");
     }
 
     private string searchQuery = string.Empty;
@@ -2550,11 +2567,11 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         }
 
         currentSelectedTreeItemAICopilots = selectedTreeItem;
-        Console.WriteLine($"currentSelectedTreeItemAICopilots Text: {currentSelectedTreeItemAICopilots.Text}");
+        // Console.WriteLine($"currentSelectedTreeItemAICopilots Text: {currentSelectedTreeItemAICopilots.Text}");
 
-        Console.WriteLine($"currentSelectedTreeItemAICopilots Id: {currentSelectedTreeItemAICopilots.Id}");
-        CurrentFeatureName=currentSelectedTreeItemAICopilots.Id;
-        Console.WriteLine($"HandleOnSelectedChangeAICopilots CurrentFeatureName: {CurrentFeatureName}");
+        // Console.WriteLine($"currentSelectedTreeItemAICopilots Id: {currentSelectedTreeItemAICopilots.Id}");
+        // CurrentFeatureName=currentSelectedTreeItemAICopilots.Id;
+        // Console.WriteLine($"HandleOnSelectedChangeAICopilots CurrentFeatureName: {CurrentFeatureName}");
         await OnFeatureNameChanged.InvokeAsync(CurrentFeatureName);
         agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
  
@@ -2602,11 +2619,11 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
             // Retrieve agent settings for the given project feature
             agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
         }
-        else
-        {
+        // else
+        // {
             // Log if the component was not found
-            Console.WriteLine($"Component not found for ID: {componentId}");
-        }
+            // Console.WriteLine($"Component not found for ID: {componentId}");
+        // }
     }
     private List<WizardStep> WizardSteps = new List<WizardStep>();
 
@@ -2622,11 +2639,11 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 
         foreach (var stepName in stepsArray)
         {
-            Console.WriteLine($"LoadWizardSteps stepName {stepName}");           
+            // Console.WriteLine($"LoadWizardSteps stepName {stepName}");           
             string SystemName = AICopilotDescriptionService.GetSystemNameForAICopilotService(stepName);
             string Description = AICopilotDescriptionService.GetLabelForAICopilotDescriptionService(SystemName);
             string featureFriendlyNameCurrent="";
-            Console.WriteLine($"LoadWizardSteps: featureFriendlyNameCurrent: {featureFriendlyNameCurrent}");
+            // Console.WriteLine($"LoadWizardSteps: featureFriendlyNameCurrent: {featureFriendlyNameCurrent}");
             WizardSteps.Add(new WizardStep
             {
                 Label = stepName.Trim(),
@@ -2651,10 +2668,10 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     private void UpdateFeatureInfo(string friendlyName)
     {
         FeatureFriendlyNameCurrent = friendlyName ;
-        Console.WriteLine($"FeatureFriendlyNameCurrent: {FeatureFriendlyNameCurrent}");
+        // Console.WriteLine($"FeatureFriendlyNameCurrent: {FeatureFriendlyNameCurrent}");
 
         FeatureNamePipeline = currentSelectedTreeItemAICopilots.Id;
-        Console.WriteLine($"FeatureNamePipeline: {FeatureNamePipeline}");
+        // Console.WriteLine($"FeatureNamePipeline: {FeatureNamePipeline}");
 
     }
 }

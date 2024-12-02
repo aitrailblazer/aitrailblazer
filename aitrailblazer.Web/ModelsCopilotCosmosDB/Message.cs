@@ -77,7 +77,10 @@ namespace Cosmos.Copilot.Models
 
         [JsonProperty("responseStyleVal")]
         public string ResponseStyleVal { get; set; }
-       
+               
+        [JsonProperty("similarityScore")]
+        public double SimilarityScore { get; set; }
+        
         // Embedding vectors for similarity searches
         [JsonProperty("vectors")]
         public float[] Vectors { get; set; }

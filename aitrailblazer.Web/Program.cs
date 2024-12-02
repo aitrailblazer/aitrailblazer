@@ -86,6 +86,7 @@ string maxEmbeddingTokens = secretClient.GetSecret("MaxEmbeddingTokens").Value.V
 string azureOpenAIDALLEEndpoint01 = secretClient.GetSecret("AzureOpenAIDALLEEndpoint01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEEndpoint01") ?? string.Empty;
 string azureOpenAIDALLEKey01 = secretClient.GetSecret("AzureOpenAIDALLEKey01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEKey01") ?? string.Empty;
 string azureOpenAIDALLEModelName01 = secretClient.GetSecret("AzureOpenAIDALLEModelName01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEModelName01") ?? string.Empty;
+int azureEmbeddingsdDimensions  = 3072;
 
 string azureCosmosDbEndpointUri ="https://aitrailblazer-asap.documents.azure.com:443/";
 string AzureCosmosDBNoSQLConnectionString  = secretClient.GetSecret("AzureCosmosDBNoSQLConnectionString").Value.Value;
@@ -227,6 +228,7 @@ var parametersAzureService = new ParametersAzureService
     AzureOpenAIEndpoint03 = azureOpenAIEndpoint03,
     AzureOpenAIKey03 = azureOpenAIKey03,
     AzureEmbeddingsModelName03 = azureEmbeddingsModelName03,
+    AzureEmbeddingsdDimensions = azureEmbeddingsdDimensions,
 
     AzureOpenAIModelName01 = azureOpenAIModelName01,
     AzureOpenAIModelName02 = azureOpenAIModelName02,
@@ -285,10 +287,11 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
     }
 
     return new SemanticKernelService(
-            endpoint: azureOpenAIEndpoint03 ?? String.Empty,
-            completionDeploymentName: azureOpenAIModelName02 ?? String.Empty,
-            embeddingDeploymentName: azureEmbeddingsModelName03 ?? String.Empty,
-            apiKey: azureOpenAIKey03 ?? String.Empty,
+            endpoint: azureOpenAIEndpoint03,
+            completionDeploymentName: azureOpenAIModelName02,
+            embeddingDeploymentName: azureEmbeddingsModelName03,
+            apiKey: azureOpenAIKey03,
+            dimensions: azureEmbeddingsdDimensions,
             logger: logger
     );
 });
@@ -309,10 +312,14 @@ var kernelBuilder = builder.Services.AddKernel();
         azureOpenAIChatDeploymentName,
         azureOpenAIEndpoint03,
         new AzureCliCredential());
+        
     kernelBuilder.AddAzureOpenAITextEmbeddingGeneration(
-        azureEmbeddingDeploymentName,
-        azureOpenAIEndpoint03,
-        new AzureCliCredential());
+        azureEmbeddingDeploymentName,            // Positional argument
+        azureOpenAIEndpoint03,                   // Positional argument
+        new AzureCliCredential(),                // Positional argument
+        dimensions: azureEmbeddingsdDimensions   // Named argument
+    );
+
     kernelBuilder.AddAzureCosmosDBNoSQLVectorStoreRecordCollection<TextSnippet<string>>(
         RagCollectionName,
         AzureCosmosDBNoSQLConnectionString,

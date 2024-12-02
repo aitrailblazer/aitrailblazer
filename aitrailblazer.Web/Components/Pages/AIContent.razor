@@ -81,30 +81,7 @@ else
                  Organizer
             </Header>
             <Content>
-                @if (!isMicrosoftGraphLoaded)
-                {
-                    <p><em>Loading Microsoft Graph data...</em></p>
-                }
-                else
-                {
-                    <!--
-                    <UserDetails 
-                    UserId="user.Id" 
-                    User="user" 
-                    UserPhotoBase64="@userPhotoBase64" 
-                    UserMessages="@userMessages"
-                    DriveItems="@driveItems" 
-                    DisplayName="@displayName" 
-                    CurrentUserIdentityID="@currentUserIdentityID"
-                    FeatureNameProject="@FeatureNameProject" 
-                    FeatureName="@FeatureName" 
-                    FeatureName1="@FeatureName1"
-                    FeatureName2="@FeatureName2" 
-                    FeatureName3="@FeatureName3" 
-                    Pagination="pagination" 
-                    Contacts=@contacts/>
-                    -->
-                }
+                <User></User>
             </Content>
         </FluentTab>
 
@@ -446,6 +423,7 @@ else
     private string userPhoneNumer;
     private string userLanguage;
     private string userAddress;
+    private string? Tenant;
     private string userPrincipalJson = "default-principal";
     private ChatPaneSplitter? ChatPaneSplitterRef;
     private bool isLoading = true;
@@ -533,10 +511,10 @@ else
             currentUserTenantID = tenantId;
             
             userTimeZone = await UserIDsService.GetTimeZoneAsync();
-            Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
+            //Console.WriteLine($"LoadUserDataAsync userTimeZone: {userTimeZone}");
 
             timeZoneInfo = _timeFunctions.GetUserTimeZone();
-            Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
+            //Console.WriteLine($"LoadUserDataAsync timeZoneInfo: {timeZoneInfo}");
             
             // Get the current UTC time
             DateTime utcNow = DateTime.UtcNow;
@@ -556,56 +534,7 @@ else
 
             //userAddress = GetUserAddress();
 
-            /*
-            try
-            {
-                string input = "fetch latest 5 emails"; // Modify as per your application's logic
-
-                //string emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
-
-                string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
-
-
-
-                if (!string.IsNullOrWhiteSpace(emailsJson))
-                {
-                    // Deserialize using Newtonsoft.Json into EmailResult
-                    var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
-
-                    if (emailList != null && emailList.Emails.Any())
-                    {
-                        emailsWithComputedProperties = emailList.Emails;
-                    }
-                    else
-                    {
-                        emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
-                        error = "No emails found.";
-                    }
-                }
-                else
-                {
-                    emailsWithComputedProperties = new List<PureEmailViewBasicModel>();
-                    error = "Failed to retrieve emails.";
-                }
-            }
-            catch (JsonException jsonEx)
-            {
-                error = $"Failed to parse messages: {jsonEx.Message}";
-            }
-            catch (Exception ex)
-            {
-                error = $"Error loading emails: {ex.Message}";
-            }
-            finally
-            {
-                isSearch = false;
-            }
-
-            */
-
-            // Ensure the UI updates
-            StateHasChanged();
-
+            
             // Fetch the user's profile photo
             var photoStream = await graphService.GetUserPhotoAsync();
             if (photoStream != null)
@@ -617,69 +546,41 @@ else
                 }
             }
 
-            // Fetch contacts
-            //var contacts = await graphService.GetUserContactsAsync(50);
-            //contactsWithComputedProperties = contacts.Select(c => new ContactViewModel(c)).ToList();
-
-            //await LoadCalendarEventsAsync();
-
-            //var mailboxSettings = await graphService.GetMailboxSettingsAsync();
-            //if (mailboxSettings != null)
-            //{
-            //    Console.WriteLine($"Time Zone: {mailboxSettings.TimeZone}");
-            //    Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
-            //    Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
+  
+            var mailboxSettings = await graphService.GetMailboxSettingsAsync();
+            if (mailboxSettings != null)
+            {
+                //($"Time Zone: {mailboxSettings.TimeZone}");
+                //Console.WriteLine($"Date Format: {mailboxSettings.DateFormat}");
+                //Console.WriteLine($"Time Format: {mailboxSettings.TimeFormat}");
                 
                 // Accessing other properties
-            //    Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
+                //Console.WriteLine($"Archive Folder: {mailboxSettings.ArchiveFolder}");
                 
-            //    if (mailboxSettings.AutomaticRepliesSetting != null)
-            //    {
-            //        Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
-            //        Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
+                if (mailboxSettings.AutomaticRepliesSetting != null)
+                {
+                    //Console.WriteLine($"Automatic Replies Status: {mailboxSettings.AutomaticRepliesSetting.Status}");
+                    //Console.WriteLine($"External Audience: {mailboxSettings.AutomaticRepliesSetting.ExternalAudience}");
                     // Add more properties as needed
-            //    }
+                }
                 
-            //    if (mailboxSettings.Language != null)
-            //    {
-            //        Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
-            //        Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
-            //    }
+                if (mailboxSettings.Language != null)
+                {
+                    //Console.WriteLine($"Language Locale: {mailboxSettings.Language.Locale}");
+                    //Console.WriteLine($"Language Display Name: {mailboxSettings.Language.DisplayName}");
+                }
                 
-            //    if (mailboxSettings.WorkingHours != null)
-            //    {
-            //        Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
-            //        Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
-            //        Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
-            //    }
+                if (mailboxSettings.WorkingHours != null)
+                {
+                    //Console.WriteLine($"Working Hours Start Time: {mailboxSettings.WorkingHours.StartTime}");
+                    //Console.WriteLine($"Working Hours End Time: {mailboxSettings.WorkingHours.EndTime}");
+                    //Console.WriteLine($"Working Days: {string.Join(", ", mailboxSettings.WorkingHours.DaysOfWeek)}");
+                }
                 
-            //    Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
-            ///    Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
-            //    Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
-            //}
-            //userTimeZone = await TimeZoneService.GetTimeZoneAsync();
-
-            //timeZoneInfo = _timeFunctions.GetUserTimeZone();
-
-            // Get the current UTC time
-            //DateTime utcNow = DateTime.UtcNow;
-
-            // Convert to user's local time
-            //userLocalTime = await TimeZoneService.ConvertToUserTimeZoneAsync(utcNow);
-
-            //input= "Tonights gonna be a good night! A good good night!";
-            //string response = await azureOpenAIHandler.StruturedOutputTestAsync(input);
-            //Console.WriteLine($"LoadUserDataAsync JSON Response: {response}");
-            
-            //string inputStr= "I need to get my tires changed from 12:00 to 2:00 pm on Friday March 15, 2024";
-            //string response = await azureOpenAIHandler.StruturedOutputCalendarAsync(inputStr);
-            //Console.WriteLine($"LoadUserDataAsync StruturedOutputCalendarAsync JSON Response: {response}");
-
-            ///inputStr= "What will the date be in 5 days?";
-            //response = await azureOpenAIHandler.GetIntent(inputStr);
-            //Console.WriteLine($"LoadUserDataAsync GetIntent JSON Response: {response}");
-
-
+                //Console.WriteLine($"User Purpose: {mailboxSettings.UserPurpose}");
+                //Console.WriteLine($"User Purpose V2: {mailboxSettings.UserPurposeV2}");
+                //Console.WriteLine($"Delegate Meeting Message Delivery Options: {mailboxSettings.DelegateMeetingMessageDeliveryOptions}");
+            }
         }
         catch (AuthenticationRequiredException)
         {
@@ -694,67 +595,6 @@ else
             isLoading = false;  // Hide loading state
         }
     }
-     private async Task LoadCalendarEventsAsync()
-    {
-        try
-        {
-           DateTime startOfWeek = GetStartOfWeek(DateTime.UtcNow);
-        DateTime endOfWeek = startOfWeek.AddDays(7);
-
-            // Convert DateTime to ISO 8601 string format
-            string startOfWeekString = startOfWeek.ToString("o");
-            string endOfWeekString = endOfWeek.ToString("o");
-
-            Console.WriteLine($"Fetching calendar events from {startOfWeekString} to {endOfWeekString}");
-
-            // Call the method with string parameters
-            List<EventViewModel> events = await graphService.GetCalendarViewAsync(20, startOfWeekString, endOfWeekString);
-                
-            if (events == null || !events.Any())
-            {
-                calendarEventsWithComputedProperties = new List<EventViewModel>();
-                Console.WriteLine("No events found. Initialized an empty list.");
-            }
-            else
-            {
-                // Filter out any null events to prevent exceptions
-                var validEvents = events.Where(e => e != null).ToList();
-
-                // Log the number of null events found (if any)
-                int nullEventsCount = events.Count - validEvents.Count;
-                if (nullEventsCount > 0)
-                {
-                    Console.WriteLine($"Found {nullEventsCount} null event(s) in the fetched data.");
-                }
-
-                // Assign the valid events to the calendarEventsWithComputedProperties
-                calendarEventsWithComputedProperties = validEvents;
-
-                Console.WriteLine($"Successfully loaded {calendarEventsWithComputedProperties.Count} event(s).");
-            }
-        }
-        catch (AuthenticationRequiredException authEx)
-        {
-            Console.WriteLine($"Authentication is required: {authEx.Message}");
-            // Optionally, redirect to login or prompt user
-        }
-        catch (InvalidOperationException invOpEx)
-        {
-            Console.WriteLine($"Invalid operation: {invOpEx.Message}");
-        }
-        catch (JsonException jsonEx)
-        {
-            Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
 
     private DateTime GetStartOfWeek(DateTime date)
     {
@@ -766,112 +606,28 @@ else
     private int currentPage = 1;
     private const int PageSize = 10;  // Load 10 messages per page
 
- private async Task LoadMoreMessagesAsync()
-{
-    try
-    {
-        isMessagesLoading = true;
-        string input = "fetch latest 10 more emails";
-        //var emailsJson = await azureOpenAIHandler.ShowEmailsAsync(input);
-        string emailsJson = await graphService.GetRecentMessagesPureEmailViewBasicModelAsync(10);
-
-        if (!string.IsNullOrWhiteSpace(emailsJson))
-        {
-            // Deserialize using Newtonsoft.Json
-            var emailList = JsonConvert.DeserializeObject<PureEmailResult>(emailsJson);
-
-
-            if (emailList != null && emailList.Emails.Any())
-            {
-                emailsWithComputedProperties.AddRange(emailList.Emails);
-            }
-        }
-
-        currentPage++;  // Move to next page
-    }
-    catch (Newtonsoft.Json.JsonException jsonEx)
-    {
-        error = $"Failed to parse messages: {jsonEx.Message}";
-    }
-    catch (Exception ex)
-    {
-        error = $"Error loading more messages: {ex.Message}";
-    }
-    finally
-    {
-        isMessagesLoading = false;
-    }
-}
-
-
-/*
-    protected override async Task OnInitializedAsync()
-    {
-        if (!isInitialized)
-        {
-            try
-            {
-                user = await graphService.GetCurrentUserProfileAsync();
-                if (!string.IsNullOrEmpty(user?.Id))
-                {
-                    currentUserIdentityID = user.Id;
-                    displayName = user.DisplayName;
-
-                    // Try to get the user's email address from the "Mail" property
-                    if (!string.IsNullOrEmpty(user.Mail))
-                    {
-                        userEmail = user.Mail;
-                    }
-                    // Fallback to UserPrincipalName if Mail is not set
-                    else if (!string.IsNullOrEmpty(user.UserPrincipalName))
-                    {
-                        userEmail = user.UserPrincipalName;
-                    }
-                    // User ID: 8f22704e-0396-4263-84a7-63310d3f39e7, Display Name: Constantine
-                    Console.WriteLine($"User ID: {currentUserIdentityID}, Display Name: {displayName}, Email: {userEmail}");
-                }
-                await LoadUploadedFilesAsync();
-                isInitialized = true;
-            }
-            catch (MicrosoftIdentityWebChallengeUserException ex)
-            {
-                // Log the exception and redirect to the login page
-                Logger.LogInformation(ex, "User challenge occurred while loading the profile. Redirecting to login.");
-                
-                var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
-                Logger.LogInformation($"Redirecting to login page with return URL: {returnUrl}");
-
-                Navigation.NavigateTo($"MicrosoftIdentity/Account/SignIn?returnUrl={Uri.EscapeDataString("/" + returnUrl)}", true);
-                                    
-            }            
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "An error occurred while initializing the component.");
-            }
-        }
-    }
-*/
+ 
     private async Task HandleOnTabChange(FluentTab tab)
     {
         currenttab = tab.Id;
-        Console.WriteLine($"Tab changed to {tab.Id}");
+        //Console.WriteLine($"Tab changed to {tab.Id}");
 
         if (tab.Id == "MicrosoftGraph-id" && !isMicrosoftGraphLoaded)
         {
             //await LoadMicrosoftGraphData();
         }
         //currenttab = tab.Id;
-        Console.WriteLine($"AIContent HandleOnTabChange Tab changed to {tab.Id}");
+        //Console.WriteLine($"AIContent HandleOnTabChange Tab changed to {tab.Id}");
         if (tab.Id == "Workspace-id")
         {
             if (!string.IsNullOrEmpty(SelectedFileContent))
             {
                 ChatPaneSplitterRef?.TriggerParseOntologyTree(SelectedFileContent);
-                Console.WriteLine($"HandleOnTabChange called ParseOntologyTreeMarkdown with content: {SelectedFileContent}");
+                //Console.WriteLine($"HandleOnTabChange called ParseOntologyTreeMarkdown with content: {SelectedFileContent}");
             }
             else
             {
-                Console.WriteLine("SelectedFileContent is null or empty");
+                //Console.WriteLine("SelectedFileContent is null or empty");
             }
         }
         if (tab.Id == "Help-id")
@@ -891,60 +647,31 @@ else
     {
 
     }
-    /*
-    private async Task LoadMicrosoftGraphData()
-    {
-        try
-        {
-            // Ensure the user is authenticated and retrieve the token
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var userPrincipal = authState.User;
-
-            if (userPrincipal.Identity.IsAuthenticated)
-            {
-   
-                // Fetch user profile information and Microsoft Graph data
-                user = await graphService.GetCurrentUserProfileAsync();
-                userPhotoBase64 = await graphService.GetUserPhotoAsync();
-
-                // Fetch user messages
-                userMessages = await graphService.GetUserMessagesAsync(currentUserIdentityID);
-
-                // Fetch user's drive items
-                driveItems = await graphService.GetUserDriveItemsAsync();
-                
-                contacts = await graphService.GetContactsAsync();
-
-                // Set flag to true after successful data load
-                isMicrosoftGraphLoaded = true;
-            }
-            else
-            {
-                // User is not authenticated, redirect to login page
-                await RedirectToLogin();
-            }
-        }
-        catch (MicrosoftIdentityWebChallengeUserException ex)
-        {
-            Logger.LogError(ex, "User challenge occurred while loading Microsoft Graph data.");
-            await RedirectToLogin();
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            Logger.LogError(ex, "Unauthorized access. Attempting to refresh token.");
-            await RedirectToLogin();
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex, "Error loading Microsoft Graph data.");
-        }
-    }
-    */
     private void RedirectToLogin()
     {
-        var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
-        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={returnUrl}", forceLoad: true);
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var queryString = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        // Get the value of the "myParameter" query string parameter
+        Tenant = queryString["Tenant"];
+        //Console.WriteLine($"Tenant: {Tenant}");
+   
+        // Log the returnUrl for debugging purposes
+        //Console.WriteLine($"uri: {uri}");
+
+        // Navigate to the sign-in page with the encoded returnUrl
+        NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={uri}", forceLoad: true);
     }
+
+     // @using OurNewsArticle = AITrailblazer.net.Models.NewsArticle
+
+    // Event handler for handling input changes (optional)
+    private void HandleInput(ChangeEventArgs e)
+    {
+        // Optional: Handle input changes if needed
+        // Currently, @bind-Value takes care of updating userQuery
+    }
+    // List to hold the news articles
+    //private List<OurNewsArticle> newsArticles = new List<OurNewsArticle>();
 
     private async Task LoadMarkdownDescriptionContent()
     {
@@ -1040,7 +767,7 @@ else
         {
             SelectedFile = null;
             SelectedFileContent = string.Empty;
-            Console.WriteLine("SelectedFile and SelectedFileContent cleared in AIContent.razor");
+            //Console.WriteLine("SelectedFile and SelectedFileContent cleared in AIContent.razor");
         }
 
         private bool IsFileContentDialogOpen = false;
@@ -1084,7 +811,7 @@ else
 
                 // Populate Folders for the initial view
                 Folders = FolderFiles.Keys.ToList();
-                Console.WriteLine($"Loaded {Folders.Count} folders.");
+                //Console.WriteLine($"Loaded {Folders.Count} folders.");
             }
             catch (Exception ex)
             {
@@ -1096,18 +823,18 @@ else
     {
         // Set the selected folder and load the files in that folder
         SelectedFolder = folder;
-        Console.WriteLine($"Selected Folder: {SelectedFolder}");
+        //Console.WriteLine($"Selected Folder: {SelectedFolder}");
 
         if (FolderFiles.TryGetValue(folder, out var files))
         {
             DisplayedFiles = files;
-            Console.WriteLine($"Loaded {files.Count} files in folder '{folder}'.");
+            //Console.WriteLine($"Loaded {files.Count} files in folder '{folder}'.");
         }
         else
         {
             // Handle the case where the folder is not found
             DisplayedFiles = new List<FileItemRow>();
-            Console.Error.WriteLine($"Folder '{folder}' not found in FolderFiles.");
+            //Console.Error.WriteLine($"Folder '{folder}' not found in FolderFiles.");
         }
 
         // Force UI to re-render
@@ -1119,7 +846,7 @@ else
         // Reset the view to show folders again
         SelectedFolder = null;
         DisplayedFiles = new List<FileItemRow>();
-        Console.WriteLine("Navigated back to Folders view.");
+        //Console.WriteLine("Navigated back to Folders view.");
 
         // Force UI to re-render
         StateHasChanged();
@@ -1132,9 +859,9 @@ else
             // AITrailblazer_AIAssistantSettings.md
 
             // Opening file content for AITrailblazer...
-            Console.WriteLine($"OpenFileContentAsync Opening file content for {SelectedFolder}...");
+            //Console.WriteLine($"OpenFileContentAsync Opening file content for {SelectedFolder}...");
             // Selected file: AITrailblazer_AIAssistantSettings.md
-            Console.WriteLine($"OpenFileContentAsync Selected file: {SelectedFile.FileName}");
+            //Console.WriteLine($"OpenFileContentAsync Selected file: {SelectedFile.FileName}");
             // Attempting to read blob at path: 
             // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md
             // 8f22704e-0396-4263-84a7-63310d3f39e7-AIContentFileInput/AITrailblazer/AITrailblazer_AIAssistantSettings.md/AITrailblazer_AIAssistantSettings.md
@@ -1161,7 +888,7 @@ else
 
                 IsFileContentDialogOpen = true;
                 StateHasChanged();  // Force UI re-render
-                Console.WriteLine($"OpenFileContentAsync IsFileContentDialogOpen: {IsFileContentDialogOpen}");
+                //Console.WriteLine($"OpenFileContentAsync IsFileContentDialogOpen: {IsFileContentDialogOpen}");
             }
 
         }
@@ -1171,7 +898,7 @@ else
             Console.Error.WriteLine(ErrorMessage);
             IsFileContentDialogOpen = false;
             StateHasChanged();  // Force UI re-render
-            Console.WriteLine($"OpenFileContentAsync Error loading file content IsFileContentDialogOpen: {IsFileContentDialogOpen}");
+            //Console.WriteLine($"OpenFileContentAsync Error loading file content IsFileContentDialogOpen: {IsFileContentDialogOpen}");
         }
     }
     private void OnSelectedFileChanged(IEnumerable<FileItemRow> selectedFiles)
@@ -1180,7 +907,7 @@ else
         if (selectedFile != null)
         {
             SelectedFile = selectedFile;
-            Console.WriteLine($"OnSelectedFileChanged Selected file: {selectedFile.FileName}");
+            //Console.WriteLine($"OnSelectedFileChanged Selected file: {selectedFile.FileName}");
             // AITrailblazer_AIAssistantSettings.md
             OpenFileContentAsync(selectedFile);
         }
@@ -1196,12 +923,12 @@ else
     private void DownloadFile(FileItemRow file)
     {
         // TODO: Implement actual download logic
-        Console.WriteLine($"Downloading {file.FileName}...");
+        //Console.WriteLine($"Downloading {file.FileName}...");
     }
     private void DeleteFile(FileItemRow file)
     {
         // TODO: Implement actual deletion logic
-        Console.WriteLine($"Deleting {file.FileName}...");
+        //Console.WriteLine($"Deleting {file.FileName}...");
         //DisplayedFiles.Remove(file);
 
         // Optionally, update FolderFiles if necessary
@@ -1212,7 +939,7 @@ else
         //}
 
         // Force UI to re-render
-        StateHasChanged();
+        //StateHasChanged();
     }
 }
 
@@ -1232,7 +959,7 @@ else
         if (userInput.Trim() != "")
         {
             submittingInput = true;
-            Console.WriteLine($"HandleInputSubmit userInput {userInput}");
+            //Console.WriteLine($"HandleInputSubmit userInput {userInput}");
             string tenantId = currentUserTenantID;
             string userId   = currentUserIdentityID;
 
@@ -1275,38 +1002,8 @@ else
             string encodedData = "";
 
             string Feature ="AIImportFilesQuery";
-            /*
-
-            var response = await azureOpenAIHandler.GenerateGeminiWithPrompty(
-                PanelInput,
-                Feature,
-                userInput,
-                fileName,
-                encodedData,
-                masterTextSetting,
-                responseLengthVal,
-                creativeAdjustmentsVal,
-                audienceLevelVal,
-                writingStyleVal,
-                relationSettingsVal,
-                responseStyleVal);
-
-                contentName = "Output"; // Name of the content to be stored in the blob
-                content = response;
-
-                // Call the UploadStringToBlobAsync method
-                await manager.UploadStringToBlobAsync(
-                    currentUserIdentityID, 
-                    directory, 
-                    blobName, 
-                    contentName,
-                    content);  
-
-            submittingInput = false;
-            HtmlContent = Markdown.ToHtml(response);
-            */
             this._timer.Stop();
-            Console.WriteLine($"Time: {this._timer.ElapsedMilliseconds / 1000} secs");
+            //Console.WriteLine($"Time: {this._timer.ElapsedMilliseconds / 1000} secs");
 
         }
         return "";
@@ -1322,9 +1019,9 @@ else
         
         fileViewName = null;
         Files = files.ToArray();
-        Console.WriteLine($"OnCompletedAsync: {Files.Length} files uploaded."); 
+        //Console.WriteLine($"OnCompletedAsync: {Files.Length} files uploaded."); 
 
-        Console.WriteLine($"OnCompletedAsync: {"hello"}"); 
+        Console.WriteLine($"OnCompletedAsync start..."); 
         // Clear any previous error messages
         ErrorMessage = string.Empty;
         MarkdownContentFile = string.Empty;
@@ -1357,7 +1054,7 @@ else
                 {
                     submitting = true; 
                     //Console.WriteLine($"fileContent: {fileContent}");
-                    Console.WriteLine($"file.Name: {file.Name}");
+                    //Console.WriteLine($"file.Name: {file.Name}");
 
                     if (allowedExtensions.Contains(fileExtension))
                     {

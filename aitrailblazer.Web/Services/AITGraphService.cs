@@ -61,7 +61,7 @@ namespace AITrailblazer.net.Services
 
             _graphScopes = (graphScopes != null && graphScopes.Length > 0) ? graphScopes : DefaultScopes;
 
-            _logger.LogInformation($"AITGraphService initialized with scopes: {string.Join(", ", _graphScopes)}");
+            // _logger.LogInformation($"AITGraphService initialized with scopes: {string.Join(", ", _graphScopes)}");
         }
 
         private AITGraphApiClient GraphClient
@@ -86,7 +86,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation("Attempting to fetch user profile");
+                // _logger.LogInformation("Attempting to fetch user profile");
                 var profile = await GraphClient.Me.Profile.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Expand = new[]
@@ -102,34 +102,34 @@ namespace AITrailblazer.net.Services
                     };
                 });
 
-                _logger.LogInformation("User profile fetched successfully");
+                // _logger.LogInformation("User profile fetched successfully");
                 return profile ?? new Profile();
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching user profile.");
+                // _logger.LogError(ex, "User challenge occurred while fetching user profile.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex) when (ex.Message.Contains("Continuous access evaluation resulted in claims challenge"))
             {
-                _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
+                // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
                 string claimChallenge = ex.ResponseHeaders["WWW-Authenticate"].FirstOrDefault();
                 _consentHandler.ChallengeUser(_graphScopes, claimChallenge);
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching user profile.");
+                // _logger.LogError(ex, "An error occurred while fetching user profile.");
                 throw;
             }
         }
@@ -138,7 +138,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation("Attempting to fetch user profile photo");
+                // _logger.LogInformation("Attempting to fetch user profile photo");
 
                 if (_requestAdapter == null)
                 {
@@ -164,18 +164,18 @@ namespace AITrailblazer.net.Services
 
                 if (responseStream != null)
                 {
-                    _logger.LogInformation($"User profile photo fetched successfully, {requestUrl}");
+                    // _logger.LogInformation($"User profile photo fetched successfully, {requestUrl}");
                     return responseStream;
                 }
                 else
                 {
-                    _logger.LogWarning("User profile photo not found");
+                    // _logger.LogWarning("User profile photo not found");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching user profile photo.");
+                // _logger.LogError(ex, "An error occurred while fetching user profile photo.");
                 // Instead of throwing the error, return null to indicate no photo was found
                 return null;
             }
@@ -184,7 +184,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation("Attempting to fetch mailbox settings");
+                // _logger.LogInformation("Attempting to fetch mailbox settings");
 
                 if (_requestAdapter == null)
                 {
@@ -211,18 +211,18 @@ namespace AITrailblazer.net.Services
 
                 if (response != null)
                 {
-                    _logger.LogInformation($"Mailbox settings fetched successfully, {requestUrl}");
+                    // _logger.LogInformation($"Mailbox settings fetched successfully, {requestUrl}");
                     return response;
                 }
                 else
                 {
-                    _logger.LogWarning("Mailbox settings not found");
+                    // _logger.LogWarning("Mailbox settings not found");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching mailbox settings.");
+                // _logger.LogError(ex, "An error occurred while fetching mailbox settings.");
                 return null;
             }
         }
@@ -231,7 +231,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation("Attempting to fetch user account information");
+                // _logger.LogInformation("Attempting to fetch user account information");
                 var accountInfo = await GraphClient.Me.Profile.Account.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Select = new[] {
@@ -248,40 +248,40 @@ namespace AITrailblazer.net.Services
 
                 if (accountInfo?.Value != null && accountInfo.Value.Count > 0)
                 {
-                    _logger.LogInformation("User account information fetched successfully");
+                    // _logger.LogInformation("User account information fetched successfully");
                     return accountInfo.Value[0];
                 }
                 else
                 {
-                    _logger.LogWarning("No user account information found");
+                    // _logger.LogWarning("No user account information found");
                     return null;
                 }
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching user account information.");
+                // _logger.LogError(ex, "User challenge occurred while fetching user account information.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex) when (ex.Message.Contains("Continuous access evaluation resulted in claims challenge"))
             {
-                _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
+                // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge.");
                 string claimChallenge = ex.ResponseHeaders["WWW-Authenticate"].FirstOrDefault();
                 _consentHandler.ChallengeUser(_graphScopes, claimChallenge);
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching user account information.");
+                // _logger.LogError(ex, "An error occurred while fetching user account information.");
                 throw;
             }
         }
@@ -290,7 +290,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation($"Attempting to fetch {count} contacts");
+                // _logger.LogInformation($"Attempting to fetch {count} contacts");
 
                 var contactsResponse = await GraphClient.Me.Contacts.GetAsync(requestConfiguration =>
                 {
@@ -328,22 +328,22 @@ namespace AITrailblazer.net.Services
                     };
                 });
 
-                _logger.LogInformation($"Successfully fetched {contactsResponse.Value?.Count ?? 0} contacts");
+                // _logger.LogInformation($"Successfully fetched {contactsResponse.Value?.Count ?? 0} contacts");
                 return contactsResponse.Value?.ToList() ?? new List<Contact>();
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching contacts.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching contacts.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching contacts.");
+                // _logger.LogError(ex, "User challenge occurred while fetching contacts.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while fetching contacts.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while fetching contacts.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
@@ -354,39 +354,39 @@ namespace AITrailblazer.net.Services
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching contacts.");
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching contacts.");
                         _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while fetching contacts.");
+                // _logger.LogError(ex, "API Exception occurred while fetching contacts.");
 
                 // Log response headers if available
                 if (ex.ResponseHeaders != null)
                 {
                     var headers = string.Join(", ", ex.ResponseHeaders.Select(h => $"{h.Key}: {string.Join("; ", h.Value)}"));
-                    _logger.LogError($"Response Headers: {headers}");
+                    // _logger.LogError($"Response Headers: {headers}");
                 }
 
                 // Log inner exception if any
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError(ex.InnerException, "Inner Exception:");
+                    // _logger.LogError(ex.InnerException, "Inner Exception:");
                 }
 
                 // Log additional data if available
                 if (ex is IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
                 {
                     var additionalDataJson = JsonConvert.SerializeObject(additionalDataHolder.AdditionalData, Formatting.Indented);
-                    _logger.LogError($"Additional Data: {additionalDataJson}");
+                    // _logger.LogError($"Additional Data: {additionalDataJson}");
                 }
 
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching contacts.");
+                // _logger.LogError(ex, "An error occurred while fetching contacts.");
                 throw;
             }
         }
@@ -394,26 +394,26 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation($"Attempting to add a new contact: {newContact.DisplayName}");
+                // _logger.LogInformation($"Attempting to add a new contact: {newContact.DisplayName}");
 
                 var contact = await GraphClient.Me.Contacts.PostAsync(newContact);
 
-                _logger.LogInformation($"Successfully added contact: {contact.Id}");
+                // _logger.LogInformation($"Successfully added contact: {contact.Id}");
                 return contact;
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while adding a contact.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while adding a contact.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while adding a contact.");
+                // _logger.LogError(ex, "User challenge occurred while adding a contact.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while adding a contact.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while adding a contact.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
@@ -423,19 +423,19 @@ namespace AITrailblazer.net.Services
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while adding a contact.");
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while adding a contact.");
                         _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while adding a contact.");
+                // _logger.LogError(ex, "API Exception occurred while adding a contact.");
                 // Log additional details as needed
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while adding a contact.");
+                // _logger.LogError(ex, "An error occurred while adding a contact.");
                 throw;
             }
         }
@@ -444,7 +444,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation($"Attempting to delete contact: {contactId}");
+                // _logger.LogInformation($"Attempting to delete contact: {contactId}");
 
                 // Construct the request information
                 var requestInfo = new RequestInformation
@@ -461,21 +461,21 @@ namespace AITrailblazer.net.Services
                 // Send the delete request
                 await _requestAdapter.SendNoContentAsync(requestInfo);
 
-                _logger.LogInformation($"Successfully deleted contact: {contactId}");
+                // _logger.LogInformation($"Successfully deleted contact: {contactId}");
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a contact.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a contact.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while deleting a contact.");
+                // _logger.LogError(ex, "User challenge occurred while deleting a contact.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while deleting a contact.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while deleting a contact.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
@@ -485,19 +485,19 @@ namespace AITrailblazer.net.Services
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while deleting a contact.");
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while deleting a contact.");
                         _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while deleting a contact.");
+                // _logger.LogError(ex, "API Exception occurred while deleting a contact.");
                 // Log additional details as needed
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while deleting a contact.");
+                // _logger.LogError(ex, "An error occurred while deleting a contact.");
                 throw;
             }
         }
@@ -506,7 +506,7 @@ namespace AITrailblazer.net.Services
         {
             try
             {
-                _logger.LogInformation($"Attempting to update contact: {contactId}");
+                // _logger.LogInformation($"Attempting to update contact: {contactId}");
 
                 var requestInfo = new RequestInformation
                 {
@@ -519,11 +519,11 @@ namespace AITrailblazer.net.Services
             }
                 };
 
-                _logger.LogInformation($"UpdateContactAsync Request URL: {requestInfo.UrlTemplate}");
+                // _logger.LogInformation($"UpdateContactAsync Request URL: {requestInfo.UrlTemplate}");
 
                 // Log the updated fields using Newtonsoft.Json
                 var updatedFieldsJson = JsonConvert.SerializeObject(updatedContact, Formatting.Indented);
-                _logger.LogInformation($"UpdateContactAsync Request Body: {updatedFieldsJson}");
+                // _logger.LogInformation($"UpdateContactAsync Request Body: {updatedFieldsJson}");
 
                 // Set the content of the request using the Contact object
                 requestInfo.SetContentFromParsable(_requestAdapter, "application/json", updatedContact);
@@ -541,22 +541,22 @@ namespace AITrailblazer.net.Services
                     errorMapping
                 );
 
-                _logger.LogInformation($"Successfully updated contact: {contactId}");
+                // _logger.LogInformation($"Successfully updated contact: {contactId}");
                 return updatedContactResponse;
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while updating contact.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while updating contact.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while updating contact.");
+                // _logger.LogError(ex, "User challenge occurred while updating contact.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while updating contact.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while updating contact.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
@@ -567,39 +567,39 @@ namespace AITrailblazer.net.Services
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while updating contact.");
-                        _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while updating contact.");
+                        //_consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while updating contact.");
+                // _logger.LogError(ex, "API Exception occurred while updating contact.");
 
                 // Log response headers if available
                 if (ex.ResponseHeaders != null)
                 {
                     var headers = string.Join(", ", ex.ResponseHeaders.Select(h => $"{h.Key}: {string.Join("; ", h.Value)}"));
-                    _logger.LogError($"Response Headers: {headers}");
+                    //_logger.LogError($"Response Headers: {headers}");
                 }
 
                 // Log inner exception if any
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError(ex.InnerException, "Inner Exception:");
+                    // _logger.LogError(ex.InnerException, "Inner Exception:");
                 }
 
                 // Log additional data if available
                 if (ex is Microsoft.Kiota.Abstractions.Serialization.IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
                 {
                     var additionalDataJson = JsonConvert.SerializeObject(additionalDataHolder.AdditionalData, Formatting.Indented);
-                    _logger.LogError($"Additional Data: {additionalDataJson}");
+                    // _logger.LogError($"Additional Data: {additionalDataJson}");
                 }
 
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while updating a contact.");
+                // _logger.LogError(ex, "An error occurred while updating a contact.");
                 throw;
             }
         }
@@ -609,7 +609,7 @@ namespace AITrailblazer.net.Services
 
             try
             {
-                _logger.LogInformation($"Attempting to fetch {count} calendar events");
+                // _logger.LogInformation($"Attempting to fetch {count} calendar events");
 
                 var eventsResponse = await _graphClient.Me.Calendar.Events.GetAsync(requestConfiguration =>
                 {
@@ -641,38 +641,38 @@ namespace AITrailblazer.net.Services
                     }
                 });
 
-                _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
+                // _logger.LogInformation($"Successfully fetched {eventsResponse.Value?.Count ?? 0} calendar events");
                 result.Events = eventsResponse.Value?.ToList() ?? new List<Event>();
             }
             catch (ApiException ex)
             {
-                _logger.LogError(ex, "API Exception occurred while fetching calendar events.");
-                _logger.LogError($"Error Message: {ex.Message}");
+                // _logger.LogError(ex, "API Exception occurred while fetching calendar events.");
+                // _logger.LogError($"Error Message: {ex.Message}");
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError($"Inner Exception: {ex.InnerException.Message}");
+                    // _logger.LogError($"Inner Exception: {ex.InnerException.Message}");
                 }
 
                 result.ErrorMessage = $"An error occurred while fetching calendar events: {ex.Message}";
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred.");
                 result.ErrorMessage = "Authentication is required.";
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
+                // _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
                 result.ErrorMessage = "Authentication challenge is required.";
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred.");
                 result.ErrorMessage = "Unauthorized access.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while fetching calendar events.");
+                // _logger.LogError(ex, "An unexpected error occurred while fetching calendar events.");
                 result.ErrorMessage = "An unexpected error occurred.";
             }
 
@@ -683,12 +683,12 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
 {
     try
     {
-        _logger.LogInformation($"GetCalendarEventsAsync: Starting to fetch up to {count} calendar events");
+        // _logger.LogInformation($"GetCalendarEventsAsync: Starting to fetch up to {count} calendar events");
 
         startDate ??= DateTime.UtcNow;
         endDate ??= startDate.Value.AddDays(30);
 
-        _logger.LogInformation($"GetCalendarEventsAsync: Date range - Start: {startDate.Value:o}, End: {endDate.Value:o}");
+        // _logger.LogInformation($"GetCalendarEventsAsync: Date range - Start: {startDate.Value:o}, End: {endDate.Value:o}");
 
         var eventsResponse = await GraphClient.Me.Calendar.Events.GetAsync(requestConfiguration =>
         {
@@ -715,11 +715,11 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
 
         if (eventsResponse?.Value == null || !eventsResponse.Value.Any())
         {
-            _logger.LogInformation("GetCalendarEventsAsync: No events found for the specified date range.");
+            // _logger.LogInformation("GetCalendarEventsAsync: No events found for the specified date range.");
             return new List<EventViewModel>(); // Return an empty list instead of JSON
         }
 
-        _logger.LogInformation($"GetCalendarEventsAsync: Successfully fetched {eventsResponse.Value.Count} events");
+        // _logger.LogInformation($"GetCalendarEventsAsync: Successfully fetched {eventsResponse.Value.Count} events");
 
         var eventList = eventsResponse.Value.ToList();
 
@@ -732,7 +732,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
             }
         );
 
-        _logger.LogInformation($"GetCalendarEventsAsync: Raw Events Response: {rawEventsJson}");
+        // _logger.LogInformation($"GetCalendarEventsAsync: Raw Events Response: {rawEventsJson}");
 
         // Serialize events to JSON
         var basicModelList = eventList.Select(evt => new EventViewModel
@@ -764,29 +764,29 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
         };
 
         var jsonResponse = JsonConvert.SerializeObject(basicModelList, jsonSettings);
-        _logger.LogInformation($"GetCalendarEventsAsync: Processed JSON Response: {jsonResponse}");
+        // _logger.LogInformation($"GetCalendarEventsAsync: Processed JSON Response: {jsonResponse}");
 
         return basicModelList; // Return the list instead of JSON
     }
     catch (MsalUiRequiredException ex)
     {
-        _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching events.");
+        // _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching events.");
         throw new AuthenticationRequiredException("Authentication is required.");
     }
     catch (MicrosoftIdentityWebChallengeUserException ex)
     {
-        _logger.LogError(ex, "User challenge occurred while fetching events.");
+        // _logger.LogError(ex, "User challenge occurred while fetching events.");
         throw new AuthenticationRequiredException("Authentication challenge is required.");
     }
     catch (UnauthorizedAccessException ex)
     {
-        _logger.LogError(ex, "Unauthorized access exception occurred while fetching events.");
+        // _logger.LogError(ex, "Unauthorized access exception occurred while fetching events.");
         throw new AuthenticationRequiredException("Unauthorized access.");
     }
     catch (AITGraph.Sdk.Models.ODataErrors.ODataError odataError)
     {
-        _logger.LogError(odataError, $"GetCalendarEventsAsync: OData error occurred. Error Code: {odataError.Error?.Code}, Message: {odataError.Error?.Message}");
-        _logger.LogError($"GetCalendarEventsAsync: Full OData Error: {JsonConvert.SerializeObject(odataError, Formatting.Indented)}");
+        // _logger.LogError(odataError, $"GetCalendarEventsAsync: OData error occurred. Error Code: {odataError.Error?.Code}, Message: {odataError.Error?.Message}");
+        // _logger.LogError($"GetCalendarEventsAsync: Full OData Error: {JsonConvert.SerializeObject(odataError, Formatting.Indented)}");
         throw new InvalidOperationException($"Failed to fetch calendar events. Error: {odataError.Error?.Message}", odataError);
     }
     catch (ApiException ex)
@@ -797,39 +797,39 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
             var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
             if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching events.");
-                _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
+                // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching events.");
+                //_consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
         }
 
-        _logger.LogError(ex, "API Exception occurred while fetching events.");
+        // _logger.LogError(ex, "API Exception occurred while fetching events.");
 
         // Log response headers if available
         if (ex.ResponseHeaders != null)
         {
             var headers = string.Join(", ", ex.ResponseHeaders.Select(h => $"{h.Key}: {string.Join("; ", h.Value)}"));
-            _logger.LogError($"Response Headers: {headers}");
+            // _logger.LogError($"Response Headers: {headers}");
         }
 
         // Log inner exception if any
         if (ex.InnerException != null)
         {
-            _logger.LogError(ex.InnerException, "Inner Exception:");
+            // _logger.LogError(ex.InnerException, "Inner Exception:");
         }
 
         // Log additional data if available
         if (ex is IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
         {
             var additionalDataJson = JsonConvert.SerializeObject(additionalDataHolder.AdditionalData, Formatting.Indented);
-            _logger.LogError($"Additional Data: {additionalDataJson}");
+            // _logger.LogError($"Additional Data: {additionalDataJson}");
         }
 
         throw;
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "GetCalendarEventsAsync: An unexpected error occurred while fetching calendar events.");
+        // _logger.LogError(ex, "GetCalendarEventsAsync: An unexpected error occurred while fetching calendar events.");
         throw;
     }
 }
@@ -846,7 +846,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
 
             if (newEvent == null)
             {
-                _logger.LogError("CreateCalendarEventAsync called with null newEvent.");
+                // _logger.LogError("CreateCalendarEventAsync called with null newEvent.");
                 result.ErrorMessage = "Event details cannot be null.";
                 return result;
             }
@@ -855,52 +855,52 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
             var validationErrors = ValidateEvent(newEvent);
             if (validationErrors.Count > 0)
             {
-                _logger.LogError("Validation failed for CreateCalendarEventAsync: {Errors}", string.Join("; ", validationErrors));
+                // _logger.LogError("Validation failed for CreateCalendarEventAsync: {Errors}", string.Join("; ", validationErrors));
                 result.ErrorMessage = $"Validation failed: {string.Join("; ", validationErrors)}";
                 return result;
             }
 
             try
             {
-                _logger.LogInformation("Attempting to create a new calendar event: {Subject}", newEvent.Subject);
+                // _logger.LogInformation("Attempting to create a new calendar event: {Subject}", newEvent.Subject);
 
                 // Call the PostAsync method from EventsRequestBuilder
                 var createdEvent = await _eventsRequestBuilder.PostAsync(newEvent, null, default);
 
                 if (createdEvent != null)
                 {
-                    _logger.LogInformation("Successfully created calendar event with ID: {EventId}", createdEvent.Id);
+                    // _logger.LogInformation("Successfully created calendar event with ID: {EventId}", createdEvent.Id);
                     result.CreatedEvent = createdEvent;
                 }
                 else
                 {
-                    _logger.LogWarning("CreateCalendarEventAsync returned null.");
+                    // _logger.LogWarning("CreateCalendarEventAsync returned null.");
                     result.ErrorMessage = "Failed to create the calendar event.";
                 }
             }
             catch (ApiException ex)
             {
-                _logger.LogError(ex, "API Exception occurred while creating calendar event: {Message}", ex.Message);
+                // _logger.LogError(ex, "API Exception occurred while creating calendar event: {Message}", ex.Message);
                 result.ErrorMessage = $"An error occurred while creating the calendar event: {ex.Message}";
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while creating calendar event.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while creating calendar event.");
                 result.ErrorMessage = "Authentication is required.";
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while creating calendar event.");
+                // _logger.LogError(ex, "User challenge occurred while creating calendar event.");
                 result.ErrorMessage = "Authentication challenge is required.";
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while creating calendar event.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while creating calendar event.");
                 result.ErrorMessage = "Unauthorized access.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while creating calendar event.");
+                // _logger.LogError(ex, "An unexpected error occurred while creating calendar event.");
                 result.ErrorMessage = "An unexpected error occurred.";
             }
 
@@ -963,7 +963,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
         {
             try
             {
-                _logger.LogInformation($"GetCalendarViewAsync: Starting to fetch up to {maxEvents} calendar events");
+                // _logger.LogInformation($"GetCalendarViewAsync: Starting to fetch up to {maxEvents} calendar events");
 
                 DateTime startDateTimeParsed;
                 DateTime endDateTimeParsed;
@@ -975,7 +975,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                 }
                 else if (!DateTime.TryParse(startDateTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out startDateTimeParsed))
                 {
-                    _logger.LogError($"Invalid startDateTime format: {startDateTime}");
+                    // _logger.LogError($"Invalid startDateTime format: {startDateTime}");
                     throw new ArgumentException($"Invalid startDateTime format: {startDateTime}");
                 }
 
@@ -986,18 +986,18 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                 }
                 else if (!DateTime.TryParse(endDateTime, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out endDateTimeParsed))
                 {
-                    _logger.LogError($"Invalid endDateTime format: {endDateTime}");
+                    // _logger.LogError($"Invalid endDateTime format: {endDateTime}");
                     throw new ArgumentException($"Invalid endDateTime format: {endDateTime}");
                 }
 
                 // Ensure endDateTime is after startDateTime
                 if (endDateTimeParsed <= startDateTimeParsed)
                 {
-                    _logger.LogError("endDateTime must be after startDateTime");
+                    // _logger.LogError("endDateTime must be after startDateTime");
                     throw new ArgumentException("endDateTime must be after startDateTime");
                 }
 
-                _logger.LogInformation($"GetCalendarViewAsync: Date range - Start: {startDateTimeParsed:o}, End: {endDateTimeParsed:o}");
+                // _logger.LogInformation($"GetCalendarViewAsync: Date range - Start: {startDateTimeParsed:o}, End: {endDateTimeParsed:o}");
 
                 var eventsResponse = await _graphClient.Me.CalendarView.GetAsync(requestConfiguration =>
                 {
@@ -1024,11 +1024,11 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
 
                 if (eventsResponse?.Value == null || !eventsResponse.Value.Any())
                 {
-                    _logger.LogInformation("GetCalendarViewAsync: No events found for the specified date range.");
+                    // _logger.LogInformation("GetCalendarViewAsync: No events found for the specified date range.");
                     return new List<EventViewModel>(); // Return an empty list
                 }
 
-                _logger.LogInformation($"GetCalendarViewAsync: Successfully fetched {eventsResponse.Value.Count} events");
+                // _logger.LogInformation($"GetCalendarViewAsync: Successfully fetched {eventsResponse.Value.Count} events");
 
                 var eventList = eventsResponse.Value.ToList();
 
@@ -1055,7 +1055,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                     Attendees = evt.Attendees?.Where(a => a?.EmailAddress != null).ToList() ?? new List<Attendee>()
                 }).ToList();
 
-                _logger.LogInformation($"GetCalendarViewAsync: Successfully mapped events to EventViewModel");
+                // _logger.LogInformation($"GetCalendarViewAsync: Successfully mapped events to EventViewModel");
 
                 // Serialize the basicModelList to JSON
                 var jsonSettings = new JsonSerializerSettings
@@ -1067,29 +1067,29 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                 string jsonResult = JsonConvert.SerializeObject(basicModelList, jsonSettings);
 
                 // Log the serialized JSON
-                _logger.LogInformation($"GetCalendarViewAsync: Serialized EventViewModel List: {jsonResult}");
+                // _logger.LogInformation($"GetCalendarViewAsync: Serialized EventViewModel List: {jsonResult}");
 
                 return basicModelList; // Return the list directly
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching calendar events.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while fetching calendar events.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
+                // _logger.LogError(ex, "User challenge occurred while fetching calendar events.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while fetching calendar events.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while fetching calendar events.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (AITGraph.Sdk.Models.ODataErrors.ODataError odataError)
             {
-                _logger.LogError(odataError, $"GetCalendarViewAsync: OData error occurred. Error Code: {odataError.Error?.Code}, Message: {odataError.Error?.Message}");
-                _logger.LogError($"GetCalendarViewAsync: Full OData Error: {JsonConvert.SerializeObject(odataError, Formatting.Indented)}");
+                // _logger.LogError(odataError, $"GetCalendarViewAsync: OData error occurred. Error Code: {odataError.Error?.Code}, Message: {odataError.Error?.Message}");
+                // _logger.LogError($"GetCalendarViewAsync: Full OData Error: {JsonConvert.SerializeObject(odataError, Formatting.Indented)}");
                 throw new InvalidOperationException($"Failed to fetch calendar events. Error: {odataError.Error?.Message}", odataError);
             }
             catch (ApiException ex)
@@ -1100,39 +1100,39 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching calendar events.");
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while fetching calendar events.");
                         _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while fetching calendar events.");
+                // _logger.LogError(ex, "API Exception occurred while fetching calendar events.");
 
                 // Log response headers if available
                 if (ex.ResponseHeaders != null)
                 {
                     var headers = string.Join(", ", ex.ResponseHeaders.Select(h => $"{h.Key}: {string.Join("; ", h.Value)}"));
-                    _logger.LogError($"Response Headers: {headers}");
+                    // _logger.LogError($"Response Headers: {headers}");
                 }
 
                 // Log inner exception if any
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError(ex.InnerException, "Inner Exception:");
+                    // _logger.LogError(ex.InnerException, "Inner Exception:");
                 }
 
                 // Log additional data if available
                 if (ex is IAdditionalDataHolder additionalDataHolder && additionalDataHolder.AdditionalData != null)
                 {
                     var additionalDataJson = JsonConvert.SerializeObject(additionalDataHolder.AdditionalData, Formatting.Indented);
-                    _logger.LogError($"Additional Data: {additionalDataJson}");
+                    // _logger.LogError($"Additional Data: {additionalDataJson}");
                 }
 
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "GetCalendarViewAsync: An unexpected error occurred while fetching calendar events.");
+                // _logger.LogError(ex, "GetCalendarViewAsync: An unexpected error occurred while fetching calendar events.");
                 throw;
             }
         }
@@ -1142,7 +1142,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
         {
             try
             {
-                _logger.LogInformation($"GetRecentMessagesAsync Attempting to fetch {count} recent messages");
+                // _logger.LogInformation($"GetRecentMessagesAsync Attempting to fetch {count} recent messages");
 
                 var messagesResponse = await GraphClient.Me.Messages.GetAsync(requestConfiguration =>
                 {
@@ -1168,7 +1168,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                     };
                 });
 
-                _logger.LogInformation($"GetRecentMessagesAsync Successfully fetched {messagesResponse.Value?.Count ?? 0} messages");
+                // _logger.LogInformation($"GetRecentMessagesAsync Successfully fetched {messagesResponse.Value?.Count ?? 0} messages");
 
                 var messageList = messagesResponse.Value?.ToList() ?? new List<Message>();
 
@@ -1183,7 +1183,7 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
                     }
                 );
 
-                _logger.LogInformation($"GetRecentMessagesAsync Raw Messages Response: {rawMessagesJson}");
+                // _logger.LogInformation($"GetRecentMessagesAsync Raw Messages Response: {rawMessagesJson}");
 
                 var basicModelList = messageList.Select(message => new EmailViewBasicModel(message)).ToList();
 
@@ -1199,18 +1199,18 @@ public async Task<List<EventViewModel>> GetCalendarEventsAsync(int count = 10, D
 
                 // Serialize using Newtonsoft.Json
                 var jsonResponse = JsonConvert.SerializeObject(basicModelList, jsonSettings);
-                _logger.LogInformation($"GetRecentMessagesAsync jsonResponse: {jsonResponse}");
+                // _logger.LogInformation($"GetRecentMessagesAsync jsonResponse: {jsonResponse}");
 
                 return jsonResponse;
             }
             catch (Newtonsoft.Json.JsonException jsonEx)
             {
-                _logger.LogError(jsonEx, "GetRecentMessagesAsync JSON Serialization/Deserialization error occurred while fetching recent messages.");
+                // _logger.LogError(jsonEx, "GetRecentMessagesAsync JSON Serialization/Deserialization error occurred while fetching recent messages.");
                 throw new InvalidOperationException("Failed to serialize messages to JSON.", jsonEx);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "GetRecentMessagesAsync An error occurred while fetching recent messages.");
+                // _logger.LogError(ex, "GetRecentMessagesAsync An error occurred while fetching recent messages.");
                 throw;
             }
         }
@@ -1219,7 +1219,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
 {
     try
     {
-        _logger.LogInformation($"GetRecentMessagesAsync: Attempting to fetch {count} recent messages.");
+        // _logger.LogInformation($"GetRecentMessagesAsync: Attempting to fetch {count} recent messages.");
 
         var messagesResponse = await GraphClient.Me.Messages.GetAsync(requestConfiguration =>
         {
@@ -1245,7 +1245,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
             };
         }).ConfigureAwait(false);
 
-        _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: Successfully fetched {messagesResponse.Value?.Count ?? 0} messages.");
+        // _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: Successfully fetched {messagesResponse.Value?.Count ?? 0} messages.");
 
         var messageList = messagesResponse.Value?.ToList() ?? new List<Message>();
 
@@ -1260,8 +1260,8 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
             }
         );
 
-        //_logger.LogDebug($"GetRecentMessagesPureEmailViewBasicModelAsync: Raw Messages Response: {rawMessagesJson}");
-        _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: Raw Messages Response: {rawMessagesJson}");
+        //// _logger.LogDebug($"GetRecentMessagesPureEmailViewBasicModelAsync: Raw Messages Response: {rawMessagesJson}");
+        // _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: Raw Messages Response: {rawMessagesJson}");
 
         var basicModelList = messageList.Select(message => new EmailViewBasicPureConstructorModel(message)).ToList();
 
@@ -1283,18 +1283,18 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
 
         // **Serialize the EmailResult object to JSON**
         var jsonResponse = JsonConvert.SerializeObject(emailResult, jsonSettings);
-        _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: JSON Response generated with {basicModelList.Count} emails.");
+        // _logger.LogInformation($"GetRecentMessagesPureEmailViewBasicModelAsync: JSON Response generated with {basicModelList.Count} emails.");
 
         return jsonResponse;
     }
     catch (Newtonsoft.Json.JsonException jsonEx)
     {
-        _logger.LogError(jsonEx, "GetRecentMessagesPureEmailViewBasicModelAsync: JSON Serialization/Deserialization error occurred while fetching recent messages.");
+        // _logger.LogError(jsonEx, "GetRecentMessagesPureEmailViewBasicModelAsync: JSON Serialization/Deserialization error occurred while fetching recent messages.");
         throw new InvalidOperationException("Failed to serialize messages to JSON.", jsonEx);
     }
     catch (Exception ex)
     {
-        _logger.LogError(ex, "GetRecentMessagesPureEmailViewBasicModelAsync: An unexpected error occurred while fetching recent messages.");
+        // _logger.LogError(ex, "GetRecentMessagesPureEmailViewBasicModelAsync: An unexpected error occurred while fetching recent messages.");
         throw;
     }
 }
@@ -1304,11 +1304,11 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
             {
                 if (string.IsNullOrWhiteSpace(messageId))
                 {
-                    _logger.LogError("Message ID cannot be null or empty.");
+                    // _logger.LogError("Message ID cannot be null or empty.");
                     throw new ArgumentException("Message ID cannot be null or empty.", nameof(messageId));
                 }
 
-                _logger.LogInformation($"Attempting to delete email message with ID: {messageId}");
+                // _logger.LogInformation($"Attempting to delete email message with ID: {messageId}");
 
                 // Create the request information
                 var requestInfo = new RequestInformation
@@ -1325,21 +1325,21 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                 // Send the delete request
                 await _requestAdapter.SendNoContentAsync(requestInfo, cancellationToken: CancellationToken.None);
 
-                _logger.LogInformation($"Successfully deleted email message with ID: {messageId}");
+                // _logger.LogInformation($"Successfully deleted email message with ID: {messageId}");
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting an email message.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting an email message.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while deleting an email message.");
+                // _logger.LogError(ex, "User challenge occurred while deleting an email message.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while deleting an email message.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while deleting an email message.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
@@ -1349,18 +1349,18 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                     var wwwAuthenticate = wwwAuthenticateValues.FirstOrDefault();
                     if (wwwAuthenticate != null && wwwAuthenticate.Contains("claims", StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while deleting an email message.");
+                        // _logger.LogError(ex, "Continuous access evaluation resulted in claims challenge while deleting an email message.");
                         _consentHandler.ChallengeUser(_graphScopes, wwwAuthenticate);
                         throw new AuthenticationRequiredException("Authentication challenge is required.");
                     }
                 }
 
-                _logger.LogError(ex, "API Exception occurred while deleting an email message.");
+                // _logger.LogError(ex, "API Exception occurred while deleting an email message.");
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while deleting an email message.");
+                // _logger.LogError(ex, "An error occurred while deleting an email message.");
                 throw;
             }
         }
@@ -1369,7 +1369,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
         {
             try
             {
-                _logger.LogInformation($"Attempting to search messages with query: {searchQuery}");
+                // _logger.LogInformation($"Attempting to search messages with query: {searchQuery}");
 
                 // Format the search query
                 string formattedQuery = $"\"{searchQuery.Replace("\"", "\\\"")}\"";
@@ -1398,7 +1398,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                     };
                 });
 
-                _logger.LogInformation($"Successfully fetched {messagesResponse?.Value?.Count ?? 0} messages matching the search query");
+                // _logger.LogInformation($"Successfully fetched {messagesResponse?.Value?.Count ?? 0} messages matching the search query");
 
                 var basicModelList = messagesResponse.Value?
                     .Select(message => new PureEmailViewBasicModel
@@ -1429,18 +1429,18 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                     NullValueHandling = NullValueHandling.Ignore
                 });
 
-                _logger.LogInformation($"SearchMessagesAsync jsonResponse: {jsonResponse}");
+                // _logger.LogInformation($"SearchMessagesAsync jsonResponse: {jsonResponse}");
 
                 return jsonResponse;
             }
             catch (JsonException jsonEx)
             {
-                _logger.LogError(jsonEx, "JSON Serialization/Deserialization error occurred during search.");
+                // _logger.LogError(jsonEx, "JSON Serialization/Deserialization error occurred during search.");
                 throw new InvalidOperationException("Failed to serialize messages to JSON.", jsonEx);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while searching messages with query: {searchQuery}");
+                // _logger.LogError(ex, $"An error occurred while searching messages with query: {searchQuery}");
                 throw;
             }
         }
@@ -1449,7 +1449,7 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
         {
             try
             {
-                _logger.LogInformation($"Attempting to delete calendar event with ID: {eventId}");
+                // _logger.LogInformation($"Attempting to delete calendar event with ID: {eventId}");
 
                 // Construct the request information
                 var requestInfo = new RequestInformation
@@ -1466,31 +1466,31 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
                 // Send the delete request
                 await _requestAdapter.SendNoContentAsync(requestInfo);
 
-                _logger.LogInformation($"Successfully deleted calendar event with ID: {eventId}");
+                // _logger.LogInformation($"Successfully deleted calendar event with ID: {eventId}");
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a calendar event.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred while deleting a calendar event.");
                 throw new AuthenticationRequiredException("Authentication is required.");
             }
             catch (MicrosoftIdentityWebChallengeUserException ex)
             {
-                _logger.LogError(ex, "User challenge occurred while deleting a calendar event.");
+                // _logger.LogError(ex, "User challenge occurred while deleting a calendar event.");
                 throw new AuthenticationRequiredException("Authentication challenge is required.");
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogError(ex, "Unauthorized access exception occurred while deleting a calendar event.");
+                // _logger.LogError(ex, "Unauthorized access exception occurred while deleting a calendar event.");
                 throw new AuthenticationRequiredException("Unauthorized access.");
             }
             catch (ApiException ex)
             {
-                _logger.LogError(ex, "API Exception occurred while deleting calendar event.");
+                // _logger.LogError(ex, "API Exception occurred while deleting calendar event.");
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while deleting a calendar event.");
+                // _logger.LogError(ex, "An error occurred while deleting a calendar event.");
                 throw;
             }
         }
@@ -1519,19 +1519,19 @@ public async Task<string> GetRecentMessagesPureEmailViewBasicModelAsync(int coun
         {
             try
             {
-                _logger.LogInformation($"Attempting to acquire token for scopes: {string.Join(", ", _scopes)}");
+                // _logger.LogInformation($"Attempting to acquire token for scopes: {string.Join(", ", _scopes)}");
                 var token = await _tokenAcquisition.GetAccessTokenForUserAsync(_scopes, authenticationScheme: OpenIdConnectAuthenticationScheme);
                 request.Headers.Add("Authorization", $"Bearer {token}");
-                _logger.LogInformation("Token acquired and added to request headers");
+                // _logger.LogInformation("Token acquired and added to request headers");
             }
             catch (MsalUiRequiredException ex)
             {
-                _logger.LogError(ex, "MSAL UI Required Exception occurred during token acquisition.");
+                // _logger.LogError(ex, "MSAL UI Required Exception occurred during token acquisition.");
                 throw new AuthenticationRequiredException("User authentication is required.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred during token acquisition.");
+                // _logger.LogError(ex, "An unexpected error occurred during token acquisition.");
                 throw;
             }
         }
