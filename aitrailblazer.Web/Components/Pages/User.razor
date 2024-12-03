@@ -35,6 +35,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject CosmosDbService cosmosDbService
 @inject SemanticKernelService semanticKernelService
+@inject IToastService ToastService
 
 
 
@@ -1047,6 +1048,8 @@ else if (profile != null)
             <!-- Additional Tabs can be added here -->
         </FluentTabs>
     </FluentCard>
+<FluentToastProvider />
+
 }
 else
 {
@@ -1573,32 +1576,25 @@ private async Task LoadUserDataAsync()
     // Event handler for button click
     private async Task OnButtonASAPTimeClicked()
     {
-
-        // Console.WriteLine($"OnButtonASAPTimeClicked User Query: {userQuery}");
         if (string.IsNullOrWhiteSpace(userQuery))
         {
-            responseQuery = "Please enter a valid query.";
-            
-            showResponse = false; // Ensure the card is hidden if the query is invalid
+            responseQuery = "The prompt cannot be empty. Please enter a valid query.";
+            ToastService.ShowError("The prompt cannot be empty. Please enter a valid query.");
+
+            showResponse = false; // Hide the response card for empty prompt text
             return;
         }
-
         try
         {
             Submitting = true;
             showResponse = false;
             error = null;
 
-            // Call the Azure OpenAI handler with the user's query
-            // Console.WriteLine($"call azureOpenAIHandler.HandleUserQueryAsync User Query: {userQuery}");
-            
-            //responseQuery = await azureOpenAIHandler.HandleUserQueryAsync(userQuery);
-
-            //responseQuery = await azureOpenAIHandler.GetASAPTime(userQuery);
-
-
-            string subject = "";
+            // Extract prompt text
             string promptText = userQuery;
+
+            // Call the chat service to get the response
+            string subject = "";
             string categoryId = "";
             double similarityScore = 0.4;
 
@@ -1609,18 +1605,19 @@ private async Task LoadUserDataAsync()
                 promptText,
                 similarityScore
             );
+
             formattedResponse = Markdown.ToHtml(responseQuery);
             // Dynamically adjust height based on response length
             calculatedHeight = CalculateHeight(formattedResponse);
 
             searchQuery = "subject: " + subject;
-            showResponse = true; // Show the response card when a new response is received
+            showResponse = true; // Show the response card
             await SearchEmails();
         }
         catch (Exception ex)
         {
             error = $"Error processing your request: {ex.Message}";
-            showResponse = false; // Hide the card in case of an error
+            showResponse = false; // Hide the response card in case of an error
         }
         finally
         {
