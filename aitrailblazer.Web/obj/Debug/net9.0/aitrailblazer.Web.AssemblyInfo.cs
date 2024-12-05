@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitrailblazer.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6ce4858461e33bdef5839eb505130665a507364")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c01db58273ef1c4458c0dd0d530a1d11da6e5d37")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitrailblazer.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitrailblazer.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

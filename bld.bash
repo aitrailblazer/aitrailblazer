@@ -116,3 +116,93 @@ dotnet new classlib
 dotnet add package Microsoft.Kiota.Authentication.Azure 
 dotnet add package Microsoft.Kiota.Bundle 
 
+curl -X POST "https://models.inference.ai.azure.com/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -d '{
+        "messages": [
+            {
+                "role": "system",
+                "content": ""
+            },
+            {
+                "role": "user",
+                "content": "Can you explain the basics of machine learning?"
+            }
+        ],
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_tokens": 2048,
+        "model": "gpt-4o"
+    }' >1.json
+
+
+
+curl -X POST "https://models.inference.ai.azure.com/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -d '{
+        "messages": [
+            {
+                "role": "system",
+                "content": ""
+            },
+            {
+                "role": "user",
+                "content": "Can you explain the basics of machine learning?"
+            }
+        ],
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_tokens": 2048,
+        "model": "Phi-3.5-MoE-instruct"
+    }'  >2.json
+
+PAYLOAD_FILE="payload.json"
+IMAGE_DATA="`cat \"$(pwd)/sample.jpg\" | base64`"
+echo '{
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that describes images in details."
+            },
+            {
+                "role": "user",
+                "content": [{"text": "What''s in this image?", "type": "text"}, {"image_url": {"url":"data:image/jpeg;base64,'"${IMAGE_DATA}"'","detail":"low"}, "type": "image_url"}]
+            }
+        ],
+        "model": "gpt-4o"
+    }' > "$PAYLOAD_FILE"
+
+
+
+curl -X POST "https://models.inference.ai.azure.com/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -d @payload.json
+echo
+rm -f "$PAYLOAD_FILE"
+
+
+PAYLOAD_FILE="payload.json"
+IMAGE_DATA="`cat \"$(pwd)/sample.jpg\" | base64`"
+echo '{
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that describes images in details."
+            },
+            {
+                "role": "user",
+                "content": [{"text": "What''s in this image?", "type": "text"}, {"image_url": {"url":"data:image/jpeg;base64,'"${IMAGE_DATA}"'","detail":"low"}, "type": "image_url"}]
+            }
+        ],
+        "model": "Phi-3.5-vision-instruct"
+    }' > "$PAYLOAD_FILE"
+
+curl -X POST "https://models.inference.ai.azure.com/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -d @payload.json
+echo
+rm -f "$PAYLOAD_FILE"

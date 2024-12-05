@@ -776,8 +776,8 @@ public class CosmosDbService
             WHERE c.type = 'EmailMessage' 
                 AND c.tenantId = @tenantId 
                 AND c.userId = @userId
-                AND VectorDistance(c.vectors, @vectors) > @similarityScore
             """;
+//                AND VectorDistance(c.vectors, @vectors) > @similarityScore
 
             if (!string.IsNullOrEmpty(categoryId))
             {
