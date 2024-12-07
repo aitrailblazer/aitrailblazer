@@ -25,7 +25,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6aac11ba17dd0f73efa8a7a04ab41e52922f95cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2834e71f46b2aa4ad13982b69cf54a910f3e07fd")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitrailblazer.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -104,3 +104,5 @@ Before finalizing your response, thoroughly review <context> to ensure you fully
 Generate no more than {{maxTokens}} tokens. Provide one well-refined evaluation, avoiding extraneous content.
 
 Only one proposal per response. Remain on task and refrain from unnecessary conversation.
+
+No bullcrap.
