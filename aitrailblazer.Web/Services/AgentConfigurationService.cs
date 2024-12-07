@@ -359,6 +359,46 @@ public class AgentConfigurationService
                     ReviewerTopP = 0.1,
                     MaxTokens = 100
                 }
+            },
+            {
+                "AIAletheia", new AgentSettings
+                {
+                    WriterRoleName = "StrategicArchitect",
+                    WriterRoleDescription = "A high-level strategist who constructs comprehensive frameworks, integrating early signals, feedback loops, game theory insights, and dynamic probability refinement. Skillfully applies transfer learning to navigate complex, cross-domain challenges and build adaptive strategic roadmaps.",
+                                        
+                    EditorRoleName = "StrategicRefiner",
+                    EditorRoleDescription = "Refines and elevates strategic analyses to their highest caliber, ensuring that arguments are logically cohesive, thoroughly structured, and incorporate critical elements such as early signals, feedback loops, game theory insights, and dynamic probability updates. Continuously applies insights from previously solved tasks to enhance adaptability and strategic depth.",
+                                    
+                    ReviewerRoleName = "StrategicEvaluator",
+                    ReviewerRoleDescription = "Conducts a rigorous evaluation of the final strategic analysis, ensuring it fully aligns with the Aletheia framework by incorporating early signals, feedback loops, game theory insights, and dynamic probability refinements. Verifies that the analysis is comprehensive, adaptable, and thoroughly prepared to guide effective strategic decision-making.",
+                                        
+                    WriterInstructions = "You are a StrategicArchitect (Aletheia) responsible for conducting deep, insightful analyses that leverage transfer learning, early signal detection, feedback loop mapping, dynamic probability refinement, and game theory principles. " +
+                                         "Your goal is to produce top-tier, domain-agnostic strategic analyses that remain adaptable and predictive. " +
+                                         "Create a coherent analysis that identifies key signals, outlines feedback loops, considers agent incentives, and continuously refines probability estimates to guide strategic decision-making.",
+                    
+                    EditorInstructions = "You are a StrategicRefiner responsible for enhancing the Aletheia analysis. " +
+                                         "Focus on coherence, clear argument structures, and thorough integration of game theory, early signal detection, feedback loop analysis, and dynamic probability refinement. " +
+                                         "Draw on insights from previously solved tasks to create a more adaptable, domain-agnostic strategy.",
+                    
+                    ReviewerInstructions = "You are a StrategicEvaluator who ensures the final analysis meets Aletheia standards. " +
+                                           "Check for clarity, depth, precision, and adaptability. Confirm that early signals, feedback loops, game theory considerations, and dynamic probability refinement are properly integrated. " +
+                                           "Approve only if the analysis is comprehensive, coherent, and ready for strategic decision-making.",
+                    
+                    TerminationPrompt = """
+                        Determine if the strategic analysis meets Aletheia standards. If it does, respond with a single word: yes.
+
+                        History:
+                        {{$history}}
+                        """,
+                    
+                    WriterTemperature = 0.7,
+                    WriterTopP = 0.7,
+                    EditorTemperature = 0.5,
+                    EditorTopP = 0.5,
+                    ReviewerTemperature = 0.1,
+                    ReviewerTopP = 0.1,
+                    MaxTokens = 100
+                }
             }
 
         };

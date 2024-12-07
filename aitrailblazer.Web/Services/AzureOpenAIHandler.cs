@@ -1382,8 +1382,8 @@ namespace AITrailblazer.net.Services
                     SubComponents = new List<ComponentModel>
                     {
                         new ComponentModel { Id = "AIStrategiX", Icon = new Icons.Regular.Size20.Chess() },
-                        new ComponentModel { Id = "AIInSightOut", Icon = new Icons.Regular.Size20.BuildingLighthouse() }
-                    }
+                        new ComponentModel { Id = "AIInSightOut", Icon = new Icons.Regular.Size20.BuildingLighthouse() },
+                        new ComponentModel { Id = "AIAletheia", Icon = new Icons.Regular.Size20.FlashSparkle() }  }
                 },
                 new ComponentModel
                 {
@@ -2720,7 +2720,7 @@ namespace AITrailblazer.net.Services
         {
 
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
-            string modelId = "gpt-4o-mini";
+            string modelId = "gpt-4o";//gpt-4o-mini
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
 
             //kernelBuilder.Plugins.AddFromType<TimeInformation>();

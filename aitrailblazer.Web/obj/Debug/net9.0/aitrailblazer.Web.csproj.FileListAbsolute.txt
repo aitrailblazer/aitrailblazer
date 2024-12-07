@@ -413,3 +413,6 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/win2gt64sq-pu9hn1jugj.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/2eo5x2mpjh-dwk6czdzfo.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/miv2iv0y6j-cluyrubnio.gz
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIAletheiaWriter.prompty
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIAletheiaEditor.prompty
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AgentAIAletheiaReviewer.prompty
