@@ -360,7 +360,7 @@
                                             <FluentCard MinimalStyle="false" Width="100%" Height="100%" style="overflow-y: auto;">
                                             @if (isShowFullAgentsChatThreadVisible && ChatMessages != null && ChatMessages.Any())
                                             {    
-                                                <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
+                                                <div style="max-height:100%; overflow-y:auto; padding:10px 10px 200px 10px; margin-bottom:40px;">
 
                                                     <!-- Displaying the chat content -->
                                                     <FluentIcon Value="@(new Icons.Regular.Size20.Chat())" Color="@Color.Neutral" Slot="start" />
@@ -376,7 +376,7 @@
                                                                     @if (currentAuthor == agentSettings.WriterRoleName)
                                                                     {
                                                                         <FluentIcon Value="@(new Icons.Regular.Size20.PenSparkle())" Color="@Color.Accent" Slot="start" />
-                                                                        <span id="@($"message-{currentAuthor}")" style="color:#1a73e8; font-size:17px;">
+                                                                           <span id="@($"message-{currentAuthor}")" style="color:#1a73e8; font-size:17px;">
                                                                             @agentSettings.WriterRoleName
                                                                         </span>
                                                                         <FluentTooltip Anchor="@($"message-{currentAuthor}")" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
@@ -421,10 +421,9 @@
                                             }
                                             else
                                             {
-                                                <div style="max-height:100%; overflow-y:auto; padding: 10px; margin-bottom:40px;">
-                                                    @((MarkupString)ConvertMarkdownToHtml(PanelOutput))
+                                                <div style="max-height:100%; overflow-y:auto; padding:10px 10px 200px 10px; margin-bottom:40px;">
+                                                          @((MarkupString)ConvertMarkdownToHtml(PanelOutput))
                                                 </div>
-
                                                 @if (!string.IsNullOrWhiteSpace(extractedReferenceLink))
                                                 {
                                                     <div style="margin-bottom: 10px; text-align: right;">
