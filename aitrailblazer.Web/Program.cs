@@ -96,7 +96,7 @@ string chatContainerName ="chat";
 string cacheContainerName ="cache";
 string productContainerName= "products";
 string organizerContainerName= "organizer";
-string knowledgeBaseContainerName= "rag";
+string knowledgeBaseContainerName= "raghybrid"; // rag
 
 string productDataSourceURI = "https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-vectorized/product-text-3-large-1536.json";
 

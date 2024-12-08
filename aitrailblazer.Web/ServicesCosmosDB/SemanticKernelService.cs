@@ -309,6 +309,9 @@ Knowledge base context is provided below:
 
             // Append the reference link and page number to the completion
             string formattedReference = $"\n\nReference: [{contextData.ReferenceDescription}]({contextData.ReferenceLink}){pageNumber}";
+            //"referenceLink": "2e58c7ce-9814-4e3d-9e88-467669ba3f5c/8f22704e-0396-4263-84a7-63310d3f39e7/Documents/Default/semantickernel.pdf#page=13",
+            _logger.LogInformation("GetRagKnowledgeBaseCompletionAsync formattedReference ", formattedReference);
+
             completion += formattedReference;
 
             _logger.LogInformation("Generated response successfully with {Tokens} tokens.", completionTokens);

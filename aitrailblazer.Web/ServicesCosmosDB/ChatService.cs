@@ -589,13 +589,17 @@ namespace Cosmos.Copilot.Services
                 float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
                 _logger.LogDebug("Embeddings generated for the prompt.");
 
+                // Generate keywords from promptText
+                string[] searchTerms = GenerateKeywords(promptText);
+
                 // Search for the closest knowledge base item
                 KnowledgeBaseItem? closestItem = await _cosmosDbService.SearchKnowledgeBaseAsync(
                     vectors: promptVectors,
                     tenantId: tenantId,
                     userId: userId,
                     categoryId: categoryId,
-                    similarityScore: similarityScore);
+                    similarityScore: similarityScore,
+                    searchTerms: searchTerms);
 
                 if (closestItem == null)
                 {
@@ -622,6 +626,21 @@ namespace Cosmos.Copilot.Services
                 _logger.LogError(ex, "Error generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
                 throw;
             }
+        }
+        private string[] GenerateKeywords(string promptText)
+        {
+            if (string.IsNullOrWhiteSpace(promptText))
+                throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
+
+            // Tokenize the text: Split into words by common delimiters
+            var keywords = promptText
+                .Split(new[] { ' ', ',', '.', ';', ':', '\n', '\t', '!', '?' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(word => word.Trim().ToLowerInvariant()) // Normalize to lowercase
+                .Distinct() // Remove duplicates
+                .Where(word => word.Length > 2) // Exclude very short words
+                .ToArray();
+
+            return keywords;
         }
 
         /// <summary>

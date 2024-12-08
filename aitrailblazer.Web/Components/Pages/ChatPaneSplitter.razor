@@ -423,16 +423,16 @@
                                             {
                                                 <div style="max-height:100%; overflow-y:auto; padding:10px 10px 200px 10px; margin-bottom:40px;">
                                                           @((MarkupString)ConvertMarkdownToHtml(PanelOutput))
-                                                </div>
-                                                @if (!string.IsNullOrWhiteSpace(extractedReferenceLink))
-                                                {
-                                                    <div style="margin-bottom: 10px; text-align: right;">
-                                                        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => OpenPdfAsync(extractedReferenceLink, extractedPageFragment))">
-                                                            @(!string.IsNullOrWhiteSpace(extractedFileName) ? extractedFileName : "PDF")
-                                                        </FluentButton>
-                                                    </div>
-                                                }
 
+                                                    @if (!string.IsNullOrWhiteSpace(extractedReferenceLink))
+                                                    {
+                                                        <div style="margin-bottom: 10px; text-align: right;">
+                                                            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => OpenPdfAsync(extractedReferenceLink, extractedPageFragment))">
+                                                                @(!string.IsNullOrWhiteSpace(extractedFileName) ? extractedFileName : "PDF")
+                                                            </FluentButton>
+                                                        </div>
+                                                    }
+                                                </div>
 
                                             }
                                             </FluentCard>
