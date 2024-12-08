@@ -1131,16 +1131,15 @@ SELECT TOP 100 c.text, c.abstract
 */
             // Append ORDER BY RANK clause with RRF function
             //queryText += " ORDER BY RANK RRF(VectorDistance(c.vectors, @vectors), FullTextScore(c.content, ['semantic', 'kernel']))";
-            //queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-            queryText += " ORDER BY RANK RRF(FullTextScore(c.text, ['Las', 'Vegas']),VectorDistance(c.vectors, @vectors))";
-
+            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+            //queryText += " ORDER BY RANK RRF(FullTextScore(c.text, ['Las', 'Vegas']),VectorDistance(c.vectors, @vectors))";
 
             // ORDER BY RANK RRF(VectorDistance(c.vector, [1,2,3]), FullTextScore(c.text, ["text", "to", "search", "goes" ,"here])
             // Set up a query definition with parameters
 
             _logger.LogInformation($"SearchKnowledgeBaseAsync queryText: {queryText}");
 
-            var queryDef = new QueryDefinition(queryText1)
+            var queryDef = new QueryDefinition(queryText)
                 .WithParameter("@vectors", vectors)
                 .WithParameter("@tenantId", tenantId)
                 .WithParameter("@userId", userId);
