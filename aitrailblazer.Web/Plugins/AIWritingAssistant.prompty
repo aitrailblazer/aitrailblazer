@@ -70,26 +70,153 @@ While the target output should aim for a maximum of {{maxTokens}}, the system ca
 
 Examples with Different Token Limits:
 
-1024 Tokens:
-Aim for comprehensive responses that cover complex topics in detail, ensuring thorough exploration and explanation.
+Input 1024 Tokens:
+---
+ASAP is a no-code multi-tenant  multi-agent AI platform for automating daily, time-consuming workflows.Imagine AI saving you 2 hours per day
+There are 260 workdays in a year.
+The total hours saved in a year: 
+2 hours x 260 days = 520 hours per year.
+The total hours saved in workdays: 
+520 hours ÷ 8 hours/day = 65 workdays.
+If AI saves you 2 hours per day, it saves you approximately 
+65 workdays per year!
 
-512 Tokens:
-Provide detailed responses that balance depth and conciseness, suitable for moderately complex topics.
+You can focus on new ideas, new skills, new customers, or increasing billable hours—the possibilities are endless!
+ASAP Knowledge Navigator: Azure OpenAI/ML ChatBot with Retrieval-Augmented Generation (RAG)
+Enhance efficiency and simplify data engagement with ASAP’s advanced RAG system!
+ASAP Knowledge Navigator combines interactive GPT chat and advanced AI features within a strong Azure cloud framework for intelligent knowledge management. It excels in managing diverse data formats with unmatched precision
+Learn More about Azure OpenAI/ML ChatBot with RAG
+ASAP Knowledge Navigator OpenAPI for Azure Kubernetes Service (AKS)
+Don’t let Infrastructure complexity slow you down!  Leave backend challenges behind! 
+ASAP Knowledge Navigator OpenAPI is a cloud-based, AI-powered, versatile and high-performance platform designed to accelerate the development and deployment of Knowledge Management applications.  
+RAG: Enhancing Efficiency and Cutting Costs in Knowledge Management
+RAG offers a quicker and more cost-effective solution compared to retraining a model with new datasets.  It also allows users to easily switch out sources as needed.
+In fact, any organization can transform its documents, technical guides, policy manuals, and AI chat logs into knowledge bases that improve LLMs. These resources can support various applications, including customer service, employee training, and boosting developer efficiency.
+AIWritingAssistant
+Advanced AI tool for business communications, documentation, and professional and creative writing.
+With over 50 writing settings and limitless combinations, AIWriting Assistant offers unparalleled customization to meet your unique writing needs.   
 
-256 Tokens:
-Deliver concise yet informative responses, focusing on key points and essential information.
 
-128 Tokens:
-Craft succinct responses that highlight the most critical aspects of the topic, ideal for quick overviews.
+How is ASAP giving professionals back their time?
+ASAP Is a No-Code Solution. All you need to do is provide your instructions in natural language to the AI agent. 
+ASAP Is a Multi-Agent Platform. By utilizing multiple AI agents, ASAP eliminates the need for complex prompts, coding, and API integrations.
 
-64 Tokens:
-Generate brief responses that capture the essence of the topic, suitable for summaries or highlights.
+ASAP Automates Complex Workflows. It can handle a wide range of workflows, from client status updates and information gathering to coding and reporting, significantly reducing the time spent on repetitive tasks. Each AI agent acts as a specialized expert, focusing on specific tasks. This results in coordinated, faster, and more efficient automation, maximizing performance and productivity.
 
-32 Tokens:
-Create very short responses that convey a single idea or concept effectively.
+Smart User Interface. With ASAP’s smart UI—a mix of command-based and intent-based elements—you’ll find it adapts to your behavior in real time. This minimizes the need for manual intervention and saves you time. Plus, you can easily customize each workflow to meet specific goals—all with just a click—no prompting required.
 
-16 Tokens:
-Formulate minimal responses that deliver a clear, concise message or answer.
+Settings. You can also use diverse settings to tailor the agent for specific objective, writing style, length, audience, and more.
+Why ASAP?
+
+ASAP is a cornerstone of modern businesses, where automation and integration work hand in hand:
+Cutting-edge AI Agents: ASAP's AI agents are specifically designed to automate recurring, time-consuming workflows autonomously, drastically reducing the need for human involvement in routine processes.  Learn more
+No-code AI Solution: ASAP automatically generates the code needed for sophisticated multi-agent collaboration, streamlining the process and eliminating the need for users to code, write complex prompts, or integrate APIs.
+Integrated with Microsoft Graph: ASAP leverages Microsoft Graph’s API, allowing users to access data from a wide range of Microsoft services, including Outlook, Teams, OneDrive, and more. This integration results in more seamless, efficient, and intelligent solutions for businesses.
+Security and Privacy: ASAP streamlines and simplifies workflows while keeping your information private, secure, and compliant. ASAP’s GenAI agents are hosted in a highly secure Microsoft Azure environment, ensuring that your inputs and outputs are not used to improve any LLM models or third-party services, including those of AITrailblazer.
+---
+
+Output: 512 tokens. CORRECT:
+---
+ASAP is revolutionizing the way professionals manage their time by offering a no-code, multi-agent AI platform designed to automate tedious workflows. By saving users approximately 2 hours daily, or 65 workdays annually, ASAP allows professionals to redirect their focus towards innovation and productivity. The platform's advanced features include the ASAP Knowledge Navigator with Retrieval-Augmented Generation (RAG), which enhances efficiency in knowledge management by simplifying data engagement through Azure OpenAI/ML ChatBot capabilities.
+
+ASAP's cloud-based infrastructure supports seamless development and deployment of applications via its OpenAPI for Azure Kubernetes Service (AKS). This reduces backend complexities and facilitates quicker adaptation to new data sources without retraining models. Organizations can transform various documents into robust knowledge bases, benefiting customer service, employee training, and developer efficiency.
+
+The AIWritingAssistant tool further elevates business communications with over 50 customizable settings tailored to specific writing needs. With ASAP’s smart user interface, users experience real-time adaptability that minimizes manual intervention while allowing easy workflow customization—all without coding expertise.
+
+Incorporating Microsoft Graph integration ensures access to diverse Microsoft services like Outlook and Teams for enhanced business solutions. Prioritizing security and privacy, ASAP operates within a secure Microsoft Azure environment, safeguarding user data from being utilized for model improvements or third-party services.
+
+Ultimately, ASAP stands as a cornerstone of modern businesses by automating routine processes with cutting-edge AI agents—streamlining operations while ensuring information security and compliance.
+---
+
+Output: 256 tokens. CORRECT:
+---
+ASAP is revolutionizing the way professionals manage their time by offering a no-code, multi-agent AI platform designed to automate tedious daily workflows. By saving users approximately 2 hours each day, ASAP effectively grants them an additional 65 workdays per year to focus on innovation, skill development, and client engagement.
+
+The platform's standout feature is its ability to handle complex tasks through specialized AI agents without requiring intricate prompts or coding knowledge. This simplifies processes like client updates, data collection, and reporting. The integration with Microsoft Graph enhances its capabilities by providing seamless access to various Microsoft services.
+
+ASAP’s smart user interface adapts in real-time to user behavior, minimizing manual input and allowing easy customization of workflows. Security remains a top priority as all operations are conducted within a secure Azure environment.
+
+Overall, ASAP empowers businesses by streamlining operations and safeguarding data while significantly boosting productivity through advanced automation solutions.
+---
+
+Output: 128 tokens ERROR: it is cut off:
+---
+ASAP is revolutionizing the professional landscape by offering a no-code, multi-agent AI platform that automates time-consuming workflows. By saving professionals up to 2 hours daily, ASAP effectively returns approximately 65 workdays per year. This allows users to focus on innovation, skill development, and client engagement.
+
+The platform features the ASAP Knowledge Navigator with Retrieval-Augmented Generation (RAG), which enhances data management efficiency within Azure's robust framework. It simplifies complex infrastructures through its OpenAPI for Azure Kubernetes Service (AKS), enabling rapid knowledge management application deployment.
+
+ASAP’s smart user interface adapts in real-time to user behavior, reducing manual
+---
+
+Output: 128 tokens. CORRECT:
+---
+ASAP is revolutionizing the professional landscape by offering a no-code, multi-agent AI platform that automates time-consuming workflows. By saving professionals up to 2 hours daily, ASAP effectively returns approximately 65 workdays per year. This allows users to focus on innovation, skill development, and client engagement.
+
+The platform features the ASAP Knowledge Navigator with Retrieval-Augmented Generation (RAG), which enhances data management efficiency within Azure's robust framework. It simplifies complex infrastructures through its OpenAPI for Azure Kubernetes Service (AKS), enabling rapid knowledge management application deployment.
+---
+
+Output: 64 tokens ERROR: it is cut off:
+---
+ASAP is revolutionizing professional workflows by offering a no-code, multi-agent AI platform that automates daily tasks, saving users approximately 65 workdays per year. This allows professionals to focus on innovation and skill development. ASAP's Knowledge Navigator enhances data management with Azure OpenAI/ML ChatBot and RAG, stream
+---
+
+Output: 64 tokens. CORRECT:
+---
+ASAP is revolutionizing professional workflows by offering a no-code, multi-agent AI platform that automates daily tasks, saving users approximately 65 workdays per year. This allows professionals to focus on innovation and skill development.
+---
+
+Output: 64 tokens ERROR: it is cut off:
+---
+ASAP is a no-code, multi-agent AI platform that automates daily workflows, saving professionals about 65 workdays per year. It allows users to focus on innovation and skill development by handling tasks like client updates and data collection without coding. The ASAP Knowledge Navigator enhances data management with Azure OpenAI/ML ChatBot
+---
+
+Output: 64 tokens. CORRECT:
+---
+ASAP is a no-code, multi-agent AI platform that automates daily workflows, saving professionals about 65 workdays per year. It allows users to focus on innovation and skill development by handling tasks like client updates and data collection without coding. 
+---
+
+Output: 32 tokens ERROR: it is cut off:
+---
+ASAP is revolutionizing professional workflows by automating time-consuming tasks with its no-code, multi-agent AI platform. By saving 2 hours daily, it gives
+---
+
+Output: 32 tokens. CORRECT:
+---
+ASAP is revolutionizing professional workflows by automating time-consuming tasks with its no-code, multi-agent AI platform. 
+---
+
+Output: 32 tokens ERROR: it is cut off:
+---
+ASAP is a no-code AI platform that automates workflows, saving professionals about 65 workdays annually. It allows users to focus on innovation and skill development
+---
+
+Output: 32 tokens. CORRECT:
+---
+ASAP is a no-code AI platform that automates workflows, saving professionals about 65 workdays annually. 
+---
+
+Output: 16 tokens ERROR: it is cut off:
+---
+ASAP revolutionizes professional workflows by saving 2 hours daily, translating to
+---
+
+Output: 16 tokens. CORRECT:
+---
+ASAP revolutionizes professional workflows by saving 2 hours daily.
+---
+
+
+Output: 16 tokens ERROR: it is cut off:
+---
+ASAP is a no-code AI platform that automates daily workflows, saving professionals
+---
+
+Output: 16 tokens. CORRECT:
+---
+ASAP is a no-code AI platform that automates daily workflows.
+---
+
+At the end check if the output is full sentence and if it makes sense. If not, generate a new response.
 
 user:
 - context: {{context}}
