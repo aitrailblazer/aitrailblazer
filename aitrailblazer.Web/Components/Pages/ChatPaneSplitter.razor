@@ -1429,9 +1429,10 @@
 
                 // If the PanelOutput contains JSON, deserialize it into ChatMessages
                 bool isJson = false;
+                JToken token = null;
                 try
                 {
-                    JToken.Parse(PanelOutput);
+                    token = JToken.Parse(PanelOutput);
                     isJson = true;
                 }
                 catch (JsonReaderException)
@@ -1439,19 +1440,34 @@
                     isJson = false;
                 }
 
-                if (isJson)
-                {
-                    ChatMessages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
-
-                    if (agentSettings != null && ChatMessages != null && ChatMessages.Any())
+                if (isJson && token != null)
                     {
-                        string writerContent = ChatMessages
-                            .LastOrDefault(m => m.Author == agentSettings.WriterRoleName || m.Author == agentSettings.EditorRoleName)
-                            ?.Content ?? "No message from CopyWriter found.";
+                        if (token.Type == JTokenType.Array)
+                        {
+                            // The JSON is an array, so we can directly deserialize to a List<ChatMessageM>
+                            ChatMessages = JsonConvert.DeserializeObject<List<ChatMessageM>>(PanelOutput);
+                        }
+                        else if (token.Type == JTokenType.Object)
+                        {
+                            // The JSON is a single object. Let's try to deserialize it as a single ChatMessageM.
+                            // If your scenario expects multiple messages, handle differently as needed.
+                            var singleMessage = JsonConvert.DeserializeObject<ChatMessageM>(PanelOutput);
+                            if (singleMessage != null)
+                            {
+                                ChatMessages = new List<ChatMessageM> { singleMessage };
+                            }
+                        }
 
-                        PanelOutput = FormatProminentWriterContent(writerContent);
+                        // If deserialization succeeded and we have ChatMessages
+                        if (agentSettings != null && ChatMessages != null && ChatMessages.Any())
+                        {
+                            string writerContent = ChatMessages
+                                .LastOrDefault(m => m.Author == agentSettings.WriterRoleName || m.Author == agentSettings.EditorRoleName)
+                                ?.Content ?? "No message from CopyWriter found.";
+
+                            PanelOutput = FormatProminentWriterContent(writerContent);
+                        }
                     }
-                }
             }
             else
             {
