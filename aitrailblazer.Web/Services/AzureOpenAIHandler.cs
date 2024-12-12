@@ -23,7 +23,7 @@ using Microsoft.SemanticKernel.Data;
 using Microsoft.SemanticKernel.Plugins.Web.Bing;
 using Microsoft.SemanticKernel.Plugins.Core;
 using Microsoft.SemanticKernel.PromptTemplates.Handlebars;
-
+using Microsoft.ML.Tokenizers;
 using System.ComponentModel;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.TypeChat;
@@ -855,8 +855,22 @@ namespace AITrailblazer.net.Services
             // Generate embeddings for new messages if not a cache hit
             if (!cacheHit)
             {
-                // _logger.LogInformation("Generating embeddings for the new message.");
-                completedChatMessage.Vectors = await _semanticKernelService.GetEmbeddingsAsync($"{userInput}\n\n{panelInput}");
+                var combinedInput = $"{userInput}\n\n{panelInput}";
+
+                // Check if totalTokenCount exceeds the limit
+                const int MaxTokenLimit = 8192; // Model's max token limit
+                const int ReservedTokens = 500; // Reserved tokens for response
+                const int MaxPromptTokens = MaxTokenLimit - ReservedTokens;
+
+                if (totalTokenCount > MaxPromptTokens)
+                {
+                    Console.WriteLine($"Input exceeds max token limit. Truncating input to {MaxPromptTokens} tokens.");
+
+                    // Use TiktokenTokenizer for truncation
+                    combinedInput = TruncateInputUsingTiktokenTokenizer(combinedInput, MaxPromptTokens);
+                }
+
+                completedChatMessage.Vectors = await _semanticKernelService.GetEmbeddingsAsync(combinedInput);
             }
 
             // _logger.LogInformation("Upserting the thread and message to the database. ThreadId: {ThreadId}", thread.ThreadId);
@@ -872,6 +886,29 @@ namespace AITrailblazer.net.Services
             // _logger.LogInformation("Chat message successfully saved. ThreadId: {ThreadId}, Title: {Title}", thread.ThreadId, requestTitle);
         }
 
+        /// <summary>
+        /// Truncates the input string to fit within the maximum token limit using TiktokenTokenizer.
+        /// </summary>
+        /// <param name="input">The input string to truncate.</param>
+        /// <param name="maxTokens">The maximum number of tokens allowed.</param>
+        /// <returns>Truncated input string.</returns>
+        private string TruncateInputUsingTiktokenTokenizer(string input, int maxTokens)
+        {
+            // Estimate the number of tokens by dividing the character count by 4
+            int estimatedTokenCount = input.Length / 4;
+
+            // Check if the estimated token count exceeds the maxTokens limit
+            if (estimatedTokenCount > maxTokens)
+            {
+                // Calculate the maximum number of characters that fit within the maxTokens limit
+                int maxChars = maxTokens * 4;
+
+                // Truncate the input string to the maximum number of characters
+                return input.Substring(0, maxChars);
+            }
+
+            return input; // Return the original input if it's within the token limit
+        }
 
         public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsyncOLD(
             bool isNewThread,
