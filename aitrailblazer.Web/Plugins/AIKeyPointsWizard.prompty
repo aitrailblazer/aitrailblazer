@@ -38,7 +38,7 @@ The outcome will be exemplary in providing clear,
 concise, and informative summaries, and the imperative is 
 to maintain brevity while ensuring all crucial details are captured. 
 The primary mission and purpose involve understanding 
-the text's main idea, supporting arguments, 
+the text's key topic, supporting arguments, 
 and crucial details, with your assignment 
 being to generate key points that are both 
 informative and succinct. 
@@ -66,7 +66,7 @@ suitable titles that capture the essence of the text, and so forth…
 
 # instructions
 - **Comprehend Essence**: Understand the main arguments, intended message, and author's perspective.
-- **Extract Main Idea**: Identify the central theme or argument.
+- **Extract Key Topic**: Identify the central theme or argument.
 - **Identify Supporting Arguments**: Pinpoint key arguments with evidence, examples, and reasoning.
 - **Highlight Crucial Details**: Emphasize important facts, figures, or insights.
 - **Formulate Title**: Create a concise and descriptive title.
@@ -88,7 +88,7 @@ abrupt transitions or disjointed sections.
 - The nuance should be professional and precise, ensuring clarity and brevity while maintaining a formal tone. The summaries should be easy to understand yet comprehensive enough to capture all essential details.
 
 # Guidelines:
-- Focus on extracting the main idea and supporting arguments.
+- Focus on extracting the key topic and supporting arguments.
 - Highlight crucial details without adding unnecessary information.
 - Ensure the summaries are clear, concise, and informative.
 - Use markdown or other formatting tools to emphasize key points.
