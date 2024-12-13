@@ -26,6 +26,33 @@ Elevate your internal communications with our advanced AI tool. This guide will 
 - Examine the generated memo for content, style, and appropriateness.
 - Use the refinement options if needed (see "Refining Your Memo" below).
 
+## Detailed Structure for Internal Memos
+
+### Header
+- **To:** Name(s) of the recipient(s)
+- **From:** Your name and position
+- **Date:** The date the memo is being sent
+- **Subject:** A brief, clear statement of the memo's purpose
+
+### Introduction
+- A concise opening that states the purpose of the memo. This could be an announcement, a request for action, or an update.
+
+### Body
+- Detailed information relevant to the subject. This section can include:
+  - Background information or context
+  - Specific details or instructions
+  - Any necessary data or statistics
+  - Potential implications or actions required
+
+### Conclusion
+- A summary of key points or a call to action, if applicable. This might also include deadlines or next steps.
+
+### Attachments (if any)
+- Mention any documents attached for further reference.
+
+### Contact Information
+- Your contact details for any follow-up questions.
+
 ## Advanced Features
 
 ### Customizing Your Memo
