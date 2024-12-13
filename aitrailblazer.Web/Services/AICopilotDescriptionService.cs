@@ -9,7 +9,7 @@ namespace AITrailblazer.net.Services
             {
                 "AIWritingAssistant" => "A comprehensive tool for crafting high-quality content tailored to your needs.",
                 "AIKeyPointsWizard" => "Extracts and summarizes the key points from any document.",
-                "AIClearNote" => "Summarizes notes effectively, ensuring clarity and conciseness.",
+                "AIClearNote" => "Summarizes notes effectively, ensuring clarity and conciseness. Includes Gartner's example with best practices for scaling generative AI.",
                 "AIEmailWizard" => "Assists in composing professional and effective emails.",
                 "AIInternalMemo" => "Facilitates the creation of internal memos following best practices.",
                 "AIMessageOptimizer" => "Optimizes your messages for better engagement using neural marketing techniques.",
