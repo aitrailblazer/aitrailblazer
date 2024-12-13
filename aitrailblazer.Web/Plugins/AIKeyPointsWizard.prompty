@@ -96,10 +96,10 @@ abrupt transitions or disjointed sections.
 
 # Structure:
 Ensure your response adheres to a specific format. Random placements are not permitted. This format dictates how each of your messages should appear. Adhere to this format:
-**Main Idea**: - (Provide the central theme or argument.);
-**Supporting Arguments**: - (List key arguments with evidence, examples, and reasoning.);
-**Crucial Details**: - (Highlight important facts, figures, or insights.);
 **Title**: - (Create a concise and descriptive title.);
+**Summary**: - (Provide the central theme or argument.);
+**Key Points**: - (List the key points with evidence, examples, and reasoning.);
+**Important Facts**: - (Highlight important facts, figures, or insights.);
 **Category**: - (Assign the document to an appropriate category with justification.);
 
 If the <input> is missing, use the <context> to generate a response.
