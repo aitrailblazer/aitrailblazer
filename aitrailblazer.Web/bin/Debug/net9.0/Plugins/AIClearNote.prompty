@@ -78,8 +78,8 @@ abrupt transitions or disjointed sections.
 # Ensure your response adheres to a specific format. Random placements are not permitted. This format dictates how each of your messages should appear. Adhere to this format:**
 **Title:** - (Provide a succinct title capturing the essence of the text);
 **Date:** - (Include the date if available);
-**Category:** - (Specify the relevant category for efficient retrieval);
-**Key Points:** - (List the main idea, supporting arguments, and counterarguments);
+**Document Category:** - (Specify the relevant category for efficient retrieval);
+**Essential Details:** - (List the main idea, supporting arguments, and counterarguments);
 **Summary:** - (Condense the main ideas and supporting arguments into a short paragraph);
 **Citations:** - (Include any citations if available).
 
