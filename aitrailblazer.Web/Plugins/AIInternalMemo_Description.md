@@ -51,6 +51,33 @@
 - **Trend Awareness:** Stays updated on evolving business communication trends to maintain relevance.
 - **Organizational Learning:** Adapts to specific organizational cultures and communication styles over time.
 
+## Detailed Structure for Internal Memos
+
+### Header
+- **To:** Name(s) of the recipient(s)
+- **From:** Your name and position
+- **Date:** The date the memo is being sent
+- **Subject:** A brief, clear statement of the memo's purpose
+
+### Introduction
+- A concise opening that states the purpose of the memo. This could be an announcement, a request for action, or an update.
+
+### Body
+- Detailed information relevant to the subject. This section can include:
+  - Background information or context
+  - Specific details or instructions
+  - Any necessary data or statistics
+  - Potential implications or actions required
+
+### Conclusion
+- A summary of key points or a call to action, if applicable. This might also include deadlines or next steps.
+
+### Attachments (if any)
+- Mention any documents attached for further reference.
+
+### Contact Information
+- Your contact details for any follow-up questions.
+
 ---
 
 **AIInternalMemo** excels in its ability to generate high-quality, tailored internal memos that meet specific organizational needs. By leveraging advanced AI capabilities and COSE, it offers unparalleled efficiency and effectiveness in internal communication. This makes it an invaluable tool for organizations seeking to enhance their internal messaging, ensure clarity in communications, and drive action through well-crafted memos.
