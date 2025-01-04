@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
 using Microsoft.Azure.Cosmos;
 using System.Diagnostics;
-
+using System.Text;
 namespace Cosmos.Copilot.Services
 {
     public class ChatService
@@ -59,27 +59,36 @@ namespace Cosmos.Copilot.Services
             _emailMaxResults = 10;
             _knowledgeBaseMaxResults = 10;
 
-            _logger.LogInformation("ChatService initialized with MaxConversationTokens={MaxConversationTokens}, CacheSimilarityScore={CacheSimilarityScore}, ProductMaxResults={ProductMaxResults}",
-                _maxConversationTokens, _cacheSimilarityScore, _productMaxResults);
+            //_logger.LogInformation("ChatService initialized with MaxConversationTokens={MaxConversationTokens}, CacheSimilarityScore={CacheSimilarityScore}, ProductMaxResults={ProductMaxResults}",
+            //_maxConversationTokens, _cacheSimilarityScore, _productMaxResults);
         }
+        /// <summary>
+        /// Event to propagate status updates to the UI.
+        /// </summary>
+        public event Action<string>? StatusUpdated;
 
+        private void NotifyStatusUpdate(string message)
+        {
+            StatusUpdated?.Invoke(message);
+            _logger.LogInformation(message); // Log status updates
+        }
         /// <summary>
         /// Initializes the ChatService by loading product data.
         /// </summary>
-        public async Task InitializeAsync()
-        {
-            _logger.LogInformation("Initializing ChatService: Loading product data.");
-            try
-            {
-                //await _cosmosDbService.LoadProductDataAsync();
-                _logger.LogInformation("Product data loaded successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to load product data during initialization.");
-                throw;
-            }
-        }
+        //public async Task InitializeAsync()
+        //{
+        //_logger.LogInformation("Initializing ChatService: Loading product data.");
+        //    try
+        //    {
+        //await _cosmosDbService.LoadProductDataAsync();
+        //        _logger.LogInformation("Product data loaded successfully.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Failed to load product data during initialization.");
+        //        throw;
+        //    }
+        //}
 
 
         /// <summary>
@@ -160,7 +169,7 @@ namespace Cosmos.Copilot.Services
             string userId,
             string title)
         {
-            _logger.LogInformation("CreateNewThreadChatAsync started for TenantId={TenantId}, UserId={UserId}, Title={Title}.", tenantId, userId, title);
+            //_logger.LogInformation("CreateNewThreadChatAsync started for TenantId={TenantId}, UserId={UserId}, Title={Title}.", tenantId, userId, title);
 
             try
             {
@@ -173,12 +182,12 @@ namespace Cosmos.Copilot.Services
                 // Ensure that the Thread timestamp is fully initialized
                 Thread.TimeStamp = DateTime.UtcNow;
 
-                _logger.LogDebug("CreateNewThreadChatAsync ThreadChat instance created with Id={ThreadId}.", Thread.ThreadId);
+                //_logger.LogDebug("CreateNewThreadChatAsync ThreadChat instance created with Id={ThreadId}.", Thread.ThreadId);
 
                 // Insert the new Thread into Cosmos DB
                 await _cosmosDbService.InsertThreadChatAsync(tenantId, userId, Thread);
-                _logger.LogInformation("CreateNewThreadChatAsync: New chat Thread successfully inserted into Cosmos DB. ThreadId={ThreadId}, TenantId={TenantId}, UserId={UserId}, Title={Title}.",
-                    Thread.ThreadId, tenantId, userId, title);
+                //_logger.LogInformation("CreateNewThreadChatAsync: New chat Thread successfully inserted into Cosmos DB. ThreadId={ThreadId}, TenantId={TenantId}, UserId={UserId}, Title={Title}.",
+                //    Thread.ThreadId, tenantId, userId, title);
 
                 return Thread;
             }
@@ -209,14 +218,14 @@ namespace Cosmos.Copilot.Services
             PartitionKey partitionKey,
             ThreadChat Thread)
         {
-            _logger.LogInformation("Updating Thread with ID: {Id}", Thread.Id);
+            //_logger.LogInformation("Updating Thread with ID: {Id}", Thread.Id);
             try
             {
                 await _cosmosDbService.UpdateThreadAsync(
                     partitionKey,
                     Thread
                 );
-                _logger.LogInformation("Updated Thread with ID: {Id}.", Thread.Id);
+                //_logger.LogInformation("Updated Thread with ID: {Id}.", Thread.Id);
             }
             catch (Exception ex)
             {
@@ -235,7 +244,7 @@ namespace Cosmos.Copilot.Services
         {
             PartitionKey partitionKey = CosmosDbService.GetPK(tenantId, userId, ThreadId);
 
-            _logger.LogInformation("Renaming chat Thread ThreadId={ThreadId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", ThreadId, newChatThreadName, tenantId, userId);
+            //_logger.LogInformation("Renaming chat Thread ThreadId={ThreadId} to '{NewName}' for TenantId={TenantId}, UserId={UserId}.", ThreadId, newChatThreadName, tenantId, userId);
 
             try
             {
@@ -266,7 +275,7 @@ namespace Cosmos.Copilot.Services
                     Thread
                 );
 
-                _logger.LogInformation("Chat Thread ThreadId={ThreadId} renamed to '{NewName}'.", ThreadId, newChatThreadName);
+                //_logger.LogInformation("Chat Thread ThreadId={ThreadId} renamed to '{NewName}'.", ThreadId, newChatThreadName);
             }
             catch (Exception ex)
             {
@@ -285,7 +294,7 @@ namespace Cosmos.Copilot.Services
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task DeleteMessageAsync(string tenantId, string userId, string ThreadId, string messageId)
         {
-            _logger.LogInformation("Deleting message with ID: {MessageId} in Thread: {ThreadId} for TenantId={TenantId}, UserId={UserId}.", messageId, ThreadId, tenantId, userId);
+            //_logger.LogInformation("Deleting message with ID: {MessageId} in Thread: {ThreadId} for TenantId={TenantId}, UserId={UserId}.", messageId, ThreadId, tenantId, userId);
             try
             {
                 // Validate input parameters
@@ -297,7 +306,7 @@ namespace Cosmos.Copilot.Services
                 // Call the CosmosDbService to delete the message
                 await _cosmosDbService.DeleteMessageAsync(tenantId, userId, ThreadId, messageId);
 
-                _logger.LogInformation("Message with ID: {MessageId} deleted successfully in Thread: {ThreadId}.", messageId, ThreadId);
+                //_logger.LogInformation("Message with ID: {MessageId} deleted successfully in Thread: {ThreadId}.", messageId, ThreadId);
             }
             catch (Exception ex)
             {
@@ -312,7 +321,7 @@ namespace Cosmos.Copilot.Services
         /// </summary>
         public async Task DeleteChatThreadAsync(string tenantId, string userId, string ThreadId)
         {
-            _logger.LogInformation("Deleting chat Thread ThreadId={ThreadId} for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
+            //_logger.LogInformation("Deleting chat Thread ThreadId={ThreadId} for TenantId={TenantId}, UserId={UserId}.", ThreadId, tenantId, userId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
@@ -320,7 +329,7 @@ namespace Cosmos.Copilot.Services
                 ArgumentNullException.ThrowIfNull(ThreadId);
 
                 await _cosmosDbService.DeleteThreadAndMessagesAsync(tenantId, userId, ThreadId);
-                _logger.LogInformation("Chat Thread ThreadId={ThreadId} and its messages deleted successfully.", ThreadId);
+                //_logger.LogInformation("Chat Thread ThreadId={ThreadId} and its messages deleted successfully.", ThreadId);
             }
             catch (Exception ex)
             {
@@ -335,7 +344,7 @@ namespace Cosmos.Copilot.Services
         /// 
         public async Task<List<Message>> GetChatThreadContextWindow(string tenantId, string userId, string ThreadId)
         {
-            _logger.LogInformation("GetChatThreadContextWindow: Fetching context window for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
+            //_logger.LogInformation("GetChatThreadContextWindow: Fetching context window for TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.", tenantId, userId, ThreadId);
             try
             {
                 ArgumentNullException.ThrowIfNull(tenantId);
@@ -348,7 +357,7 @@ namespace Cosmos.Copilot.Services
                     userId,
                     ThreadId);
                 var contextWindow = new List<Message>();
-                _logger.LogInformation("GetChatThreadContextWindow Retrieved {Count} messages for ThreadId={ThreadId}.", allMessages.Count, ThreadId);
+                //_logger.LogInformation("GetChatThreadContextWindow Retrieved {Count} messages for ThreadId={ThreadId}.", allMessages.Count, ThreadId);
 
                 // Start at the end of the list and work backwards
                 for (int i = allMessages.Count - 1; i >= 0; i--)
@@ -364,7 +373,7 @@ namespace Cosmos.Copilot.Services
 
                 // Invert the chat messages to put back into chronological order 
                 contextWindow.Reverse();
-                _logger.LogInformation("GetChatThreadContextWindow: Context window prepared with {Count} messages.", contextWindow.Count);
+                //_logger.LogInformation("GetChatThreadContextWindow: Context window prepared with {Count} messages.", contextWindow.Count);
                 return contextWindow;
             }
             catch (Exception ex)
@@ -381,7 +390,7 @@ namespace Cosmos.Copilot.Services
            string userId,
            string threadId)
         {
-            _logger.LogInformation("Retrieving Thread with ID: {Id} for TenantId={threadId}, UserId={UserId}.", threadId, tenantId, userId);
+            //_logger.LogInformation("Retrieving Thread with ID: {Id} for TenantId={threadId}, UserId={UserId}.", threadId, tenantId, userId);
             try
             {
                 // Call the non-generic GetThreadAsync method from CosmosDbService
@@ -410,11 +419,11 @@ namespace Cosmos.Copilot.Services
            string threadId,
            Message chatMessage)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            var correlationId = Guid.NewGuid();
+            //Stopwatch stopwatch = Stopwatch.StartNew();
+            //var correlationId = Guid.NewGuid();
 
-            _logger.LogDebug("UpsertThreadAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}.",
-                correlationId, tenantId, userId, threadId, chatMessage.Id);
+            //_logger.LogDebug("UpsertThreadAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}.",
+            //correlationId, tenantId, userId, threadId, chatMessage.Id);
 
             try
             {
@@ -425,8 +434,8 @@ namespace Cosmos.Copilot.Services
                 ArgumentNullException.ThrowIfNull(chatMessage, nameof(chatMessage));
 
                 // Retrieve the current Thread from the database
-                _logger.LogDebug("Retrieving Thread from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
-                    correlationId, tenantId, userId, threadId);
+                //_logger.LogDebug("Retrieving Thread from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
+                //correlationId, tenantId, userId, threadId);
 
                 var Thread = await _cosmosDbService.GetThreadAsync(
                     tenantId,
@@ -435,8 +444,8 @@ namespace Cosmos.Copilot.Services
 
                 if (Thread == null)
                 {
-                    _logger.LogWarning("Thread not found. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
-                        correlationId, tenantId, userId, threadId);
+                    //_logger.LogWarning("Thread not found. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
+                    //    correlationId, tenantId, userId, threadId);
                     throw new KeyNotFoundException($"Thread with ID {threadId} does not exist.");
                 }
 
@@ -449,8 +458,8 @@ namespace Cosmos.Copilot.Services
                 // Add the message to the Thread
                 Thread.AddMessage(chatMessage);
 
-                _logger.LogDebug("Thread tokens updated. CorrelationId={CorrelationId}, ThreadId={ThreadId}, NewTotalTokens={NewTotalTokens}.",
-                    correlationId, threadId, Thread.TotalTokenCount);
+                //_logger.LogDebug("Thread tokens updated. CorrelationId={CorrelationId}, ThreadId={ThreadId}, NewTotalTokens={NewTotalTokens}.",
+                //    correlationId, threadId, Thread.TotalTokenCount);
 
                 // Prepare items for batch upsert
                 var itemsToUpsert = new object[]
@@ -459,8 +468,8 @@ namespace Cosmos.Copilot.Services
                     chatMessage   // Upsert the new message
                 };
 
-                _logger.LogDebug("Performing transactional batch upsert. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}.",
-                    correlationId, threadId, chatMessage.Id);
+                //_logger.LogDebug("Performing transactional batch upsert. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}.",
+                //    correlationId, threadId, chatMessage.Id);
 
                 await _cosmosDbService.UpsertThreadBatchAsync(
                     tenantId,
@@ -469,28 +478,28 @@ namespace Cosmos.Copilot.Services
                     itemsToUpsert
                 );
 
-                _logger.LogInformation("Thread and message upserted successfully. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
-                    correlationId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
+                //_logger.LogInformation("Thread and message upserted successfully. CorrelationId={CorrelationId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                //    correlationId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
             }
             catch (CosmosException cosmosEx)
             {
-                stopwatch.Stop();
-                _logger.LogError(cosmosEx, "Cosmos DB error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, StatusCode={StatusCode}, Message={Message}.",
-                    correlationId, tenantId, userId, threadId, chatMessage.Id, cosmosEx.StatusCode, cosmosEx.Message);
+                //stopwatch.Stop();
+                //_logger.LogError(cosmosEx, "Cosmos DB error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, StatusCode={StatusCode}, Message={Message}.",
+                //    correlationId, tenantId, userId, threadId, chatMessage.Id, cosmosEx.StatusCode, cosmosEx.Message);
                 throw;
             }
             catch (Exception ex)
             {
-                stopwatch.Stop();
-                _logger.LogError(ex, "Unexpected error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
-                    correlationId, tenantId, userId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogError(ex, "Unexpected error while upserting Thread and message. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                //    correlationId, tenantId, userId, threadId, chatMessage.Id, stopwatch.ElapsedMilliseconds);
                 throw;
             }
             finally
             {
-                stopwatch.Stop();
-                _logger.LogDebug("UpsertThreadAndMessageAsync completed. CorrelationId={CorrelationId}, ElapsedTimeMs={ElapsedTimeMs}.",
-                    correlationId, stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogDebug("UpsertThreadAndMessageAsync completed. CorrelationId={CorrelationId}, ElapsedTimeMs={ElapsedTimeMs}.",
+                //    correlationId, stopwatch.ElapsedMilliseconds);
             }
         }
 
@@ -501,7 +510,7 @@ namespace Cosmos.Copilot.Services
         {
             // Placeholder implementation for token counting.
             // Implement actual token counting logic as needed.
-            _logger.LogDebug("Calculating tokens for prompt: '{Prompt}'.", userPrompt);
+            //_logger.LogDebug("Calculating tokens for prompt: '{Prompt}'.", userPrompt);
             // Tokenizer _tokenizer = Tokenizer.CreateTiktokenForModel("gpt-3.5-turbo");
             // return _tokenizer.CountTokens(userPrompt);
             return 0;
@@ -520,14 +529,14 @@ namespace Cosmos.Copilot.Services
            string relationSettingsVal,
            string responseStyleVal)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            _logger.LogInformation("Performing semantic search for the closest message for TenantId={TenantId}, UserId={UserId}, FeatureNameProject={FeatureNameProject}.", tenantId, userId, featureNameProject);
+            //Stopwatch stopwatch = Stopwatch.StartNew();
+            //_logger.LogInformation("Performing semantic search for the closest message for TenantId={TenantId}, UserId={UserId}, FeatureNameProject={FeatureNameProject}.", tenantId, userId, featureNameProject);
 
             try
             {
                 // Generate embeddings for the search query
                 var queryVectors = await _semanticKernelService.GetEmbeddingsAsync(searchQuery);
-                _logger.LogInformation("Embeddings generated for the search query.");
+                //_logger.LogInformation("Embeddings generated for the search query.");
 
                 // Define the similarity threshold (adjust as needed)
                 //double similarityScore = 0.9;
@@ -555,138 +564,165 @@ namespace Cosmos.Copilot.Services
                     _logger.LogInformation("No similar message found within the threshold.");
                 }
 
-                stopwatch.Stop();
-                _logger.LogInformation("Semantic search completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogInformation("Semantic search completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
 
                 return closestMessage;
             }
             catch (Exception ex)
             {
-                stopwatch.Stop();
-                _logger.LogError(ex, "Failed to perform semantic search.");
+                //stopwatch.Stop();
+                //_logger.LogError(ex, "Failed to perform semantic search.");
                 throw;
             }
         }
         /// <summary>
-        /// Retrieves a completion based on a user prompt for a knowledge base context, with optional categoryId and context window.
+        /// Retrieves a knowledge base completion based on the provided parameters.
         /// </summary>
-     public async Task<(string completion, string? title)> GetKnowledgeBaseCompletionAsync(
+        /// <param name="tenantId">The tenant ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="categoryId">The category ID.</param>
+        /// <param name="promptText">The prompt text to generate the completion.</param>
+        /// <param name="similarityScore">The similarity score threshold for the completion.</param>
+        /// <returns>A Task representing the asynchronous operation, with a tuple containing the completion and the title.</returns>
+        public async Task<(string completion, string? title)> GetKnowledgeBaseCompletionAsync(
             string tenantId,
             string userId,
             string categoryId,
             string promptText,
-            double similarityScore,
-            List<KnowledgeBaseItem>? contextWindow = null)
+            double similarityScore)
         {
-            // Logging tenant and user details
-            _logger.LogInformation("Generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
-
             try
             {
-                // Ensure necessary parameters are not null
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
+                // Validate inputs
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                if (string.IsNullOrWhiteSpace(promptText))
+                    throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
 
-                // Initialize contextWindow as an empty list if not provided
-                contextWindow ??= new List<KnowledgeBaseItem>();
-
-                // Generate embeddings for the user prompt
+                NotifyStatusUpdate("Generating embeddings for the prompt...");
                 float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
-                _logger.LogDebug("Embeddings generated for the prompt.");
 
-                // Search for similar knowledge base items using embeddings
-                var similarItems = await _cosmosDbService.SearchKnowledgeBaseAsync(
-                    promptVectors,
-                    tenantId,
-                    userId,
-                    categoryId,
-                    _knowledgeBaseMaxResults, // Replace with appropriate max result setting
-                    similarityScore);
+                NotifyStatusUpdate("Embeddings generated. Searching knowledge base...");
+                string[] searchTerms = GenerateKeywords(promptText);
+                List<KnowledgeBaseItem> items = await _cosmosDbService.SearchKnowledgeBaseAsync(
+                    vectors: promptVectors,
+                    tenantId: tenantId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    similarityScore: similarityScore,
+                    searchTerms: searchTerms
+                );
 
-                _logger.LogDebug("Retrieved {Count} similar knowledge base items for RAG completion.", similarItems.Count);
+                if (items == null || !items.Any())
+                {
+                    NotifyStatusUpdate("No similar knowledge base items found.");
+                    return (string.Empty, null);
+                }
 
-                // Extract the title of the top item, if available
-                string? title = similarItems.FirstOrDefault()?.Title;
+                NotifyStatusUpdate($"{items.Count} similar knowledge base items found.");
 
-                // Create a summary for the knowledge base content
-                (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagKnowledgeBaseCompletionAsync(
-                    categoryId: categoryId ?? "", // Use "general" if categoryId is null
-                    contextWindow: contextWindow,
-                    contextData: similarItems,
-                    useChatHistory: false);
+                var completions = new List<string>();
+                foreach (var item in items)
+                {
+                    NotifyStatusUpdate($"Processing item: {item.Title}");
 
+                    var (generatedCompletion, _) = await _semanticKernelService.GetASAPQuick<KnowledgeBaseItem>(
+                        input: promptText,
+                        contextData: item
+                    );
 
-                _logger.LogInformation("Completion generated using Semantic Kernel for knowledge base.");
+                    NotifyStatusUpdate($"Intermediate Completion for {item.Title}: {generatedCompletion}");
+                    completions.Add(generatedCompletion);
+                }
 
-                return (generatedCompletion, title);
+                string combinedCompletion = string.Join("\n\n", completions);
+                NotifyStatusUpdate("Completion generated for all knowledge base items.");
+                return (combinedCompletion, items.First().Title);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+                NotifyStatusUpdate("Error generating knowledge base completion.");
+                _logger.LogError(ex, "Error generating knowledge base completion.");
                 throw;
             }
         }
 
+        private string[] GenerateKeywords(string promptText)
+        {
+            if (string.IsNullOrWhiteSpace(promptText))
+                throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
+
+            // Tokenize the text: Split into words by common delimiters
+            var keywords = promptText
+                .Split(new[] { ' ', ',', '.', ';', ':', '\n', '\t', '!', '?' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(word => word.Trim().ToLowerInvariant()) // Normalize to lowercase
+                .Distinct() // Remove duplicates
+                .Where(word => word.Length > 2) // Exclude very short words
+                .ToArray();
+
+            return keywords;
+        }
         /// <summary>
         /// Retrieves cached response if available.
         /// </summary>
         public async Task<(string cachePrompts, float[] cacheVectors, string cacheResponse)> GetCacheAsync(List<Message> contextWindow)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            _logger.LogInformation("GetCacheAsync: Performing cache search with context window containing {Count} messages.", contextWindow.Count);
+            //Stopwatch stopwatch = Stopwatch.StartNew();
+            //_logger.LogInformation("GetCacheAsync: Performing cache search with context window containing {Count} messages.", contextWindow.Count);
             try
             {
                 // Grab the user prompts for the context window
                 var prompts = string.Join(Environment.NewLine, contextWindow.Select(m => m.Prompt));
-                _logger.LogInformation("GetCacheAsync:Aggregated prompts for cache search: {Prompts}.", prompts);
+                //_logger.LogInformation("GetCacheAsync:Aggregated prompts for cache search: {Prompts}.", prompts);
 
                 // Get the embeddings for the user prompts
                 var vectors = await _semanticKernelService.GetEmbeddingsAsync(prompts);
-                _logger.LogInformation("GetCacheAsync:Embeddings generated for cache search.");
+                //_logger.LogInformation("GetCacheAsync:Embeddings generated for cache search.");
 
                 // Check the cache for similar vectors
                 var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
-                _logger.LogInformation("GetCacheAsync:Cache search completed. CacheResponse='{CacheResponse}'.", response);
+                //_logger.LogInformation("GetCacheAsync:Cache search completed. CacheResponse='{CacheResponse}'.", response);
 
-                stopwatch.Stop();
-                _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
 
                 return (prompts, vectors, response);
             }
             catch (Exception ex)
             {
-                stopwatch.Stop();
-                _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
                 throw;
             }
         }
         public async Task<(string cachePrompts, float[] cacheVectors, string cacheResponse)> GetCacheStringAsync(string contextWindow)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            _logger.LogInformation("GetCacheAsync: Performing cache search with context window.");
+            //Stopwatch stopwatch = Stopwatch.StartNew();
+            //_logger.LogInformation("GetCacheAsync: Performing cache search with context window.");
 
             try
             {
                 // Log the context window
-                _logger.LogInformation("GetCacheAsync: Context window: {ContextWindow}.", contextWindow);
+                //_logger.LogInformation("GetCacheAsync: Context window: {ContextWindow}.", contextWindow);
 
                 // Get the embeddings for the context window
                 var vectors = await _semanticKernelService.GetEmbeddingsAsync(contextWindow);
-                _logger.LogInformation("GetCacheAsync: Embeddings generated for cache search.");
+                //_logger.LogInformation("GetCacheAsync: Embeddings generated for cache search.");
 
                 // Check the cache for similar vectors
                 var response = await _cosmosDbService.GetCacheAsync(vectors, _cacheSimilarityScore);
-                _logger.LogInformation("GetCacheAsync: Cache search completed. CacheResponse='{CacheResponse}'.", response);
+                //_logger.LogInformation("GetCacheAsync: Cache search completed. CacheResponse='{CacheResponse}'.", response);
 
-                stopwatch.Stop();
-                _logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogInformation("GetCacheAsync: Completed in {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
 
                 return (contextWindow, vectors, response);
             }
             catch (Exception ex)
             {
-                stopwatch.Stop();
-                _logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
+                //stopwatch.Stop();
+                //_logger.LogError(ex, "Failed to perform cache search. Elapsed time: {ElapsedMilliseconds} ms.", stopwatch.ElapsedMilliseconds);
                 throw;
             }
         }
@@ -699,7 +735,7 @@ namespace Cosmos.Copilot.Services
             float[] cacheVectors,
             string responseOutput)
         {
-            _logger.LogDebug("Caching completion for prompts: '{Prompts}'.", cachePrompts);
+            //_logger.LogDebug("Caching completion for prompts: '{Prompts}'.", cachePrompts);
             try
             {
                 // Include the user prompts text to view. They are not used in the cache search.
@@ -707,7 +743,7 @@ namespace Cosmos.Copilot.Services
 
                 // Put the prompts, vectors and completion into the cache
                 await _cosmosDbService.CachePutAsync(cacheItem);
-                _logger.LogInformation("Completion cached successfully.");
+                //_logger.LogInformation("Completion cached successfully.");
             }
             catch (Exception ex)
             {
@@ -721,11 +757,11 @@ namespace Cosmos.Copilot.Services
         /// </summary>
         public async Task ClearCacheAsync()
         {
-            _logger.LogInformation("Clearing the semantic cache.");
+            //_logger.LogInformation("Clearing the semantic cache.");
             try
             {
                 await _cosmosDbService.CacheClearAsync();
-                _logger.LogInformation("Semantic cache cleared successfully.");
+                //_logger.LogInformation("Semantic cache cleared successfully.");
             }
             catch (Exception ex)
             {
@@ -742,52 +778,57 @@ namespace Cosmos.Copilot.Services
             string userId,
             string categoryId,
             string promptText,
-            double similarityScore,
-            List<EmailMessage>? contextWindow = null)
+            double similarityScore)
         {
-            // Adjusted logging syntax to remove argument issues
-            _logger.LogInformation("Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+            _logger.LogInformation(
+                "GetEmailCompletionAsync Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}, SimilarityScore={SimilarityScore}, PromptText={PromptText}.",
+                tenantId,
+                userId,
+                categoryId ?? "None",
+                similarityScore,
+                promptText);
 
             try
             {
-                ArgumentNullException.ThrowIfNull(tenantId);
-                ArgumentNullException.ThrowIfNull(userId);
+                // Validate inputs
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
 
-                // Initialize contextWindow as an empty list if not provided
-                contextWindow ??= new List<EmailMessage>();
-
-                // Generate embeddings for the user prompt
+                // Generate embeddings for the prompt
                 float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
-                _logger.LogDebug("Embeddings generated for the prompt.");
+                //_logger.LogDebug("Embeddings generated for the prompt.");
 
-                // Search for similar email messages using embeddings
-                var similarEmails = await _cosmosDbService.SearchEmailsAsync(
-                    promptVectors,
-                    tenantId,
-                    userId,
-                    categoryId,
-                    _emailMaxResults,
-                    similarityScore);
-                _logger.LogDebug("Retrieved {Count} similar emails for RAG completion.", similarEmails.Count);
-                _logger.LogInformation($"SearchEmailsAsync {similarEmails}", similarEmails);
+                // Search for the closest email
+                EmailMessage? closestEmail = await _cosmosDbService.SearchEmailsAsync(
+                    vectors: promptVectors,
+                    tenantId: tenantId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    similarityScore: similarityScore);
 
-                // Extract the subject of the top email, if available
-                string? subject = similarEmails.FirstOrDefault()?.Subject;
+                if (closestEmail == null)
+                {
+                    _logger.LogInformation("No similar emails found.");
+                    return (string.Empty, null);
+                }
 
-                // Create summary for the email
+                //_logger.LogDebug("Found closest email with Subject: {Subject}.", closestEmail.Subject);
+
+                // Generate completion using the found email
+                var contextWindow = new List<EmailMessage> { closestEmail }; // Create context window with the closest email
                 (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagEmailCompletionAsync(
-                    categoryId: categoryId ?? "", // Use "general" if categoryId is null
+                    categoryId: categoryId ?? "",
                     contextWindow: contextWindow,
-                    contextData: similarEmails,
+                    contextData: closestEmail,
                     useChatHistory: false);
 
-                _logger.LogInformation("Completion generated using Semantic Kernel.");
+                //_logger.LogInformation("Email completion generated successfully.");
 
-                return (generatedCompletion, subject);
+                return (generatedCompletion, closestEmail.Subject);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+                _logger.LogError(ex, "Error generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
                 throw;
             }
         }
@@ -806,18 +847,18 @@ namespace Cosmos.Copilot.Services
 
                 // Get the messages for the Thread
                 var messages = await _cosmosDbService.GetThreadMessagesAsync(tenantId, userId, ThreadId);
-                _logger.LogDebug("Retrieved {Count} messages for summarization.", messages.Count);
+                //_logger.LogDebug("Retrieved {Count} messages for summarization.", messages.Count);
 
                 // Create a conversation string from the messages
                 var conversationText = string.Join(" ", messages.Select(m => $"{m.Prompt} {m.Output}"));
-                _logger.LogDebug("Conversation text prepared for summarization.");
+                //_logger.LogDebug("Conversation text prepared for summarization.");
 
                 // Send to OpenAI to summarize the conversation
                 var completionText = await _semanticKernelService.SummarizeConversationAsync(conversationText);
-                _logger.LogInformation("Summarization completed with summary: '{Summary}'.", completionText);
+                //_logger.LogInformation("Summarization completed with summary: '{Summary}'.", completionText);
 
                 await RenameChatThreadAsync(tenantId, userId, ThreadId, completionText);
-                _logger.LogInformation("Chat Thread renamed based on summarization.");
+                //_logger.LogInformation("Chat Thread renamed based on summarization.");
 
                 return completionText;
             }
@@ -827,6 +868,122 @@ namespace Cosmos.Copilot.Services
                 throw;
             }
         }
+        public async Task<(string completion, string? title)> GetKnowledgeBaseStreamingCompletionAsync(
+           string tenantId,
+           string userId,
+           string categoryId,
+           string promptText,
+           double similarityScore)
+        {
+            try
+            {
+                // Validate inputs
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                if (string.IsNullOrWhiteSpace(promptText))
+                    throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
+
+                NotifyStatusUpdate("Generating embeddings for the prompt...");
+                float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
+
+                NotifyStatusUpdate("Embeddings generated. Searching knowledge base...");
+                string[] searchTerms = GenerateKeywords(promptText);
+                List<KnowledgeBaseItem> items = await _cosmosDbService.SearchKnowledgeBaseAsync(
+                    vectors: promptVectors,
+                    tenantId: tenantId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    similarityScore: similarityScore,
+                    searchTerms: searchTerms
+                );
+
+                if (items == null || !items.Any())
+                {
+                    NotifyStatusUpdate("No similar knowledge base items found.");
+                    return (string.Empty, null);
+                }
+
+                NotifyStatusUpdate($"{items.Count} similar knowledge base items found.");
+
+                var completions = new List<string>();
+                foreach (var item in items)
+                {
+                    int currentIndex = items.IndexOf(item) + 1;
+                    NotifyStatusUpdate($"Processing item {currentIndex}/{items.Count}: {item.Title}");
+
+                    string generatedCompletion;
+
+                    try
+                    {
+                        generatedCompletion = await ProcessStreamingItemAsync(promptText, item);
+                        completions.Add(generatedCompletion);
+                        NotifyStatusUpdate($"Finalized Completion for {item.Title}: {generatedCompletion}");
+                    }
+                    catch (Exception streamEx)
+                    {
+                        NotifyStatusUpdate($"Error processing item {item.Title}: {streamEx.Message}");
+                        _logger.LogError(streamEx, "Streaming error for item {Title}", item.Title);
+                        completions.Add($"Error processing item {item.Title}. {streamEx.Message}");
+                    }
+                }
+
+                string combinedCompletion = string.Join("\n\n", completions);
+                NotifyStatusUpdate("Completion generated for all knowledge base items.");
+                return (combinedCompletion, items.First().Title);
+            }
+            catch (Exception ex)
+            {
+                NotifyStatusUpdate("Error generating knowledge base completion.");
+                _logger.LogError(ex, "Error generating knowledge base completion.");
+                throw;
+            }
+        }
+        private async Task<string> ProcessStreamingItemAsync(string promptText, KnowledgeBaseItem item)
+        {
+            StringBuilder completionBuilder = new StringBuilder();
+            StringBuilder currentLineBuilder = new StringBuilder();
+            var finalizedLines = new HashSet<string>(); // Use a HashSet to avoid duplicates
+
+            await foreach (var partialResponse in _semanticKernelService.GetASAPQuickStreaming<KnowledgeBaseItem>(
+                input: promptText,
+                contextData: item))
+            {
+                currentLineBuilder.Append(partialResponse);
+
+                if (partialResponse.Contains("Final response for") || partialResponse.EndsWith("."))
+                {
+                    var finalizedLine = currentLineBuilder.ToString().Trim();
+
+                    // Add to finalized lines if it does not already exist
+                    if (finalizedLines.Add(finalizedLine))
+                    {
+                        NotifyStatusUpdate($"Finalized Line: {finalizedLine}");
+                    }
+
+                    currentLineBuilder.Clear();
+                }
+                else
+                {
+                    // Notify for streaming updates
+                    NotifyStatusUpdate(currentLineBuilder.ToString());
+                }
+
+                completionBuilder.Append(partialResponse);
+            }
+
+            // Add any remaining line
+            if (currentLineBuilder.Length > 0)
+            {
+                var finalizedLine = currentLineBuilder.ToString().Trim();
+                if (finalizedLines.Add(finalizedLine))
+                {
+                    NotifyStatusUpdate($"Finalized Line: {finalizedLine}");
+                }
+            }
+
+            return completionBuilder.ToString();
+        }
+
 
         /// <summary>
         /// Sanitizes the prompt text to prevent logging sensitive information.
@@ -849,11 +1006,11 @@ namespace Cosmos.Copilot.Services
         /// </summary>
         public async Task TestAsync()
         {
-            _logger.LogInformation("Executing TestAsync method.");
+            //_logger.LogInformation("Executing TestAsync method.");
             try
             {
                 await _cosmosDbService.TestAsync();
-                _logger.LogInformation("TestAsync executed successfully.");
+                //_logger.LogInformation("TestAsync executed successfully.");
             }
             catch (Exception ex)
             {

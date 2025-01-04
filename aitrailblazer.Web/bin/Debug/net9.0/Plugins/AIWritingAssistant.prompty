@@ -218,6 +218,8 @@ ASAP is a no-code AI platform that automates daily workflows.
 
 At the end check if the output is full sentence and if it makes sense. If not, generate a new response.
 
+The output should be maximum of {{maxTokens}}. Try to fit it all in. Don't cut
+
 user:
 - context: {{context}}
 - input: {{input}}

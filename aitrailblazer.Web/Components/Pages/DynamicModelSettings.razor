@@ -1,0 +1,37 @@
+@using AITrailblazer.net.Services
+@using AITrailblazer.net.Models
+
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical">
+            
+            <FluentIcon Value="@(new Icons.Regular.Size24.BrainCircuit())" Color="@Color.Accent" Slot="start" />
+         
+            <FluentLabel Typo="Typography.Body" class="status-font-size">LLM Models</FluentLabel>
+        </FluentStack>
+
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" Width="500px">
+            <FluentRadioGroup Required="true" Name="ModelSelection" @bind-Value=SelectedModel @onchange="HandleModelSelectionChange" Style="border: 1px solid var(--accent-fill-rest)" class="menu-font-size">
+                <FluentRadio Id="GPT4o" Value=@("GPT-4o")>GPT-4o</FluentRadio>
+                <FluentTooltip Anchor="GPT4o" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("GPT-4o")</FluentTooltip>
+                <FluentRadio Id="Phi3.5Moe" Value=@("Phi-3.5-Moe")>Phi-3.5-Moe</FluentRadio>
+                <FluentTooltip Anchor="Phi3.5Moe" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Phi-3.5-Moe")</FluentTooltip>
+            </FluentRadioGroup>
+        </FluentStack>
+    </FluentStack>
+</FluentStack>
+
+@code {
+    [Parameter] public string CurrentModelFeatureName { get; set; } = "DynamicModels";
+    [Parameter] public string SelectedModel { get; set; } = ""; // Default model selection
+    [Parameter] public EventCallback<string> OnModelSelectionChange { get; set; }
+
+    private async Task HandleModelSelectionChange(ChangeEventArgs e)
+    {
+        SelectedModel = e.Value.ToString();
+        await OnModelSelectionChange.InvokeAsync(SelectedModel);
+    }
+
+    HorizontalAlignment Horizontal;
+    VerticalAlignment Vertical;
+}

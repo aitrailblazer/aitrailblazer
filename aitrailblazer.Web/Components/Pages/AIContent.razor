@@ -1,4 +1,4 @@
-@page "/AIContent"
+@page "/"
 @rendermode InteractiveServer
 
 @attribute [Authorize]
@@ -398,7 +398,11 @@ else
         </FluentTab>
     </FluentTabs>
 }
-
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
 @code {
     private string DBKey = null;
     public bool showLEFTPane { get; set; } = true;

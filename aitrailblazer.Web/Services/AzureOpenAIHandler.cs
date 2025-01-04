@@ -396,6 +396,7 @@ namespace AITrailblazer.net.Services
            string userInput,
            string tags,
            string masterTextSetting,
+           string SelectedModel,
            string responseLengthVal,
            string creativeAdjustmentsVal,
            string audienceLevelVal,
@@ -406,7 +407,12 @@ namespace AITrailblazer.net.Services
            string existingThreadId)
         {
             var timer = Stopwatch.StartNew();
-            RaiseLogUpdate("Starting submission...");
+            //RaiseLogUpdate("Starting submission...");
+            // string modelId = "gpt-4o";  
+            //string modelId = "gpt-4o";
+            string modelId = "phi-3-5-moe-instruct";
+            RaiseLogUpdate($"Starting submission with {modelId}...");
+
             //_logger.LogInformation(
             //    "HandleSubmitAsync initiated for Feature: {existingThreadId}, Project: {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
             //    existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
@@ -427,6 +433,7 @@ namespace AITrailblazer.net.Services
                 //_logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
 
                 // Process panel input for URLs
+                /*
                 if (ContainsUrl(panelInput))
                 {
                     RaiseLogUpdate("Processing URLs in panel input...");
@@ -440,6 +447,7 @@ namespace AITrailblazer.net.Services
                     RaiseLogUpdate("No URLs detected in panel input. Skipping URL processing.");
                     //_logger.LogInformation("No URLs found in panel input. Skipping URL replacement.");
                 }
+                */
 
                 // Clean inputs
                 string cleanedUserInput = CleanInput(userInput);
@@ -471,7 +479,7 @@ namespace AITrailblazer.net.Services
                 if (IsSearchCacheChecked)
                 {
                     // Determine similarity score
-                    double similarityScore =  0.4;
+                    double similarityScore = 0.4;
                     //  _logger.LogInformation($"HandleSubmitAsync similarity score set to: {similarityScore}");
 
                     RaiseLogUpdate("Performing semantic search for message...");
@@ -525,7 +533,7 @@ namespace AITrailblazer.net.Services
                         RaiseLogUpdate("Search Closest Email Message Response Cache miss: Generating a new response...");
                     }
                 }
-               // Perform semantic search if knowledge base is checked
+                // Perform semantic search if knowledge base is checked
                 if (isMyKnowledgeBaseChecked)
                 {
                     // Determine similarity score
@@ -555,7 +563,7 @@ namespace AITrailblazer.net.Services
                 // Generate new response if cache miss
                 if (!cacheHit)
                 {
-                    RaiseLogUpdate("Generating new response...");
+                    //RaiseLogUpdate("Generating new response...");
                     if (agentSettings != null)
                     {
                         (responseOutput, TokenCounts? tokenUsage) = await HandleSubmitAsyncWriterEditorReviewer(
@@ -572,17 +580,18 @@ namespace AITrailblazer.net.Services
 
                         if (tokenUsage != null)
                         {
-                            inputTokenCount = tokenUsage.PromptTokens;
-                            outputTokenCount = tokenUsage.CompletionTokens;
-                            totalTokenCount = tokenUsage.TotalTokens;
-                            RaiseLogUpdate("Response generated using Writer/Editor/Reviewer.");
+                            inputTokenCount = tokenUsage.InputTokens;   // Use the correct property name
+                            outputTokenCount = tokenUsage.OutputTokens; // Use the correct property name
+                            totalTokenCount = tokenUsage.TotalTokens;   // Already correct
+                            //RaiseLogUpdate("Response generated using Writer/Editor/Reviewer.");
                             // _logger.LogInformation("Token usage (Writer/Editor/Reviewer) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
-                             //    inputTokenCount, outputTokenCount, totalTokenCount);
+                            //    inputTokenCount, outputTokenCount, totalTokenCount);
                         }
                     }
                     else
                     {
-                        (responseOutput, OpenAI.Chat.ChatTokenUsage? chatTokenUsagePrompty) = await GenerateWithPromptyAsync(
+                        (responseOutput, TokenCounts tokenUsage) = await GenerateWithPromptyAsync(
+                            SelectedModel,
                             featureNameProject,
                             panelInput,
                             userInput,
@@ -594,12 +603,12 @@ namespace AITrailblazer.net.Services
                             relationSettingsVal,
                             responseStyleVal);
 
-                        if (chatTokenUsagePrompty != null)
+                        if (tokenUsage != null)
                         {
-                            inputTokenCount = chatTokenUsagePrompty.InputTokenCount;
-                            outputTokenCount = chatTokenUsagePrompty.OutputTokenCount;
-                            totalTokenCount = chatTokenUsagePrompty.TotalTokenCount;
-                            RaiseLogUpdate("Response generated...");
+                            inputTokenCount = tokenUsage.InputTokens;  // Use PascalCase
+                            outputTokenCount = tokenUsage.OutputTokens;  // Use PascalCase
+                            totalTokenCount = tokenUsage.TotalTokens;  // Use PascalCase
+                            //RaiseLogUpdate("Response generated...");
                             // _logger.LogInformation("Token usage (Prompty) - Input: {InputTokens}, Output: {OutputTokens}, Total: {TotalTokens}",
                             //     inputTokenCount, outputTokenCount, totalTokenCount);
                         }
@@ -611,7 +620,7 @@ namespace AITrailblazer.net.Services
                     {
                         var citationsText = FormatCitations(enhancedInputs.AllCitations);
                         responseOutput += $"\n\nReferences:\n{citationsText}";
-                        RaiseLogUpdate("Citations appended to response.");
+                        //RaiseLogUpdate("Citations appended to response.");
                         // _logger.LogInformation("Citations appended to response.");
                     }
                 }
@@ -624,7 +633,7 @@ namespace AITrailblazer.net.Services
                     creativeAdjustmentsVal, relationSettingsVal, responseStyleVal);
 
                 timer.Stop();
-                RaiseLogUpdate($"Submission completed in {timer.Elapsed.TotalSeconds:F2} seconds.");
+                //RaiseLogUpdate($"Submission completed in {timer.Elapsed.TotalSeconds:F2} seconds.");
                 // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
                 //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
 
@@ -632,7 +641,7 @@ namespace AITrailblazer.net.Services
             }
             catch (Exception ex)
             {
-                RaiseLogUpdate("An error occurred during submission. Please try again.");
+                //RaiseLogUpdate("An error occurred during submission. Please try again.");
                 // _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
                 //     currentUserIdentityID, currentUserTenantID);
                 throw;
@@ -909,294 +918,296 @@ namespace AITrailblazer.net.Services
 
             return input; // Return the original input if it's within the token limit
         }
-
-        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsyncOLD(
-            bool isNewThread,
-            bool isMyKnowledgeBaseChecked,
-            string currentUserTenantID,
-            string currentUserIdentityID,
-            string featureNameWorkflowName, // CodeAndDocumentation
-            string featureNameProject, //FeatureNameProject=AIDiagramCodexActivity 
-            string panelInput,
-            string userInput,
-            string tags,
-            string masterTextSetting,
-            string responseLengthVal,
-            string creativeAdjustmentsVal,
-            string audienceLevelVal,
-            string writingStyleVal,
-            string relationSettingsVal,
-            string responseStyleVal,
-            string existingThreadTitle,
-            string existingThreadId)
-        {
-            var timer = Stopwatch.StartNew();
-            // _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingThreadId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
-            //     existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
-
-            if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
-            {
-                // _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
-                //     currentUserIdentityID, currentUserTenantID);
-                return ("Panel Input and User Input cannot both be empty.", 0);
-            }
-
-            try
-            {
-                var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
-                // _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
-
-                // Extract content from URLs in panelInput
-                var webPageContentService = new WebPageContentExtractionService(new HttpClient());
-                panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
-                // _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
-
-                string cleanedUserInput = CleanInput(userInput);
-                string cleanedPanelInput = CleanInput(panelInput);
-                // _logger.LogInformation("User input and panel input cleaned.");
-
-                // Generate or use existing Thread title
-                string title = string.IsNullOrWhiteSpace(existingThreadTitle)
-                    ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
-                    : existingThreadTitle;
-                // _logger.LogInformation("Thread title determined: {Title}", title);
-
-                string inputRequest = $"{userInput}\n\n{panelInput}";
-                string cleanedRequestResponseTitle = CleanAndShortenRequestResponseTitle(inputRequest);
-
-                //string requestTitle = $"{featureNameWorkflowName}-{featureNameProject}-{cleanedRequestResponseTitle}";
-                string requestTitle = cleanedRequestResponseTitle;
-                // _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
-
-                ThreadChat thread;
-
-                if (isNewThread)
+        /*
+                public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsyncOLD(
+                    bool isNewThread,
+                    bool isMyKnowledgeBaseChecked,
+                    string currentUserTenantID,
+                    string currentUserIdentityID,
+                    string featureNameWorkflowName, // CodeAndDocumentation
+                    string featureNameProject, //FeatureNameProject=AIDiagramCodexActivity 
+                    string panelInput,
+                    string userInput,
+                    string tags,
+                    string masterTextSetting,
+                    string responseLengthVal,
+                    string creativeAdjustmentsVal,
+                    string audienceLevelVal,
+                    string writingStyleVal,
+                    string relationSettingsVal,
+                    string responseStyleVal,
+                    string existingThreadTitle,
+                    string existingThreadId)
                 {
-                    // _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                    var timer = Stopwatch.StartNew();
+                    // _logger.LogInformation("HandleSubmitAsync initiated for Feature: {existingThreadId} {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
+                    //     existingThreadId, featureNameProject, featureNameWorkflowName, currentUserIdentityID, currentUserTenantID);
+
+                    if (string.IsNullOrWhiteSpace(panelInput) && string.IsNullOrWhiteSpace(userInput))
+                    {
+                        // _logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
+                        //     currentUserIdentityID, currentUserTenantID);
+                        return ("Panel Input and User Input cannot both be empty.", 0);
+                    }
+
                     try
                     {
-                        thread = await _chatService.CreateNewThreadChatAsync(
-                            tenantId: currentUserTenantID,
-                            userId: currentUserIdentityID,
-                            title: requestTitle
-                        );
-                        // _logger.LogInformation("New chat Thread created successfully. ThreadId: {ThreadId}, Title: {Title}", thread.Id, title);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Failed to create a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
-                        throw; // Re-throw the exception to be handled upstream
-                    }
-                }
-                else
-                {
-                    // _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, currentUserIdentityID);
-                    thread = await _chatService.GetThreadAsync(
-                        tenantId: currentUserTenantID,
-                        userId: currentUserIdentityID,
-                        threadId: existingThreadId
-                    );
+                        var agentSettings = _agentConfigurationService.GetAgentSettings(featureNameProject);
+                        // _logger.LogDebug("Retrieved agent settings for Project: {FeatureNameProject}", featureNameProject);
 
-                    if (thread == null)
-                    {
-                        _logger.LogError("Thread retrieval failed. Thread ID: {Title}, User: {UserIdentityID} does not exist.", title, currentUserIdentityID);
-                        throw new InvalidOperationException($"Thread with ID {title} does not exist.");
-                    }
+                        // Extract content from URLs in panelInput
+                        var webPageContentService = new WebPageContentExtractionService(new HttpClient());
+                        panelInput = await ReplaceUrlsWithContentAsync(panelInput, webPageContentService);
+                        // _logger.LogInformation("Panel input processed with URL content replacement. User: {UserIdentityID}", currentUserIdentityID);
 
-                    // _logger.LogInformation("Continuing existing Thread. ThreadId: {ThreadId}", thread.Id);
-                }
-                string responseOutput = string.Empty;
-                ChatTokenUsage tokenUsage = null;
+                        string cleanedUserInput = CleanInput(userInput);
+                        string cleanedPanelInput = CleanInput(panelInput);
+                        // _logger.LogInformation("User input and panel input cleaned.");
 
-                // _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}, featureNameProject: {featureNameProject}", currentUserIdentityID, currentUserTenantID, featureNameProject);
-                double similarityScore = 0.9;
-                if (featureNameWorkflowName == "CodeAndDocumentation")
-                {
-                    similarityScore = 0.99;
-                }
-                else
-                {
-                    similarityScore = 0.9;
-                }
-                Cosmos.Copilot.Models.Message? closestMessage = null;
-                if (isMyKnowledgeBaseChecked)
-                {
-                    // Perform a semantic search to see if a similar message already exists
-                    // _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
-                    closestMessage = await _chatService.SearchClosestMessageAsync(
-                        tenantId: currentUserTenantID,
-                        userId: currentUserIdentityID,
-                        similarityScore: similarityScore,
-                        featureNameProject: featureNameProject,
-                        searchQuery: inputRequest,
-                        responseLengthVal: responseLengthVal,
-                        creativeAdjustmentsVal: creativeAdjustmentsVal,
-                        audienceLevelVal: audienceLevelVal,
-                        writingStyleVal: writingStyleVal,
-                        relationSettingsVal: relationSettingsVal,
-                        responseStyleVal: responseStyleVal
-                    );
-                }
+                        // Generate or use existing Thread title
+                        string title = string.IsNullOrWhiteSpace(existingThreadTitle)
+                            ? await GenerateTitleAsync(cleanedUserInput, cleanedPanelInput)
+                            : existingThreadTitle;
+                        // _logger.LogInformation("Thread title determined: {Title}", title);
 
+                        string inputRequest = $"{userInput}\n\n{panelInput}";
+                        string cleanedRequestResponseTitle = CleanAndShortenRequestResponseTitle(inputRequest);
 
-                // Initialize variables for the new message
-                bool cacheHit = false;
-                var inputTokenCount = 0;     // inputTokenCount
-                var outputTokenCount = 0;  // outputTokenCount
-                var totalTokenCount = 0;    // totalTokenCount
+                        //string requestTitle = $"{featureNameWorkflowName}-{featureNameProject}-{cleanedRequestResponseTitle}";
+                        string requestTitle = cleanedRequestResponseTitle;
+                        // _logger.LogInformation("Request title generated: {RequestTitle}", requestTitle);
 
-                // Check if a similar message was found
-                if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
-                {
-                    // Cache hit, use the cached completion
-                    responseOutput = closestMessage.Output;
-                    cacheHit = true;
+                        ThreadChat thread;
 
-                    // _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
-                }
-                else
-                {
-
-                    if (agentSettings != null)
-                    {
-                        // Cache miss, generate a new response
-                        // _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
-                        TokenCounts? tokenUsageTc = null;
-                        string responseOutputTc = string.Empty;
-                        (responseOutputTc, tokenUsageTc) = await HandleSubmitAsyncWriterEditorReviewer(
-                            featureNameProject,
-                            panelInput,
-                            userInput,
-                            masterTextSetting,
-                            responseLengthVal,
-                            creativeAdjustmentsVal,
-                            audienceLevelVal,
-                            writingStyleVal,
-                            relationSettingsVal,
-                            responseStyleVal
-                        );
-                        responseOutput = responseOutputTc;
-                        if (tokenUsageTc != null)
+                        if (isNewThread)
                         {
-                            inputTokenCount = tokenUsageTc.PromptTokens;
-                            outputTokenCount = tokenUsageTc.CompletionTokens;
-                            totalTokenCount = tokenUsageTc.TotalTokens;
+                            // _logger.LogInformation("Creating a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                            try
+                            {
+                                thread = await _chatService.CreateNewThreadChatAsync(
+                                    tenantId: currentUserTenantID,
+                                    userId: currentUserIdentityID,
+                                    title: requestTitle
+                                );
+                                // _logger.LogInformation("New chat Thread created successfully. ThreadId: {ThreadId}, Title: {Title}", thread.Id, title);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError(ex, "Failed to create a new chat Thread. Title: {Title}, User: {UserIdentityID}", title, currentUserIdentityID);
+                                throw; // Re-throw the exception to be handled upstream
+                            }
                         }
                         else
                         {
-                            _logger.LogWarning("TokenCounts returned null from HandleSubmitAsyncWriterEditorReviewer. Defaulting token counts to zero.");
-                            inputTokenCount = 0;
-                            outputTokenCount = 0;
-                            totalTokenCount = 0;
+                            // _logger.LogInformation("Retrieving existing Thread by ID. ThreadId: {ThreadId}, User: {UserIdentityID}", existingThreadId, currentUserIdentityID);
+                            thread = await _chatService.GetThreadAsync(
+                                tenantId: currentUserTenantID,
+                                userId: currentUserIdentityID,
+                                threadId: existingThreadId
+                            );
+
+                            if (thread == null)
+                            {
+                                _logger.LogError("Thread retrieval failed. Thread ID: {Title}, User: {UserIdentityID} does not exist.", title, currentUserIdentityID);
+                                throw new InvalidOperationException($"Thread with ID {title} does not exist.");
+                            }
+
+                            // _logger.LogInformation("Continuing existing Thread. ThreadId: {ThreadId}", thread.Id);
                         }
+                        string responseOutput = string.Empty;
+                        ChatTokenUsage tokenUsage = null;
 
-                        // Enhance inputs with citations and generate response
-                        // _logger.LogInformation("Enhancing inputs with citations.");
-                        var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
-
-                        // Append citations if available
-                        if (enhancedInputs.AllCitations.Any())
+                        // _logger.LogInformation("HandleSubmitAsync started for User: {UserIdentityID}, Tenant: {TenantID}, featureNameProject: {featureNameProject}", currentUserIdentityID, currentUserTenantID, featureNameProject);
+                        double similarityScore = 0.9;
+                        if (featureNameWorkflowName == "CodeAndDocumentation")
                         {
-                            var citationsText = FormatCitations(enhancedInputs.AllCitations);
-                            responseOutput += $"\n\nReferences:\n{citationsText}";
-                            // _logger.LogInformation("Citations appended to the response.");
+                            similarityScore = 0.99;
                         }
-                    }
-                    else
-                    {
-                        // Cache miss, generate a new response
-                        // _logger.LogInformation("Cache miss: Generating response with Prompty.");
-                        (responseOutput, tokenUsage) = await GenerateWithPromptyAsync(
-                            featureNameProject,
-                            panelInput,
-                            userInput,
-                            masterTextSetting,
-                            responseLengthVal,
-                            creativeAdjustmentsVal,
-                            audienceLevelVal,
-                            writingStyleVal,
-                            relationSettingsVal,
-                            responseStyleVal
+                        else
+                        {
+                            similarityScore = 0.9;
+                        }
+                        Cosmos.Copilot.Models.Message? closestMessage = null;
+                        if (isMyKnowledgeBaseChecked)
+                        {
+                            // Perform a semantic search to see if a similar message already exists
+                            // _logger.LogInformation("Checking for similar messages using SearchClosestMessageAsync.");
+                            closestMessage = await _chatService.SearchClosestMessageAsync(
+                                tenantId: currentUserTenantID,
+                                userId: currentUserIdentityID,
+                                similarityScore: similarityScore,
+                                featureNameProject: featureNameProject,
+                                searchQuery: inputRequest,
+                                responseLengthVal: responseLengthVal,
+                                creativeAdjustmentsVal: creativeAdjustmentsVal,
+                                audienceLevelVal: audienceLevelVal,
+                                writingStyleVal: writingStyleVal,
+                                relationSettingsVal: relationSettingsVal,
+                                responseStyleVal: responseStyleVal
+                            );
+                        }
+
+
+                        // Initialize variables for the new message
+                        bool cacheHit = false;
+                        var inputTokenCount = 0;     // inputTokenCount
+                        var outputTokenCount = 0;  // outputTokenCount
+                        var totalTokenCount = 0;    // totalTokenCount
+
+                        // Check if a similar message was found
+                        if (closestMessage != null && !string.IsNullOrEmpty(closestMessage.Output))
+                        {
+                            // Cache hit, use the cached completion
+                            responseOutput = closestMessage.Output;
+                            cacheHit = true;
+
+                            // _logger.LogInformation("Cache hit: Found similar message with ID: {MessageId}.", closestMessage.Id);
+                        }
+                        else
+                        {
+
+                            if (agentSettings != null)
+                            {
+                                // Cache miss, generate a new response
+                                // _logger.LogInformation("Cache miss: Generating response with HandleSubmitAsyncWriterEditorReviewer.");
+                                TokenCounts? tokenUsageTc = null;
+                                string responseOutputTc = string.Empty;
+                                (responseOutputTc, tokenUsageTc) = await HandleSubmitAsyncWriterEditorReviewer(
+                                    featureNameProject,
+                                    panelInput,
+                                    userInput,
+                                    masterTextSetting,
+                                    responseLengthVal,
+                                    creativeAdjustmentsVal,
+                                    audienceLevelVal,
+                                    writingStyleVal,
+                                    relationSettingsVal,
+                                    responseStyleVal
+                                );
+                                responseOutput = responseOutputTc;
+                                if (tokenUsageTc != null)
+                                {
+                                    inputTokenCount = tokenUsageTc.InputTokens;
+                                    outputTokenCount = tokenUsageTc.OutputTokens;
+                                    totalTokenCount = tokenUsageTc.TotalTokens;
+                                }
+                                else
+                                {
+                                    _logger.LogWarning("TokenCounts returned null from HandleSubmitAsyncWriterEditorReviewer. Defaulting token counts to zero.");
+                                    inputTokenCount = 0;
+                                    outputTokenCount = 0;
+                                    totalTokenCount = 0;
+                                }
+
+                                // Enhance inputs with citations and generate response
+                                // _logger.LogInformation("Enhancing inputs with citations.");
+                                var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                                // Append citations if available
+                                if (enhancedInputs.AllCitations.Any())
+                                {
+                                    var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                                    responseOutput += $"\n\nReferences:\n{citationsText}";
+                                    // _logger.LogInformation("Citations appended to the response.");
+                                }
+                            }
+                            else
+                            {
+                                // Cache miss, generate a new response
+                                // _logger.LogInformation("Cache miss: Generating response with Prompty.");
+                                TokenCounts? tokenUsageTc = null;
+                                (responseOutput, tokenUsageTc) = await GenerateWithPromptyAsync(
+                                    modelId,
+                                    featureNameProject,
+                                    panelInput,
+                                    userInput,
+                                    masterTextSetting,
+                                    responseLengthVal,
+                                    creativeAdjustmentsVal,
+                                    audienceLevelVal,
+                                    writingStyleVal,
+                                    relationSettingsVal,
+                                    responseStyleVal
+                                );
+
+                                inputTokenCount = tokenUsageTc.InputTokens;
+                                outputTokenCount = tokenUsageTc.OutputTokens;
+                                totalTokenCount = tokenUsageTc.TotalTokens;
+
+                                // Enhance inputs with citations and generate response
+                                // _logger.LogInformation("Enhancing inputs with citations.");
+                                var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
+
+                                // Append citations if available
+                                if (enhancedInputs.AllCitations.Any())
+                                {
+                                    var citationsText = FormatCitations(enhancedInputs.AllCitations);
+                                    responseOutput += $"\n\nReferences:\n{citationsText}";
+                                    // _logger.LogInformation("Citations appended to the response.");
+                                }
+                            }
+
+                        }
+
+                        // Create the completed chat message
+                        var completedChatMessage = new Cosmos.Copilot.Models.Message(
+                            threadId: thread.ThreadId,               // threadId
+                            tenantId: currentUserTenantID,              // tenantId
+                            userId: currentUserIdentityID,              // userId
+                            featureNameWorkflowName: featureNameWorkflowName,
+                            featureNameProject: featureNameProject,
+                            title: requestTitle,                        // title
+                            prompt: panelInput,                         // prompt
+                            userInput: userInput,                       // userInput
+                            inputTokenCount: inputTokenCount,     // inputTokenCount
+                            outputTokenCount: outputTokenCount,   // outputTokenCount
+                            totalTokenCount: totalTokenCount,     // totalTokenCount
+                            output: responseOutput,                     // output
+                            cacheHit: cacheHit,                         // cacheHit
+                            masterTextSetting: masterTextSetting,       // masterTextSetting
+                            writingStyleVal: writingStyleVal,           // writingStyleVal
+                            audienceLevelVal: audienceLevelVal,         // audienceLevelVal
+                            responseLengthVal: responseLengthVal,       // responseLengthVal
+                            creativeAdjustmentsVal: creativeAdjustmentsVal, // creativeAdjustmentsVal
+                            relationSettingsVal: relationSettingsVal,   // relationSettingsVal
+                            responseStyleVal: responseStyleVal          // responseStyleVal
                         );
 
-                        inputTokenCount = tokenUsage.InputTokenCount;
-                        outputTokenCount = tokenUsage.OutputTokenCount;
-                        totalTokenCount = tokenUsage.TotalTokenCount;
-
-                        // Enhance inputs with citations and generate response
-                        // _logger.LogInformation("Enhancing inputs with citations.");
-                        var enhancedInputs = await EnhanceInputsWithCitationsAsync(panelInput, userInput);
-
-                        // Append citations if available
-                        if (enhancedInputs.AllCitations.Any())
+                        // If cache miss, set the embeddings
+                        if (!cacheHit)
                         {
-                            var citationsText = FormatCitations(enhancedInputs.AllCitations);
-                            responseOutput += $"\n\nReferences:\n{citationsText}";
-                            // _logger.LogInformation("Citations appended to the response.");
+                            // _logger.LogInformation("Generating embeddings for the new message.");
+                            float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(inputRequest);
+                            completedChatMessage.Vectors = promptVectors;
                         }
+
+                        // _logger.LogInformation("Updating thread and message. threadId: {ThreadId}", thread.ThreadId);
+
+                        // Save the message to the database
+                        await _chatService.UpsertThreadAndMessageAsync(
+                            tenantId: currentUserTenantID,
+                            userId: currentUserIdentityID,
+                            threadId: thread.ThreadId,
+                            chatMessage: completedChatMessage
+                        );
+
+                        // _logger.LogInformation("Chat message persisted with completion. ThreadId: {threadId}", thread.ThreadId);
+
+                        timer.Stop();
+                        // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
+                        //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
+
+                        return (responseOutput, timer.Elapsed.TotalSeconds);
+
                     }
-
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
+                            currentUserIdentityID, currentUserTenantID);
+                        throw;
+                    }
                 }
-
-                // Create the completed chat message
-                var completedChatMessage = new Cosmos.Copilot.Models.Message(
-                    threadId: thread.ThreadId,               // threadId
-                    tenantId: currentUserTenantID,              // tenantId
-                    userId: currentUserIdentityID,              // userId
-                    featureNameWorkflowName: featureNameWorkflowName,
-                    featureNameProject: featureNameProject,
-                    title: requestTitle,                        // title
-                    prompt: panelInput,                         // prompt
-                    userInput: userInput,                       // userInput
-                    inputTokenCount: inputTokenCount,     // inputTokenCount
-                    outputTokenCount: outputTokenCount,   // outputTokenCount
-                    totalTokenCount: totalTokenCount,     // totalTokenCount
-                    output: responseOutput,                     // output
-                    cacheHit: cacheHit,                         // cacheHit
-                    masterTextSetting: masterTextSetting,       // masterTextSetting
-                    writingStyleVal: writingStyleVal,           // writingStyleVal
-                    audienceLevelVal: audienceLevelVal,         // audienceLevelVal
-                    responseLengthVal: responseLengthVal,       // responseLengthVal
-                    creativeAdjustmentsVal: creativeAdjustmentsVal, // creativeAdjustmentsVal
-                    relationSettingsVal: relationSettingsVal,   // relationSettingsVal
-                    responseStyleVal: responseStyleVal          // responseStyleVal
-                );
-
-                // If cache miss, set the embeddings
-                if (!cacheHit)
-                {
-                    // _logger.LogInformation("Generating embeddings for the new message.");
-                    float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(inputRequest);
-                    completedChatMessage.Vectors = promptVectors;
-                }
-
-                // _logger.LogInformation("Updating thread and message. threadId: {ThreadId}", thread.ThreadId);
-
-                // Save the message to the database
-                await _chatService.UpsertThreadAndMessageAsync(
-                    tenantId: currentUserTenantID,
-                    userId: currentUserIdentityID,
-                    threadId: thread.ThreadId,
-                    chatMessage: completedChatMessage
-                );
-
-                // _logger.LogInformation("Chat message persisted with completion. ThreadId: {threadId}", thread.ThreadId);
-
-                timer.Stop();
-                // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
-                //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
-
-                return (responseOutput, timer.Elapsed.TotalSeconds);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred in HandleSubmitAsync. User: {UserIdentityID}, Tenant: {TenantID}",
-                    currentUserIdentityID, currentUserTenantID);
-                throw;
-            }
-        }
-
+        */
         /// <summary>
         /// Cleans and shortens the request-response title to meet formatting requirements.
         /// </summary>
@@ -2743,7 +2754,10 @@ namespace AITrailblazer.net.Services
             return promptyTemplate;
         }
 
-        public async Task<(string response, ChatTokenUsage? tokenUsage)> GenerateWithPromptyAsync(
+        // string modelId = "gpt-4o",  
+        // string modelId = "phi-3-5-moe-instruct";
+        public async Task<(string response, TokenCounts tokenCounts)> GenerateWithPromptyAsync(
+            string modelId,
             string FeatureNameProject,
             string PanelInput,
             string input,
@@ -2755,10 +2769,18 @@ namespace AITrailblazer.net.Services
             string relationSettingsVal,
             string responseStyleVal)
         {
-
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
-            string modelId = "gpt-4o";//gpt-4o-mini
-            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            //string modelId = "gpt-4o";//gpt-4o-mini
+            IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
+            if (modelId == "GPT-4o")
+            {
+                kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+            }
+            else
+            {
+                modelId = "phi-3-5-moe-instruct";
+                kernelBuilder = _kernelService.CreateKernelBuilderPhi(modelId, maxTokens);
+            }
 
             //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
@@ -2836,7 +2858,8 @@ namespace AITrailblazer.net.Services
                 responseStylePreferenceStr,
                 masterTextSettingsService,
                 maxTokensLabel);
-            // _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
+
+            _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
 
             // Enable automatic function calling
             var executionSettings = new AzureOpenAIPromptExecutionSettings
@@ -2943,8 +2966,6 @@ namespace AITrailblazer.net.Services
                 /// </remarks>
                 /// ToolCallBehavior
 
-                // Enable planning
-                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
 
                 /// <summary>
                 /// User
@@ -2965,8 +2986,23 @@ namespace AITrailblazer.net.Services
                 ///     [Experimental("SKEXP0010")]
 
             };
-
+            // Enable planning - conditional ToolCallBehavior assignment
+            if (modelId == "phi-3-5-moe-instruct")
+            {
+                // No ToolCallBehavior for "phi-3-5-moe-instruct"
+                //executionSettings.ToolCallBehavior = null;
+            }
+            else
+            {
+                executionSettings.ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions;
+            }
             // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
+            // Initialize the tokenizer for calculating tokens
+            var tokenizer = TiktokenTokenizer.CreateForModel("gpt-4");
+
+            // Calculate input token count
+            int inputTokenCount = tokenizer.CountTokens(input + PanelInput);
+            _logger.LogInformation($"GenerateWithPromptyAsync: CustomTokenizer: InputTokenCount: {inputTokenCount}");
 
 
             // Act
@@ -2987,42 +3023,49 @@ namespace AITrailblazer.net.Services
             try
             {
                 var response = await kernel.InvokeAsync(kernelFunction, arguments);
-                // _logger.LogInformation($"GenerateWithPromptyAsync: Metadata: {string.Join(",", response.Metadata!.Select(kv => $"{kv.Key}: {kv.Value}"))}");
 
-                var usage = response.Metadata?["Usage"] as ChatTokenUsage;
-
-                if (usage != null)
+                var responseContent = response.GetValue<string>();
+                if (!string.IsNullOrEmpty(responseContent))
                 {
-                    // _logger.LogInformation($"GenerateWithPromptyAsync:InputTokenCount: {usage.InputTokenCount}");
-                    // _logger.LogInformation($"GenerateWithPromptyAsync:OutputTokenCount: {usage.OutputTokenCount}");
-                    // _logger.LogInformation($"GenerateWithPromptyAsync:TotalTokenCount: {usage.TotalTokenCount}");
+                    // Use Regex to remove <input> tags
+                    responseContent = System.Text.RegularExpressions.Regex.Replace(
+                        responseContent,
+                        @"<input[^>]*>",
+                        string.Empty,
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase
+                    );
                 }
-                else
-                {
-                    _logger.LogWarning("Usage metadata is null.");
-                }
+                _logger.LogInformation($"GenerateWithPromptyAsync: responseContent: {responseContent}");
 
-                var result = response.GetValue<string>();
+                // Calculate output token count
+                int outputTokenCount = tokenizer.CountTokens(responseContent);
+                _logger.LogInformation($"CustomTokenizer: OutputTokenCount: {outputTokenCount}");
 
-                return (result, usage);
+                var totalTokenUsage = new TokenCounts(
+                     outputTokens: outputTokenCount,
+                     inputTokens: inputTokenCount,
+                     totalTokens: outputTokenCount + inputTokenCount
+                 );
+
+                return (responseContent, totalTokenUsage);
 
             }
             catch (ArgumentException ex)
             {
                 // Handle argument exceptions, which may occur if arguments are incorrect
-                // _logger.LogInformation($"Argument error: {ex.Message}");
+                _logger.LogInformation($"GenerateWithPromptyAsync: Argument error: {ex.Message}");
                 return ("", null);
             }
             catch (InvalidOperationException ex)
             {
                 // Handle invalid operation exceptions, which may occur if the kernel function is not valid
-                // _logger.LogInformation($"Invalid operation: {ex.Message}");
+                _logger.LogInformation($"GenerateWithPromptyAsync: Invalid operation: {ex.Message}");
                 return ("", null);
             }
             catch (Exception ex)
             {
                 // Handle any other exceptions that may occur
-                // _logger.LogInformation($"An unexpected error occurred: {ex.Message}");
+                _logger.LogInformation($"GenerateWithPromptyAsync: An unexpected error occurred: {ex.Message}");
                 return ("", null);
             }
 

@@ -52,6 +52,9 @@ string azureOpenAIModelName03 = secretClient.GetSecret("AzureOpenAIModelName03")
 string azureOpenAIEndpoint03 = secretClient.GetSecret("AzureOpenAIEndpoint03").Value.Value;
 string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value;
 string bingSearchApiKey  = secretClient.GetSecret("BING-API-KEY").Value.Value;
+string PhiEndpoint =secretClient.GetSecret("PhiEndpoint").Value.Value;
+string PhiKey = secretClient.GetSecret("PhiKey").Value.Value;
+int azureEmbeddingsdDimensions  = 3072;
 
 // Fetch other configuration values from Key Vault or use Environment Variables as fallback
 string azureOpenAIMaxCompletionTokens = secretClient.GetSecret("MaxCompletionTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
@@ -129,6 +132,9 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
             completionDeploymentName: azureOpenAIModelName02 ?? String.Empty,
             embeddingDeploymentName: azureEmbeddingsModelName03 ?? String.Empty,
             apiKey: azureOpenAIKey03 ?? String.Empty,
+            endpointPhi: PhiEndpoint,
+            apiKeyPhi: PhiKey,
+            dimensions: azureEmbeddingsdDimensions,
             logger: logger
     );
 });

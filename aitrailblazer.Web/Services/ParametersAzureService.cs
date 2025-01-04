@@ -39,6 +39,8 @@ namespace AITrailblazer.net.Services
         public required string AzureOpenAIMaxCompletionTokens { get; set; }
         public required string AzureEmbeddingsModelName03 { get; set; }
         public required int AzureEmbeddingsdDimensions { get; set; }
+        public required string PhiEndpoint { get; set; }
+        public required string PhiKey { get; set; }
 
         public required string MaxConversationTokens { get; set; }
         public required string MaxEmbeddingTokens { get; set; }

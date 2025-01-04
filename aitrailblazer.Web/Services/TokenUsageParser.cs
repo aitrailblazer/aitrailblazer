@@ -1,7 +1,5 @@
-// TokenUsageParser.cs
 using OpenAI.Chat;
 using Microsoft.SemanticKernel;
-using AITrailblazer.net.Services;
 
 namespace AITrailblazer.net.Services
 {
@@ -14,8 +12,8 @@ namespace AITrailblazer.net.Services
 
             return usage != null
                 ? new TokenCounts(
-                    completionTokens: usage.OutputTokenCount,
-                    promptTokens: usage.InputTokenCount,
+                    outputTokens: usage.OutputTokenCount,
+                    inputTokens: usage.InputTokenCount,
                     totalTokens: usage.TotalTokenCount)
                 : null;
         }

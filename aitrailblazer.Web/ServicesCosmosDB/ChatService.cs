@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
 using Microsoft.Azure.Cosmos;
 using System.Diagnostics;
-
+using System.Text;
 namespace Cosmos.Copilot.Services
 {
     public class ChatService
@@ -60,18 +60,27 @@ namespace Cosmos.Copilot.Services
             _knowledgeBaseMaxResults = 10;
 
             //_logger.LogInformation("ChatService initialized with MaxConversationTokens={MaxConversationTokens}, CacheSimilarityScore={CacheSimilarityScore}, ProductMaxResults={ProductMaxResults}",
-                //_maxConversationTokens, _cacheSimilarityScore, _productMaxResults);
+            //_maxConversationTokens, _cacheSimilarityScore, _productMaxResults);
         }
+        /// <summary>
+        /// Event to propagate status updates to the UI.
+        /// </summary>
+        public event Action<string>? StatusUpdated;
 
+        private void NotifyStatusUpdate(string message)
+        {
+            StatusUpdated?.Invoke(message);
+            _logger.LogInformation(message); // Log status updates
+        }
         /// <summary>
         /// Initializes the ChatService by loading product data.
         /// </summary>
         //public async Task InitializeAsync()
         //{
-            //_logger.LogInformation("Initializing ChatService: Loading product data.");
+        //_logger.LogInformation("Initializing ChatService: Loading product data.");
         //    try
         //    {
-                //await _cosmosDbService.LoadProductDataAsync();
+        //await _cosmosDbService.LoadProductDataAsync();
         //        _logger.LogInformation("Product data loaded successfully.");
         //    }
         //    catch (Exception ex)
@@ -414,7 +423,7 @@ namespace Cosmos.Copilot.Services
             //var correlationId = Guid.NewGuid();
 
             //_logger.LogDebug("UpsertThreadAndMessageAsync started. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}, MessageId={MessageId}.",
-                //correlationId, tenantId, userId, threadId, chatMessage.Id);
+            //correlationId, tenantId, userId, threadId, chatMessage.Id);
 
             try
             {
@@ -426,7 +435,7 @@ namespace Cosmos.Copilot.Services
 
                 // Retrieve the current Thread from the database
                 //_logger.LogDebug("Retrieving Thread from Cosmos DB. CorrelationId={CorrelationId}, TenantId={TenantId}, UserId={UserId}, ThreadId={ThreadId}.",
-                    //correlationId, tenantId, userId, threadId);
+                //correlationId, tenantId, userId, threadId);
 
                 var Thread = await _cosmosDbService.GetThreadAsync(
                     tenantId,
@@ -568,8 +577,14 @@ namespace Cosmos.Copilot.Services
             }
         }
         /// <summary>
-        /// Retrieves a completion based on a user prompt for a knowledge base context, with optional categoryId and context window.
+        /// Retrieves a knowledge base completion based on the provided parameters.
         /// </summary>
+        /// <param name="tenantId">The tenant ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="categoryId">The category ID.</param>
+        /// <param name="promptText">The prompt text to generate the completion.</param>
+        /// <param name="similarityScore">The similarity score threshold for the completion.</param>
+        /// <returns>A Task representing the asynchronous operation, with a tuple containing the completion and the title.</returns>
         public async Task<(string completion, string? title)> GetKnowledgeBaseCompletionAsync(
             string tenantId,
             string userId,
@@ -577,56 +592,62 @@ namespace Cosmos.Copilot.Services
             string promptText,
             double similarityScore)
         {
-            //_logger.LogInformation("Generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
-
             try
             {
                 // Validate inputs
                 ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
                 ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                if (string.IsNullOrWhiteSpace(promptText))
+                    throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
 
-                // Generate embeddings for the prompt
+                NotifyStatusUpdate("Generating embeddings for the prompt...");
                 float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
-                _logger.LogDebug("Embeddings generated for the prompt.");
 
-                // Generate keywords from promptText
+                NotifyStatusUpdate("Embeddings generated. Searching knowledge base...");
                 string[] searchTerms = GenerateKeywords(promptText);
-
-                // Search for the closest knowledge base item
-                KnowledgeBaseItem? closestItem = await _cosmosDbService.SearchKnowledgeBaseAsync(
+                List<KnowledgeBaseItem> items = await _cosmosDbService.SearchKnowledgeBaseAsync(
                     vectors: promptVectors,
                     tenantId: tenantId,
                     userId: userId,
                     categoryId: categoryId,
                     similarityScore: similarityScore,
-                    searchTerms: searchTerms);
+                    searchTerms: searchTerms
+                );
 
-                if (closestItem == null)
+                if (items == null || !items.Any())
                 {
-                    _logger.LogInformation("No similar knowledge base items found.");
+                    NotifyStatusUpdate("No similar knowledge base items found.");
                     return (string.Empty, null);
                 }
 
-                _logger.LogDebug("Found closest item: {Title}.", closestItem.Title);
+                NotifyStatusUpdate($"{items.Count} similar knowledge base items found.");
 
-                // Generate completion using the found item
-                var contextWindow = new List<KnowledgeBaseItem> { closestItem }; // Create context window with the closest item
-                (string generatedCompletion, int tokens) = await _semanticKernelService.GetRagKnowledgeBaseCompletionAsync<KnowledgeBaseItem>(
-                    categoryId: categoryId ?? "",
-                    contextWindow: contextWindow,
-                    contextData: closestItem,
-                    useChatHistory: false);
+                var completions = new List<string>();
+                foreach (var item in items)
+                {
+                    NotifyStatusUpdate($"Processing item: {item.Title}");
 
-                //_logger.LogInformation("Completion generated for knowledge base.");
+                    var (generatedCompletion, _) = await _semanticKernelService.GetASAPQuick<KnowledgeBaseItem>(
+                        input: promptText,
+                        contextData: item
+                    );
 
-                return (generatedCompletion, closestItem.Title);
+                    NotifyStatusUpdate($"Intermediate Completion for {item.Title}: {generatedCompletion}");
+                    completions.Add(generatedCompletion);
+                }
+
+                string combinedCompletion = string.Join("\n\n", completions);
+                NotifyStatusUpdate("Completion generated for all knowledge base items.");
+                return (combinedCompletion, items.First().Title);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating knowledge base completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}.", tenantId, userId, categoryId ?? "None");
+                NotifyStatusUpdate("Error generating knowledge base completion.");
+                _logger.LogError(ex, "Error generating knowledge base completion.");
                 throw;
             }
         }
+
         private string[] GenerateKeywords(string promptText)
         {
             if (string.IsNullOrWhiteSpace(promptText))
@@ -642,7 +663,6 @@ namespace Cosmos.Copilot.Services
 
             return keywords;
         }
-
         /// <summary>
         /// Retrieves cached response if available.
         /// </summary>
@@ -760,13 +780,13 @@ namespace Cosmos.Copilot.Services
             string promptText,
             double similarityScore)
         {
-        _logger.LogInformation(
-            "GetEmailCompletionAsync Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}, SimilarityScore={SimilarityScore}, PromptText={PromptText}.", 
-            tenantId, 
-            userId, 
-            categoryId ?? "None", 
-            similarityScore,
-            promptText);
+            _logger.LogInformation(
+                "GetEmailCompletionAsync Generating email completion for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}, SimilarityScore={SimilarityScore}, PromptText={PromptText}.",
+                tenantId,
+                userId,
+                categoryId ?? "None",
+                similarityScore,
+                promptText);
 
             try
             {
@@ -848,6 +868,122 @@ namespace Cosmos.Copilot.Services
                 throw;
             }
         }
+        public async Task<(string completion, string? title)> GetKnowledgeBaseStreamingCompletionAsync(
+           string tenantId,
+           string userId,
+           string categoryId,
+           string promptText,
+           double similarityScore)
+        {
+            try
+            {
+                // Validate inputs
+                ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+                ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+                if (string.IsNullOrWhiteSpace(promptText))
+                    throw new ArgumentException("Prompt text cannot be null or empty.", nameof(promptText));
+
+                NotifyStatusUpdate("Generating embeddings for the prompt...");
+                float[] promptVectors = await _semanticKernelService.GetEmbeddingsAsync(promptText);
+
+                NotifyStatusUpdate("Embeddings generated. Searching knowledge base...");
+                string[] searchTerms = GenerateKeywords(promptText);
+                List<KnowledgeBaseItem> items = await _cosmosDbService.SearchKnowledgeBaseAsync(
+                    vectors: promptVectors,
+                    tenantId: tenantId,
+                    userId: userId,
+                    categoryId: categoryId,
+                    similarityScore: similarityScore,
+                    searchTerms: searchTerms
+                );
+
+                if (items == null || !items.Any())
+                {
+                    NotifyStatusUpdate("No similar knowledge base items found.");
+                    return (string.Empty, null);
+                }
+
+                NotifyStatusUpdate($"{items.Count} similar knowledge base items found.");
+
+                var completions = new List<string>();
+                foreach (var item in items)
+                {
+                    int currentIndex = items.IndexOf(item) + 1;
+                    NotifyStatusUpdate($"Processing item {currentIndex}/{items.Count}: {item.Title}");
+
+                    string generatedCompletion;
+
+                    try
+                    {
+                        generatedCompletion = await ProcessStreamingItemAsync(promptText, item);
+                        completions.Add(generatedCompletion);
+                        NotifyStatusUpdate($"Finalized Completion for {item.Title}: {generatedCompletion}");
+                    }
+                    catch (Exception streamEx)
+                    {
+                        NotifyStatusUpdate($"Error processing item {item.Title}: {streamEx.Message}");
+                        _logger.LogError(streamEx, "Streaming error for item {Title}", item.Title);
+                        completions.Add($"Error processing item {item.Title}. {streamEx.Message}");
+                    }
+                }
+
+                string combinedCompletion = string.Join("\n\n", completions);
+                NotifyStatusUpdate("Completion generated for all knowledge base items.");
+                return (combinedCompletion, items.First().Title);
+            }
+            catch (Exception ex)
+            {
+                NotifyStatusUpdate("Error generating knowledge base completion.");
+                _logger.LogError(ex, "Error generating knowledge base completion.");
+                throw;
+            }
+        }
+        private async Task<string> ProcessStreamingItemAsync(string promptText, KnowledgeBaseItem item)
+        {
+            StringBuilder completionBuilder = new StringBuilder();
+            StringBuilder currentLineBuilder = new StringBuilder();
+            var finalizedLines = new HashSet<string>(); // Use a HashSet to avoid duplicates
+
+            await foreach (var partialResponse in _semanticKernelService.GetASAPQuickStreaming<KnowledgeBaseItem>(
+                input: promptText,
+                contextData: item))
+            {
+                currentLineBuilder.Append(partialResponse);
+
+                if (partialResponse.Contains("Final response for") || partialResponse.EndsWith("."))
+                {
+                    var finalizedLine = currentLineBuilder.ToString().Trim();
+
+                    // Add to finalized lines if it does not already exist
+                    if (finalizedLines.Add(finalizedLine))
+                    {
+                        NotifyStatusUpdate($"Finalized Line: {finalizedLine}");
+                    }
+
+                    currentLineBuilder.Clear();
+                }
+                else
+                {
+                    // Notify for streaming updates
+                    NotifyStatusUpdate(currentLineBuilder.ToString());
+                }
+
+                completionBuilder.Append(partialResponse);
+            }
+
+            // Add any remaining line
+            if (currentLineBuilder.Length > 0)
+            {
+                var finalizedLine = currentLineBuilder.ToString().Trim();
+                if (finalizedLines.Add(finalizedLine))
+                {
+                    NotifyStatusUpdate($"Finalized Line: {finalizedLine}");
+                }
+            }
+
+            return completionBuilder.ToString();
+        }
+
 
         /// <summary>
         /// Sanitizes the prompt text to prevent logging sensitive information.

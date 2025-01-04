@@ -235,85 +235,6 @@ public class CosmosDbService
         }
     }
 
-   public async Task<List<KnowledgeBaseItem>> SearchKnowledgeBaseAsync(
-        float[] vectors,
-        string tenantId,
-        string userId,
-        string categoryId,
-        int maxResults,
-        double similarityScore)
-    {
-        _logger.LogInformation("Searching knowledge base with max results: {MaxResults}, similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
-            maxResults, similarityScore, tenantId, userId, categoryId ?? "None");
-
-        List<KnowledgeBaseItem> results = new();
-
-        // Construct SQL query with optional categoryId filtering
-        string queryText = $"""
-    SELECT 
-        TOP @maxResults
-        c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, 
-        c.referenceDescription, c.referenceLink, 
-        VectorDistance(c.vectors, @vectors) as similarityScore
-    FROM c 
-    WHERE c.type = 'KnowledgeBaseItem' AND c.tenantId = @tenantId AND c.userId = @userId
-          AND VectorDistance(c.vectors, @vectors) > @similarityScore
-    """;
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryText += " AND c.categoryId = @categoryId";
-        }
-
-        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-
-        // Set up a query definition with parameters for tenantId, userId, categoryId, vectors, and similarity score
-        var queryDef = new QueryDefinition(queryText)
-            .WithParameter("@maxResults", maxResults)
-            .WithParameter("@vectors", vectors)
-            .WithParameter("@similarityScore", similarityScore)
-            .WithParameter("@tenantId", tenantId)
-            .WithParameter("@userId", userId);
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryDef = queryDef.WithParameter("@categoryId", categoryId);
-        }
-
-        using FeedIterator<KnowledgeBaseItem> resultSet = _organizerContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
-
-        try
-        {
-            while (resultSet.HasMoreResults)
-            {
-                FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
-
-                foreach (var item in response)
-                {
-                    _logger.LogInformation("KnowledgeBaseItem ID: {Id}, Title: {Title}, CategoryId: {CategoryId}, ReferenceLink: {ReferenceLink}",
-                        item.Id, item.Title, item.CategoryId, item.ReferenceLink);
-
-                    // Log the knowledge base item object as JSON for debugging
-                    string itemJson = JsonConvert.SerializeObject(item, Formatting.Indented);
-                    _logger.LogInformation("KnowledgeBaseItem JSON: {ItemJson}", itemJson);
-
-                    results.Add(item);
-                }
-
-                _logger.LogInformation("Retrieved {Count} items in current batch.", response.Count);
-            }
-
-            _logger.LogInformation("SearchKnowledgeBaseAsync completed with {TotalCount} similar items found.", results.Count);
-            return results;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error searching the knowledge base.");
-            throw;
-        }
-    }
-
-
     /// <summary>
     /// Gets a list of all current chat threads.
     /// </summary>
@@ -428,32 +349,38 @@ public class CosmosDbService
     /// <param name="userId">Id of User.</param>
     /// <param name="threadId">Chat thread id for the thread to return.</param>
     /// <returns>Get chat thread item to rename.</returns>
-    public async Task<ThreadChat> GetThreadAsync(
+    public async Task<ThreadChat?> GetThreadAsync(
         string tenantId,
         string userId,
         string threadId)
     {
-        _logger.LogInformation("Retrieving thread with threadId: {threadId}", threadId);
+        _logger.LogInformation("Retrieving thread with threadId: {threadId}, tenantId: {tenantId}, userId: {userId}.", threadId, tenantId, userId);
+
+        // Generate the partition key
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
+        _logger.LogDebug("Generated PartitionKey for retrieval: {partitionKey}.", partitionKey);
 
         try
         {
+            // Attempt to read the thread from Cosmos DB
             ItemResponse<ThreadChat> response = await _chatContainer.ReadItemAsync<ThreadChat>(
                 id: threadId,
                 partitionKey: partitionKey
             );
 
-            _logger.LogInformation("Retrieved thread with threadId: {threadId}", threadId);
+            _logger.LogInformation("Thread retrieved successfully with threadId: {threadId}.", threadId);
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            _logger.LogWarning("thread with threadId {threadId} not found.", threadId);
-            throw new KeyNotFoundException($"thread with ID {threadId} not found.", ex);
+            // Log a warning and return null if the thread is not found
+            _logger.LogWarning("Thread with threadId {threadId} not found in Cosmos DB.", threadId);
+            return null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving thread with threadId: {threadId}", threadId);
+            // Log and rethrow unexpected exceptions
+            _logger.LogError(ex, "Unexpected error while retrieving thread with threadId: {threadId}.", threadId);
             throw;
         }
     }
@@ -538,34 +465,46 @@ public class CosmosDbService
         _logger.LogInformation("Deleting thread and messages for thread ID: {threadId}", threadId);
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
-        QueryDefinition query = new QueryDefinition("SELECT VALUE c.id FROM c WHERE c.threadId = @threadId")
-                .WithParameter("@threadId", threadId);
+        QueryDefinition query = new QueryDefinition(
+            "SELECT VALUE c.id FROM c WHERE c.threadId = @threadId AND c.type IN ('ThreadChat', 'Message')")
+            .WithParameter("@threadId", threadId);
 
         FeedIterator<string> response = _chatContainer.GetItemQueryIterator<string>(query);
 
         TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
+        bool hasOperations = false;
 
         try
         {
             while (response.HasMoreResults)
             {
                 FeedResponse<string> results = await response.ReadNextAsync();
+
                 foreach (var itemId in results)
                 {
                     batch.DeleteItem(id: itemId);
+                    hasOperations = true;
                     _logger.LogDebug("Added DeleteItem to batch for ID: {ItemId}", itemId);
                 }
             }
 
-            TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
-            if (batchResponse.IsSuccessStatusCode)
+            if (hasOperations)
             {
-                _logger.LogInformation("Deleted thread and all related messages for thread ID: {threadId}", threadId);
+                TransactionalBatchResponse batchResponse = await batch.ExecuteAsync();
+                if (batchResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Deleted thread and all related messages for thread ID: {threadId}", threadId);
+                }
+                else
+                {
+                    _logger.LogError("Batch delete failed with status code: {StatusCode}. Reason: {ReasonPhrase}",
+                        batchResponse.StatusCode, batchResponse.ErrorMessage);
+                    throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, batchResponse.ErrorMessage, 0);
+                }
             }
             else
             {
-                _logger.LogError("Failed to delete thread and messages. Status Code: {StatusCode}", batchResponse.StatusCode);
-                throw new CosmosException("Batch delete failed.", batchResponse.StatusCode, 0, "", 0);
+                _logger.LogWarning("No messages or threads found for deletion with thread ID: {threadId}", threadId);
             }
         }
         catch (Exception ex)
@@ -574,6 +513,7 @@ public class CosmosDbService
             throw;
         }
     }
+
     /// <summary>
     /// Deletes a specific message within a thread.
     /// </summary>
@@ -812,84 +752,77 @@ public class CosmosDbService
         Console.WriteLine($"[Query metrics]: (Total RUs: {totalRequestCharge})");
     }
 
-    public async Task<List<EmailMessage>> SearchEmailsAsync(
+    public async Task<EmailMessage?> SearchEmailsAsync(
         float[] vectors,
         string tenantId,
         string userId,
         string categoryId,
-        int emailMaxResults,
         double similarityScore)
     {
-        _logger.LogInformation("Searching for similar emails with max results: {MaxResults}, similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
-            emailMaxResults, similarityScore, tenantId, userId, categoryId ?? "None");
-
-        List<EmailMessage> results = new();
-
-        // Construct SQL query with optional categoryId filtering
-        string queryText = $"""
-    SELECT 
-        TOP @maxResults
-        c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
-        c.keypoints, c.conversationId, c.webLink, c.categoryIds,
-        VectorDistance(c.vectors, @vectors) as similarityScore
-    FROM c 
-    WHERE c.type = 'EmailMessage' AND c.tenantId = @tenantId AND c.userId = @userId
-          AND VectorDistance(c.vectors, @vectors) > @similarityScore
-    """;
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryText += " AND c.categoryId = @categoryId";
-        }
-
-        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-
-        // Set up a query definition with parameters for tenantId, userId, categoryId, vectors, and similarity score
-        var queryDef = new QueryDefinition(queryText)
-            .WithParameter("@maxResults", emailMaxResults)
-            .WithParameter("@vectors", vectors)
-            .WithParameter("@similarityScore", similarityScore)
-            .WithParameter("@tenantId", tenantId)
-            .WithParameter("@userId", userId);
-
-        if (!string.IsNullOrEmpty(categoryId))
-        {
-            queryDef = queryDef.WithParameter("@categoryId", categoryId);
-        }
-
-        using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
+        _logger.LogInformation(
+            "Searching for the most similar email with similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}.",
+            similarityScore, tenantId, userId, categoryId ?? "None");
 
         try
         {
-            while (resultSet.HasMoreResults)
+            // Construct SQL query with optional categoryId filtering
+            string queryText = $"""
+            SELECT 
+                TOP 1
+                c.id, c.tenantId, c.userId, c.subject, c.bodyContentText, c.categoryId, 
+                c.keypoints, c.conversationId, c.webLink, c.categoryIds,
+                VectorDistance(c.vectors, @vectors) as similarityScore
+            FROM c 
+            WHERE c.type = 'EmailMessage' 
+                AND c.tenantId = @tenantId 
+                AND c.userId = @userId
+            """;
+            //                AND VectorDistance(c.vectors, @vectors) > @similarityScore
+
+            if (!string.IsNullOrEmpty(categoryId))
             {
-                FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
-
-                foreach (var email in response)
-                {
-                    _logger.LogInformation("Email ID: {EmailId}, Subject: {Subject}, ConversationId: {ConversationId}, WebLink: {WebLink}, KeyPoints: {KeyPoints}",
-                        email.Id, email.Subject, email.ConversationId ?? "N/A", email.WebLink ?? "N/A", email.KeyPoints ?? "N/A");
-
-                    // Log the email object as JSON for debugging
-                    string emailJson = JsonConvert.SerializeObject(email, Formatting.Indented);
-                    _logger.LogInformation("Email JSON: {EmailJson}", emailJson);
-
-                    results.Add(email);
-                }
-
-                _logger.LogInformation("Retrieved {Count} emails in current batch.", response.Count);
+                queryText += " AND c.categoryId = @categoryId";
             }
 
-            _logger.LogInformation("SearchEmailsAsync completed with {TotalCount} similar emails found.", results.Count);
-            return results;
+            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+            // Set up a query definition with parameters
+            var queryDef = new QueryDefinition(queryText)
+                .WithParameter("@vectors", vectors)
+                .WithParameter("@similarityScore", similarityScore)
+                .WithParameter("@tenantId", tenantId)
+                .WithParameter("@userId", userId);
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryDef = queryDef.WithParameter("@categoryId", categoryId);
+            }
+
+            // Execute query and fetch results
+            using FeedIterator<EmailMessage> resultSet = _organizerContainer.GetItemQueryIterator<EmailMessage>(queryDef);
+
+            if (resultSet.HasMoreResults)
+            {
+                FeedResponse<EmailMessage> response = await resultSet.ReadNextAsync();
+                var closestEmail = response.FirstOrDefault();
+
+                if (closestEmail != null)
+                {
+                    _logger.LogInformation(
+                        $"Found the most similar email with ID: {closestEmail.Id}, Subject: {closestEmail.Subject}, Similarity Score: {closestEmail.SimilarityScore}.");
+                    return closestEmail;
+                }
+            }
+
+            _logger.LogInformation("No similar emails found with similarity score > {SimilarityScore}.", similarityScore);
+            return null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error searching for similar emails.");
+            _logger.LogError(ex, "Error searching for the most similar email.");
             throw;
         }
     }
-
 
     /// <summary>
     /// Upserts a new product.
@@ -986,18 +919,18 @@ public class CosmosDbService
             throw;
         }
     }
-       public async Task<Message> SearchClosestMessageAsync(
-    string tenantId,
-    string userId,
-    string featureNameProject,
-    float[] vectors,
-    double similarityScore,
-    string responseLengthVal,
-    string creativeAdjustmentsVal,
-    string audienceLevelVal,
-    string writingStyleVal,
-    string relationSettingsVal,
-    string responseStyleVal)
+    public async Task<Message> SearchClosestMessageAsync(
+ string tenantId,
+ string userId,
+ string featureNameProject,
+ float[] vectors,
+ double similarityScore,
+ string responseLengthVal,
+ string creativeAdjustmentsVal,
+ string audienceLevelVal,
+ string writingStyleVal,
+ string relationSettingsVal,
+ string responseStyleVal)
     {
 
         _logger.LogInformation("Searching for the closest message with similarity score above {similarityScore} and FeatureNameProject={FeatureNameProject}", similarityScore, featureNameProject);
@@ -1080,7 +1013,163 @@ public class CosmosDbService
             throw;
         }
     }
+    public async Task<KnowledgeBaseItem?> SearchKnowledgeBaseAsyncOLD(
+         float[] vectors,
+         string tenantId,
+         string userId,
+         string categoryId,
+         double similarityScore,
+          string[] searchTerms)
+    {
+        _logger.LogInformation("SearchKnowledgeBaseAsync Searching closest knowledge base item with : similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
+            similarityScore, tenantId, userId, categoryId ?? "None");
+      // Join search terms into a comma-separated string of quoted literals
+        string searchTermsLiteral = string.Join(", ", searchTerms.Select(term => $"\"{term}\""));
+        _logger.LogInformation($"SearchKnowledgeBaseAsync searchTermsLiteral: {searchTermsLiteral}");
  
+        try
+        {
+            // Construct SQL query with optional categoryId filtering
+            string queryText = $"""
+            SELECT 
+                TOP 1
+                c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, 
+                c.referenceDescription, c.referenceLink, 
+                VectorDistance(c.vectors, @vectors) as similarityScore
+            FROM c 
+            WHERE c.type = 'KnowledgeBaseItem' AND c.tenantId = @tenantId AND c.userId = @userId
+                AND VectorDistance(c.vectors, @vectors) > @similarityScore
+            """;
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryText += " AND c.categoryId = @categoryId";
+            }
+
+            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+            // Set up a query definition with parameters
+            var queryDef = new QueryDefinition(queryText)
+                .WithParameter("@vectors", vectors)
+                .WithParameter("@similarityScore", similarityScore)
+                .WithParameter("@tenantId", tenantId)
+                .WithParameter("@userId", userId);
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                queryDef = queryDef.WithParameter("@categoryId", categoryId);
+            }
+
+            using FeedIterator<KnowledgeBaseItem> resultSet = _knowledgeBaseContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
+
+            if (resultSet.HasMoreResults)
+            {
+                FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
+                var closestItem = response.FirstOrDefault();
+
+                if (closestItem != null)
+                {
+                    _logger.LogInformation(
+                        $"Found the most similar SearchKnowledgeBaseAsync with ID: {closestItem.Id}, Title: {closestItem.Title}, Similarity Score: {closestItem.SimilarityScore}.");
+                    return closestItem;
+                }
+            }
+
+            _logger.LogInformation("No knowledge base items found within the similarity threshold.");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching for the closest knowledge base item.");
+            throw;
+        }
+    }
+
+
+   /// <summary>
+    /// Searches the knowledge base for items matching the provided criteria.
+    /// </summary>
+    /// <param name="vectors">The vector embeddings for the search.</param>
+    /// <param name="tenantId">The tenant ID.</param>
+    /// <param name="userId">The user ID.</param>
+    /// <param name="categoryId">The category ID.</param>
+    /// <param name="similarityScore">The similarity score threshold for the search.</param>
+    /// <param name="searchTerms">The search terms to use in the query.</param>
+    /// <returns>A Task representing the asynchronous operation, with a list of matching knowledge base items.</returns>
+    public async Task<List<KnowledgeBaseItem>> SearchKnowledgeBaseAsync(
+        float[] vectors,
+        string tenantId,
+        string userId,
+        string? categoryId,
+        double similarityScore,
+        string[] searchTerms)
+    {
+        _logger.LogInformation(
+            "Searching knowledge base items for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}",
+            tenantId, userId, categoryId ?? "None"
+        );
+
+        // Construct CONTAINS conditions for search terms
+        string containsConditions = string.Join(" OR ", searchTerms.Select((term, index) => $"CONTAINS(c.content, @term{index}, true)"));
+
+        // Construct the SQL query
+        string queryText = $@"
+        SELECT TOP 10 c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, c.referenceDescription, c.referenceLink, 
+               VectorDistance(c.vectors, @vectors) AS similarityScore
+        FROM c
+        WHERE c.type = 'KnowledgeBaseItem'
+        AND c.tenantId = @tenantId
+        AND c.userId = @userId
+        AND ({containsConditions})
+    ";
+
+        if (!string.IsNullOrEmpty(categoryId))
+        {
+            queryText += " AND c.categoryId = @categoryId";
+        }
+
+        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+        _logger.LogInformation("Executing query: {QueryText}", queryText);
+
+        // Define query parameters
+        var queryDef = new QueryDefinition(queryText)
+            .WithParameter("@vectors", vectors)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@userId", userId);
+
+        if (!string.IsNullOrEmpty(categoryId))
+        {
+            queryDef = queryDef.WithParameter("@categoryId", categoryId);
+        }
+
+        for (int i = 0; i < searchTerms.Length; i++)
+        {
+            queryDef = queryDef.WithParameter($"@term{i}", searchTerms[i]);
+        }
+
+        // Execute the query and collect results
+        var results = new List<KnowledgeBaseItem>();
+        using FeedIterator<KnowledgeBaseItem> resultSet = _knowledgeBaseContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
+
+        while (resultSet.HasMoreResults)
+        {
+            FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
+            // Log each retrieved item (debugging)
+            foreach (var item in response)
+            {
+                _logger.LogInformation(
+                    "Retrieved KnowledgeBaseItem - ID: {Id}, Title: {Title}, Similarity Score: {SimilarityScore}",
+                    item.Id, item.Title, item.SimilarityScore
+                );
+            }
+            results.AddRange(response); // Add all items from the current page to the results list
+        }
+
+        _logger.LogInformation("SearchKnowledgeBaseAsync Found {Count} knowledge base items.", results.Count);
+        return results;
+    }
+
     /// <summary>
     /// Find a cache item based on vector similarity.
     /// </summary>

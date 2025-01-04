@@ -1086,93 +1086,88 @@ public class CosmosDbService
     }
 
 
-    public async Task<KnowledgeBaseItem?> SearchKnowledgeBaseAsync(
-          float[] vectors,
-          string tenantId,
-          string userId,
-          string categoryId,
-          double similarityScore,
-          string[] searchTerms)
+   /// <summary>
+    /// Searches the knowledge base for items matching the provided criteria.
+    /// </summary>
+    /// <param name="vectors">The vector embeddings for the search.</param>
+    /// <param name="tenantId">The tenant ID.</param>
+    /// <param name="userId">The user ID.</param>
+    /// <param name="categoryId">The category ID.</param>
+    /// <param name="similarityScore">The similarity score threshold for the search.</param>
+    /// <param name="searchTerms">The search terms to use in the query.</param>
+    /// <returns>A Task representing the asynchronous operation, with a list of matching knowledge base items.</returns>
+    public async Task<List<KnowledgeBaseItem>> SearchKnowledgeBaseAsync(
+        float[] vectors,
+        string tenantId,
+        string userId,
+        string? categoryId,
+        double similarityScore,
+        string[] searchTerms)
     {
-        _logger.LogInformation("Searching closest knowledge base item with similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
-            similarityScore, tenantId, userId, categoryId ?? "None");
-        // Join search terms into a comma-separated string of quoted literals
-        string searchTermsLiteral = string.Join(", ", searchTerms.Select(term => $"\"{term}\""));
-        _logger.LogInformation($"SearchKnowledgeBaseAsync searchTermsLiteral: {searchTermsLiteral}");
-        try
+        _logger.LogInformation(
+            "Searching knowledge base items for TenantId={TenantId}, UserId={UserId}, CategoryId={CategoryId}",
+            tenantId, userId, categoryId ?? "None"
+        );
+
+        // Construct CONTAINS conditions for search terms
+        string containsConditions = string.Join(" OR ", searchTerms.Select((term, index) => $"CONTAINS(c.content, @term{index}, true)"));
+
+        // Construct the SQL query
+        string queryText = $@"
+        SELECT TOP 10 c.id, c.tenantId, c.userId, c.categoryId, c.title, c.content, c.referenceDescription, c.referenceLink, 
+               VectorDistance(c.vectors, @vectors) AS similarityScore
+        FROM c
+        WHERE c.type = 'KnowledgeBaseItem'
+        AND c.tenantId = @tenantId
+        AND c.userId = @userId
+        AND ({containsConditions})
+    ";
+
+        if (!string.IsNullOrEmpty(categoryId))
         {
-            // Construct SQL query with optional categoryId filtering
-            string queryText = $"""
-            SELECT TOP 1
-                c.id,
-                c.tenantId,
-                c.userId,
-                c.categoryId,
-                c.title,
-                c.content,
-                c.referenceDescription,
-                c.referenceLink,
-                VectorDistance(c.vectors, @vectors) AS similarityScore
-            FROM c
-            WHERE c.type = 'KnowledgeBaseItem'
-            AND c.tenantId = @tenantId
-            AND c.userId = @userId
-            AND FullTextContains(c.text, "Vegas")
-            """;
-
-            if (!string.IsNullOrEmpty(categoryId))
-            {
-                queryText += " AND c.categoryId = @categoryId";
-            }
-/*
-SELECT TOP 100 c.text, c.abstract
-      FROM c
-      ORDER BY RANK RRF(FullTextScore(c.text, ['swim', 'run']), FullTextScore(c.abstract, ['energy']))
-*/
-            // Append ORDER BY RANK clause with RRF function
-            //queryText += " ORDER BY RANK RRF(VectorDistance(c.vectors, @vectors), FullTextScore(c.content, ['semantic', 'kernel']))";
-            queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
-            //queryText += " ORDER BY RANK RRF(FullTextScore(c.text, ['Las', 'Vegas']),VectorDistance(c.vectors, @vectors))";
-
-            // ORDER BY RANK RRF(VectorDistance(c.vector, [1,2,3]), FullTextScore(c.text, ["text", "to", "search", "goes" ,"here])
-            // Set up a query definition with parameters
-
-            _logger.LogInformation($"SearchKnowledgeBaseAsync queryText: {queryText}");
-
-            var queryDef = new QueryDefinition(queryText)
-                .WithParameter("@vectors", vectors)
-                .WithParameter("@tenantId", tenantId)
-                .WithParameter("@userId", userId);
-
-            if (!string.IsNullOrEmpty(categoryId))
-            {
-                queryDef = queryDef.WithParameter("@categoryId", categoryId);
-            }
-
-            using FeedIterator<KnowledgeBaseItem> resultSet = _knowledgeBaseContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
-
-            if (resultSet.HasMoreResults)
-            {
-                FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
-                var closestItem = response.FirstOrDefault();
-
-                if (closestItem != null)
-                {
-                    _logger.LogInformation(
-                        "Found the most relevant knowledge base item with ID: {Id}, Title: {Title}, Similarity Score: {SimilarityScore}, Relevance Score: {RelevanceScore}.",
-                        closestItem.Id, closestItem.Title, closestItem.SimilarityScore, closestItem.RelevanceScore);
-                    return closestItem;
-                }
-            }
-
-            _logger.LogInformation("No knowledge base items found within the similarity threshold.");
-            return null;
+            queryText += " AND c.categoryId = @categoryId";
         }
-        catch (Exception ex)
+
+        queryText += " ORDER BY VectorDistance(c.vectors, @vectors)";
+
+        _logger.LogInformation("Executing query: {QueryText}", queryText);
+
+        // Define query parameters
+        var queryDef = new QueryDefinition(queryText)
+            .WithParameter("@vectors", vectors)
+            .WithParameter("@tenantId", tenantId)
+            .WithParameter("@userId", userId);
+
+        if (!string.IsNullOrEmpty(categoryId))
         {
-            _logger.LogError(ex, "Error searching for the closest knowledge base item.");
-            throw;
+            queryDef = queryDef.WithParameter("@categoryId", categoryId);
         }
+
+        for (int i = 0; i < searchTerms.Length; i++)
+        {
+            queryDef = queryDef.WithParameter($"@term{i}", searchTerms[i]);
+        }
+
+        // Execute the query and collect results
+        var results = new List<KnowledgeBaseItem>();
+        using FeedIterator<KnowledgeBaseItem> resultSet = _knowledgeBaseContainer.GetItemQueryIterator<KnowledgeBaseItem>(queryDef);
+
+        while (resultSet.HasMoreResults)
+        {
+            FeedResponse<KnowledgeBaseItem> response = await resultSet.ReadNextAsync();
+            // Log each retrieved item (debugging)
+            foreach (var item in response)
+            {
+                _logger.LogInformation(
+                    "Retrieved KnowledgeBaseItem - ID: {Id}, Title: {Title}, Similarity Score: {SimilarityScore}",
+                    item.Id, item.Title, item.SimilarityScore
+                );
+            }
+            results.AddRange(response); // Add all items from the current page to the results list
+        }
+
+        _logger.LogInformation("SearchKnowledgeBaseAsync Found {Count} knowledge base items.", results.Count);
+        return results;
     }
 
     /// <summary>

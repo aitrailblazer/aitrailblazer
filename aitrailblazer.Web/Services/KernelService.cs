@@ -32,7 +32,25 @@ namespace AITrailblazer.net.Services
             return config;
 
         }
+        public IKernelBuilder CreateKernelBuilderPhi(string modelId, int maxTokens)
+        {
+            string endpointPhi = _parametersAzureService.PhiEndpoint;
+            string apiKeyPhi = _parametersAzureService.PhiKey;
+            //string modelId = "phi-3-5-moe-instruct";
+            // Create HttpClient with custom headers and timeout
+            var httpClient = new HttpClient();
+            //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
+            httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
 
+            IKernelBuilder kernelPhi = Kernel.CreateBuilder()
+            .AddAzureAIInferenceChatCompletion(
+                endpoint: new Uri(endpointPhi),
+                apiKey: apiKeyPhi,
+                modelId: modelId,
+                httpClient: httpClient);
+            return kernelPhi;
+
+        }
         public IKernelBuilder CreateKernelBuilder(string modelId, int maxTokens)
         {
             IKernelBuilder kernelBuilder = Kernel.CreateBuilder();

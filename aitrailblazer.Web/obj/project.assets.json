@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net9.0": {
-      "Azure.AI.Inference/1.0.0-beta.1": {
+      "Azure.AI.Inference/1.0.0-beta.2": {
         "type": "package",
         "dependencies": {
-          "Azure.Core": "1.42.0",
-          "System.Text.Json": "4.7.2"
+          "Azure.Core": "1.44.1",
+          "System.Text.Json": "6.0.10"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.Inference.dll": {
@@ -19,11 +19,11 @@
           }
         }
       },
-      "Azure.AI.OpenAI/2.1.0-beta.1": {
+      "Azure.AI.OpenAI/2.1.0-beta.2": {
         "type": "package",
         "dependencies": {
-          "Azure.Core": "1.43.0",
-          "OpenAI": "2.1.0-beta.1"
+          "Azure.Core": "1.44.1",
+          "OpenAI": "2.1.0-beta.2"
         },
         "compile": {
           "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
@@ -1240,7 +1240,7 @@
           }
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
+      "Microsoft.Bcl.AsyncInterfaces/9.0.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -1251,6 +1251,9 @@
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
             "related": ".xml"
           }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "Microsoft.Bcl.HashCode/1.1.1": {
@@ -1404,7 +1407,29 @@
           }
         }
       },
-      "Microsoft.Extensions.AI.Abstractions/9.0.0-preview.9.24525.1": {
+      "Microsoft.Extensions.AI/9.0.1-preview.1.24570.5": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.AI.Abstractions": "9.0.1-preview.1.24570.5",
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "System.Diagnostics.DiagnosticSource": "9.0.0",
+          "System.Text.Json": "9.0.0",
+          "System.Threading.Channels": "9.0.0"
+        },
+        "compile": {
+          "lib/net9.0/Microsoft.Extensions.AI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.AI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Extensions.AI.Abstractions/9.0.1-preview.1.24570.5": {
         "type": "package",
         "compile": {
           "lib/net9.0/Microsoft.Extensions.AI.Abstractions.dll": {
@@ -1415,9 +1440,26 @@
           "lib/net9.0/Microsoft.Extensions.AI.Abstractions.dll": {
             "related": ".xml"
           }
+        }
+      },
+      "Microsoft.Extensions.AI.AzureAIInference/9.0.1-preview.1.24570.5": {
+        "type": "package",
+        "dependencies": {
+          "Azure.AI.Inference": "1.0.0-beta.2",
+          "Microsoft.Bcl.AsyncInterfaces": "9.0.0",
+          "Microsoft.Extensions.AI.Abstractions": "9.0.1-preview.1.24570.5",
+          "System.Memory.Data": "9.0.0",
+          "System.Text.Json": "9.0.0"
         },
-        "build": {
-          "buildTransitive/net8.0/_._": {}
+        "compile": {
+          "lib/net9.0/Microsoft.Extensions.AI.AzureAIInference.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.AI.AzureAIInference.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.Extensions.AmbientMetadata.Application/9.0.0": {
@@ -1441,10 +1483,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.2.24473.5": {
+      "Microsoft.Extensions.Caching.Abstractions/9.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.0-rc.2.24473.5"
+          "Microsoft.Extensions.Primitives": "9.0.0"
         },
         "compile": {
           "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -2100,7 +2142,7 @@
           }
         }
       },
-      "Microsoft.FluentUI.AspNetCore.Components/4.10.4": {
+      "Microsoft.FluentUI.AspNetCore.Components/4.11.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "9.0.0",
@@ -2141,7 +2183,7 @@
           }
         }
       },
-      "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.4": {
+      "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.FluentUI.AspNetCore.Components": "4.10.2"
@@ -2227,7 +2269,7 @@
           }
         }
       },
-      "Microsoft.Identity.Client/4.66.1": {
+      "Microsoft.Identity.Client/4.66.2": {
         "type": "package",
         "dependencies": {
           "Microsoft.IdentityModel.Abstractions": "6.35.0",
@@ -2754,6 +2796,22 @@
           }
         }
       },
+      "Microsoft.ML.Tokenizers.Data.Cl100kBase/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.ML.Tokenizers": "1.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.ML.Tokenizers.Data.Cl100kBase.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.ML.Tokenizers.Data.Cl100kBase.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.NETCore.Platforms/1.1.1": {
         "type": "package",
         "compile": {
@@ -2772,7 +2830,7 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.OpenApi/1.6.21": {
+      "Microsoft.OpenApi/1.6.22": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
@@ -2785,11 +2843,11 @@
           }
         }
       },
-      "Microsoft.OpenApi.ApiManifest/0.5.4-preview": {
+      "Microsoft.OpenApi.ApiManifest/0.5.6-preview": {
         "type": "package",
         "dependencies": {
-          "Microsoft.OpenApi.Readers": "1.6.11",
-          "System.Text.Json": "[6.0.0, 9.0.0)"
+          "Microsoft.OpenApi.Readers": "1.6.22",
+          "System.Text.Json": "6.0.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.OpenApi.ApiManifest.dll": {}
@@ -2798,10 +2856,10 @@
           "lib/netstandard2.0/Microsoft.OpenApi.ApiManifest.dll": {}
         }
       },
-      "Microsoft.OpenApi.Readers/1.6.21": {
+      "Microsoft.OpenApi.Readers/1.6.22": {
         "type": "package",
         "dependencies": {
-          "Microsoft.OpenApi": "1.6.21",
+          "Microsoft.OpenApi": "1.6.22",
           "SharpYaml": "2.1.1"
         },
         "compile": {
@@ -2815,11 +2873,26 @@
           }
         }
       },
-      "Microsoft.SemanticKernel/1.28.0": {
+      "Microsoft.Plugins.Manifest/1.0.0-rc2": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.28.0",
-          "Microsoft.SemanticKernel.Core": "1.28.0"
+          "Microsoft.OpenApi": "1.6.22",
+          "Microsoft.OpenApi.Readers": "1.6.22",
+          "Microsoft.VisualStudio.Threading": "17.12.19",
+          "System.Text.Json": "6.0.10"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.Plugins.Manifest.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Plugins.Manifest.dll": {}
+        }
+      },
+      "Microsoft.SemanticKernel/1.32.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.32.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.dll": {
@@ -2832,12 +2905,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Abstractions/1.30.0": {
+      "Microsoft.SemanticKernel.Abstractions/1.32.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
-          "Microsoft.Extensions.AI.Abstractions": "9.0.0-preview.9.24525.1",
+          "Microsoft.Extensions.AI.Abstractions": "9.0.1-preview.1.24570.5",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
           "Microsoft.Extensions.VectorData.Abstractions": "9.0.0-preview.1.24523.1",
@@ -2855,11 +2928,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Agents.Abstractions/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Agents.Abstractions/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
           "System.Linq.Async": "6.0.1",
           "System.Text.Json": "8.0.5"
         },
@@ -2874,10 +2947,10 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Agents.Core/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Agents.Core/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Agents.Abstractions": "1.25.0-alpha"
+          "Microsoft.SemanticKernel.Agents.Abstractions": "1.32.0-alpha"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Agents.Core.dll": {
@@ -2890,11 +2963,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.25.0-beta": {
+      "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.32.0-beta": {
         "type": "package",
         "dependencies": {
-          "Azure.AI.Inference": "1.0.0-beta.1",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.Extensions.AI": "9.0.1-preview.1.24570.5",
+          "Microsoft.Extensions.AI.AzureAIInference": "9.0.1-preview.1.24570.5",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.dll": {
@@ -2907,11 +2981,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL/1.30.0-preview": {
+      "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL/1.32.0-preview": {
         "type": "package",
         "dependencies": {
           "Microsoft.Azure.Cosmos": "3.45.2",
-          "Microsoft.SemanticKernel.Core": "1.30.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
@@ -2925,12 +2999,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.28.0": {
+      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.32.0": {
         "type": "package",
         "dependencies": {
-          "Azure.AI.OpenAI": "[2.1.0-beta.1]",
-          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.28.0",
-          "Microsoft.SemanticKernel.Core": "1.28.0"
+          "Azure.AI.OpenAI": "[2.1.0-beta.2]",
+          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.32.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
@@ -2943,11 +3017,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Connectors.OpenAI/1.28.0": {
+      "Microsoft.SemanticKernel.Connectors.OpenAI/1.32.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.28.0",
-          "OpenAI": "[2.1.0-beta.1]"
+          "Microsoft.SemanticKernel.Core": "1.32.0",
+          "OpenAI": "[2.1.0-beta.2]"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll": {
@@ -2960,11 +3034,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Core/1.30.0": {
+      "Microsoft.SemanticKernel.Core/1.32.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.1",
-          "Microsoft.SemanticKernel.Abstractions": "1.30.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
           "System.Numerics.Tensors": "8.0.0",
           "System.Text.Json": "8.0.5"
         },
@@ -2979,12 +3053,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.Core/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Plugins.Core/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
           "Microsoft.Bcl.TimeProvider": "8.0.1",
-          "Microsoft.Extensions.Http": "8.0.0",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.Extensions.Http": "8.0.1",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
@@ -2997,14 +3071,15 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.OpenApi/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Plugins.OpenApi/1.32.0-preview": {
         "type": "package",
         "dependencies": {
           "JsonSchema.Net": "5.4.2",
+          "Microsoft.Identity.Client": "4.66.2",
           "Microsoft.Identity.Client.Extensions.Msal": "2.28.0",
-          "Microsoft.OpenApi": "1.6.21",
-          "Microsoft.OpenApi.Readers": "1.6.21",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.OpenApi": "1.6.22",
+          "Microsoft.OpenApi.Readers": "1.6.22",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.dll": {
@@ -3017,12 +3092,14 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
-          "Microsoft.OpenApi.ApiManifest": "0.5.4-preview",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
-          "Microsoft.SemanticKernel.Plugins.OpenApi": "1.25.0-alpha"
+          "Microsoft.OpenApi.ApiManifest": "0.5.6-preview",
+          "Microsoft.Plugins.Manifest": "1.0.0-rc2",
+          "Microsoft.SemanticKernel.Agents.Abstractions": "1.32.0-alpha",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
+          "Microsoft.SemanticKernel.Plugins.OpenApi": "1.32.0-preview"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.dll": {
@@ -3035,12 +3112,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Plugins.Web/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Plugins.Web/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
           "Google.Apis.CustomSearchAPI.v1": "1.60.0.3001",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
-          "Microsoft.SemanticKernel.Abstractions": "1.25.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
           "System.Text.Json": "8.0.5"
         },
         "compile": {
@@ -3054,12 +3131,12 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.28.0": {
+      "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.32.0": {
         "type": "package",
         "dependencies": {
           "Handlebars.Net": "2.1.6",
           "Handlebars.Net.Helpers": "2.4.6",
-          "Microsoft.SemanticKernel.Core": "1.28.0"
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.dll": {
@@ -3072,11 +3149,11 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.32.0-preview": {
         "type": "package",
         "dependencies": {
           "Fluid.Core": "2.11.1",
-          "Microsoft.SemanticKernel.Core": "1.25.0"
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.dll": {
@@ -3089,13 +3166,13 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Prompty/1.25.0-alpha": {
+      "Microsoft.SemanticKernel.Prompty/1.32.0-alpha": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Physical": "[8.0.0, 9.0.0)",
-          "Microsoft.SemanticKernel.Core": "1.25.0",
-          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.25.0",
-          "Microsoft.SemanticKernel.PromptTemplates.Liquid": "1.25.0-alpha",
+          "Microsoft.Extensions.FileProviders.Physical": "8.0.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Handlebars": "1.32.0",
+          "Microsoft.SemanticKernel.PromptTemplates.Liquid": "1.32.0-preview",
           "YamlDotNet": "15.3.0"
         },
         "compile": {
@@ -3109,10 +3186,10 @@
           }
         }
       },
-      "Microsoft.SemanticKernel.Yaml/1.28.0": {
+      "Microsoft.SemanticKernel.Yaml/1.32.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.SemanticKernel.Core": "1.28.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
           "YamlDotNet": "15.3.0"
         },
         "compile": {
@@ -3159,6 +3236,124 @@
         "runtime": {
           "lib/net7.0/Microsoft.TypeChat.Schema.dll": {
             "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.VisualStudio.Threading/17.12.19": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.VisualStudio.Threading.Analyzers": "17.12.19",
+          "Microsoft.VisualStudio.Validation": "17.8.8"
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.VisualStudio.Threading.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.VisualStudio.Threading.dll": {
+            "related": ".xml"
+          }
+        },
+        "resource": {
+          "lib/net6.0/cs/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/net6.0/de/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "de"
+          },
+          "lib/net6.0/es/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "es"
+          },
+          "lib/net6.0/fr/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/net6.0/it/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "it"
+          },
+          "lib/net6.0/ja/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/net6.0/ko/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/net6.0/pl/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/net6.0/pt-BR/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/net6.0/ru/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/net6.0/tr/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/net6.0/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/net6.0/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
+      "Microsoft.VisualStudio.Threading.Analyzers/17.12.19": {
+        "type": "package",
+        "build": {
+          "build/_._": {}
+        }
+      },
+      "Microsoft.VisualStudio.Validation/17.8.8": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Microsoft.VisualStudio.Validation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.VisualStudio.Validation.dll": {
+            "related": ".xml"
+          }
+        },
+        "resource": {
+          "lib/net6.0/cs/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/net6.0/de/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "de"
+          },
+          "lib/net6.0/es/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "es"
+          },
+          "lib/net6.0/fr/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/net6.0/it/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "it"
+          },
+          "lib/net6.0/ja/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/net6.0/ko/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/net6.0/pl/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/net6.0/pt-BR/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/net6.0/ru/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/net6.0/tr/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/net6.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/net6.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll": {
+            "locale": "zh-Hant"
           }
         }
       },
@@ -3212,10 +3407,10 @@
           }
         }
       },
-      "OpenAI/2.1.0-beta.1": {
+      "OpenAI/2.1.0-beta.2": {
         "type": "package",
         "dependencies": {
-          "System.ClientModel": "1.1.0",
+          "System.ClientModel": "1.2.1",
           "System.Diagnostics.DiagnosticSource": "6.0.1"
         },
         "compile": {
@@ -3705,11 +3900,11 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "System.ClientModel/1.1.0": {
+      "System.ClientModel/1.2.1": {
         "type": "package",
         "dependencies": {
-          "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "6.0.9"
+          "System.Memory.Data": "6.0.0",
+          "System.Text.Json": "6.0.10"
         },
         "compile": {
           "lib/net6.0/System.ClientModel.dll": {
@@ -4077,23 +4272,20 @@
           "lib/netcoreapp2.1/_._": {}
         }
       },
-      "System.Memory.Data/6.0.0": {
+      "System.Memory.Data/9.0.0": {
         "type": "package",
-        "dependencies": {
-          "System.Text.Json": "6.0.0"
-        },
         "compile": {
-          "lib/net6.0/System.Memory.Data.dll": {
+          "lib/net9.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/System.Memory.Data.dll": {
+          "lib/net9.0/System.Memory.Data.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "System.Net.Http/4.3.4": {
@@ -4724,7 +4916,7 @@
           }
         }
       },
-      "System.Text.Json/9.0.0-rc.2.24473.5": {
+      "System.Text.Json/9.0.0": {
         "type": "package",
         "compile": {
           "lib/net9.0/System.Text.Json.dll": {
@@ -4765,6 +4957,22 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Threading.dll": {}
+        }
+      },
+      "System.Threading.Channels/9.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/System.Threading.Channels.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/System.Threading.Channels.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "System.Threading.RateLimiting/8.0.0": {
@@ -5028,32 +5236,32 @@
     }
   },
   "libraries": {
-    "Azure.AI.Inference/1.0.0-beta.1": {
-      "sha512": "9SHCv83HOI+Ra/vTD41Bg1lYgly2iU/r3bhmm8xPz0ycs2GG2Bl8RrsOWZD5hDqAIBK5oc8H1YC5jOZAW84UjQ==",
+    "Azure.AI.Inference/1.0.0-beta.2": {
+      "sha512": "Ee5NPBYgSJMocJ5xka9JPVC0zsNvTrMeYhZGQ24VBgRAzLo41jiRheuMemASaM8dGk5wBvJaaeFFOmV1UXZm8g==",
       "type": "package",
-      "path": "azure.ai.inference/1.0.0-beta.1",
+      "path": "azure.ai.inference/1.0.0-beta.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "CHANGELOG.md",
         "README.md",
-        "azure.ai.inference.1.0.0-beta.1.nupkg.sha512",
+        "azure.ai.inference.1.0.0-beta.2.nupkg.sha512",
         "azure.ai.inference.nuspec",
         "azureicon.png",
         "lib/netstandard2.0/Azure.AI.Inference.dll",
         "lib/netstandard2.0/Azure.AI.Inference.xml"
       ]
     },
-    "Azure.AI.OpenAI/2.1.0-beta.1": {
-      "sha512": "mbCkF0ORgHr7YAA3KntkCqlwSQFaffwvIktJGzbm+wwwzuMvSYsv6KjyX9jzrhgob44HAh6IlkGTKDdMUUfSjg==",
+    "Azure.AI.OpenAI/2.1.0-beta.2": {
+      "sha512": "9dm9MgejTpvWZHkLC9rBP01SII2bRLR55CwkKHS55Hai1pKxST7QvZ46MjIcTcmApfaV6XbHuF8mxSorqUU05w==",
       "type": "package",
-      "path": "azure.ai.openai/2.1.0-beta.1",
+      "path": "azure.ai.openai/2.1.0-beta.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "CHANGELOG.md",
         "README.md",
-        "azure.ai.openai.2.1.0-beta.1.nupkg.sha512",
+        "azure.ai.openai.2.1.0-beta.2.nupkg.sha512",
         "azure.ai.openai.nuspec",
         "azureicon.png",
         "lib/netstandard2.0/Azure.AI.OpenAI.dll",
@@ -6518,10 +6726,10 @@
         "runtimes/win-x64/native/vcruntime140_1.dll"
       ]
     },
-    "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
-      "sha512": "3WA9q9yVqJp222P3x1wYIGDAkpjAku0TMUaaQV22g6L67AI0LdOIrVS7Ht2vJfLHGSPVuqN94vIr15qn+HEkHw==",
+    "Microsoft.Bcl.AsyncInterfaces/9.0.0": {
+      "sha512": "owmu2Cr3IQ8yQiBleBHlGk8dSQ12oaF2e7TpzwJKEl4m84kkZJjEY1n33L67Y3zM5jPOjmmbdHjbfiL0RqcMRQ==",
       "type": "package",
-      "path": "microsoft.bcl.asyncinterfaces/8.0.0",
+      "path": "microsoft.bcl.asyncinterfaces/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6531,13 +6739,15 @@
         "THIRD-PARTY-NOTICES.TXT",
         "buildTransitive/net461/Microsoft.Bcl.AsyncInterfaces.targets",
         "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Bcl.AsyncInterfaces.targets",
         "lib/net462/Microsoft.Bcl.AsyncInterfaces.dll",
         "lib/net462/Microsoft.Bcl.AsyncInterfaces.xml",
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
         "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
         "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
-        "microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
+        "microsoft.bcl.asyncinterfaces.9.0.0.nupkg.sha512",
         "microsoft.bcl.asyncinterfaces.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -7319,17 +7529,36 @@
         "microsoft.codeanalysis.csharp.nuspec"
       ]
     },
-    "Microsoft.Extensions.AI.Abstractions/9.0.0-preview.9.24525.1": {
-      "sha512": "b5EntLa7aYjui129KSWQRZpXgUNn6l5G9OYQwVFlDXPiADMcmMEJCveD3BDBDxSbt1jkhIYs0eGuYKM0mXVkFw==",
+    "Microsoft.Extensions.AI/9.0.1-preview.1.24570.5": {
+      "sha512": "J38WKNCFGAFhFrUPSHfgaRl593/guj9jAIvD7LS9VUdP3kh15kTSA2tJgQFubWpItPnmESDLtkggOEFu6AKEYw==",
       "type": "package",
-      "path": "microsoft.extensions.ai.abstractions/9.0.0-preview.9.24525.1",
+      "path": "microsoft.extensions.ai/9.0.1-preview.1.24570.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "README.md",
-        "buildTransitive/net462/Microsoft.Extensions.AI.Abstractions.targets",
-        "buildTransitive/net8.0/_._",
+        "lib/net462/Microsoft.Extensions.AI.dll",
+        "lib/net462/Microsoft.Extensions.AI.xml",
+        "lib/net8.0/Microsoft.Extensions.AI.dll",
+        "lib/net8.0/Microsoft.Extensions.AI.xml",
+        "lib/net9.0/Microsoft.Extensions.AI.dll",
+        "lib/net9.0/Microsoft.Extensions.AI.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.xml",
+        "microsoft.extensions.ai.9.0.1-preview.1.24570.5.nupkg.sha512",
+        "microsoft.extensions.ai.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.AI.Abstractions/9.0.1-preview.1.24570.5": {
+      "sha512": "zqUK1epXT+mxmJW7bonO2gRuYEhysLGIGCbPVXW5qmgYA+8PgFle9IPeKpb9RevwxnEedXdHm+nQyQiOnZIHWg==",
+      "type": "package",
+      "path": "microsoft.extensions.ai.abstractions/9.0.1-preview.1.24570.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
         "lib/net462/Microsoft.Extensions.AI.Abstractions.dll",
         "lib/net462/Microsoft.Extensions.AI.Abstractions.xml",
         "lib/net8.0/Microsoft.Extensions.AI.Abstractions.dll",
@@ -7338,8 +7567,29 @@
         "lib/net9.0/Microsoft.Extensions.AI.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.AI.Abstractions.xml",
-        "microsoft.extensions.ai.abstractions.9.0.0-preview.9.24525.1.nupkg.sha512",
+        "microsoft.extensions.ai.abstractions.9.0.1-preview.1.24570.5.nupkg.sha512",
         "microsoft.extensions.ai.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.AI.AzureAIInference/9.0.1-preview.1.24570.5": {
+      "sha512": "8Oz/ZlNuhla29lGVYJ2GxXdMH+FWT/LOY/IPcOaJOr7vwmN3BhTqJVR9+UgPlnyEcK7zDU/9WoUyOyYUA1S+QQ==",
+      "type": "package",
+      "path": "microsoft.extensions.ai.azureaiinference/9.0.1-preview.1.24570.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "lib/net462/Microsoft.Extensions.AI.AzureAIInference.dll",
+        "lib/net462/Microsoft.Extensions.AI.AzureAIInference.xml",
+        "lib/net8.0/Microsoft.Extensions.AI.AzureAIInference.dll",
+        "lib/net8.0/Microsoft.Extensions.AI.AzureAIInference.xml",
+        "lib/net9.0/Microsoft.Extensions.AI.AzureAIInference.dll",
+        "lib/net9.0/Microsoft.Extensions.AI.AzureAIInference.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.AzureAIInference.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.AI.AzureAIInference.xml",
+        "microsoft.extensions.ai.azureaiinference.9.0.1-preview.1.24570.5.nupkg.sha512",
+        "microsoft.extensions.ai.azureaiinference.nuspec"
       ]
     },
     "Microsoft.Extensions.AmbientMetadata.Application/9.0.0": {
@@ -7363,10 +7613,10 @@
         "microsoft.extensions.ambientmetadata.application.nuspec"
       ]
     },
-    "Microsoft.Extensions.Caching.Abstractions/9.0.0-rc.2.24473.5": {
-      "sha512": "7HrtHGMfGtyDZaDoM+gODjbljBHhTBCGyvzVlDNoN8jHfwkN/aqNcPE7ulLyU/zwannCVVrYteK2UMMoGjDOJQ==",
+    "Microsoft.Extensions.Caching.Abstractions/9.0.0": {
+      "sha512": "FPWZAa9c0H4dvOj351iR1jkUIs4u9ykL4Bm592yhjDyO5lCoWd+TMAHx2EMbarzUvCvgjWjJIoC6//Q9kH6YhA==",
       "type": "package",
-      "path": "microsoft.extensions.caching.abstractions/9.0.0-rc.2.24473.5",
+      "path": "microsoft.extensions.caching.abstractions/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7386,7 +7636,7 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.xml",
-        "microsoft.extensions.caching.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512",
+        "microsoft.extensions.caching.abstractions.9.0.0.nupkg.sha512",
         "microsoft.extensions.caching.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -8266,10 +8516,10 @@
         "neticon.png"
       ]
     },
-    "Microsoft.FluentUI.AspNetCore.Components/4.10.4": {
-      "sha512": "SOB2v8Ps0TehqbqeLpk11WK9qE/A5Oxzsb94uDH3eBznIUoFAZcjd6FQMpT/iVyBwXyPivXDaJLFnx6KUyXw7A==",
+    "Microsoft.FluentUI.AspNetCore.Components/4.11.0": {
+      "sha512": "7Make48vmnx3URzj7SWw0lNGZ/XXAfwLG+aIWBAQ7oOUDukobkM+fHbnVG+xxiZ2lbS9Yo+uFEWzm7WHCMvn7A==",
       "type": "package",
-      "path": "microsoft.fluentui.aspnetcore.components/4.10.4",
+      "path": "microsoft.fluentui.aspnetcore.components/4.11.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8284,7 +8534,7 @@
         "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.xml",
         "lib/net9.0/Microsoft.FluentUI.AspNetCore.Components.dll",
         "lib/net9.0/Microsoft.FluentUI.AspNetCore.Components.xml",
-        "microsoft.fluentui.aspnetcore.components.4.10.4.nupkg.sha512",
+        "microsoft.fluentui.aspnetcore.components.4.11.0.nupkg.sha512",
         "microsoft.fluentui.aspnetcore.components.nuspec",
         "staticwebassets/Components/Anchor/FluentAnchor.razor.js",
         "staticwebassets/Components/AnchoredRegion/FluentAnchoredRegion.razor.js",
@@ -8314,10 +8564,10 @@
         "staticwebassets/Components/Tabs/FluentTab.razor.js",
         "staticwebassets/Components/TextField/FluentTextField.razor.js",
         "staticwebassets/Components/Tooltip/FluentTooltip.razor.js",
-        "staticwebassets/Microsoft.FluentUI.AspNetCore.Components.dwk6czdzfo.bundle.scp.css",
         "staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js",
         "staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.LEGAL.txt",
         "staticwebassets/Microsoft.FluentUI.AspNetCore.Components.lib.module.js.map",
+        "staticwebassets/Microsoft.FluentUI.AspNetCore.Components.nv5wbdzqw1.bundle.scp.css",
         "staticwebassets/css/reboot.css",
         "staticwebassets/js/initializersLoader.webview.js",
         "staticwebassets/js/loading-theme.js"
@@ -8338,10 +8588,10 @@
         "microsoft.fluentui.aspnetcore.components.emoji.nuspec"
       ]
     },
-    "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.4": {
-      "sha512": "tzJV/FJSxm18rvFjB0Mv8fOo0a6e/x4i4ftkpSw1dvkzmHU82SXZmWyt9iraE2JpVQoEUawFdjK3Veh7NX7wVg==",
+    "Microsoft.FluentUI.AspNetCore.Components.Icons/4.10.3": {
+      "sha512": "91JsIsW7xSD74Dl1+0fai0/k7UsoJx8X0n9J5X6YS27GZZi5GfWut1Rq8BqeiSrZ8snzLi9+NpHSYg2ZxBgGrA==",
       "type": "package",
-      "path": "microsoft.fluentui.aspnetcore.components.icons/4.10.4",
+      "path": "microsoft.fluentui.aspnetcore.components.icons/4.10.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8349,7 +8599,7 @@
         "icon.png",
         "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.Icons.dll",
         "lib/net8.0/Microsoft.FluentUI.AspNetCore.Components.Icons.xml",
-        "microsoft.fluentui.aspnetcore.components.icons.4.10.4.nupkg.sha512",
+        "microsoft.fluentui.aspnetcore.components.icons.4.10.3.nupkg.sha512",
         "microsoft.fluentui.aspnetcore.components.icons.nuspec"
       ]
     },
@@ -8441,10 +8691,10 @@
         "microsoft.identity.abstractions.nuspec"
       ]
     },
-    "Microsoft.Identity.Client/4.66.1": {
-      "sha512": "mE+m3pZ7zSKocSubKXxwZcUrCzLflC86IdLxrVjS8tialy0b1L+aECBqRBC/ykcPlB4y7skg49TaTiA+O2UfDw==",
+    "Microsoft.Identity.Client/4.66.2": {
+      "sha512": "OsWRWpJs5iY9DxAF7DfWRGVNeFhjz75x+/bpHKB9Hbnu3THUgqYfQrYeQMgwx30ctweiV7h00aQpEua2kLeUpg==",
       "type": "package",
-      "path": "microsoft.identity.client/4.66.1",
+      "path": "microsoft.identity.client/4.66.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8461,7 +8711,7 @@
         "lib/net6.0/Microsoft.Identity.Client.xml",
         "lib/netstandard2.0/Microsoft.Identity.Client.dll",
         "lib/netstandard2.0/Microsoft.Identity.Client.xml",
-        "microsoft.identity.client.4.66.1.nupkg.sha512",
+        "microsoft.identity.client.4.66.2.nupkg.sha512",
         "microsoft.identity.client.nuspec"
       ]
     },
@@ -9113,6 +9363,23 @@
         "mlnetlogo.png"
       ]
     },
+    "Microsoft.ML.Tokenizers.Data.Cl100kBase/1.0.0": {
+      "sha512": "Pg5blEE5YGIFe4XQDX6NGqO/vremvepLmYphGGd2bV3qqX19k06Iz87POd9VKlKXyn46Z1Z9YGIqun6sqJkCaA==",
+      "type": "package",
+      "path": "microsoft.ml.tokenizers.data.cl100kbase/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard2.0/Microsoft.ML.Tokenizers.Data.Cl100kBase.dll",
+        "lib/netstandard2.0/Microsoft.ML.Tokenizers.Data.Cl100kBase.xml",
+        "microsoft.ml.tokenizers.data.cl100kbase.1.0.0.nupkg.sha512",
+        "microsoft.ml.tokenizers.data.cl100kbase.nuspec",
+        "mlnetlogo.png"
+      ]
+    },
     "Microsoft.NETCore.Platforms/1.1.1": {
       "sha512": "TMBuzAHpTenGbGgk0SMTwyEkyijY/Eae4ZGsFNYJvAr/LDn1ku3Etp3FPxChmDp5HHF3kzJuoaa08N0xjqAJfQ==",
       "type": "package",
@@ -9143,10 +9410,10 @@
         "runtime.json"
       ]
     },
-    "Microsoft.OpenApi/1.6.21": {
-      "sha512": "QbnoGsWqn4AM50seOUcfV01PkWA+Mz0dQ2FjGnzTRJ1+svX4BcT1IqylZTSvl5d3v7ZMkii55yhtJB1bA6bhXg==",
+    "Microsoft.OpenApi/1.6.22": {
+      "sha512": "aBvunmrdu/x+4CaA/UP1Jx4xWGwk4kymhoIRnn2Vp+zi5/KOPQJ9EkSXHRUr01WcGKtYl3Au7XfkPJbU1G2sjQ==",
       "type": "package",
-      "path": "microsoft.openapi/1.6.21",
+      "path": "microsoft.openapi/1.6.22",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9154,26 +9421,26 @@
         "lib/netstandard2.0/Microsoft.OpenApi.dll",
         "lib/netstandard2.0/Microsoft.OpenApi.pdb",
         "lib/netstandard2.0/Microsoft.OpenApi.xml",
-        "microsoft.openapi.1.6.21.nupkg.sha512",
+        "microsoft.openapi.1.6.22.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
     },
-    "Microsoft.OpenApi.ApiManifest/0.5.4-preview": {
-      "sha512": "BnJ7KazK7GYrv4p9/caDbqfmp0jD9Tz3t1SUQNc/rNsP7tZc5sLLHerKWCnIwq6pfZGa17KxDXeTZqG+OoUAYA==",
+    "Microsoft.OpenApi.ApiManifest/0.5.6-preview": {
+      "sha512": "SYNnk4fUU3xF68Mp3a+aRFhtS7AEQ4wMF0gIlBXzP8ZN3oiMtuL/ys4wdEJvPioUwA6mX9Ec3yWC1eOQgvtR3w==",
       "type": "package",
-      "path": "microsoft.openapi.apimanifest/0.5.4-preview",
+      "path": "microsoft.openapi.apimanifest/0.5.6-preview",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.OpenApi.ApiManifest.dll",
-        "microsoft.openapi.apimanifest.0.5.4-preview.nupkg.sha512",
+        "microsoft.openapi.apimanifest.0.5.6-preview.nupkg.sha512",
         "microsoft.openapi.apimanifest.nuspec"
       ]
     },
-    "Microsoft.OpenApi.Readers/1.6.21": {
-      "sha512": "bIDnWKNcvZX0f5HoCI4pQldcYszc14UKSDgPits/i88hnWdVeNVcrEcUqjTK8QYMfGaKuCgQh97r2dOuGU9CMQ==",
+    "Microsoft.OpenApi.Readers/1.6.22": {
+      "sha512": "F4h4yJp2UVVGGbH7KN0DTZnI/ABjS40w2+YgfhlWXfp3em+qlWexTRbisHfcRt42oi2Tf+6hfcD5X2QaaIi9jg==",
       "type": "package",
-      "path": "microsoft.openapi.readers/1.6.21",
+      "path": "microsoft.openapi.readers/1.6.22",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9181,14 +9448,29 @@
         "lib/netstandard2.0/Microsoft.OpenApi.Readers.dll",
         "lib/netstandard2.0/Microsoft.OpenApi.Readers.pdb",
         "lib/netstandard2.0/Microsoft.OpenApi.xml",
-        "microsoft.openapi.readers.1.6.21.nupkg.sha512",
+        "microsoft.openapi.readers.1.6.22.nupkg.sha512",
         "microsoft.openapi.readers.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel/1.28.0": {
-      "sha512": "JIjFoVD70R+eYUmzrHTyzz0oCy2tl4NfqlBDqy8VWyCTKx9v5PE8fHiQu1XEv1pRSEwJM3UjQ1zeIJV71pfvDA==",
+    "Microsoft.Plugins.Manifest/1.0.0-rc2": {
+      "sha512": "QLhHhtzd0hT1vfRxZ4YaN5kxPL9P68V5477XunmeKL1UWatrXzKBgZWK6SElQF2m4FOMQGgXYcVb31kkttQaqg==",
       "type": "package",
-      "path": "microsoft.semantickernel/1.28.0",
+      "path": "microsoft.plugins.manifest/1.0.0-rc2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Microsoft.Plugins.Manifest.dll",
+        "lib/netstandard2.0/Microsoft.Plugins.Manifest.dll",
+        "microsoft.plugins.manifest.1.0.0-rc2.nupkg.sha512",
+        "microsoft.plugins.manifest.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel/1.32.0": {
+      "sha512": "3K6FGWycODqKVPfG4H/SMWE8nEcl3X30W8Sc46APYd/iwULJNgNtDyXaWJELuoLC1V4BRmdydvLPrhm50U/rfQ==",
+      "type": "package",
+      "path": "microsoft.semantickernel/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9198,14 +9480,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.xml",
-        "microsoft.semantickernel.1.28.0.nupkg.sha512",
+        "microsoft.semantickernel.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Abstractions/1.30.0": {
-      "sha512": "JYac6hAUjqenVdfxqgW63/raaBqpk30cScmUg1ibuMY8CD56b1zgQ8pM35dQMY9sbLlWP+SuPNtWAn+gQl19Og==",
+    "Microsoft.SemanticKernel.Abstractions/1.32.0": {
+      "sha512": "RkowDH+bZhahO+1pcSoqyYpZD0cS22uqIPoWA1NRVxcJlY1qrg+gU+yx0ysAgX6doCQ1sXpPfRn9e3Yxgtqtsw==",
       "type": "package",
-      "path": "microsoft.semantickernel.abstractions/1.30.0",
+      "path": "microsoft.semantickernel.abstractions/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9215,14 +9497,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.xml",
-        "microsoft.semantickernel.abstractions.1.30.0.nupkg.sha512",
+        "microsoft.semantickernel.abstractions.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.abstractions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Agents.Abstractions/1.25.0-alpha": {
-      "sha512": "XefEvj6oobdwwzqUfccg/21qDAoRc6CThwITCPhe4ueNoXzzmEsy6IJ9QcyPcBNp0dYTkLrwuy04B+FCd+gLNg==",
+    "Microsoft.SemanticKernel.Agents.Abstractions/1.32.0-alpha": {
+      "sha512": "/XJ/9Ps15kuY+D4Qw3tmCZyq7DTePUlh+vofVBNSFdICU0L4QbKVEDyXo5h4p4h+1YqgNZukoLApY98VYlBd+g==",
       "type": "package",
-      "path": "microsoft.semantickernel.agents.abstractions/1.25.0-alpha",
+      "path": "microsoft.semantickernel.agents.abstractions/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9232,14 +9514,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Agents.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Abstractions.xml",
-        "microsoft.semantickernel.agents.abstractions.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.agents.abstractions.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.agents.abstractions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Agents.Core/1.25.0-alpha": {
-      "sha512": "uKhGd8P9q5TqJWk7ccDR7BS7gxPL02vhX9X8YEbIjzEmXvc5ooV4p029d8ag2rPE4WHBR/bDeH8hni30nMi5kA==",
+    "Microsoft.SemanticKernel.Agents.Core/1.32.0-alpha": {
+      "sha512": "xdOXGQdnbGMTkPz9Ht2ESk65vt6u5/rxKDfPKBAOpveY+rOyX5re4O9+OEYAvdx34Tlp92ahI2Dzf+nFMGXZVQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.agents.core/1.25.0-alpha",
+      "path": "microsoft.semantickernel.agents.core/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9249,14 +9531,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Agents.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Agents.Core.xml",
-        "microsoft.semantickernel.agents.core.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.agents.core.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.agents.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.25.0-beta": {
-      "sha512": "bKSgXCYCcqdxDjqAxyHOkfHVaUYtEwjCtkVSewd2vfojTKSWt/oAckccW/Yxt7MVHnqQiLwz1ZS9AhfTTd001A==",
+    "Microsoft.SemanticKernel.Connectors.AzureAIInference/1.32.0-beta": {
+      "sha512": "FoLoThc9c9cfb5KgsOxALg7YvrSg4wPFu5/6j2Hmk5b5zXElBV0spTwuoNssqIgdTQpwlUGxKgrOb0bHT+gfuw==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.azureaiinference/1.25.0-beta",
+      "path": "microsoft.semantickernel.connectors.azureaiinference/1.32.0-beta",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9266,14 +9548,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureAIInference.xml",
-        "microsoft.semantickernel.connectors.azureaiinference.1.25.0-beta.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureaiinference.1.32.0-beta.nupkg.sha512",
         "microsoft.semantickernel.connectors.azureaiinference.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL/1.30.0-preview": {
-      "sha512": "Wtumr8wMRGBBntZKQeqVb8iWuYsp8o8AJLrmA19mNnTodrAg17cqmkXdgznVwoHEHqw2pZoBsZVysCJrL7LqKA==",
+    "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL/1.32.0-preview": {
+      "sha512": "SfSGSLzpA+lq+1aSaLatzAZag8jefXrmRbgBNLndBXLK0BxPmyWSjVxpSR6zfhKbc5ymb8CiX0/RzkJiqueArQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.azurecosmosdbnosql/1.30.0-preview",
+      "path": "microsoft.semantickernel.connectors.azurecosmosdbnosql/1.32.0-preview",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9283,14 +9565,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL.xml",
-        "microsoft.semantickernel.connectors.azurecosmosdbnosql.1.30.0-preview.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azurecosmosdbnosql.1.32.0-preview.nupkg.sha512",
         "microsoft.semantickernel.connectors.azurecosmosdbnosql.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.28.0": {
-      "sha512": "oNlsNMab7R+Lvi4buienT7FqRnsTUcPKrA7z4Z7OWKvU1oVw3vjUnyWBh3nMlzdNkuEx0dZK/kKTbAuq8bpqJQ==",
+    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.32.0": {
+      "sha512": "yuT+vmwG4W1T8XQN1y76RwYUkgrh5Pz8Ot59N01Fo5oA2t9AL+P7uh6cECg45+7tld6LSPVEXN/fbXvYw6JjgQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.azureopenai/1.28.0",
+      "path": "microsoft.semantickernel.connectors.azureopenai/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9300,14 +9582,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
-        "microsoft.semantickernel.connectors.azureopenai.1.28.0.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureopenai.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.connectors.azureopenai.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Connectors.OpenAI/1.28.0": {
-      "sha512": "yFkb3/7Irk0GbdIEj0/2Av1DOOgDj9IiDFRy08MQTED8yRAb36ZGsXCAkSy/cDzLKfL6+yGF4Wewt/j7ZkJEFA==",
+    "Microsoft.SemanticKernel.Connectors.OpenAI/1.32.0": {
+      "sha512": "uA/XXu8Abz7AmjQP7GgSyNeC31JWKY+D1iWjpokR+8tZ8+tFXVCmk9ci8t3buDx/wyF6loHH8UbAfbRC89E0zg==",
       "type": "package",
-      "path": "microsoft.semantickernel.connectors.openai/1.28.0",
+      "path": "microsoft.semantickernel.connectors.openai/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9317,14 +9599,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.OpenAI.xml",
-        "microsoft.semantickernel.connectors.openai.1.28.0.nupkg.sha512",
+        "microsoft.semantickernel.connectors.openai.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.connectors.openai.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Core/1.30.0": {
-      "sha512": "RcRF2gXwtnVoeMrmeyL33IudsUAaiLDfQW59D9U+JZ6SwTrPK0Y4sgm47QWtzawzNUnlMLsUh9pKpHm4IAO0tQ==",
+    "Microsoft.SemanticKernel.Core/1.32.0": {
+      "sha512": "rwhDywnFTYoCVPvlAiOvFb8NQKrjBofbrNHqROsBNwIJicSwJz9k7Zc852O5MzQEGRvCzkJlA/oUEG+U++AT2Q==",
       "type": "package",
-      "path": "microsoft.semantickernel.core/1.30.0",
+      "path": "microsoft.semantickernel.core/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9334,14 +9616,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Core.xml",
-        "microsoft.semantickernel.core.1.30.0.nupkg.sha512",
+        "microsoft.semantickernel.core.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.Core/1.25.0-alpha": {
-      "sha512": "sBIHj5vhER49snlk+QYk9japdZtMT/IFmW6gbWCdynSP1JF/1nia9Ps0o+8j4AgA2h3RyJNSXIi27BCWHjqVCg==",
+    "Microsoft.SemanticKernel.Plugins.Core/1.32.0-alpha": {
+      "sha512": "VF8FbqUtGS3ogzAkMYt5s5zooa0kqofjWToqzC1C0l69RJ5CMXFOX1LAxeA0HgmyrsfwFo9R//cJ5Ju8Swvklw==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.core/1.25.0-alpha",
+      "path": "microsoft.semantickernel.plugins.core/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9351,14 +9633,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.xml",
-        "microsoft.semantickernel.plugins.core.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.core.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.core.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.OpenApi/1.25.0-alpha": {
-      "sha512": "w61YLWRZb2uPFk4cyLZETq9dA1K586su7CRpUh5QTlAlPbqVZi5yParOoCKDDeT7j6TOkMH/RfuG9caKqmqRbQ==",
+    "Microsoft.SemanticKernel.Plugins.OpenApi/1.32.0-preview": {
+      "sha512": "YsUPcuaHp2SymABRlgBBB85+q9MDE9W8D1HXMv7QsONP0kAbHrd5L1wM6kd4RLcedC0gOpIq6i8D+HcJa2l+oA==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.openapi/1.25.0-alpha",
+      "path": "microsoft.semantickernel.plugins.openapi/1.32.0-preview",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9368,14 +9650,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.xml",
-        "microsoft.semantickernel.plugins.openapi.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.openapi.1.32.0-preview.nupkg.sha512",
         "microsoft.semantickernel.plugins.openapi.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.25.0-alpha": {
-      "sha512": "bq6G7WI8tQULrQrdYTv/DJtG6fQOH+UiiHHvolpZoX7ZvgOUH2ib+s4i6Cd7K7lfnVcaLT30CnYplHltX+/VOQ==",
+    "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions/1.32.0-alpha": {
+      "sha512": "UHdNN+UkYXqL22HTRt68+nE9DJY2RmiJMV83azBQ8URk2/zL6XtjXL2jtkdEzSubiRma9VpX7Ep2PfdM8bjhKg==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.openapi.extensions/1.25.0-alpha",
+      "path": "microsoft.semantickernel.plugins.openapi.extensions/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9385,14 +9667,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.OpenApi.Extensions.xml",
-        "microsoft.semantickernel.plugins.openapi.extensions.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.openapi.extensions.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.openapi.extensions.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Plugins.Web/1.25.0-alpha": {
-      "sha512": "p69XEEZPqr5M/B5ZrofB3J2oNwt/bW1XV3TZ6RybvihlAKBT/1SD1Gkc/VdLGLKQml16xz6WRpmlhFk0ca83rw==",
+    "Microsoft.SemanticKernel.Plugins.Web/1.32.0-alpha": {
+      "sha512": "9G6s4+wC01Q6jOpBi1KbhkEouIhL4wTJGLmzR44ZGZ8jK7v+shfy8WYEHu+fXIcuovIq3TM0cJC7K4ATl4L8lw==",
       "type": "package",
-      "path": "microsoft.semantickernel.plugins.web/1.25.0-alpha",
+      "path": "microsoft.semantickernel.plugins.web/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9402,14 +9684,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Plugins.Web.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Web.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Web.xml",
-        "microsoft.semantickernel.plugins.web.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.plugins.web.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.plugins.web.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.28.0": {
-      "sha512": "1jNHKemQc+xXJmC7NNMonkATYTwt3xZq6NDJSICtPYzunHYvdYGJ2UWoV6s0rPA/IblNIdQ2Rlta/tLeIzj6Pw==",
+    "Microsoft.SemanticKernel.PromptTemplates.Handlebars/1.32.0": {
+      "sha512": "1+UCFaCmS9f7lb2isbiXHSlHhB8auvvmoiqlbxwLe13SNusbAJQEbo7lpAXlwN+33Uwe9LxTVTbNUfLy5B569w==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.28.0",
+      "path": "microsoft.semantickernel.prompttemplates.handlebars/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9419,14 +9701,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Handlebars.xml",
-        "microsoft.semantickernel.prompttemplates.handlebars.1.28.0.nupkg.sha512",
+        "microsoft.semantickernel.prompttemplates.handlebars.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.prompttemplates.handlebars.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.25.0-alpha": {
-      "sha512": "liwiRRFvIEth+Ths65OJJYU0vY1+KaUEdC+VcFYjxXU6JsiaW4ptCZ8wvQj1i3TL6Xz1Yr0EWYA8Vz9YdFA3Pg==",
+    "Microsoft.SemanticKernel.PromptTemplates.Liquid/1.32.0-preview": {
+      "sha512": "xOmNayb/doQNMt2x+dqEZEDK4agEfKUzvmvI7GAsNlXA37LUzLMDMtP3/3LgaoDi1eEUiS8nc6ywun2Y0wj5YQ==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompttemplates.liquid/1.25.0-alpha",
+      "path": "microsoft.semantickernel.prompttemplates.liquid/1.32.0-preview",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9436,14 +9718,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.PromptTemplates.Liquid.xml",
-        "microsoft.semantickernel.prompttemplates.liquid.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.prompttemplates.liquid.1.32.0-preview.nupkg.sha512",
         "microsoft.semantickernel.prompttemplates.liquid.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Prompty/1.25.0-alpha": {
-      "sha512": "BiEiYBcL0fyNq15qKLbDelG/a0ScdSPu65wOwYmpJWFJ2KcOjN0C41XmPWmaU+bgJdSPbfYYzKh7OLeYRi3oOg==",
+    "Microsoft.SemanticKernel.Prompty/1.32.0-alpha": {
+      "sha512": "GEPsPqNwsz+O0wihZ07eO/MS6rSVAP5npgtdt/yVdDXlWVkw3vuVcPLP9Hn5J6CZKZikGQBztAjuZNMgBlvaIA==",
       "type": "package",
-      "path": "microsoft.semantickernel.prompty/1.25.0-alpha",
+      "path": "microsoft.semantickernel.prompty/1.32.0-alpha",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9453,14 +9735,14 @@
         "lib/net8.0/Microsoft.SemanticKernel.Prompty.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Prompty.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Prompty.xml",
-        "microsoft.semantickernel.prompty.1.25.0-alpha.nupkg.sha512",
+        "microsoft.semantickernel.prompty.1.32.0-alpha.nupkg.sha512",
         "microsoft.semantickernel.prompty.nuspec"
       ]
     },
-    "Microsoft.SemanticKernel.Yaml/1.28.0": {
-      "sha512": "EB2DRwwErRGuKv9lzN9aKRP/wWtC2appfJnlWfeCuGvIzcpqOYQLwv5Xli6bnRWwno1QIGRbIbwG8NvqCF3kxw==",
+    "Microsoft.SemanticKernel.Yaml/1.32.0": {
+      "sha512": "j5/ICG4Bi+b+40Q8a3zl1dHZlHgFqwVHApX2M4x1fonkhYkRBrZ4czBN8T90EXHN/kEw3KTOA+RPvYkrxC1Ogw==",
       "type": "package",
-      "path": "microsoft.semantickernel.yaml/1.28.0",
+      "path": "microsoft.semantickernel.yaml/1.32.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9470,7 +9752,7 @@
         "lib/net8.0/Microsoft.SemanticKernel.Yaml.xml",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Yaml.dll",
         "lib/netstandard2.0/Microsoft.SemanticKernel.Yaml.xml",
-        "microsoft.semantickernel.yaml.1.28.0.nupkg.sha512",
+        "microsoft.semantickernel.yaml.1.32.0.nupkg.sha512",
         "microsoft.semantickernel.yaml.nuspec"
       ]
     },
@@ -9506,6 +9788,181 @@
         "lib/netstandard2.0/Microsoft.TypeChat.Schema.xml",
         "microsoft.typechat.schema.0.1.240227.3-preview.nupkg.sha512",
         "microsoft.typechat.schema.nuspec"
+      ]
+    },
+    "Microsoft.VisualStudio.Threading/17.12.19": {
+      "sha512": "eLiGMkMYyaSguqHs3lsrFxy3tAWSLuPEL2pIWRcADMDVAs2xqm3dr1d9QYjiEusTgiClF9KD6OB2NdZP72Oy0Q==",
+      "type": "package",
+      "path": "microsoft.visualstudio.threading/17.12.19",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NOTICE",
+        "PackageIcon.png",
+        "README.md",
+        "lib/net472/Microsoft.VisualStudio.Threading.dll",
+        "lib/net472/Microsoft.VisualStudio.Threading.xml",
+        "lib/net472/cs/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/de/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/es/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/fr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/it/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/ja/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/ko/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/manifest.spdx.json",
+        "lib/net472/pl/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/pt-BR/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/ru/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/tr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net472/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/Microsoft.VisualStudio.Threading.dll",
+        "lib/net6.0-windows7.0/Microsoft.VisualStudio.Threading.xml",
+        "lib/net6.0-windows7.0/cs/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/de/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/es/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/fr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/it/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/ja/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/ko/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/manifest.spdx.json",
+        "lib/net6.0-windows7.0/pl/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/pt-BR/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/ru/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/tr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0-windows7.0/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/Microsoft.VisualStudio.Threading.dll",
+        "lib/net6.0/Microsoft.VisualStudio.Threading.xml",
+        "lib/net6.0/cs/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/de/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/es/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/fr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/it/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/ja/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/ko/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/manifest.spdx.json",
+        "lib/net6.0/pl/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/pt-BR/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/ru/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/tr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/net6.0/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/Microsoft.VisualStudio.Threading.dll",
+        "lib/netstandard2.0/Microsoft.VisualStudio.Threading.xml",
+        "lib/netstandard2.0/cs/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/de/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/es/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/fr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/it/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/ja/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/ko/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/manifest.spdx.json",
+        "lib/netstandard2.0/pl/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/pt-BR/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/ru/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/tr/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll",
+        "lib/netstandard2.0/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll",
+        "microsoft.visualstudio.threading.17.12.19.nupkg.sha512",
+        "microsoft.visualstudio.threading.nuspec"
+      ]
+    },
+    "Microsoft.VisualStudio.Threading.Analyzers/17.12.19": {
+      "sha512": "v3IYeedjoktvZ+GqYmLudxZJngmf/YWIxNT2Uy6QMMN19cvw+nkWoip1Gr1RtnFkUo1MPUVMis4C8Kj8d8DpSQ==",
+      "type": "package",
+      "path": "microsoft.visualstudio.threading.analyzers/17.12.19",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NOTICE",
+        "PackageIcon.png",
+        "README.md",
+        "analyzers/cs/Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll",
+        "analyzers/cs/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll",
+        "analyzers/cs/Microsoft.VisualStudio.Threading.Analyzers.dll",
+        "analyzers/cs/cs/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/de/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/es/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/fr/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/it/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/ja/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/ko/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/pl/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/pt-BR/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/ru/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/tr/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/zh-Hans/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/cs/zh-Hant/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll",
+        "analyzers/vb/Microsoft.VisualStudio.Threading.Analyzers.VisualBasic.dll",
+        "analyzers/vb/Microsoft.VisualStudio.Threading.Analyzers.dll",
+        "analyzers/vb/cs/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/de/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/es/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/fr/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/it/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/ja/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/ko/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/pl/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/pt-BR/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/ru/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/tr/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/zh-Hans/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "analyzers/vb/zh-Hant/Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.resources.dll",
+        "build/AdditionalFiles/vs-threading.LegacyThreadSwitchingMembers.txt",
+        "build/AdditionalFiles/vs-threading.MainThreadAssertingMethods.txt",
+        "build/AdditionalFiles/vs-threading.MainThreadSwitchingMethods.txt",
+        "build/AdditionalFiles/vs-threading.MembersRequiringMainThread.txt",
+        "build/Microsoft.VisualStudio.Threading.Analyzers.targets",
+        "microsoft.visualstudio.threading.analyzers.17.12.19.nupkg.sha512",
+        "microsoft.visualstudio.threading.analyzers.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
+    "Microsoft.VisualStudio.Validation/17.8.8": {
+      "sha512": "rWXThIpyQd4YIXghNkiv2+VLvzS+MCMKVRDR0GAMlflsdo+YcAN2g2r5U1Ah98OFjQMRexTFtXQQ2LkajxZi3g==",
+      "type": "package",
+      "path": "microsoft.visualstudio.validation/17.8.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NOTICE",
+        "PackageIcon.png",
+        "lib/net6.0/Microsoft.VisualStudio.Validation.dll",
+        "lib/net6.0/Microsoft.VisualStudio.Validation.xml",
+        "lib/net6.0/cs/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/de/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/es/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/fr/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/it/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/ja/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/ko/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/pl/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/pt-BR/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/ru/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/tr/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/net6.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/Microsoft.VisualStudio.Validation.dll",
+        "lib/netstandard2.0/Microsoft.VisualStudio.Validation.xml",
+        "lib/netstandard2.0/cs/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/de/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/es/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/fr/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/it/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/ja/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/ko/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/pl/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/pt-BR/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/ru/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/tr/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll",
+        "lib/netstandard2.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll",
+        "microsoft.visualstudio.validation.17.8.8.nupkg.sha512",
+        "microsoft.visualstudio.validation.nuspec"
       ]
     },
     "Microsoft.Win32.SystemEvents/6.0.0": {
@@ -9696,10 +10153,10 @@
         "packageIcon.png"
       ]
     },
-    "OpenAI/2.1.0-beta.1": {
-      "sha512": "C9TLSmUvcORI5BIz9llR+/Sj7xJmFJY4CoejGamzBg77XJ8DXjAHEXvpJGtqH8toBDSXRPn+9DD3Rs946AhCCA==",
+    "OpenAI/2.1.0-beta.2": {
+      "sha512": "l+fZAS9XnCxnxGodYFPziMNF9u0ZBfOGEyOuryXnjkcPe+Z4g/ErEvGYyq559V+Q9C8J87eQ0lfq5KtwSk6ppw==",
       "type": "package",
-      "path": "openai/2.1.0-beta.1",
+      "path": "openai/2.1.0-beta.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -9710,7 +10167,7 @@
         "lib/net6.0/OpenAI.xml",
         "lib/netstandard2.0/OpenAI.dll",
         "lib/netstandard2.0/OpenAI.xml",
-        "openai.2.1.0-beta.1.nupkg.sha512",
+        "openai.2.1.0-beta.2.nupkg.sha512",
         "openai.nuspec"
       ]
     },
@@ -10399,10 +10856,10 @@
         "version.txt"
       ]
     },
-    "System.ClientModel/1.1.0": {
-      "sha512": "UocOlCkxLZrG2CKMAAImPcldJTxeesHnHGHwhJ0pNlZEvEXcWKuQvVOER2/NiOkJGRJk978SNdw3j6/7O9H1lg==",
+    "System.ClientModel/1.2.1": {
+      "sha512": "s9+M5El+DXdCRRLzxak8uGBKWT8H/eIssGpFtpaMKdJULrQbBDPH/zFbVyHX+NDczhS5EvjHFbBH9/L+0UhmcA==",
       "type": "package",
-      "path": "system.clientmodel/1.1.0",
+      "path": "system.clientmodel/1.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -10413,7 +10870,7 @@
         "lib/net6.0/System.ClientModel.xml",
         "lib/netstandard2.0/System.ClientModel.dll",
         "lib/netstandard2.0/System.ClientModel.xml",
-        "system.clientmodel.1.1.0.nupkg.sha512",
+        "system.clientmodel.1.2.1.nupkg.sha512",
         "system.clientmodel.nuspec"
       ]
     },
@@ -11428,25 +11885,30 @@
         "version.txt"
       ]
     },
-    "System.Memory.Data/6.0.0": {
-      "sha512": "ntFHArH3I4Lpjf5m4DCXQHJuGwWPNVJPaAvM95Jy/u+2Yzt2ryiyIN04LAogkjP9DeRcEOiviAjQotfmPq/FrQ==",
+    "System.Memory.Data/9.0.0": {
+      "sha512": "CxUGXLXdbG7hxdQCRdxQKwq//OtYfxKsKyy6oYjSr9zpSvza5rW9TxokNasSLfmETRKDTfu1zqW8RQKokyKw/Q==",
       "type": "package",
-      "path": "system.memory.data/6.0.0",
+      "path": "system.memory.data/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Memory.Data.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
         "buildTransitive/netcoreapp2.0/System.Memory.Data.targets",
-        "buildTransitive/netcoreapp3.1/_._",
-        "lib/net461/System.Memory.Data.dll",
-        "lib/net461/System.Memory.Data.xml",
-        "lib/net6.0/System.Memory.Data.dll",
-        "lib/net6.0/System.Memory.Data.xml",
+        "lib/net462/System.Memory.Data.dll",
+        "lib/net462/System.Memory.Data.xml",
+        "lib/net8.0/System.Memory.Data.dll",
+        "lib/net8.0/System.Memory.Data.xml",
+        "lib/net9.0/System.Memory.Data.dll",
+        "lib/net9.0/System.Memory.Data.xml",
         "lib/netstandard2.0/System.Memory.Data.dll",
         "lib/netstandard2.0/System.Memory.Data.xml",
-        "system.memory.data.6.0.0.nupkg.sha512",
+        "system.memory.data.9.0.0.nupkg.sha512",
         "system.memory.data.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -12847,10 +13309,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Text.Json/9.0.0-rc.2.24473.5": {
-      "sha512": "IsQCD+zBcFhteX7fUrS4cU/GvfLPy8F4oLtC9VBcF1U1qu1gZB/zlAxW8G0kqmAiXI84/gowZtcX1MjLk2QWoQ==",
+    "System.Text.Json/9.0.0": {
+      "sha512": "js7+qAu/9mQvnhA4EfGMZNEzXtJCDxgkgj8ohuxq/Qxv+R56G+ljefhiJHOxTNiw54q8vmABCWUwkMulNdlZ4A==",
       "type": "package",
-      "path": "system.text.json/9.0.0-rc.2.24473.5",
+      "path": "system.text.json/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -12913,7 +13375,7 @@
         "lib/net9.0/System.Text.Json.xml",
         "lib/netstandard2.0/System.Text.Json.dll",
         "lib/netstandard2.0/System.Text.Json.xml",
-        "system.text.json.9.0.0-rc.2.24473.5.nupkg.sha512",
+        "system.text.json.9.0.0.nupkg.sha512",
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -13071,6 +13533,36 @@
         "runtimes/aot/lib/netcore50/System.Threading.dll",
         "system.threading.4.3.0.nupkg.sha512",
         "system.threading.nuspec"
+      ]
+    },
+    "System.Threading.Channels/9.0.0": {
+      "sha512": "hzACdIf1C+4Dqos5ijV404b94+LqfIC8nfS3mNpCDFWowb1N3PNfJPopneq32ahWlDeyaPZJqjBk76YFR69Rpg==",
+      "type": "package",
+      "path": "system.threading.channels/9.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Threading.Channels.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Threading.Channels.targets",
+        "lib/net462/System.Threading.Channels.dll",
+        "lib/net462/System.Threading.Channels.xml",
+        "lib/net8.0/System.Threading.Channels.dll",
+        "lib/net8.0/System.Threading.Channels.xml",
+        "lib/net9.0/System.Threading.Channels.dll",
+        "lib/net9.0/System.Threading.Channels.xml",
+        "lib/netstandard2.0/System.Threading.Channels.dll",
+        "lib/netstandard2.0/System.Threading.Channels.xml",
+        "lib/netstandard2.1/System.Threading.Channels.dll",
+        "lib/netstandard2.1/System.Threading.Channels.xml",
+        "system.threading.channels.9.0.0.nupkg.sha512",
+        "system.threading.channels.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Threading.RateLimiting/8.0.0": {
@@ -13507,6 +13999,8 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "AITGraph.Sdk >= 1.0.0",
+      "Azure.AI.Inference >= 1.0.0-beta.2",
+      "Azure.AI.OpenAI >= 2.1.0-beta.2",
       "Azure.Storage.Blobs >= 12.23.0",
       "CognitiveServices.Sdk >= 1.0.0",
       "HtmlAgilityPack >= 1.11.71",
@@ -13515,8 +14009,7 @@
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 9.0.0",
       "Microsoft.Azure.Cosmos >= 3.46.0",
       "Microsoft.Extensions.VectorData.Abstractions >= 9.0.0-preview.1.24523.1",
-      "Microsoft.FluentUI.AspNetCore.Components >= 4.10.4",
-      "Microsoft.FluentUI.AspNetCore.Components.Icons >= 4.10.4",
+      "Microsoft.FluentUI.AspNetCore.Components >= 4.11.0",
       "Microsoft.Identity.Web >= 3.3.1",
       "Microsoft.Identity.Web.GraphServiceClientBeta >= 3.3.1",
       "Microsoft.Identity.Web.UI >= 3.3.1",
@@ -13526,18 +14019,19 @@
       "Microsoft.Kiota.Serialization.Multipart >= 1.14.0",
       "Microsoft.Kiota.Serialization.Text >= 1.14.0",
       "Microsoft.ML.Tokenizers >= 1.0.0",
-      "Microsoft.SemanticKernel >= 1.28.0",
-      "Microsoft.SemanticKernel.Agents.Abstractions >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Agents.Core >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Connectors.AzureAIInference >= 1.25.0-beta",
-      "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL >= 1.30.0-preview",
-      "Microsoft.SemanticKernel.Plugins.Core >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Plugins.OpenApi >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Plugins.Web >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.PromptTemplates.Handlebars >= 1.28.0",
-      "Microsoft.SemanticKernel.Prompty >= 1.25.0-alpha",
-      "Microsoft.SemanticKernel.Yaml >= 1.28.0",
+      "Microsoft.ML.Tokenizers.Data.Cl100kBase >= 1.0.0",
+      "Microsoft.SemanticKernel >= 1.32.0",
+      "Microsoft.SemanticKernel.Agents.Abstractions >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.Agents.Core >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.Connectors.AzureAIInference >= 1.32.0-beta",
+      "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL >= 1.32.0-preview",
+      "Microsoft.SemanticKernel.Plugins.Core >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.Plugins.OpenApi >= 1.32.0-preview",
+      "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.Plugins.Web >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.PromptTemplates.Handlebars >= 1.32.0",
+      "Microsoft.SemanticKernel.Prompty >= 1.32.0-alpha",
+      "Microsoft.SemanticKernel.Yaml >= 1.32.0",
       "Microsoft.TypeChat >= 0.1.240227.3-preview",
       "Newtonsoft.Json >= 13.0.3",
       "SixLabors.ImageSharp >= 3.1.5",
@@ -13603,6 +14097,14 @@
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
+          "Azure.AI.Inference": {
+            "target": "Package",
+            "version": "[1.0.0-beta.2, )"
+          },
+          "Azure.AI.OpenAI": {
+            "target": "Package",
+            "version": "[2.1.0-beta.2, )"
+          },
           "Azure.Storage.Blobs": {
             "target": "Package",
             "version": "[12.23.0, )"
@@ -13633,11 +14135,7 @@
           },
           "Microsoft.FluentUI.AspNetCore.Components": {
             "target": "Package",
-            "version": "[4.10.4, )"
-          },
-          "Microsoft.FluentUI.AspNetCore.Components.Icons": {
-            "target": "Package",
-            "version": "[4.10.4, )"
+            "version": "[4.11.0, )"
           },
           "Microsoft.Identity.Web": {
             "target": "Package",
@@ -13675,53 +14173,57 @@
             "target": "Package",
             "version": "[1.0.0, )"
           },
+          "Microsoft.ML.Tokenizers.Data.Cl100kBase": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          },
           "Microsoft.SemanticKernel": {
             "target": "Package",
-            "version": "[1.28.0, )"
+            "version": "[1.32.0, )"
           },
           "Microsoft.SemanticKernel.Agents.Abstractions": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Agents.Core": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Connectors.AzureAIInference": {
             "target": "Package",
-            "version": "[1.25.0-beta, )"
+            "version": "[1.32.0-beta, )"
           },
           "Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL": {
             "target": "Package",
-            "version": "[1.30.0-preview, )"
+            "version": "[1.32.0-preview, )"
           },
           "Microsoft.SemanticKernel.Plugins.Core": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Plugins.OpenApi": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-preview, )"
           },
           "Microsoft.SemanticKernel.Plugins.OpenApi.Extensions": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Plugins.Web": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.PromptTemplates.Handlebars": {
             "target": "Package",
-            "version": "[1.28.0, )"
+            "version": "[1.32.0, )"
           },
           "Microsoft.SemanticKernel.Prompty": {
             "target": "Package",
-            "version": "[1.25.0-alpha, )"
+            "version": "[1.32.0-alpha, )"
           },
           "Microsoft.SemanticKernel.Yaml": {
             "target": "Package",
-            "version": "[1.28.0, )"
+            "version": "[1.32.0, )"
           },
           "Microsoft.TypeChat": {
             "target": "Package",

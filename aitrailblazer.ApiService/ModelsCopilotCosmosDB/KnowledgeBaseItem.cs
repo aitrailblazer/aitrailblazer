@@ -41,6 +41,14 @@ namespace Cosmos.Copilot.Models
         [JsonProperty("updatedAt")]
         public DateTime UpdatedAt { get; set; }
 
+        
+        [JsonProperty("similarityScore")]
+        public double SimilarityScore { get; set; }
+
+        [JsonProperty("relevanceScore")]
+        public double RelevanceScore { get; set; }
+
+        
         [JsonProperty("vectors")]
         public float[] Vectors { get; set; }
 

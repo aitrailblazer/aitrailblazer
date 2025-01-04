@@ -96,6 +96,28 @@ The output should be maximum of {{maxTokens}}
 
 Do not cut off the text. Fit it all in. Use maximum of {{maxTokens}}. 
 
+# Gartner's Example
+
+## BEST PRACTICE INSIGHT
+
+### Gartner shares 10 best practices for scaling Generative AI
+
+#### Brief:
+Gartner outlined its 10 best practices for scaling generative AI in enterprises, offering actionable strategies for effective implementation.
+
+#### Breakdown:
+1. By 2025, Gartner estimates that over 30% of GenAI projects may fail post-POC due to poor data quality, inadequate risk controls, costs, or unclear value.
+2. Gartner recommends: Establish a continuous process to prioritize high-value use cases. Create a framework for build vs. buy GenAI solutions.
+3. Pilot use cases and design a composable architecture.
+4. Prioritize responsible AI, invest in data literacy, and instill robust Data Engineering Practices.
+5. Foster seamless collaboration between humans and machines.
+6. Implement FinOps to manage total ownership costs and adopt a product-centric, agile approach.
+7. The near-term future of Generative AI includes smaller models, open and domain-specific models, regulatory impacts, multimodal models, and autonomous agents.
+8. Gartner also released its GenAI Planning Workbook that supports your AI strategy across four key pillars: vision, value realization, risk, and adoption plans.
+
+#### Why it’s important:
+As enterprises scale generative AI, Gartner's recommended best practices offer guidance to address deployment challenges. These insights can help as a starting point to enhance use case prioritization and ensure responsible AI, helping organizations unlock potential while adapting to tech and regulatory changes.
+
 user:
 - context: {{context}}
 - input: {{input}}

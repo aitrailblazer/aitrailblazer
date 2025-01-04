@@ -5,6 +5,8 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Extensions.Options;
 using Microsoft.FluentUI.AspNetCore.Components;
+
+
 using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Identity.Client;
@@ -77,6 +79,9 @@ string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value
 string bingSearchApiKey  = secretClient.GetSecret("BING-API-KEY").Value.Value;
 string searchApiKey  = secretClient.GetSecret("searchApiKey").Value.Value;
 string searchEndpoint  = secretClient.GetSecret("searchEndpoint").Value.Value;
+
+string PhiEndpoint =secretClient.GetSecret("PhiEndpoint").Value.Value;
+string PhiKey = secretClient.GetSecret("PhiKey").Value.Value;
 
 // Fetch other configuration values from Key Vault or use Environment Variables as fallback
 string azureOpenAIMaxCompletionTokens = secretClient.GetSecret("MaxCompletionTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
@@ -237,6 +242,9 @@ var parametersAzureService = new ParametersAzureService
     AzureSearchApiKey = searchApiKey,
     AzureSearchEndpoint = searchEndpoint,
 
+    PhiEndpoint = PhiEndpoint,
+    PhiKey = PhiKey,
+
     AzureOpenAIMaxCompletionTokens = azureOpenAIMaxCompletionTokens,
     MaxConversationTokens = maxConversationTokens,
     MaxEmbeddingTokens = maxEmbeddingTokens,
@@ -291,6 +299,8 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
             completionDeploymentName: azureOpenAIModelName02,
             embeddingDeploymentName: azureEmbeddingsModelName03,
             apiKey: azureOpenAIKey03,
+            endpointPhi: PhiEndpoint,
+            apiKeyPhi: PhiKey,
             dimensions: azureEmbeddingsdDimensions,
             logger: logger
     );

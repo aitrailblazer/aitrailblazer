@@ -12,7 +12,7 @@
   
   <PropertyGroup>
      <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591;SKEXP0110;SKEXP0001;SKEXP0040;SKEXP0050;SKEXP0053;SKEXP0043;SKEXP0010</NoWarn>
+    <NoWarn>$(NoWarn);1591;SKEXP0110;SKEXP0001;SKEXP0040;SKEXP0050;SKEXP0053;SKEXP0043;SKEXP0010;SKEXP0070</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

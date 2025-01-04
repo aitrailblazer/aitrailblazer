@@ -1,3 +1,5 @@
+@inject IJSRuntime JSRuntime
+
 <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"
     VerticalGap="1" Style="border: 1px dotted var(--accent-fill-rest)">
     @if (Submitting)
@@ -8,10 +10,9 @@
     }
     else
     {
-        <div style="position: relative; width: 100%;">
-            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"
+            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical"
                 VerticalGap="1" Style="border: 1px dotted var(--accent-fill-rest); position: relative; padding-right: 50px;">
-
+<!--
                 <FluentTextArea Typo="Typography.Body" 
                 @bind-Value="@Value" 
                 @oninput="HandleInput" 
@@ -23,12 +24,14 @@
                     Minlength="@MinLength"
                     MaxLength="@MaxLength" 
                     Rows="@Rows" id="fluentTextArea" />
-
+-->
+                <textarea @bind="Value" @oninput="HandleInput" placeholder="@Placeholder" maxlength="@MaxLength" id="animatedTextarea" 
+                    style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; resize: vertical; transition: border-color 0.3s ease; max-height: 200px; overflow-y: auto;">
+                </textarea>
                 <FluentButton IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" Class="FluentButton"
                     @onclick="OnButtonClicked" style="position: absolute; right: 0; top: 10%;">
                 </FluentButton>
             </FluentStack>
-        </div>
 
     }
 
@@ -116,6 +119,7 @@
         {
             await ValueChanged.InvokeAsync(Value);
         }
+        await JSRuntime.InvokeVoidAsync("adjustTextAreaHeight", "animatedTextarea");
 
         StateHasChanged(); // Trigger a re-render to update the button's disabled state
     }

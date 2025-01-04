@@ -193,14 +193,14 @@ namespace AITrailblazer.net.Services
                     // Extract token counts and accumulate totals
                     // Inside KernelFunctionStrategyService.cs
                     TokenCounts tokenCounts = TokenUsageParser.ParseTokenCounts(response);
-                    
-                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.CompletionTokens: " + tokenCounts.CompletionTokens);
-                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.PromptTokens: " + tokenCounts.PromptTokens);
+
+                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.OutputTokens: " + tokenCounts.OutputTokens);
+                    Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.InputTokens: " + tokenCounts.InputTokens);
                     Console.WriteLine("ExecuteAgentChatWriterEditorReviewerAsync tokenCounts.TotalTokens: " + tokenCounts.TotalTokens);
                     if (tokenCounts != null)
                     {
-                        totalOutputTokens += tokenCounts.CompletionTokens;
-                        totalInputTokens += tokenCounts.PromptTokens;
+                        totalOutputTokens += tokenCounts.OutputTokens; // Use OutputTokens instead of CompletionTokens
+                        totalInputTokens += tokenCounts.InputTokens;   // Use InputTokens instead of PromptTokens
                         totalTokens += tokenCounts.TotalTokens;
                     }
 
@@ -216,11 +216,13 @@ namespace AITrailblazer.net.Services
                 string responseContent = SerializeToJson(accumulatedMessages);
 
                 // Create a TokenCounts instance to return total token usage
+
                 var totalTokenUsage = new TokenCounts(
-                    completionTokens: totalOutputTokens,
-                    promptTokens: totalInputTokens,
+                    outputTokens: totalOutputTokens,
+                    inputTokens: totalInputTokens,
                     totalTokens: totalTokens
                 );
+
 
                 return (responseContent, totalTokenUsage);
             }

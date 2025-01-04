@@ -45,6 +45,25 @@ Transform complex texts into clear, concise notes with our advanced AI tool. Thi
 - For very long or complex documents, consider breaking them into sections for more focused analysis.
 - Utilize the refinement features to iteratively improve the quality of your notes.
 
+## Using Gartner's Example
+
+### Steps to Generate Notes Using Gartner's Best Practices
+1. **Input Gartner's Example Text:**
+   - Copy and paste the provided Gartner's example text into the input field.
+   - Ensure the text is in a readable format (plain text, PDF, or Word document).
+
+2. **Select Output Preferences:**
+   - Choose the desired length of your condensed notes (e.g., brief, standard, or detailed).
+   - Select the output format (e.g., bullet points, short paragraphs, or outline).
+
+3. **Generate Notes:**
+   - Click the "Generate Notes" button to start the AI analysis.
+   - The AI will analyze Gartner's example and generate notes based on the best practices for scaling generative AI.
+
+4. **Review and Refine:**
+   - Examine the generated notes for accuracy and clarity.
+   - Use the refinement options if needed (see "Refining Your Notes" section).
+
 ## Troubleshooting
 - If the output seems off-topic, double-check your input text and try again.
 - For technical issues, clear your browser cache or try a different browser.
