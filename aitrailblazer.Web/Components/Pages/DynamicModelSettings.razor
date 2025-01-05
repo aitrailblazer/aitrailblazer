@@ -12,10 +12,16 @@
 
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="@Horizontal" VerticalAlignment="@Vertical" Width="500px">
             <FluentRadioGroup Required="true" Name="ModelSelection" @bind-Value=SelectedModel @onchange="HandleModelSelectionChange" Style="border: 1px solid var(--accent-fill-rest)" class="menu-font-size">
-                <FluentRadio Id="GPT4o" Value=@("GPT-4o")>GPT-4o</FluentRadio>
-                <FluentTooltip Anchor="GPT4o" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("GPT-4o")</FluentTooltip>
-                <FluentRadio Id="Phi3.5Moe" Value=@("Phi-3.5-Moe")>Phi-3.5-Moe</FluentRadio>
-                <FluentTooltip Anchor="Phi3.5Moe" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Phi-3.5-Moe")</FluentTooltip>
+                <FluentRadio Id="GPT-4o" Value=@("GPT-4o")>GPT-4o</FluentRadio>
+                <FluentTooltip Anchor="GPT-4o" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("GPT-4o")</FluentTooltip>
+                <FluentRadio Id="GPT-4o-mini" Value=@("GPT-4o-mini")>GPT-4o-mini</FluentRadio>
+                <FluentTooltip Anchor="GPT-4o-mini" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("GPT-4o-mini")</FluentTooltip>
+                <FluentRadio Id="Phi3.5MoE" Value=@("Phi3.5MoE")>Phi3.5MoE</FluentRadio>
+                <FluentTooltip Anchor="Phi3.5MoE" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Phi3.5MoE")</FluentTooltip>
+                <!--
+                <FluentRadio Id="Phi-3Med" Value=@("Phi-3Med")>Phi-3Med</FluentRadio>
+                <FluentTooltip Anchor="Phi-3Med" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay=300>@MasterTextSettingsService.CreateCommandPlaceholderForMasterTextSetting("Phi-3Med")</FluentTooltip>
+                -->
             </FluentRadioGroup>
         </FluentStack>
     </FluentStack>

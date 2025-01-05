@@ -175,50 +175,11 @@ Output: 64 tokens. CORRECT:
 ASAP is a no-code, multi-agent AI platform that automates daily workflows, saving professionals about 65 workdays per year. It allows users to focus on innovation and skill development by handling tasks like client updates and data collection without coding. 
 ---
 
-Output: 32 tokens ERROR: it is cut off:
----
-ASAP is revolutionizing professional workflows by automating time-consuming tasks with its no-code, multi-agent AI platform. By saving 2 hours daily, it gives
----
-
-Output: 32 tokens. CORRECT:
----
-ASAP is revolutionizing professional workflows by automating time-consuming tasks with its no-code, multi-agent AI platform. 
----
-
-Output: 32 tokens ERROR: it is cut off:
----
-ASAP is a no-code AI platform that automates workflows, saving professionals about 65 workdays annually. It allows users to focus on innovation and skill development
----
-
-Output: 32 tokens. CORRECT:
----
-ASAP is a no-code AI platform that automates workflows, saving professionals about 65 workdays annually. 
----
-
-Output: 16 tokens ERROR: it is cut off:
----
-ASAP revolutionizes professional workflows by saving 2 hours daily, translating to
----
-
-Output: 16 tokens. CORRECT:
----
-ASAP revolutionizes professional workflows by saving 2 hours daily.
----
-
-
-Output: 16 tokens ERROR: it is cut off:
----
-ASAP is a no-code AI platform that automates daily workflows, saving professionals
----
-
-Output: 16 tokens. CORRECT:
----
-ASAP is a no-code AI platform that automates daily workflows.
----
-
 At the end check if the output is full sentence and if it makes sense. If not, generate a new response.
 
 The output should be maximum of {{maxTokens}}. Try to fit it all in. Don't cut
+
+When finished, end with <|end_of_document|>
 
 user:
 - context: {{context}}

@@ -72,7 +72,7 @@
                     <FluentMultiSplitter>
                         <!-- LEFT Pane BEGIN -->
                         @if (showLEFTPane)  {
-                            <FluentMultiSplitterPane Size="@LeftPaneSize" Min="0" Max="40%" Collapsible="false">
+                            <FluentMultiSplitterPane Size="@LeftPaneSize" Min="40px" Max="40%" Collapsible="false">
                                 <div style="display: flex; height: 100%; position: relative;">
                                     @if (!isLeftPaneCollapsed) {
                                         <FluentCard MinimalStyle="true" Width="@FluentCardWidth"  Height="100%"  style="padding: 0px; max-height: 90vh; overflow-y: auto; background-color: #f7f7f7;">
@@ -221,6 +221,7 @@
                                         @if (!string.IsNullOrEmpty(PanelOutput))
                                         {
                                             <div style="padding:1px;min-width:800px">
+
                                                 <FluentToolbar id="toolbar-fluent-components-input" style="width:100%">
 
                                                 <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content to Input"
@@ -235,12 +236,15 @@
                                                 @if (threadSelectedItemName != null)
                                                 {
                                                     <FluentButton id="DeleteThreadItem" IconEnd="@(new Icons.Regular.Size16.Delete())" Title="Delete" OnClick="@(() => DeleteThreadItem(currentChatThreadItemMessageId))" />
-                                      
-                                                    <FluentBadge Appearance="Appearance.Accent">
-                                                        @timeTaken
-                                                    </FluentBadge>
+                                                                           <!--
+                                                    <FluentTooltip Anchor="model-tooltip" HideTooltipOnCursorLeave="true" MaxWidth="200px" Delay="300">
+                                                        @modelTooltipText
+                                                    </FluentTooltip>
+                                                    -->
+
 
                                                     <FluentCounterBadge 
+                                                        VerticalPosition="72"
                                                         Count="@totalTokenCount" 
                                                         BackgroundColor="@(cacheHit ? Color.Neutral : Color.Accent)" 
                                                         Color="Color.Fill">
@@ -253,6 +257,10 @@
                                                         </ChildContent>
                                                         <BadgeTemplate>Tokens: @context</BadgeTemplate>
                                                     </FluentCounterBadge>
+                                                    <FluentBadge Appearance="Appearance.Lightweight">
+                                                        @timeTaken
+                                                    </FluentBadge>
+
                                                     <FluentTooltip 
                                                         Anchor="FluentCounterBadge" 
                                                         HideTooltipOnCursorLeave="true" 
@@ -260,7 +268,8 @@
                                                         Delay="300">
                                                         <p>Response retrieved from the database for free if no tokens were used; otherwise, tokens were spent for processing.</p>
                                                     </FluentTooltip>
-
+                                                    <img src="@GetLogoUrl(modelId)" id="model-tooltip" height="16" alt="@modelId Logo" class="logo-content-small" />
+                                                    <FluentLabel Typo="Typography.Body">@modelId</FluentLabel>
 
                                                 }
                                                 </FluentToolbar>
@@ -748,6 +757,7 @@
     private int outputTokenCount = 0;
     private int totalTokenCount = 0;
     private bool cacheHit = false;
+    private string timeTaken = "";
 
     private ElementReference containerDiv;
 
@@ -758,7 +768,8 @@
     private string LeftPaneSize => isLeftPaneCollapsed ? "40px" : CalculateLeftPaneSize();
     private string FluentCardWidth => CalculateFluentCardWidth();
     private string MiddlePaneSize => CalculateMiddlePaneSize();
-    private string RightPaneSize => isRightPaneCollapsed ? "40px" : "20%";
+    private string RightPaneSize => isRightPaneCollapsed ? "40px" : "15%"; // Default to 15% when not collapsed
+
     
     private string CalculateLeftPaneSize()
     {
@@ -778,14 +789,20 @@
             _ => "340px", // Fallback width
         };
     }
-        private string CalculateMiddlePaneSize()
-        {
-            if (isLeftPaneCollapsed && isRightPaneCollapsed) return "calc(100% - 80px)";
-            if (isLeftPaneCollapsed) return "calc(100% - 30px - 15%)"; // 15% for right pane and 30px for collapsed left pane
-            if (isRightPaneCollapsed) return "calc(100% - 20% - 30px)"; // 20% for left pane and 30px for collapsed right pane
-            return "calc(100% - 20% - 15% - 60px)"; // 20% for left pane, 15% for right pane, and 60px for both panes
-        }
-
+    private string CalculateMiddlePaneSize()
+    {
+        // Fully expanded middle pane when both side panes are collapsed
+        if (isLeftPaneCollapsed && isRightPaneCollapsed) return "calc(100% - 80px)";
+        
+        // Adjust for left pane collapsed, leaving space for right pane
+        if (isLeftPaneCollapsed) return "calc(100% - 40px - 15%)"; // 15% for right pane, 40px for collapsed left pane
+        
+        // Adjust for right pane collapsed, leaving space for left pane
+        if (isRightPaneCollapsed) return "calc(100% - 20% - 40px)"; // 20% for left pane, 40px for collapsed right pane
+        
+        // Default size for both side panes visible
+        return "calc(100% - 20% - 15% - 80px)"; // 20% for left pane, 15% for right pane, 80px total for collapsible areas
+    }
     private void ToggleLeftPane()
     {
         isLeftPaneCollapsed = !isLeftPaneCollapsed;
@@ -1052,7 +1069,6 @@
         // Return the processed text, truncated if necessary
         return  text;
     }
-    string timeTaken;
     public List<ChatMessageM> ChatMessages { get; set; } = new();
 
     private async Task HandleSubmit()
@@ -1096,7 +1112,7 @@
             //Console.WriteLine($"HandleSubmit currentChatThreadId: {currentChatThreadId}");
 
             // Call HandleSubmitAsync to process the request
-            (string responseOutput, double timeSpent) = await azureOpenAIHandler.HandleSubmitAsync(
+            (string responseOutput, string timeTakenR) = await azureOpenAIHandler.HandleSubmitAsync(
                 isNewThread,
                 IsMyKnowledgeBaseChecked,
                 IsSearchCacheChecked,
@@ -1121,9 +1137,7 @@
             );
 
             // Calculate time taken and display a success toast
-            timeTaken = timeSpent < 60
-                ? $"{timeSpent:F2} seconds"
-                : $"{(timeSpent / 60):F2} minutes";
+            timeTaken = timeTakenR;
 
             // Process the response
             PanelOutput = responseOutput;
@@ -1338,7 +1352,7 @@
     private async Task OnItemSelectedAsync(string selectedItemId)
     {
         // Console.WriteLine($"OnItemSelectedAsync: {selectedItemId}");
-        timeTaken="";
+        //timeTaken="";
         isNewThread = false;
 
         // Split the ID by '|' to isolate the parts
@@ -1392,6 +1406,13 @@
                 inputTokenCount = message.InputTokenCount;
                 outputTokenCount = message.OutputTokenCount;
                 totalTokenCount = message.TotalTokenCount;
+           
+
+                modelId = message?.ModelId;
+                timeTaken = message?.TimeTaken;
+                Console.WriteLine($"OnItemSelectedAsync modelId: {modelId}");
+                Console.WriteLine($"OnItemSelectedAsync timeTaken: {timeTaken}");
+
                 cacheHit = message.CacheHit;
 
                 CurrentFeatureWorkflowName = message.FeatureNameWorkflowName ?? string.Empty;
@@ -1399,19 +1420,19 @@
 
                 agentSettings = _agentConfigurationService.GetAgentSettings(CurrentFeatureName);
 
-                Console.WriteLine("PanelOutput content:");
+                Console.WriteLine("OnItemSelectedAsync PanelOutput content:");
                 Console.WriteLine(PanelOutput);
                 pdfUrl = "";
                 extractedReferenceLink = "";
                 // Check if Web Link is present in PanelOutput
                 if (PanelOutput.Contains("Web Link"))
                 {
-                    Console.WriteLine("Web Link detected. Skipping reference link extraction.");
+                    Console.WriteLine("OnItemSelectedAsync Web Link detected. Skipping reference link extraction.");
                 }
                 else
                 {
                     // Extract and remove reference link
-                    Console.WriteLine("No Web Link detected. Performing reference link extraction.");
+                    Console.WriteLine("OnItemSelectedAsync No Web Link detected. Performing reference link extraction.");
                     (string cleanedOutput, extractedReferenceLink, extractedPageFragment, extractedFileName) 
                         = ExtractAndRemoveReferenceLink(PanelOutput);
 
@@ -2707,7 +2728,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 }
 @code {
     [Parameter] public string CurrentModelFeatureName { get; set; } = "DynamicModels";
-    [Parameter] public string SelectedModel { get; set; } = "Phi-3.5-Moe"; // Default model selection
+    [Parameter] public string SelectedModel { get; set; } = "Phi3.5MoE"; // Default model selection
 
     private async Task HandleModelSelectionChange(string selectedModel)
     {
@@ -2715,4 +2736,40 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         Console.WriteLine($"Selected Model: {SelectedModel}");
         // Add further handling logic if needed
     }
+}
+
+@code {
+    [Parameter] public string LogoType { get; set; } = "Microsoft"; // Default logo type
+    private string AITLogoUrl = $"img/logoSmall.png";
+    private string MicrosoftLogoUrl = $"img/MicrosoftLogo.png";
+    private string OpenAiLogoUrl = $"img/OpenAiLogo.png";
+
+    private string GetLogoUrl(string modelId)
+    {
+        return modelId switch
+        {
+            "gpt-4o" => OpenAiLogoUrl,
+            "gpt-4o-mini" => OpenAiLogoUrl,
+            "Phi-3.5-MoE-instruct" => MicrosoftLogoUrl,
+            "Phi-3-medium-128k-instruct" => MicrosoftLogoUrl,
+            _ => AITLogoUrl // Default to AIT logo if no match
+        };
+    }
+
+    [Parameter] public string modelId { get; set; }
+
+    private string modelTooltipText => GetTooltipText(modelId);
+
+    private string GetTooltipText(string modelId)
+    {
+        return modelId switch
+        {
+            "gpt-4o" => "GPT-4o is a high-performance AI model optimized for reasoning and creativity.",
+            "gpt-4o-mini" => "GPT-4o-mini is a smaller variant optimized for lightweight tasks.",
+            "Phi-3.5-MoE-instruct" => "Phi-3.5-MoE is a Microsoft AI model designed for large-scale reasoning tasks.",
+            "Phi-3-medium-128k-instruct" => "Phi-3-Medium is designed for processing medium-sized datasets with high efficiency.",
+            _ => "Default AI model used for general-purpose tasks."
+        };
+    }
+
 }

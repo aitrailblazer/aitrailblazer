@@ -29,6 +29,14 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/MicrosoftLogo.png",
+      "PackagePath": "staticwebassets/img/MicrosoftLogo.png"
+    },
+    {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/OpenAiLogo.png",
+      "PackagePath": "staticwebassets/img/OpenAiLogo.png"
+    },
+    {
       "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBizIntelCard.png",
       "PackagePath": "staticwebassets/img/copilots/AIBizIntelCard.png"
     },

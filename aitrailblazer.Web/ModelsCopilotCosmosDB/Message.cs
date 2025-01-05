@@ -32,6 +32,13 @@ namespace Cosmos.Copilot.Models
         [JsonProperty("prompt")]
         public string Prompt { get; set; }
 
+        [JsonProperty("modelId")]
+        public string ModelId { get; set; }
+
+        [JsonProperty("timeTaken")]
+        public string TimeTaken { get; set; }
+
+
         [JsonProperty("inputTokenCount")]
         public int InputTokenCount { get; set; }
 
@@ -100,6 +107,8 @@ namespace Cosmos.Copilot.Models
             string userId,
             string featureNameWorkflowName,
             string featureNameProject,
+            string modelId,
+            string timeTaken,
             string title,
             string prompt,
             string userInput,
@@ -133,6 +142,8 @@ namespace Cosmos.Copilot.Models
             FeatureNameWorkflowName = featureNameWorkflowName;
             FeatureNameProject = featureNameProject;
             ThreadId = threadId;
+            ModelId = modelId;
+            TimeTaken = timeTaken;
             Title = title;
             TimeStamp = DateTime.UtcNow;
             Prompt = prompt;

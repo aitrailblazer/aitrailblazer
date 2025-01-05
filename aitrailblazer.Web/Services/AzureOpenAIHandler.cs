@@ -383,7 +383,7 @@ namespace AITrailblazer.net.Services
             return (responseOutput, tokenUsage);
         }
 
-        public async Task<(string responseOutput, double timeSpent)> HandleSubmitAsync(
+        public async Task<(string responseOutput, string timeTaken)> HandleSubmitAsync(
            bool isNewThread,
            bool isMyKnowledgeBaseChecked,
            bool IsSearchCacheChecked,
@@ -407,11 +407,7 @@ namespace AITrailblazer.net.Services
            string existingThreadId)
         {
             var timer = Stopwatch.StartNew();
-            //RaiseLogUpdate("Starting submission...");
-            // string modelId = "gpt-4o";  
-            //string modelId = "gpt-4o";
-            string modelId = "phi-3-5-moe-instruct";
-            RaiseLogUpdate($"Starting submission with {modelId}...");
+            RaiseLogUpdate($"Starting submission with {SelectedModel}...");
 
             //_logger.LogInformation(
             //    "HandleSubmitAsync initiated for Feature: {existingThreadId}, Project: {FeatureNameProject}, Workflow: {FeatureNameWorkflowName}, User: {UserIdentityID}, Tenant: {TenantID}",
@@ -423,7 +419,7 @@ namespace AITrailblazer.net.Services
                 RaiseLogUpdate("Validation failed: Both panel input and user input are empty.");
                 //_logger.LogWarning("Submission failed: Both panelInput and userInput are empty. User: {UserIdentityID}, Tenant: {TenantID}",
                 //    currentUserIdentityID, currentUserTenantID);
-                return ("Panel Input and User Input cannot both be empty.", 0);
+                return ("Panel Input and User Input cannot both be empty.", "");
             }
 
             try
@@ -624,20 +620,32 @@ namespace AITrailblazer.net.Services
                         // _logger.LogInformation("Citations appended to response.");
                     }
                 }
+                timer.Stop();
+                double timeSpent = timer.Elapsed.TotalSeconds;
+
+                string timeTaken = timeSpent < 60
+                    ? $"{timeSpent:F2} seconds"
+                    : $"{(timeSpent / 60):F2} minutes";
+
+                RaiseLogUpdate($"Submission completed in {timeTaken}.");
+                SelectedModel = SelectedModel switch
+                {
+                    "GPT-4o" => "gpt-4o",
+                    "GPT-4o-mini" => "gpt-4o-mini",
+                    "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
+                    "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                    _ => throw new ArgumentException($"Unsupported modelId: {SelectedModel}")
+                };
 
                 // Save the chat message
                 await SaveChatMessageAsync(
                     thread, currentUserTenantID, currentUserIdentityID, featureNameWorkflowName, featureNameProject,
-                    requestTitle, panelInput, userInput, responseOutput, cacheHit, inputTokenCount, outputTokenCount,
+                    SelectedModel, timeTaken, requestTitle, panelInput, userInput, responseOutput, cacheHit, inputTokenCount, outputTokenCount,
                     totalTokenCount, masterTextSetting, writingStyleVal, audienceLevelVal, responseLengthVal,
                     creativeAdjustmentsVal, relationSettingsVal, responseStyleVal);
 
-                timer.Stop();
-                //RaiseLogUpdate($"Submission completed in {timer.Elapsed.TotalSeconds:F2} seconds.");
-                // _logger.LogInformation("HandleSubmitAsync completed in {ElapsedSeconds} seconds. User: {UserIdentityID}, Tenant: {TenantID}",
-                //     timer.Elapsed.TotalSeconds, currentUserIdentityID, currentUserTenantID);
 
-                return (responseOutput, timer.Elapsed.TotalSeconds);
+                return (responseOutput, timeTaken);
             }
             catch (Exception ex)
             {
@@ -821,6 +829,8 @@ namespace AITrailblazer.net.Services
             string currentUserIdentityID,
             string featureNameWorkflowName,
             string featureNameProject,
+            string modelId,
+            string timeTaken,
             string requestTitle,
             string panelInput,
             string userInput,
@@ -844,6 +854,8 @@ namespace AITrailblazer.net.Services
                 userId: currentUserIdentityID,           // userId
                 featureNameWorkflowName: featureNameWorkflowName,
                 featureNameProject: featureNameProject,
+                modelId: modelId,
+                timeTaken: timeTaken,                           // modelId
                 title: requestTitle,                     // title
                 prompt: panelInput,                      // prompt
                 userInput: userInput,                    // userInput
@@ -2771,16 +2783,18 @@ namespace AITrailblazer.net.Services
         {
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
             //string modelId = "gpt-4o";//gpt-4o-mini
-            IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
-            if (modelId == "GPT-4o")
+            // Map model ID and create the kernel builder
+            modelId = modelId switch
             {
-                kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-            }
-            else
-            {
-                modelId = "phi-3-5-moe-instruct";
-                kernelBuilder = _kernelService.CreateKernelBuilderPhi(modelId, maxTokens);
-            }
+                "GPT-4o" => "gpt-4o",
+                "GPT-4o-mini" => "gpt-4o-mini",
+                "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
+                "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
+            };
+            IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
+            ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
+            : _kernelService.CreateKernelBuilder(modelId, maxTokens);
 
             //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
@@ -2972,7 +2986,7 @@ namespace AITrailblazer.net.Services
                 /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse
                 /// </summary>
                 /// 
-
+                StopSequences = ["<|end_of_document|>"],
                 /// <summary>
                 /// Logprobs
                 /// Whether to return log probabilities of the output tokens or not.
@@ -2986,16 +3000,13 @@ namespace AITrailblazer.net.Services
                 ///     [Experimental("SKEXP0010")]
 
             };
-            // Enable planning - conditional ToolCallBehavior assignment
-            if (modelId == "phi-3-5-moe-instruct")
-            {
-                // No ToolCallBehavior for "phi-3-5-moe-instruct"
-                //executionSettings.ToolCallBehavior = null;
-            }
-            else
+
+            if (!modelId.Contains("Phi"))
             {
                 executionSettings.ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions;
             }
+            _logger.LogInformation($"GenerateWithPromptyAsync: modelId:  {modelId}");
+
             // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
             // Initialize the tokenizer for calculating tokens
             var tokenizer = TiktokenTokenizer.CreateForModel("gpt-4");
@@ -3034,6 +3045,13 @@ namespace AITrailblazer.net.Services
                         string.Empty,
                         System.Text.RegularExpressions.RegexOptions.IgnoreCase
                     );
+                    responseContent = System.Text.RegularExpressions.Regex.Replace(
+                        responseContent,
+                        @"<\|end_of_document\|>",
+                        string.Empty,
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase
+                    );
+
                 }
                 _logger.LogInformation($"GenerateWithPromptyAsync: responseContent: {responseContent}");
 
