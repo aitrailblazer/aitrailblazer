@@ -3152,10 +3152,7 @@ namespace AITrailblazer.net.Services
 
             var commandsCustom = "Zero-Shot Chain-of-Thought (ZS-CoT)";
 
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                input = "Please summarize this text."; //
-            }
+         
             // Check if temperature is not empty and then get creativity
             var creativityStr = CreativitySettingsService.GetTextLabelForCreativityPrompt(temperature);
 
@@ -3180,7 +3177,10 @@ namespace AITrailblazer.net.Services
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
 
             var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
-
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                input = "Please summarize this text."; //
+            }
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
                 input,

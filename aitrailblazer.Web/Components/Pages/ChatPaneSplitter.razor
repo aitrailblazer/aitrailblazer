@@ -2728,7 +2728,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 }
 @code {
     [Parameter] public string CurrentModelFeatureName { get; set; } = "DynamicModels";
-    [Parameter] public string SelectedModel { get; set; } = "Phi3.5MoE"; // Default model selection
+    [Parameter] public string SelectedModel { get; set; } = "Cohere-Command-R+"; // Default model selection
 
     private async Task HandleModelSelectionChange(string selectedModel)
     {
