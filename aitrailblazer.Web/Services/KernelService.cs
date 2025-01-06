@@ -51,6 +51,25 @@ namespace AITrailblazer.net.Services
             return kernelPhi;
 
         }
+        public IKernelBuilder CreateKernelBuilderCohere(string modelId, int maxTokens)
+        {
+            string endpoint = _parametersAzureService.CohereCommandREndpoint;
+            string apiKey = _parametersAzureService.CohereCommandRKey;
+
+            var httpClient = new HttpClient();
+            //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
+            httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
+
+            IKernelBuilder kernel = Kernel.CreateBuilder()
+            .AddAzureAIInferenceChatCompletion(
+                endpoint: new Uri(endpoint),
+                apiKey: apiKey,
+                modelId: modelId,
+                httpClient: httpClient);
+            return kernel;
+
+        }
+
         public IKernelBuilder CreateKernelBuilder(string modelId, int maxTokens)
         {
             IKernelBuilder kernelBuilder = Kernel.CreateBuilder();

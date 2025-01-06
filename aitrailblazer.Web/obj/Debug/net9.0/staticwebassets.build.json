@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mTFpjiCbeED57tkbWeRHwcAvWkaVVcn0HkbgPVn2wtI=",
+  "Hash": "qNWKVDLiJNwuxMdRjFNNuNegK2JT1Uj4AT52eeHguiE=",
   "Source": "aitrailblazer.Web",
   "BasePath": "_content/aitrailblazer.Web",
   "Mode": "Default",
@@ -1947,6 +1947,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.png"
+    },
+    {
+      "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/CohereLogo.png",
+      "SourceId": "aitrailblazer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/",
+      "BasePath": "_content/aitrailblazer.Web",
+      "RelativePath": "img/CohereLogo#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1dy9f6i8bo",
+      "Integrity": "y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/img/CohereLogo.png"
     },
     {
       "Identity": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/copilots/AIBizIntelCard.png",
@@ -11185,6 +11206,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-eMyadBl6IpDMvj1c5PmGjoRAJ3w8lRQ0pT3td3Y18zw="
+        }
+      ]
+    },
+    {
+      "Route": "img/CohereLogo.1dy9f6i8bo.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/CohereLogo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2509"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 05 Jan 2025 08:45:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1dy9f6i8bo"
+        },
+        {
+          "Name": "label",
+          "Value": "img/CohereLogo.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg="
+        }
+      ]
+    },
+    {
+      "Route": "img/CohereLogo.png",
+      "AssetFile": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/CohereLogo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2509"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 05 Jan 2025 08:45:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg="
         }
       ]
     },

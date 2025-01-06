@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/CohereLogo.png",
+      "PackagePath": "staticwebassets/img/CohereLogo.png"
+    },
+    {
       "Id": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/wwwroot/img/MicrosoftLogo.png",
       "PackagePath": "staticwebassets/img/MicrosoftLogo.png"
     },

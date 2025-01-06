@@ -9,8 +9,10 @@ using System;
 using System.Web;
 using System.Threading.Tasks;
 using OpenAI.Chat;
+using Azure;
 
-
+using Azure.AI.Inference;
+using Azure.Core;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -634,6 +636,7 @@ namespace AITrailblazer.net.Services
                     "GPT-4o-mini" => "gpt-4o-mini",
                     "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
                     "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                    "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                     _ => throw new ArgumentException($"Unsupported modelId: {SelectedModel}")
                 };
 
@@ -2781,6 +2784,17 @@ namespace AITrailblazer.net.Services
             string relationSettingsVal,
             string responseStyleVal)
         {
+            if (modelId.StartsWith("Cohere"))
+            {
+                // Call GenerateWithCohereAsync for Cohere models
+                var (responseOutput, tokenUsage) = await GenerateWithCohereAsync(
+                    modelId, FeatureNameProject, PanelInput, input, masterTextSetting, responseLengthVal,
+                    creativeAdjustmentsVal, audienceLevelVal, writingStyleVal, relationSettingsVal, responseStyleVal);
+
+                // Return the result directly from Cohere
+                return (responseOutput, tokenUsage);
+            }
+
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
             //string modelId = "gpt-4o";//gpt-4o-mini
             // Map model ID and create the kernel builder
@@ -2790,12 +2804,14 @@ namespace AITrailblazer.net.Services
                 "GPT-4o-mini" => "gpt-4o-mini",
                 "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
                 "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
-            IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
-            ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
-            : _kernelService.CreateKernelBuilder(modelId, maxTokens);
-
+            IKernelBuilder kernelBuilder = modelId switch
+            {
+                _ when modelId.StartsWith("Phi") => _kernelService.CreateKernelBuilderPhi(modelId, maxTokens),
+                _ => _kernelService.CreateKernelBuilder(modelId, maxTokens)
+            };
             //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
 
@@ -2834,9 +2850,9 @@ namespace AITrailblazer.net.Services
 
             var commandsCustom = "Zero-Shot Chain-of-Thought (ZS-CoT)";
 
-            if (input == null)
+            if (string.IsNullOrWhiteSpace(input))
             {
-                input = "Please summarize this text.";
+                input = "Please summarize this text.";//Please summarize this text.
             }
             // Check if temperature is not empty and then get creativity
             var creativityStr = CreativitySettingsService.GetTextLabelForCreativityPrompt(temperature);
@@ -3087,6 +3103,167 @@ namespace AITrailblazer.net.Services
                 return ("", null);
             }
 
+        }
+        public async Task<(string response, TokenCounts tokenCounts)> GenerateWithCohereAsync(
+            string modelId,
+            string FeatureNameProject,
+            string PanelInput,
+            string input,
+            string masterTextSetting,
+            string responseLengthVal,
+            string creativeAdjustmentsVal,
+            string audienceLevelVal,
+            string writingStyleVal,
+            string relationSettingsVal,
+            string responseStyleVal)
+        {
+
+            // Step 1: Initialize the client with endpoint and API key
+            var client = new ChatCompletionsClient(
+                new Uri(_parametersAzureService.CohereCommandREndpoint), // Ensure this environment variable is set
+                new AzureKeyCredential(_parametersAzureService.CohereCommandRKey) // Ensure this environment variable is set
+            );
+            var modelInfo = client.GetModelInfo();
+
+            _logger.LogInformation($"Model name: {modelInfo.Value.ModelName}");
+            _logger.LogInformation($"Model type: {modelInfo.Value.ModelType}");
+            _logger.LogInformation($"Model provider name: {modelInfo.Value.ModelProviderName}");
+
+            var pluginPath = _pluginService.GetPluginsPath();
+            pluginPath = pluginPath + "/" + FeatureNameProject + ".prompty";
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
+
+            var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
+
+            double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
+            double topP = Transform.TransformToTopP(temperature);
+
+            int seed = 356;
+            if (!string.IsNullOrEmpty(PanelInput))
+            {
+                // Apply the formatting only if PanelInput is not an empty string
+                if (masterTextSetting == "Improve" || masterTextSetting == "Correct")
+                {
+                    PanelInput = "'" + PanelInput + "'";
+                }
+            }
+            var masterTextSettingsService = MasterTextSettingsService.CreatePromptForMasterTextSetting(masterTextSetting);
+            var masterTextSettingsServiceInput = MasterTextSettingsService.CreatePromptForMasterTextSettingInput(masterTextSetting);
+
+            var commandsCustom = "Zero-Shot Chain-of-Thought (ZS-CoT)";
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                input = "Please summarize this text."; //
+            }
+            // Check if temperature is not empty and then get creativity
+            var creativityStr = CreativitySettingsService.GetTextLabelForCreativityPrompt(temperature);
+
+            // Check if writingStyleVal is not empty and then get writing style string
+            var writingStyleStr = !string.IsNullOrEmpty(writingStyleVal) ?
+                WritingStyleService.GetLabelForWritingStylePrompt(writingStyleVal) : null;
+
+            // Check if audienceLevelVal is not empty and then get audience level string
+            var audienceLevelStr = !string.IsNullOrEmpty(audienceLevelVal) ?
+                ReadingLevelService.TransformTargetReadingRangePrompt(audienceLevelVal) : null;
+
+            // Check if relationSettingsVal is not empty and then get relation settings
+            var relationSettings = !string.IsNullOrEmpty(relationSettingsVal) ?
+                RelationSettingsService.GetLabelForRelationSettingsPrompt(relationSettingsVal) : null;
+
+            // Check if responseStyleVal is not empty and then get response style preference
+            var responseStylePreferenceStr = !string.IsNullOrEmpty(responseStyleVal) ?
+                ResponseStylePreferenceService.GetLabelForResponseStylePreferencePrompt(responseStyleVal) : null;
+            //var index = "54a15dce-218d-4889-842f-4709a86704ed-Documents";
+            // update the input below to match your prompty
+            // Create arguments using the helper method
+            int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
+
+            var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
+
+            promptyTemplate = UpdatepromptyTemplate(
+                promptyTemplate,
+                input,
+                PanelInput,
+                creativityStr,
+                audienceLevelStr,
+                writingStyleStr,
+                relationSettings,
+                commandsCustom,
+                responseStylePreferenceStr,
+                masterTextSettingsService,
+                maxTokensLabel);
+
+            _logger.LogInformation($"GenerateWithCohereAsync: promptyTemplate: {promptyTemplate}");
+            // Step 3: Create chat completion request options
+            // Define Messages separately
+            var messages = new List<ChatRequestMessage>
+            {
+                new ChatRequestSystemMessage(promptyTemplate),
+                new ChatRequestUserMessage(input)
+            };
+            //jsonPrompt: {"ToolChoice":null,"Messages":[{},{}],"FrequencyPenalty":null,"PresencePenalty":null,"Temperature":0.7,"NucleusSamplingFactor":null,"MaxTokens":100,"ResponseFormat":null,"StopSequences":[],"Tools":[],"Seed":null,"Model":null,"AdditionalProperties":{}}
+            // Construct requestOptions using the separate Messages list
+            var requestOptions = new ChatCompletionsOptions
+            {
+                Messages = messages,
+                MaxTokens = maxTokens, // Limit response length
+                Seed = seed,
+                //FrequencyPenalty = (float)temperature,
+                PresencePenalty = (float)temperature,
+                Temperature = (float)temperature // Adjust creativity
+            };
+            // Step 4: Send chat completion request
+            Console.WriteLine("Sending chat completion request...");
+            var response = await client.CompleteAsync(requestOptions);
+            // Serialize the response object to JSON using Newtonsoft.Json
+            var jsonResponse = Newtonsoft.Json.JsonConvert.SerializeObject(response, Newtonsoft.Json.Formatting.Indented);
+
+            // Deserialize the JSON string into your custom class using Newtonsoft.Json
+            var root = Newtonsoft.Json.JsonConvert.DeserializeObject<CohereResponseRoot>(jsonResponse);
+
+            // Access the response content
+            var responseContent = root.Value.Content;
+            responseContent = System.Text.RegularExpressions.Regex.Replace(
+                responseContent,
+                @"<\|end_of_document\|>",
+                string.Empty,
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
+
+            Console.WriteLine($"jsonResponse: {jsonResponse}");
+            var totalTokenUsage = new TokenCounts(
+                               outputTokens: root.Value.Usage.CompletionTokens,
+                               inputTokens: root.Value.Usage.PromptTokens,
+                               totalTokens: root.Value.Usage.TotalTokens
+                           );
+            return (responseContent, totalTokenUsage);
+        }
+
+        // Cohere API response structure  
+        public class CohereResponseUsage
+        {
+            public int CompletionTokens { get; set; }
+            public int PromptTokens { get; set; }
+            public int TotalTokens { get; set; }
+        }
+
+        public class CohereResponseValue
+        {
+            public object FinishReason { get; set; } // Adjust type if you know the structure
+            public object Role { get; set; } // Adjust type if you know the structure
+            public string Content { get; set; }
+            public List<object> ToolCalls { get; set; } // Adjust type if needed
+            public string Id { get; set; }
+            public DateTime Created { get; set; }
+            public string Model { get; set; }
+            public CohereResponseUsage Usage { get; set; }
+        }
+
+        public class CohereResponseRoot
+        {
+            public bool HasValue { get; set; }
+            public CohereResponseValue Value { get; set; }
         }
 
         public string UpdateAgentTemplate(

@@ -2743,6 +2743,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     private string AITLogoUrl = $"img/logoSmall.png";
     private string MicrosoftLogoUrl = $"img/MicrosoftLogo.png";
     private string OpenAiLogoUrl = $"img/OpenAiLogo.png";
+    private string CohereLogoUrl = $"img/CohereLogo.png";
 
     private string GetLogoUrl(string modelId)
     {
@@ -2752,6 +2753,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
             "gpt-4o-mini" => OpenAiLogoUrl,
             "Phi-3.5-MoE-instruct" => MicrosoftLogoUrl,
             "Phi-3-medium-128k-instruct" => MicrosoftLogoUrl,
+            "Cohere-command-r-08-2024" => CohereLogoUrl,
             _ => AITLogoUrl // Default to AIT logo if no match
         };
     }
@@ -2768,6 +2770,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
             "gpt-4o-mini" => "GPT-4o-mini is a smaller variant optimized for lightweight tasks.",
             "Phi-3.5-MoE-instruct" => "Phi-3.5-MoE is a Microsoft AI model designed for large-scale reasoning tasks.",
             "Phi-3-medium-128k-instruct" => "Phi-3-Medium is designed for processing medium-sized datasets with high efficiency.",
+            "Cohere-command-r-08-2024" => "Cohere-command-r-08-2024 is designed for processing medium-sized datasets with high efficiency.",
             _ => "Default AI model used for general-purpose tasks."
         };
     }

@@ -83,6 +83,9 @@ string searchEndpoint  = secretClient.GetSecret("searchEndpoint").Value.Value;
 string PhiEndpoint =secretClient.GetSecret("PhiEndpoint").Value.Value;
 string PhiKey = secretClient.GetSecret("PhiKey").Value.Value;
 
+string CohereCommandREndpoint =secretClient.GetSecret("CohereCommandREndpoint").Value.Value;
+string CohereCommandRKey = secretClient.GetSecret("CohereCommandRKey").Value.Value;
+
 // Fetch other configuration values from Key Vault or use Environment Variables as fallback
 string azureOpenAIMaxCompletionTokens = secretClient.GetSecret("MaxCompletionTokens").Value.Value ?? Environment.GetEnvironmentVariable("MaxCompletionTokens") ?? string.Empty;
 string azureEmbeddingsModelName03 = secretClient.GetSecret("AzureEmbeddingsModelName03").Value.Value ?? Environment.GetEnvironmentVariable("AzureEmbeddingsModelName03") ?? string.Empty;
@@ -244,6 +247,9 @@ var parametersAzureService = new ParametersAzureService
 
     PhiEndpoint = PhiEndpoint,
     PhiKey = PhiKey,
+
+    CohereCommandREndpoint = CohereCommandREndpoint,
+    CohereCommandRKey = CohereCommandRKey,
 
     AzureOpenAIMaxCompletionTokens = azureOpenAIMaxCompletionTokens,
     MaxConversationTokens = maxConversationTokens,

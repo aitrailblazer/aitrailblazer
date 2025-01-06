@@ -7813,6 +7813,88 @@
       ]
     },
     {
+      "Route": "img/CohereLogo.1dy9f6i8bo.png",
+      "AssetFile": "img/CohereLogo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2509"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 05 Jan 2025 08:45:22 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1dy9f6i8bo"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg="
+        },
+        {
+          "Name": "label",
+          "Value": "img/CohereLogo.png"
+        }
+      ]
+    },
+    {
+      "Route": "img/CohereLogo.png",
+      "AssetFile": "img/CohereLogo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2509"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 05 Jan 2025 08:45:22 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-y4J8OOidaDbFBt2AjGb+rmX+KyD76PM6cn83qKojdCg="
+        }
+      ]
+    },
+    {
       "Route": "img/MicrosoftLogo.1c62u6c016.png",
       "AssetFile": "img/MicrosoftLogo.png",
       "Selectors": [],
