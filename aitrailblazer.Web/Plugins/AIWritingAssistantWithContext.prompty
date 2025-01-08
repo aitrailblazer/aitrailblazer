@@ -38,7 +38,24 @@ Please follow these guidelines to ensure high-quality output:
 
 ---
 
-{{Instructions}}
+## Context
+<context>: {{context}}
+
+## Instructions  
+
+### Context Analysis  
+- Analyze the provided <context> to fully understand the requirements and background.  
+- Use the <context> exclusively to generate the response.  
+
+### Response Generation  
+1. Carefully **review and analyze** the <context>.  
+
+2. Generate a response that is:  
+   - **Accurate**  
+   - **Relevant**  
+   - **Aligned with the requirements**  
+
+3. Highlight assumptions if necessary to maintain transparency.
 
 ---
 
@@ -88,14 +105,16 @@ Provide a **succinct key takeaway** in a single complete sentence.
 ## Final Verification  
 
 Before finalizing:  
-1. Confirm the response is **logical**, **complete**, and meets general task requirements.  
+1. Confirm the response is **logical**, **complete**, and meets the task requirements.  
 2. If the output is incomplete or unclear, **regenerate** it.  
 
-<justify>  
+
+<justify>
   Justification for the response.  
-</justify>  
+</justify>
 
-Do <justify> internally; do not show it to the user.
+Do <justify> internally do not show it to the user.
 
-End every response with:  
+End every response with:
 <|end_of_document|>
+

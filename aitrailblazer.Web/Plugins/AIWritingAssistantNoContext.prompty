@@ -38,7 +38,19 @@ Please follow these guidelines to ensure high-quality output:
 
 ---
 
-{{Instructions}}
+## Instructions  
+
+### Response Generation Without Context  
+1. **When No Context Is Provided**:  
+   - Base your response on **general best practices** for the task or query.  
+   - Use logical assumptions to fill in gaps and produce a **plausible and relevant output**.  
+
+2. Ensure the response is:  
+   - **Accurate**  
+   - **Relevant**  
+   - **Coherent** and **aligned with general expectations**  
+
+3. Highlight assumptions if necessary to maintain transparency.
 
 ---
 

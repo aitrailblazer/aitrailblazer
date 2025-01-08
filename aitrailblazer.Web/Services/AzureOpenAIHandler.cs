@@ -2807,21 +2807,13 @@ namespace AITrailblazer.net.Services
                 "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
-            IKernelBuilder kernelBuilder = modelId switch
-            {
-                _ when modelId.StartsWith("Phi") => _kernelService.CreateKernelBuilderPhi(modelId, maxTokens),
-                _ => _kernelService.CreateKernelBuilder(modelId, maxTokens)
-            };
-            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+            IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
+                        ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
+                        : _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
 
             var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
 
-            var pluginPath = _pluginService.GetPluginsPath();
-            pluginPath = pluginPath + "/" + FeatureNameProject + ".prompty";
-            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
-
-            var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
@@ -2850,10 +2842,10 @@ namespace AITrailblazer.net.Services
 
             var commandsCustom = "Zero-Shot Chain-of-Thought (ZS-CoT)";
 
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                input = "Please summarize this text.";//Please summarize this text.
-            }
+            //if (string.IsNullOrWhiteSpace(input))
+            //{
+            //    input = "Please summarize this text.";//Please summarize this text.
+            //}
             // Check if temperature is not empty and then get creativity
             var creativityStr = CreativitySettingsService.GetTextLabelForCreativityPrompt(temperature);
 
@@ -2875,11 +2867,42 @@ namespace AITrailblazer.net.Services
             //var index = "54a15dce-218d-4889-842f-4709a86704ed-Documents";
             // update the input below to match your prompty
             // Create arguments using the helper method
+            var pluginPath = _pluginService.GetPluginsPath();
+            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
+
+            string promptyFileName;
+            promptyFileName = $"{FeatureNameProject}.prompty";
+
+            // Read and update the prompty template
+            var promptyTemplatePath = Path.Combine(pluginPath, promptyFileName);
+            var promptyTemplate = await File.ReadAllTextAsync(promptyTemplatePath);
+
+            // Determine the appropriate prompty file based on input and context
+            if (!string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(input))
+            {
+
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+
+            }
+            else if (string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithoutContext);
+
+            }
+            else if (!string.IsNullOrWhiteSpace(PanelInput) && string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+            }
+            else
+            {
+                // No valid input or context, skip further processing
+                return ("", new TokenCounts(0, 0, 0));
+            }
 
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
-                input,
-                PanelInput,
+                "",
+                !string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
                 creativityStr,
                 audienceLevelStr,
                 writingStyleStr,
@@ -2888,6 +2911,11 @@ namespace AITrailblazer.net.Services
                 responseStylePreferenceStr,
                 masterTextSettingsService,
                 maxTokensLabel);
+
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate + "user:\n - input: " + input + "\nassistant:\n";
+            }
 
             _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
 
@@ -3028,7 +3056,7 @@ namespace AITrailblazer.net.Services
             var tokenizer = TiktokenTokenizer.CreateForModel("gpt-4");
 
             // Calculate input token count
-            int inputTokenCount = tokenizer.CountTokens(input + PanelInput);
+            int inputTokenCount = tokenizer.CountTokens(promptyTemplate);
             _logger.LogInformation($"GenerateWithPromptyAsync: CustomTokenizer: InputTokenCount: {inputTokenCount}");
 
 
@@ -3104,6 +3132,42 @@ namespace AITrailblazer.net.Services
             }
 
         }
+
+        string promptyInstructionsWithContext = @"## Context
+<context>: {{context}}
+
+## Instructions  
+
+### Context Analysis  
+- Analyze the provided <context> to fully understand the requirements and background.  
+- Use the <context> exclusively to generate the response.  
+
+### Response Generation  
+1. Carefully **review and analyze** the <context>.  
+
+2. Generate a response that is:  
+   - **Accurate**  
+   - **Relevant**  
+   - **Aligned with the requirements**  
+
+3. Highlight assumptions if necessary to maintain transparency.
+";
+        string promptyInstructionsWithoutContext = @"## Context
+## Instructions  
+
+### Response Generation Without Context  
+1. **When No Context Is Provided**:  
+   - Base your response on **general best practices** for the task or query.  
+   - Use logical assumptions to fill in gaps and produce a **plausible and relevant output**.  
+
+2. Ensure the response is:  
+   - **Accurate**  
+   - **Relevant**  
+   - **Coherent** and **aligned with general expectations**  
+
+3. Highlight assumptions if necessary to maintain transparency.
+
+";
         public async Task<(string response, TokenCounts tokenCounts)> GenerateWithCohereAsync(
             string modelId,
             string FeatureNameProject,
@@ -3124,16 +3188,12 @@ namespace AITrailblazer.net.Services
                 new AzureKeyCredential(_parametersAzureService.CohereCommandRKey) // Ensure this environment variable is set
             );
             var modelInfo = client.GetModelInfo();
+            _logger.LogInformation($"----->: {"GenerateWithCohereAsync START"}");
 
             _logger.LogInformation($"Model name: {modelInfo.Value.ModelName}");
             _logger.LogInformation($"Model type: {modelInfo.Value.ModelType}");
             _logger.LogInformation($"Model provider name: {modelInfo.Value.ModelProviderName}");
 
-            var pluginPath = _pluginService.GetPluginsPath();
-            pluginPath = pluginPath + "/" + FeatureNameProject + ".prompty";
-            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
-
-            var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
@@ -3152,7 +3212,7 @@ namespace AITrailblazer.net.Services
 
             var commandsCustom = "Zero-Shot Chain-of-Thought (ZS-CoT)";
 
-         
+
             // Check if temperature is not empty and then get creativity
             var creativityStr = CreativitySettingsService.GetTextLabelForCreativityPrompt(temperature);
 
@@ -3177,14 +3237,54 @@ namespace AITrailblazer.net.Services
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
 
             var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
-            if (string.IsNullOrWhiteSpace(input))
+                                                                                           //if (string.IsNullOrWhiteSpace(input))
+                                                                                           //{
+                                                                                           //    input = "Please summarize this text."; //
+                                                                                           //}
+
+            // Step 3: Create chat completion request options
+            // Define Messages separately
+            _logger.LogInformation($"GenerateWithCohereAsync: input: {input}");
+
+            var messages = new List<ChatRequestMessage>();
+            var pluginPath = _pluginService.GetPluginsPath();
+            string promptyFileName;
+            promptyFileName = $"{FeatureNameProject}.prompty";
+
+            // Read and update the prompty template
+            var promptyTemplatePath = Path.Combine(pluginPath, promptyFileName);
+            var promptyTemplate = await File.ReadAllTextAsync(promptyTemplatePath);
+
+            // Determine the appropriate prompty file based on input and context
+            if (!string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(input))
             {
-                input = "Please summarize this text."; //
+
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+
             }
+            else if (string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithoutContext);
+
+            }
+            else if (!string.IsNullOrWhiteSpace(PanelInput) && string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+            }
+            else
+            {
+                // No valid input or context, skip further processing
+                return ("", new TokenCounts(0, 0, 0));
+            }
+
+            // Define the pattern to match the block starting with "---" and ending with "---"
+            string pattern = @"---\s*name:.*?---\s*system:\s*";
+            promptyTemplate = Regex.Replace(promptyTemplate, pattern, string.Empty, RegexOptions.Singleline);
+
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
-                input,
-                PanelInput,
+                "",
+                !string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
                 creativityStr,
                 audienceLevelStr,
                 writingStyleStr,
@@ -3195,35 +3295,48 @@ namespace AITrailblazer.net.Services
                 maxTokensLabel);
 
             _logger.LogInformation($"GenerateWithCohereAsync: promptyTemplate: {promptyTemplate}");
-            // Step 3: Create chat completion request options
-            // Define Messages separately
-            var messages = new List<ChatRequestMessage>
+
+            // Add appropriate messages
+            if (!string.IsNullOrWhiteSpace(input))
             {
-                new ChatRequestSystemMessage(promptyTemplate),
-                new ChatRequestUserMessage(input)
-            };
+                messages.Add(new ChatRequestSystemMessage(promptyTemplate));
+                messages.Add(new ChatRequestUserMessage(input));
+            }
+            else
+            {
+                messages.Add(new ChatRequestUserMessage(promptyTemplate));
+            }
+
+            // Add the user message regardless of the input's content
             //jsonPrompt: {"ToolChoice":null,"Messages":[{},{}],"FrequencyPenalty":null,"PresencePenalty":null,"Temperature":0.7,"NucleusSamplingFactor":null,"MaxTokens":100,"ResponseFormat":null,"StopSequences":[],"Tools":[],"Seed":null,"Model":null,"AdditionalProperties":{}}
             // Construct requestOptions using the separate Messages list
-            var requestOptions = new ChatCompletionsOptions
+            var options = new ChatCompletionsOptions
             {
                 Messages = messages,
                 MaxTokens = maxTokens, // Limit response length
-                Seed = seed,
+                //Seed = seed,
                 //FrequencyPenalty = (float)temperature,
-                PresencePenalty = (float)temperature,
+                //PresencePenalty = (float)temperature,
                 Temperature = (float)temperature // Adjust creativity
             };
             // Step 4: Send chat completion request
-            Console.WriteLine("Sending chat completion request...");
-            var response = await client.CompleteAsync(requestOptions);
-            // Serialize the response object to JSON using Newtonsoft.Json
-            var jsonResponse = Newtonsoft.Json.JsonConvert.SerializeObject(response, Newtonsoft.Json.Formatting.Indented);
+            Console.WriteLine("GenerateWithCohereAsync: Sending chat completion request...");
+            Azure.Response<ChatCompletions> response = await client.CompleteAsync(options);
+            var jsonmessages = JsonConvert.SerializeObject(response, Formatting.Indented);
+            Console.WriteLine($"jsonmessages response:\n{jsonmessages}");
 
-            // Deserialize the JSON string into your custom class using Newtonsoft.Json
-            var root = Newtonsoft.Json.JsonConvert.DeserializeObject<CohereResponseRoot>(jsonResponse);
+            System.Console.WriteLine(response.Value.Content);
+            Console.WriteLine($"ID: {response.Value.Id}");
+            Console.WriteLine($"Created: {response.Value.Created}");
+            Console.WriteLine($"Model: {response.Value.Model}");
+            Console.WriteLine($"Content: {response.Value.Content}");
+            Console.WriteLine("Usage:");
+            Console.WriteLine($"  Completion Tokens: {response.Value.Usage.CompletionTokens}");
+            Console.WriteLine($"  Prompt Tokens: {response.Value.Usage.PromptTokens}");
+            Console.WriteLine($"  Total Tokens: {response.Value.Usage.TotalTokens}");
 
             // Access the response content
-            var responseContent = root.Value.Content;
+            var responseContent = response.Value.Content;
             responseContent = System.Text.RegularExpressions.Regex.Replace(
                 responseContent,
                 @"<\|end_of_document\|>",
@@ -3231,12 +3344,14 @@ namespace AITrailblazer.net.Services
                 System.Text.RegularExpressions.RegexOptions.IgnoreCase
             );
 
-            Console.WriteLine($"jsonResponse: {jsonResponse}");
+
             var totalTokenUsage = new TokenCounts(
-                               outputTokens: root.Value.Usage.CompletionTokens,
-                               inputTokens: root.Value.Usage.PromptTokens,
-                               totalTokens: root.Value.Usage.TotalTokens
+                               outputTokens: response.Value.Usage.CompletionTokens,
+                               inputTokens: response.Value.Usage.PromptTokens,
+                               totalTokens: response.Value.Usage.TotalTokens
                            );
+            _logger.LogInformation($"----->: {"GenerateWithCohereAsync END"}");
+
             return (responseContent, totalTokenUsage);
         }
 
@@ -3335,7 +3450,6 @@ namespace AITrailblazer.net.Services
             {
                 promptyTemplate = promptyTemplate.Replace(replacement.Key, replacement.Value);
             }
-
             return promptyTemplate;
         }
 

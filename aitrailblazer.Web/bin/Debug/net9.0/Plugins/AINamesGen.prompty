@@ -41,6 +41,8 @@ the names reflect the product's core values and essence,
 adjust for a better representation of benefits and uniqueness, 
 and so forth…
 
+{{Instructions}}
+
 {{style}}
 
 {{creativity}}
@@ -58,7 +60,7 @@ and so forth…
 
 {{masterSetting}}
 
-# instructions
+# Instructions
 - Generate 10 potential product names.
 - Ensure names resonate with the target audience.
 - Reflect the product's core values and essence.
@@ -109,8 +111,3 @@ Do <justify> internally do not show it to the user.
 
 The output should be maximum of {{maxTokens}}
 
-user:
-- context: {{context}}
-- input: {{input}}
-
-assistant:

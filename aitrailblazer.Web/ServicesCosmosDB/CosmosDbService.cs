@@ -76,9 +76,11 @@ public class CosmosDbService
         {
             _logger.LogInformation("Creating CosmosClient with endpoint: {Endpoint}", endpoint);
             TokenCredential credential = new DefaultAzureCredential();
+
             CosmosClient client = new CosmosClientBuilder(endpoint, credential)
-                .WithSerializerOptions(options)
-                .Build();
+            .WithSerializerOptions(options) // Ensure 'options' is properly defined
+            .WithRequestTimeout(TimeSpan.FromSeconds(30)) // Set the desired timeout duration
+            .Build();
 
             _logger.LogInformation("Retrieving database: {DatabaseName}", databaseName);
             Database database = client.GetDatabase(databaseName) ?? throw new ArgumentException("Database not found.");
@@ -415,9 +417,13 @@ public class CosmosDbService
 
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
         TransactionalBatch batch = _chatContainer.CreateTransactionalBatch(partitionKey);
-
+        int count = 0;
         foreach (var item in itemsToUpsert)
         {
+            count++;
+            _logger.LogInformation("UpsertThreadBatchAsync Processing item {Count}/{TotalItems}.", count, itemsToUpsert.Length);
+
+            // Your existing logic for processing the item
             batch.UpsertItem(item: item);
         }
 
@@ -436,7 +442,7 @@ public class CosmosDbService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error executing batch upsert in UpsertthreadBatchAsync.");
+            _logger.LogError(ex, "UpsertThreadBatchAsync Error executing batch upsert in UpsertthreadBatchAsync.");
             throw;
         }
     }
@@ -1023,10 +1029,10 @@ public class CosmosDbService
     {
         _logger.LogInformation("SearchKnowledgeBaseAsync Searching closest knowledge base item with : similarity score > {SimilarityScore}, for TenantId={TenantId}, UserId={UserId}, and CategoryId={CategoryId}",
             similarityScore, tenantId, userId, categoryId ?? "None");
-      // Join search terms into a comma-separated string of quoted literals
+        // Join search terms into a comma-separated string of quoted literals
         string searchTermsLiteral = string.Join(", ", searchTerms.Select(term => $"\"{term}\""));
         _logger.LogInformation($"SearchKnowledgeBaseAsync searchTermsLiteral: {searchTermsLiteral}");
- 
+
         try
         {
             // Construct SQL query with optional categoryId filtering
@@ -1086,7 +1092,7 @@ public class CosmosDbService
     }
 
 
-   /// <summary>
+    /// <summary>
     /// Searches the knowledge base for items matching the provided criteria.
     /// </summary>
     /// <param name="vectors">The vector embeddings for the search.</param>

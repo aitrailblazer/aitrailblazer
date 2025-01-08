@@ -47,6 +47,8 @@ For optimal results, it's vital to categorize
 documents under appropriate headings and create 
 suitable titles that capture the essence of the text, and so forth…
 
+{{Instructions}}
+
 {{style}}
 
 {{creativity}}
@@ -64,7 +66,7 @@ suitable titles that capture the essence of the text, and so forth…
 
 {{masterSetting}}
 
-# instructions
+# Instructions
 - **Comprehend Essence**: Understand the main arguments, intended message, and author's perspective.
 - **Extract Key Topic**: Identify the central theme or argument.
 - **Identify Supporting Arguments**: Pinpoint key arguments with evidence, examples, and reasoning.
@@ -116,9 +118,4 @@ Do <justify> internally do not show it to the user.
 The output should be maximum of {{maxTokens}}
 
 
-user:
-- context: {{context}}
-- input: {{input}}
-
-assistant:
 
