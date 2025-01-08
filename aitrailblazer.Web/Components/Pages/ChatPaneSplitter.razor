@@ -183,7 +183,7 @@
 
                                                         <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
                                                             OnClick="ClearPanelInput" /> 
-                                                            <!--
+                                                            
                                                         <FluentCounterBadge Count="@inputTokenCount" BackgroundColor="@Color.Accent" Color="Color.Fill">
                                                             <ChildContent>
                                                                 <FluentButton>
@@ -192,7 +192,7 @@
                                                             </ChildContent>
                                                             <BadgeTemplate>Tokens: @context</BadgeTemplate>
                                                         </FluentCounterBadge>
-                                                        -->
+  
                                                     }
                                                 </FluentToolbar>
                                             </div>
@@ -245,7 +245,7 @@
 
                                                     <FluentCounterBadge 
                                                         VerticalPosition="72"
-                                                        Count="@totalTokenCount" 
+                                                        Count="@outputTokenCount" 
                                                         BackgroundColor="@(cacheHit ? Color.Neutral : Color.Accent)" 
                                                         Color="Color.Fill">
                                                         <ChildContent>
