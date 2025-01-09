@@ -180,14 +180,21 @@
                                                     @if (!string.IsNullOrEmpty(PanelInput))
                                                     {
                                                         <FluentSwitch @bind-Value="@(isHtmlView)" CheckedMessage="Formatted" UncheckedMessage="Plain text" />
-
-                                                        <FluentButton IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
+                                                    <FluentButton id="CopyInputToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                                    Loading="@loadingInput1"
+                                                    OnClick="CopyInputToClipboard" />
+                                                        <FluentButton id="ClearPanelInput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Input"
                                                             OnClick="ClearPanelInput" /> 
                                                             
-                                                        <FluentCounterBadge Count="@inputTokenCount" BackgroundColor="@Color.Accent" Color="Color.Fill">
+                                                        <FluentCounterBadge 
+                                                        Count="@inputTokenCount" 
+                                                        BackgroundColor="@Color.Accent" 
+                                                        Color="Color.Fill">
                                                             <ChildContent>
-                                                                <FluentButton>
-                                                                    <FluentIcon Value="@(new Icons.Regular.Size24.Info())" Color="@Color.Neutral" />
+                                                                <FluentButton id="FluentInputCounterBadge">
+                                                                    <FluentIcon 
+                                                                    Value="@(new Icons.Regular.Size24.Info())" 
+                                                                    Color="@Color.Neutral" />
                                                                 </FluentButton>
                                                             </ChildContent>
                                                             <BadgeTemplate>Tokens: @context</BadgeTemplate>
@@ -227,9 +234,9 @@
                                                 <FluentButton id="CopyOutputToInput" IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())" Title="Transfer Content to Input"
                                                     Loading="@loadingOutput2"
                                                     OnClick="CopyOutputToInput" />
-                                                <FluentButton id="CopyToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
+                                                <FluentButton id="CopyOutputToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
                                                     Loading="@loadingOutput1"
-                                                    OnClick="CopyToClipboard" />
+                                                    OnClick="CopyOutputToClipboard" />
                                                 <FluentButton id="ClearPanelOutput" IconEnd="@(new Icons.Regular.Size20.Dismiss())" Title="Clear Output"
                                                     OnClick="ClearPanelOutput" />                    
 
@@ -249,7 +256,7 @@
                                                         BackgroundColor="@(cacheHit ? Color.Neutral : Color.Accent)" 
                                                         Color="Color.Fill">
                                                         <ChildContent>
-                                                            <FluentButton id="FluentCounterBadge">
+                                                            <FluentButton id="FluentOutputCounterBadge">
                                                                 <FluentIcon 
                                                                     Value="@(cacheHit ? (Icon)new Icons.Regular.Size24.Bookmark() : (Icon)new Icons.Regular.Size24.ChatSparkle())" 
                                                                     Color="@Color.Neutral" />
@@ -1406,7 +1413,7 @@
                 inputTokenCount = message.InputTokenCount;
                 outputTokenCount = message.OutputTokenCount;
                 totalTokenCount = message.TotalTokenCount;
-           
+                StateHasChanged();
 
                 modelId = message?.ModelId;
                 timeTaken = message?.TimeTaken;
@@ -2295,7 +2302,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 }
 
 @code {
-
+    private bool loadingInput1 = false;
     private bool loadingOutput1 = false;
     private bool loadingOutput2 = false;
     private bool loadingOutput3 = false;
@@ -2313,7 +2320,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         PanelOutput = string.Empty;
     }
  
-    private async Task CopyToClipboard()
+    private async Task CopyOutputToClipboard()
     {
         if (!string.IsNullOrEmpty(PanelOutput))
 
@@ -2326,6 +2333,22 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
         await Task.Delay(2000);
 
         loadingOutput1 = false;
+        StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
+    }
+    
+    private async Task CopyInputToClipboard()
+    {
+        if (!string.IsNullOrEmpty(PanelInput))
+
+        loadingInput1 = true;
+        StateHasChanged(); // Notify Blazor to re-render the UI with the loading state
+
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", PanelInput);
+
+        // Wait for 2000 milliseconds (2 seconds)
+        await Task.Delay(2000);
+
+        loadingInput1 = false;
         StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
     }
     private async Task CopyOutputToInput()

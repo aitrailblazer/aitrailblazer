@@ -78,25 +78,6 @@ The following parameters will be provided to guide the response generation:
 
 ---
 
-## Examples  
-
-### 1024 Tokens:  
-Provide a **detailed, in-depth analysis** covering all relevant aspects comprehensively.
-
-### 512 Tokens:  
-Deliver a **concise yet detailed** overview focusing on the most critical elements.
-
-### 256 Tokens:  
-Summarize the **main ideas** and **recommendations** effectively.
-
-### 128 Tokens:  
-Offer a **brief, clear response** focused on the essential details.
-
-### 64 Tokens:  
-Provide a **succinct key takeaway** in a single complete sentence.
-
----
-
 ## Final Verification  
 
 Before finalizing:  
