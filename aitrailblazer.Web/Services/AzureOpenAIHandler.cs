@@ -2795,7 +2795,6 @@ namespace AITrailblazer.net.Services
                 return (responseOutput, tokenUsage);
             }
 
-            int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
             //string modelId = "gpt-4o";//gpt-4o-mini
             // Map model ID and create the kernel builder
             modelId = modelId switch
@@ -2807,13 +2806,13 @@ namespace AITrailblazer.net.Services
                 "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
+            int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
+            var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
+
             IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
                         ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
                         : _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
-
-            var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
-
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
@@ -2867,9 +2866,11 @@ namespace AITrailblazer.net.Services
             //var index = "54a15dce-218d-4889-842f-4709a86704ed-Documents";
             // update the input below to match your prompty
             // Create arguments using the helper method
-            var pluginPath = _pluginService.GetPluginsPath();
-            // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file path: {pluginPath}");
 
+
+            _logger.LogInformation($"GenerateWithPromptyAsync: input: {input}");
+
+            var pluginPath = _pluginService.GetPluginsPath();
             string promptyFileName;
             promptyFileName = $"{FeatureNameProject}.prompty";
 
@@ -2899,6 +2900,20 @@ namespace AITrailblazer.net.Services
                 return ("", new TokenCounts(0, 0, 0));
             }
 
+            promptyTemplate = promptyTemplate + "user:\n";
+
+            if (!string.IsNullOrWhiteSpace(PanelInput))
+            {
+                promptyTemplate = promptyTemplate + "- context: " + PanelInput + "\n";
+            }
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                promptyTemplate = promptyTemplate + "- input: " + input + "\n";
+            }
+            promptyTemplate = promptyTemplate + "\nassistant:\n";
+
+            _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
+
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
                 "",
@@ -2912,10 +2927,6 @@ namespace AITrailblazer.net.Services
                 masterTextSettingsService,
                 maxTokensLabel);
 
-            if (!string.IsNullOrWhiteSpace(input))
-            {
-                promptyTemplate = promptyTemplate + "user:\n - input: " + input + "\nassistant:\n";
-            }
 
             _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
 
@@ -3132,9 +3143,9 @@ namespace AITrailblazer.net.Services
             }
 
         }
-
+        // <context>: {{context}}
         string promptyInstructionsWithContext = @"## Context
-<context>: {{context}}
+
 
 ## Instructions  
 
@@ -3246,7 +3257,6 @@ namespace AITrailblazer.net.Services
             // Define Messages separately
             _logger.LogInformation($"GenerateWithCohereAsync: input: {input}");
 
-            var messages = new List<ChatRequestMessage>();
             var pluginPath = _pluginService.GetPluginsPath();
             string promptyFileName;
             promptyFileName = $"{FeatureNameProject}.prompty";
@@ -3277,6 +3287,20 @@ namespace AITrailblazer.net.Services
                 return ("", new TokenCounts(0, 0, 0));
             }
 
+            promptyTemplate = promptyTemplate + "user:\n";
+
+            if (!string.IsNullOrWhiteSpace(PanelInput))
+            {
+                promptyTemplate = promptyTemplate + "- context: " + PanelInput + "\n";
+            }
+            //if (!string.IsNullOrWhiteSpace(input))
+            //{
+            //    promptyTemplate = promptyTemplate + "- input: " + input + "\n";
+            //}
+            //promptyTemplate = promptyTemplate + "\nassistant:\n";
+
+            _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
+
             // Define the pattern to match the block starting with "---" and ending with "---"
             string pattern = @"---\s*name:.*?---\s*system:\s*";
             promptyTemplate = Regex.Replace(promptyTemplate, pattern, string.Empty, RegexOptions.Singleline);
@@ -3295,6 +3319,7 @@ namespace AITrailblazer.net.Services
                 maxTokensLabel);
 
             _logger.LogInformation($"GenerateWithCohereAsync: promptyTemplate: {promptyTemplate}");
+            var messages = new List<ChatRequestMessage>();
 
             // Add appropriate messages
             if (!string.IsNullOrWhiteSpace(input))
