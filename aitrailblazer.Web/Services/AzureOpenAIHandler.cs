@@ -634,8 +634,7 @@ namespace AITrailblazer.net.Services
                 {
                     "GPT-4o" => "gpt-4o",
                     "GPT-4o-mini" => "gpt-4o-mini",
-                    "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
-                    "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                    "Phi-4" => "Phi-4",
                     "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                     _ => throw new ArgumentException($"Unsupported modelId: {SelectedModel}")
                 };
@@ -2801,8 +2800,7 @@ namespace AITrailblazer.net.Services
             {
                 "GPT-4o" => "gpt-4o",
                 "GPT-4o-mini" => "gpt-4o-mini",
-                "Phi3.5MoE" => "Phi-3.5-MoE-instruct",
-                "Phi-3Med" => "Phi-3-medium-128k-instruct",
+                "Phi-4" => "Phi-4",
                 "Cohere-Command-R+" => "Cohere-command-r-08-2024",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
