@@ -359,7 +359,8 @@ public class AgentConfigurationService
                     ReviewerTopP = 0.1,
                     MaxTokens = 100
                 }
-            },
+            }/*,
+            
             {
                 "AIAletheia", new AgentSettings
                 {
@@ -400,6 +401,7 @@ public class AgentConfigurationService
                     MaxTokens = 100
                 }
             }
+            */
 
         };
     }

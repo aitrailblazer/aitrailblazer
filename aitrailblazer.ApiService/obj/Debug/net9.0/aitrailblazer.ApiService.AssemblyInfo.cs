@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitrailblazer.ApiService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d38919abc81e5471c4328de65e6e13713b77f000")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+daf0d54cc26052e3f41ca00624f56f58fc92fedc")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitrailblazer.ApiService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitrailblazer.ApiService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

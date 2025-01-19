@@ -451,3 +451,4 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIWritingAssistantNoContext.prompty
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIWritingAssistantWithContext.prompty
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIWritingAssistantOLD.prompty
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIAletheia.prompty
