@@ -278,6 +278,10 @@
               "target": "Package",
               "version": "[3.46.0, )"
             },
+            "Microsoft.Extensions.Http.Resilience": {
+              "target": "Package",
+              "version": "[9.1.0, )"
+            },
             "Microsoft.Extensions.VectorData.Abstractions": {
               "target": "Package",
               "version": "[9.0.0-preview.1.24523.1, )"

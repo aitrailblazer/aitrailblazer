@@ -39,6 +39,8 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Data;
 using VectorStoreRAG;
 using VectorStoreRAG.Options;
+using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +84,9 @@ string searchEndpoint  = secretClient.GetSecret("searchEndpoint").Value.Value;
 
 string PhiEndpoint =secretClient.GetSecret("PhiEndpoint").Value.Value;
 string PhiKey = secretClient.GetSecret("PhiKey").Value.Value;
+
+string CodestralEndpoint =secretClient.GetSecret("CodestralEndpoint").Value.Value;
+string CodestralKey = secretClient.GetSecret("CodestralKey").Value.Value;
 
 string CohereCommandREndpoint =secretClient.GetSecret("CohereCommandREndpoint").Value.Value;
 string CohereCommandRKey = secretClient.GetSecret("CohereCommandRKey").Value.Value;
@@ -247,6 +252,9 @@ var parametersAzureService = new ParametersAzureService
 
     PhiEndpoint = PhiEndpoint,
     PhiKey = PhiKey,
+
+    CodestralEndpoint = CodestralEndpoint,
+    CodestralKey = CodestralKey,
 
     CohereCommandREndpoint = CohereCommandREndpoint,
     CohereCommandRKey = CohereCommandRKey,
@@ -446,6 +454,70 @@ builder.Services.AddScoped<AICopilotSettingsService>();
 // Register BingNewsService as a singleton or scoped service
 builder.Services.AddSingleton<BingNewsService>();
 
+builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:3000");
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
+
+builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8000");
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
+builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8001");
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
 
 //builder.Services.AddScoped<SearchUrlPlugin>();
 builder.Services.AddScoped<NewsFunctions>();

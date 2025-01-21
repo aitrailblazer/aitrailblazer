@@ -32,10 +32,10 @@ namespace AITrailblazer.net.Services
             return config;
 
         }
-        public IKernelBuilder CreateKernelBuilderPhi(string modelId, int maxTokens)
+        public IKernelBuilder CreateKernelBuilderCodestral(string modelId, int maxTokens)
         {
-            string endpointPhi = _parametersAzureService.PhiEndpoint;
-            string apiKeyPhi = _parametersAzureService.PhiKey;
+            string endpoint = _parametersAzureService.CodestralEndpoint;
+            string apiKey = _parametersAzureService.CodestralKey;
             //string modelId = "phi-3-5-moe-instruct";
             // Create HttpClient with custom headers and timeout
             var httpClient = new HttpClient();
@@ -44,8 +44,27 @@ namespace AITrailblazer.net.Services
 
             IKernelBuilder kernelPhi = Kernel.CreateBuilder()
             .AddAzureAIInferenceChatCompletion(
-                endpoint: new Uri(endpointPhi),
-                apiKey: apiKeyPhi,
+                endpoint: new Uri(endpoint),
+                apiKey: apiKey,
+                modelId: modelId,
+                httpClient: httpClient);
+            return kernelPhi;
+
+        }
+        public IKernelBuilder CreateKernelBuilderPhi(string modelId, int maxTokens)
+        {
+            string endpoint = _parametersAzureService.PhiEndpoint;
+            string apiKey = _parametersAzureService.PhiKey;
+            //string modelId = "phi-3-5-moe-instruct";
+            // Create HttpClient with custom headers and timeout
+            var httpClient = new HttpClient();
+            //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
+            httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
+
+            IKernelBuilder kernelPhi = Kernel.CreateBuilder()
+            .AddAzureAIInferenceChatCompletion(
+                endpoint: new Uri(endpoint),
+                apiKey: apiKey,
                 modelId: modelId,
                 httpClient: httpClient);
             return kernelPhi;

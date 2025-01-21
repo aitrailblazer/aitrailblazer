@@ -1,4 +1,4 @@
-@page "/"
+@page "/AIWriting"
 @rendermode InteractiveServer
 
 @attribute [Authorize]
@@ -76,12 +76,18 @@ else
             </Content>
         </FluentTab>
 
-        <FluentTab Id="MicrosoftGraph-id" Icon="@(new Icons.Regular.Size24.Globe())">
+        <FluentTab Id="MicrosoftGraph-id" @bind-Value="@DeferredTabLoading" Icon="@(new Icons.Regular.Size24.Globe())">
             <Header>
                  Organizer
             </Header>
             <Content>
-                <User></User>
+                @{
+                    if (DeferredTabLoading)
+                    {
+                        <User></User>
+                    }
+                }
+
             </Content>
         </FluentTab>
 
@@ -404,6 +410,9 @@ else
 <FluentMessageBarProvider />
 <FluentMenuProvider />
 @code {
+
+    bool DeferredTabLoading = true;
+
     private string DBKey = null;
     public bool showLEFTPane { get; set; } = true;
     public bool showINPUTPane { get; set; } = true;
@@ -1515,7 +1524,8 @@ else
         // As a fallback, return a default message or an empty string
         return "Address not specified";
     }
-      private string GetUserLanguage()
+    
+    private string GetUserLanguage()
     {
         // Try to get the user's primary language from the Languages list
         if (profile?.Languages != null && profile.Languages.Any())

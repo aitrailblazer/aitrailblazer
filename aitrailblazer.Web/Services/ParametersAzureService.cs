@@ -14,7 +14,7 @@ namespace AITrailblazer.net.Services
         //public required string KernelMemoryServiceEndpoint{ get; set; }
         //public required string KernelMemoryServiceApiKey { get; set; }
         public required string StorageAccountName { get; set; }
-        
+
         public required string StorageConnectionString { get; set; }
         public required string StorageContainerName { get; set; }
 
@@ -41,6 +41,9 @@ namespace AITrailblazer.net.Services
         public required int AzureEmbeddingsdDimensions { get; set; }
         public required string PhiEndpoint { get; set; }
         public required string PhiKey { get; set; }
+
+        public required string CodestralEndpoint { get; set; }
+        public required string CodestralKey { get; set; }
         public required string CohereCommandREndpoint { get; set; }
         public required string CohereCommandRKey { get; set; }
         public required string MaxConversationTokens { get; set; }

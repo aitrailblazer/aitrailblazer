@@ -636,6 +636,7 @@ namespace AITrailblazer.net.Services
                     "GPT-4o-mini" => "gpt-4o-mini",
                     "Phi-4" => "Phi-4",
                     "Cohere-Command-R+" => "Cohere-command-r-08-2024",
+                    "Codestral" => "Codestral-2501",
                     _ => throw new ArgumentException($"Unsupported modelId: {SelectedModel}")
                 };
 
@@ -2802,15 +2803,20 @@ namespace AITrailblazer.net.Services
                 "GPT-4o-mini" => "gpt-4o-mini",
                 "Phi-4" => "Phi-4",
                 "Cohere-Command-R+" => "Cohere-command-r-08-2024",
+                "Codestral" => "Codestral-2501",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
             var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
 
             IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
-                        ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
-                        : _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
+                : modelId.StartsWith("Codestral")
+                    ? _kernelService.CreateKernelBuilderCodestral(modelId, maxTokens)
+                    : _kernelService.CreateKernelBuilder(modelId, maxTokens);
+
             Kernel kernel = kernelBuilder.Build();
+
 
             double temperature = CreativitySettingsService.GetLabelForCreativityTitle(creativeAdjustmentsVal);
             double topP = Transform.TransformToTopP(temperature);
@@ -3054,10 +3060,11 @@ namespace AITrailblazer.net.Services
 
             };
 
-            if (!modelId.Contains("Phi"))
+            if (!modelId.Contains("Phi") && !modelId.Contains("Codestral"))
             {
                 executionSettings.ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions;
             }
+
             _logger.LogInformation($"GenerateWithPromptyAsync: modelId:  {modelId}");
 
             // _logger.LogInformation($"GenerateWithPromptyAsync: Prompty file loaded: {promptyTemplate}");
