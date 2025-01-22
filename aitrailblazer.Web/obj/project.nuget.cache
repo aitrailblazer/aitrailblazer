@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Sn/17EKTz/g=",
+  "dgSpecHash": "8mKuMHq4GVQ=",
   "success": true,
   "projectFilePath": "/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/aitrailblazer.Web.csproj",
   "expectedPackageFiles": [
+    "/Users/constantinevassilev02/.nuget/packages/aspnetcore.healthchecks.uris/9.0.0/aspnetcore.healthchecks.uris.9.0.0.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.ai.inference/1.0.0-beta.2/azure.ai.inference.1.0.0-beta.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.ai.openai/2.1.0-beta.2/azure.ai.openai.2.1.0-beta.2.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/azure.core/1.44.1/azure.core.1.44.1.nupkg.sha512",
@@ -113,6 +114,8 @@
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.diagnostics/9.0.1/microsoft.extensions.diagnostics.9.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.diagnostics.abstractions/9.0.1/microsoft.extensions.diagnostics.abstractions.9.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.diagnostics.exceptionsummarization/9.1.0/microsoft.extensions.diagnostics.exceptionsummarization.9.1.0.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.diagnostics.healthchecks/8.0.11/microsoft.extensions.diagnostics.healthchecks.8.0.11.nupkg.sha512",
+    "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.diagnostics.healthchecks.abstractions/8.0.11/microsoft.extensions.diagnostics.healthchecks.abstractions.8.0.11.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.features/8.0.11/microsoft.extensions.features.8.0.11.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.fileproviders.abstractions/9.0.1/microsoft.extensions.fileproviders.abstractions.9.0.1.nupkg.sha512",
     "/Users/constantinevassilev02/.nuget/packages/microsoft.extensions.fileproviders.physical/8.0.0/microsoft.extensions.fileproviders.physical.8.0.0.nupkg.sha512",

@@ -99,7 +99,7 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/html-to-pdf", pdfHandler)
 
-	port := ":8001"
+	port := "0.0.0.0:8001"
 	fmt.Printf("Starting server on %s...\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

@@ -859,6 +859,6 @@ routes = [
 app = Starlette(debug=True, routes=routes)
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 62394))
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=port, log_level="info")

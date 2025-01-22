@@ -43,6 +43,7 @@ using Microsoft.Extensions.Hosting;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 // Add Key Vault Configuration
 
@@ -453,10 +454,12 @@ builder.Services.AddScoped<AICopilotSettingsService>();
 //builder.Services.AddScoped<WebSearchService>();
 // Register BingNewsService as a singleton or scoped service
 builder.Services.AddSingleton<BingNewsService>();
-
+/*
 builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:3000");
+    client.BaseAddress = new Uri("http://0.0.0.0:3000");
+    //client.BaseAddress = new("http://apiservice");
+
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
 })
 .AddStandardResilienceHandler(options =>
@@ -475,10 +478,26 @@ builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
     // Circuit breaker configuration
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
+*/
+builder.Services.AddHttpClient<WeatherApiClient>(client =>
+    {
+        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+        client.BaseAddress = new("https+http://apiservice");
+    });
+    /*
+builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
+    {
+        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+        client.BaseAddress = new("https+http://secedgarwsapp");
+    });
+
 
 builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:8000");
+    client.BaseAddress = new("http://secedgarwsapp");
+
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
 })
 .AddStandardResilienceHandler(options =>
@@ -497,9 +516,13 @@ builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     // Circuit breaker configuration
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
+*/
+
 builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:8001");
+    client.BaseAddress = new Uri("http://0.0.0.0:8001");
+    //client.BaseAddress = new("http://apiservice");
+
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
 })
 .AddStandardResilienceHandler(options =>

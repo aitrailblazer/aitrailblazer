@@ -242,6 +242,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "AspNetCore.HealthChecks.Uris": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Azure.AI.Inference": {
               "target": "Package",
               "version": "[1.0.0-beta.2, )"

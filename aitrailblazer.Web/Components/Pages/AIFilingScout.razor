@@ -45,6 +45,9 @@
 }
 else
 {
+    <h3>Hello Message:</h3>
+<p>@helloMessage</p>
+
     <FluentLayout Style="margin-top: 10px;">
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
 
@@ -668,10 +671,14 @@ else
     private string userPhoneNumer;
     private string userLanguage;
     private string userAddress;
+
+
     protected override async Task OnInitializedAsync()
     {
         if (!isInitialized)
         {
+            // helloMessage = await HelloWorldApiClient.GetHelloAsync();
+
             await LoadUserDataAsync();
             isInitialized = true;
         }
@@ -1154,4 +1161,10 @@ else
     private void OnResizedHandler(SplitterResizedEventArgs args)
     {
     }
+}
+
+@code {
+    private string helloMessage = string.Empty;
+
+
 }
