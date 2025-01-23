@@ -1,5 +1,5 @@
-# Use Go 1.23 image for the build stage
-FROM golang:1.23 as builder
+# Use Go 1.23 image for the build stage but with an older glibc
+FROM golang:1.23-bullseye as builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,11 +8,11 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the source code and build the application for Linux AMD64
+# Copy the source code and build the application for Linux AMD64, disabling CGO to avoid glibc issues
 COPY . .
-RUN GOARCH=amd64 GOOS=linux go build -o app
+RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o app
 
-# Use a pre-built wkhtmltopdf image
+# Use a base image with wkhtmltopdf pre-installed that aligns with older glibc versions
 FROM openlabs/docker-wkhtmltopdf-aas:latest
 
 # Set the working directory

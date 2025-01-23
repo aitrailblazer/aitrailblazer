@@ -27,6 +27,9 @@ COPY requirements.txt requirements.txt
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
+# Copy the JSON data file to the container
+COPY data/company_tickers_exchange.json data/company_tickers_exchange.json
+
 # Copy the application code to the container
 COPY . .
 
