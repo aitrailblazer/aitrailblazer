@@ -79,17 +79,17 @@ string azureOpenAIModelName02 = secretClient.GetSecret("AzureOpenAIModelName02")
 string azureOpenAIModelName03 = secretClient.GetSecret("AzureOpenAIModelName03").Value.Value;
 string azureOpenAIEndpoint03 = secretClient.GetSecret("AzureOpenAIEndpoint03").Value.Value;
 string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value;
-string bingSearchApiKey  = secretClient.GetSecret("BING-API-KEY").Value.Value;
-string searchApiKey  = secretClient.GetSecret("searchApiKey").Value.Value;
-string searchEndpoint  = secretClient.GetSecret("searchEndpoint").Value.Value;
+string bingSearchApiKey = secretClient.GetSecret("BING-API-KEY").Value.Value;
+string searchApiKey = secretClient.GetSecret("searchApiKey").Value.Value;
+string searchEndpoint = secretClient.GetSecret("searchEndpoint").Value.Value;
 
-string PhiEndpoint =secretClient.GetSecret("PhiEndpoint").Value.Value;
+string PhiEndpoint = secretClient.GetSecret("PhiEndpoint").Value.Value;
 string PhiKey = secretClient.GetSecret("PhiKey").Value.Value;
 
-string CodestralEndpoint =secretClient.GetSecret("CodestralEndpoint").Value.Value;
+string CodestralEndpoint = secretClient.GetSecret("CodestralEndpoint").Value.Value;
 string CodestralKey = secretClient.GetSecret("CodestralKey").Value.Value;
 
-string CohereCommandREndpoint =secretClient.GetSecret("CohereCommandREndpoint").Value.Value;
+string CohereCommandREndpoint = secretClient.GetSecret("CohereCommandREndpoint").Value.Value;
 string CohereCommandRKey = secretClient.GetSecret("CohereCommandRKey").Value.Value;
 
 // Fetch other configuration values from Key Vault or use Environment Variables as fallback
@@ -100,17 +100,17 @@ string maxEmbeddingTokens = secretClient.GetSecret("MaxEmbeddingTokens").Value.V
 string azureOpenAIDALLEEndpoint01 = secretClient.GetSecret("AzureOpenAIDALLEEndpoint01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEEndpoint01") ?? string.Empty;
 string azureOpenAIDALLEKey01 = secretClient.GetSecret("AzureOpenAIDALLEKey01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEKey01") ?? string.Empty;
 string azureOpenAIDALLEModelName01 = secretClient.GetSecret("AzureOpenAIDALLEModelName01").Value.Value ?? Environment.GetEnvironmentVariable("AzureOpenAIDALLEModelName01") ?? string.Empty;
-int azureEmbeddingsdDimensions  = 3072;
+int azureEmbeddingsdDimensions = 3072;
 
-string azureCosmosDbEndpointUri ="https://aitrailblazer-asap.documents.azure.com:443/";
-string AzureCosmosDBNoSQLConnectionString  = secretClient.GetSecret("AzureCosmosDBNoSQLConnectionString").Value.Value;
-string AzureCosmosDBNoSQLDatabaseName  = "asapdb";
+string azureCosmosDbEndpointUri = "https://aitrailblazer-asap.documents.azure.com:443/";
+string AzureCosmosDBNoSQLConnectionString = secretClient.GetSecret("AzureCosmosDBNoSQLConnectionString").Value.Value;
+string AzureCosmosDBNoSQLDatabaseName = "asapdb";
 
-string chatContainerName ="chat";
-string cacheContainerName ="cache";
-string productContainerName= "products";
-string organizerContainerName= "organizer";
-string knowledgeBaseContainerName= "raghybrid"; // rag
+string chatContainerName = "chat";
+string cacheContainerName = "cache";
+string productContainerName = "products";
+string organizerContainerName = "organizer";
+string knowledgeBaseContainerName = "raghybrid"; // rag
 
 string productDataSourceURI = "https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-vectorized/product-text-3-large-1536.json";
 
@@ -226,7 +226,7 @@ var parametersAzureService = new ParametersAzureService
 
     //KernelMemoryServiceEndpoint = kernelMemoryServiceEndpoint,
     //KernelMemoryServiceApiKey = kernelMemoryServiceApiKey,
-    
+
     StorageAccountName = storageAccountName,
     StorageConnectionString = storageConnectionString,
     StorageContainerName = storageContainerName,
@@ -320,9 +320,9 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
             logger: logger
     );
 });
-string azureOpenAIChatDeploymentName  = "gpt-4o";
-string azureEmbeddingDeploymentName  = "text-embedding-3-large";
-string RagCollectionName = "ragcontent"; 
+string azureOpenAIChatDeploymentName = "gpt-4o";
+string azureEmbeddingDeploymentName = "text-embedding-3-large";
+string RagCollectionName = "ragcontent";
 
 // Create a cancellation token and source to pass to the application service to allow them
 // to request a graceful application shutdown.
@@ -333,28 +333,28 @@ builder.Services.AddKeyedSingleton("AppShutdown", appShutdownCancellationTokenSo
 // Register the kernel with the dependency injection container
 // and add Chat Completion and Text Embedding Generation services.
 var kernelBuilder = builder.Services.AddKernel();
-    kernelBuilder.AddAzureOpenAIChatCompletion(
-        azureOpenAIChatDeploymentName,
-        azureOpenAIEndpoint03,
-        new AzureCliCredential());
-        
-    kernelBuilder.AddAzureOpenAITextEmbeddingGeneration(
-        azureEmbeddingDeploymentName,            // Positional argument
-        azureOpenAIEndpoint03,                   // Positional argument
-        new AzureCliCredential(),                // Positional argument
-        dimensions: azureEmbeddingsdDimensions   // Named argument
-    );
+kernelBuilder.AddAzureOpenAIChatCompletion(
+    azureOpenAIChatDeploymentName,
+    azureOpenAIEndpoint03,
+    new AzureCliCredential());
 
-    kernelBuilder.AddAzureCosmosDBNoSQLVectorStoreRecordCollection<TextSnippet<string>>(
-        RagCollectionName,
-        AzureCosmosDBNoSQLConnectionString,
-        AzureCosmosDBNoSQLDatabaseName);
+kernelBuilder.AddAzureOpenAITextEmbeddingGeneration(
+    azureEmbeddingDeploymentName,            // Positional argument
+    azureOpenAIEndpoint03,                   // Positional argument
+    new AzureCliCredential(),                // Positional argument
+    dimensions: azureEmbeddingsdDimensions   // Named argument
+);
+
+kernelBuilder.AddAzureCosmosDBNoSQLVectorStoreRecordCollection<TextSnippet<string>>(
+    RagCollectionName,
+    AzureCosmosDBNoSQLConnectionString,
+    AzureCosmosDBNoSQLDatabaseName);
 
 RegisterServices<string>(builder, kernelBuilder);
 
 builder.Services.AddScoped<ChatService>((provider) =>
 {
-    var chatOptions = provider.GetRequiredService<IOptions<Chat>>()?.Value 
+    var chatOptions = provider.GetRequiredService<IOptions<Chat>>()?.Value
                       ?? throw new ArgumentException($"{nameof(IOptions<Chat>)} was not resolved through dependency injection.");
     var cosmosDbService = provider.GetRequiredService<CosmosDbService>();
     var semanticKernelService = provider.GetRequiredService<SemanticKernelService>();
@@ -398,7 +398,7 @@ builder.Services.AddSingleton<AgentConfigurationService>();
 // Ensure app shutdown source is registered if used
 builder.Services.AddSingleton<CancellationTokenSource>();
 
-builder.Services.AddTransient<KernelFunctionStrategies>(); 
+builder.Services.AddTransient<KernelFunctionStrategies>();
 builder.Services.AddTransient<KernelFunctionStrategyService>();
 builder.Services.AddSingleton<KernelService>(provider =>
 {
@@ -454,79 +454,53 @@ builder.Services.AddScoped<AICopilotSettingsService>();
 //builder.Services.AddScoped<WebSearchService>();
 // Register BingNewsService as a singleton or scoped service
 builder.Services.AddSingleton<BingNewsService>();
-/*
-builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
-{
-    client.BaseAddress = new Uri("http://0.0.0.0:3000");
-    //client.BaseAddress = new("http://apiservice");
 
-    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
-})
-.AddStandardResilienceHandler(options =>
-{
-    // Retry policy configuration
-    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
-    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
-    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
-
-    // Timeout policy configuration
-    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
-
-    // Total request timeout (all retries combined)
-    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
-
-    // Circuit breaker configuration
-    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
-});
-*/
 builder.Services.AddHttpClient<WeatherApiClient>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://apiservice");
     });
-// Register HttpClient for calling the Go API
-builder.Services.AddHttpClient("GoApi", client =>
-{
-    client.BaseAddress = new Uri("http://ginapp"); // Use service discovery name 'ginapp'
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
-
-
+builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
+    {
+        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+        client.BaseAddress = new("https+http://gotenberg");
+    });
 builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://secedgarwsapp");
     });
-    /*
+/*
 
 builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
 {
-    client.BaseAddress = new("http://secedgarwsapp");
+client.BaseAddress = new("http://secedgarwsapp");
 
-    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
 })
 .AddStandardResilienceHandler(options =>
 {
-    // Retry policy configuration
-    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
-    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
-    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+// Retry policy configuration
+options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+options.Retry.UseJitter = true; // Add jitter to avoid retry storms
 
-    // Timeout policy configuration
-    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+// Timeout policy configuration
+options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
 
-    // Total request timeout (all retries combined)
-    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+// Total request timeout (all retries combined)
+options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
 
-    // Circuit breaker configuration
-    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+// Circuit breaker configuration
+options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
 */
 builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
 {
-     client.BaseAddress = new Uri("http://secedgarwsapp");
+    client.BaseAddress = new Uri("http://secedgarwsapp");
     //client.BaseAddress = new("http://apiservice");
 
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
@@ -547,7 +521,7 @@ builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     // Circuit breaker configuration
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
-
+/*
 builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
 {
     client.BaseAddress = new Uri("http://gosecedgarwsapp");
@@ -571,7 +545,7 @@ builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
     // Circuit breaker configuration
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
-
+*/
 //builder.Services.AddScoped<SearchUrlPlugin>();
 builder.Services.AddScoped<NewsFunctions>();
 

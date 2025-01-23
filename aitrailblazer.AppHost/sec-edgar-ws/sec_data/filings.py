@@ -27,19 +27,17 @@ class SECFilings:
         """
         return pd.DataFrame(filings["filings"]["recent"])
 
-    def download_document(self, cik, accession_number, file_name, save_path):
+    def download_html_content(self, cik, accession_number, file_name):
         base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/{file_name}"
-        content = requests.get(base_url, headers=self.headers).content.decode("utf-8")
+        print(f"base_url: {base_url}")
 
-        # Save the content as an HTML file
-        html_path = save_path + ".html"
-        with open(html_path, "w") as file:
-            file.write(content)
+        response = requests.get(base_url, headers=self.headers)
 
-        # Convert HTML content to PDF using WeasyPrint
-        pdf_path = save_path + ".pdf"
-        HTML(string=content, base_url="").write_pdf(pdf_path)
-        return {"html_path": html_path, "pdf_path": pdf_path}
+        if response.status_code == 200:
+            content = response.content.decode("utf-8")
+            return content
+        else:
+            response.raise_for_status()
 
     def get_xbrl_data(self, cik):
         """

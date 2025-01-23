@@ -39,46 +39,62 @@ type RequestBody struct {
 // Example:
 // curl -X POST -H "Content-Type: application/json" -d '{"html": "<html><body>Hello, World!</body></html>"}' http://localhost:8080/pdf
 func pdfHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Received request to /html-to-pdf")
+
 	// Parse the JSON request body
 	var body RequestBody
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil || body.HTML == "" {
+		log.Printf("Invalid request payload: %v\n", err)
 		http.Error(w, "Invalid request payload. Ensure 'html' field is provided.", http.StatusBadRequest)
 		return
 	}
+	log.Println("Successfully parsed request payload")
 
 	// Create a new PDF generator instance
 	pdfg, err := wkhtml.NewPDFGenerator()
 	if err != nil {
+		log.Printf("Failed to initialize PDF generator: %v\n", err)
 		http.Error(w, fmt.Sprintf("Failed to initialize PDF generator: %v", err), http.StatusInternalServerError)
 		return
 	}
+	log.Println("PDF generator initialized successfully")
 
 	// Set PDF generation options
 	pdfg.Dpi.Set(300)
 	pdfg.Orientation.Set(wkhtml.OrientationPortrait)
 	pdfg.Grayscale.Set(false)
+	log.Println("PDF generation options set")
 
 	// Add HTML content to the PDF generator
+	log.Println("Adding HTML content to the PDF generator")
 	pdfg.AddPage(wkhtml.NewPageReader(strings.NewReader(body.HTML)))
 
 	// Generate the PDF
+	log.Println("Generating PDF")
 	err = pdfg.Create()
 	if err != nil {
+		log.Printf("Failed to generate PDF: %v\n", err)
 		http.Error(w, fmt.Sprintf("Failed to generate PDF: %v", err), http.StatusInternalServerError)
 		return
 	}
+	log.Println("PDF generated successfully")
 
 	// Set response headers for PDF download
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "attachment; filename=output.pdf")
+	log.Println("Response headers set for PDF download")
 
 	// Write the generated PDF to the response
+	log.Println("Writing PDF to the response")
 	_, err = w.Write(pdfg.Bytes())
 	if err != nil {
+		log.Printf("Failed to write PDF to response: %v\n", err)
 		http.Error(w, fmt.Sprintf("Failed to write PDF to response: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	log.Println("PDF successfully sent to client")
 }
 
 // rootHandler handles GET requests to the root "/" path

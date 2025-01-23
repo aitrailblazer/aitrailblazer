@@ -24,7 +24,7 @@ public class SECEdgarWSAppService
         return await response.Content.ReadAsStringAsync();
     }
 
-     /// <summary>
+    /// <summary>
     /// Fetches the CIK (Central Index Key) for a given stock ticker from the FastAPI server.
     /// </summary>
     /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
@@ -85,7 +85,7 @@ public class SECEdgarWSAppService
         }
     }
 
-
+  
     public async Task<string> GetNameAsync(string ticker)
     {
         try
@@ -141,7 +141,7 @@ public class SECEdgarWSAppService
             return string.Empty; // Return empty string for unexpected errors
         }
     }
-        public async Task<string> GetExchangeAsync(string ticker)
+    public async Task<string> GetExchangeAsync(string ticker)
     {
         try
         {
@@ -196,8 +196,7 @@ public class SECEdgarWSAppService
             return string.Empty; // Return empty string for unexpected errors
         }
     }
-
-   /// <summary>
+    /// <summary>
     /// Fetches the filing history for a given stock ticker.
     /// </summary>
     /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
@@ -293,110 +292,147 @@ public class SECEdgarWSAppService
     /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
     /// <param name="formType">The form type (e.g., 10-K, 10-Q).</param>
     /// <returns>HTML content as a string.</returns>
-    public async Task<string> DownloadLatestFilingHtmlAsync(string ticker, string formType)
-    {
-        // Replace "/" with "_" in the form type to ensure it's URL-safe
-        formType = formType.Replace("/", "_");
-
-        string endpoint = $"/filing/html/{ticker}/{formType}";
-        var response = await _httpClient.GetAsync(endpoint);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
-    }
     /// <summary>
-    /// Downloads the latest filing of a specified form type as a PDF.
+    /// Downloads the latest filing of a specified form type as raw HTML using a POST request.
     /// </summary>
     /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
     /// <param name="formType">The form type (e.g., 10-K, 10-Q).</param>
-    /// <returns>Byte array containing the PDF file.</returns>
-    public async Task<byte[]> DownloadLatestFilingPdfAsync(string ticker, string formType)
-    {
-        string endpoint = $"/filing/pdf/{ticker}/{formType}";
-        var response = await _httpClient.GetAsync(endpoint, HttpCompletionOption.ResponseHeadersRead);
-        response.EnsureSuccessStatusCode();
-
-        using var memoryStream = new MemoryStream();
-        await response.Content.CopyToAsync(memoryStream);
-        return memoryStream.ToArray();
-    }
-    /// <summary>
-    /// Downloads the latest 10-K filing as a PDF for the given ticker.
-    /// Implements retry logic, streaming, and enhanced error handling.
-    /// </summary>
-    /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
-    /// <returns>Byte array containing the PDF file.</returns>
-    public async Task<byte[]> DownloadLatest10KAsync(string ticker)
-    {
-        string endpoint = $"/10k/pdf/{ticker}";
-        int maxRetries = 3; // Maximum retry attempts
-        int delay = 1000; // Initial delay in milliseconds
-
-        for (int attempt = 1; attempt <= maxRetries; attempt++)
-        {
-            try
-            {
-                Console.WriteLine($"Attempt {attempt}: Requesting {endpoint}");
-                using var response = await _httpClient.GetAsync(endpoint, HttpCompletionOption.ResponseHeadersRead);
-                response.EnsureSuccessStatusCode();
-
-                using var memoryStream = new MemoryStream();
-                await response.Content.CopyToAsync(memoryStream);
-                Console.WriteLine($"Successfully downloaded PDF for {ticker}");
-                return memoryStream.ToArray();
-            }
-            catch (TaskCanceledException ex) when (attempt < maxRetries)
-            {
-                Console.WriteLine($"Attempt {attempt} failed due to timeout. Retrying...");
-                await Task.Delay(delay); // Exponential backoff
-                delay *= 2;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error downloading PDF for {ticker}: {ex.Message}");
-                throw new Exception($"Failed to download the PDF for {ticker}: {ex.Message}", ex);
-            }
-        }
-
-        throw new Exception($"Failed to download the PDF for {ticker} after {maxRetries} attempts.");
-    }
-    /// <summary>
-    /// Downloads the latest 10-K filing as raw HTML for the given ticker.
-    /// </summary>
-    /// <param name="ticker">The stock ticker symbol (e.g., AAPL).</param>
     /// <returns>HTML content as a string.</returns>
-    public async Task<string> DownloadLatest10KHtmlAsync(string ticker)
+    public async Task<string> DownloadLatestFilingHtmlAsync(string ticker, string formType)
     {
-        string endpoint = $"/10k/html/{ticker}";
-        int maxRetries = 3;
-        int delay = 1000;
-
-        for (int attempt = 1; attempt <= maxRetries; attempt++)
+        try
         {
-            try
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(ticker) || !Regex.IsMatch(ticker, @"^[A-Za-z0-9]+$"))
             {
-                Console.WriteLine($"Attempt {attempt}: Requesting {endpoint}");
-                var response = await _httpClient.GetAsync(endpoint);
-                response.EnsureSuccessStatusCode();
+                Console.WriteLine("Invalid ticker format provided.");
+                return string.Empty; // Return an empty string for invalid ticker
+            }
 
-                Console.WriteLine($"Successfully downloaded HTML for {ticker}");
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (TaskCanceledException ex) when (attempt < maxRetries)
+            if (string.IsNullOrWhiteSpace(formType))
             {
-                Console.WriteLine($"Attempt {attempt} failed due to timeout. Retrying...");
-                await Task.Delay(delay);
-                delay *= 2;
+                Console.WriteLine("Form type cannot be empty.");
+                return string.Empty; // Return an empty string for missing form type
             }
-            catch (Exception ex)
+
+            // Set the endpoint URL for the POST request
+            string endpoint = "/filing/html";
+
+            // Prepare the POST request payload
+            var payload = new
             {
-                Console.WriteLine($"Error downloading HTML for {ticker}: {ex.Message}");
-                throw new Exception($"Failed to download the HTML for {ticker}: {ex.Message}", ex);
+                ticker,
+                form_type = formType
+            };
+
+            // Send the POST request to the server
+            var response = await _httpClient.PostAsJsonAsync(endpoint, payload);
+
+            // Handle non-successful responses
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine($"Filing not found for ticker {ticker} and form type {formType}.");
+                    return string.Empty; // Return an empty string for not found
+                }
+
+                Console.WriteLine($"Failed to fetch HTML content for ticker {ticker} and form type {formType}. Status: {response.StatusCode}");
+                return string.Empty; // Return an empty string for other errors
             }
+
+            // Parse and return the response content as plain text
+            var htmlContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Successfully fetched HTML content for ticker {ticker} and form type {formType}.");
+            return htmlContent;
         }
-
-        throw new Exception($"Failed to download the HTML for {ticker} after {maxRetries} attempts.");
+        catch (HttpRequestException httpEx)
+        {
+            // Log the HTTP request error
+            Console.WriteLine($"HTTP request error: {httpEx.Message}");
+            return string.Empty; // Return an empty string for network-related issues
+        }
+        catch (Exception ex)
+        {
+            // Log any unexpected errors
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+            return string.Empty; // Return an empty string for unexpected errors
+        }
     }
+  /// <summary>
+    /// Fetches the HTML content of a filing given the CIK, accession number, and primary document name.
+    /// </summary>
+    /// <param name="cik">The Central Index Key (CIK) of the company.</param>
+    /// <param name="accessionNumber">The accession number of the filing.</param>
+    /// <param name="primaryDocument">The primary document name (e.g., "10-k.htm").</param>
+    /// <returns>HTML content as a string.</returns>
+    public async Task<string> DownloadHtmlContentAsync(string cik, string accessionNumber, string primaryDocument)
+    {
+        try
+        {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(cik) || !Regex.IsMatch(cik, @"^\d+$"))
+            {
+                Console.WriteLine("Invalid CIK format. Only numeric characters are allowed.");
+                return string.Empty;
+            }
 
+            if (string.IsNullOrWhiteSpace(primaryDocument))
+            {
+                Console.WriteLine("Primary document cannot be empty.");
+                return string.Empty;
+            }
+
+            // Construct the endpoint URL (POST request)
+            string endpoint = "/html/download";
+            Console.WriteLine($"DownloadHtmlContentAsync Endpoint: {endpoint}");
+            Console.WriteLine($"DownloadHtmlContentAsync cik: {cik}");
+            Console.WriteLine($"DownloadHtmlContentAsync accessionNumber: {accessionNumber}");
+            Console.WriteLine($"DownloadHtmlContentAsync primaryDocument: {primaryDocument}");
+
+            // Prepare the POST request payload
+            var payload = new
+            {
+                cik,
+                accession_number = accessionNumber,
+                primary_document = primaryDocument
+            };
+
+            // Send a POST request to the endpoint
+            var response = await _httpClient.PostAsJsonAsync(endpoint, payload);
+
+            // Handle non-successful responses
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine($"Filing not found: CIK={cik}, AccessionNumber={accessionNumber}, Document={primaryDocument}");
+                    return string.Empty;
+                }
+
+                Console.WriteLine($"Failed to fetch HTML content for CIK={cik}, AccessionNumber={accessionNumber}. Status: {response.StatusCode}");
+                return string.Empty;
+            }
+
+            // Parse and return the response content as plain text
+            var htmlContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"DownloadHtmlContentAsync Successfully fetched HTML content for CIK={cik}, AccessionNumber={accessionNumber}");
+            //Console.WriteLine($"DownloadHtmlContentAsync htmlContent {htmlContent}");
+            return htmlContent;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Log HTTP request errors
+            Console.WriteLine($"HTTP request error: {httpEx.Message}");
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+            // Log unexpected errors
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+            return string.Empty;
+        }
+    }
     public async Task<string> GetXBRLPlotAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD")
     {
         // Construct the endpoint URL with query parameters

@@ -27,7 +27,8 @@
 @inject IJSRuntime JSRuntime
 @inject ChatService ChatService
 @inject SECEdgarWSAppService SECEdgarWSAppService
-@inject GoSECEdgarWSAppService GoSECEdgarWSAppService
+@inject GotenbergWSAppService GotenbergWSAppService
+
 @inject PluginService PluginService
 @inject NavigationManager NavigationManager
 @inject AITGraphService graphService
@@ -51,7 +52,7 @@ else
     <FluentLayout Style="margin-top: 10px;">
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
 
-            <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
+            <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
                     <FluentIcon Value="@(new Icons.Regular.Size24.SearchSparkle())" Color="@Color.Accent" />
                     <FluentLabel Typo="Typography.H4" Style="color: #347687;">EDGAR Filing Search</FluentLabel>
@@ -87,19 +88,19 @@ else
                             Latest Filings
                         </FluentButton>
                         <!-- Menu to Select Available Forms -->
-                                        @SelectedForm
+                        @SelectedForm
                         <FluentMenu @bind-Open="@formOpen" @onmenuchange="OnFormMenuChange" Width="400px">
-                                            @if (AvailableForms != null && AvailableForms.Any())
-                                            {
-                                                @foreach (var form in AvailableForms)
-                                                {
-                                                                                            <FluentMenuItem Value="@form">@form</FluentMenuItem>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                            <FluentMenuItem Value="NoFormsAvailable" Disabled="true">No Forms Available</FluentMenuItem>
-                                            }
+                            @if (AvailableForms != null && AvailableForms.Any())
+                            {
+                                @foreach (var form in AvailableForms)
+                                {
+                                    <FluentMenuItem Value="@form">@form</FluentMenuItem>
+                                }
+                            }
+                            else
+                            {
+                                <FluentMenuItem Value="NoFormsAvailable" Disabled="true">No Forms Available</FluentMenuItem>
+                            }
                         </FluentMenu>
                         <FluentButton IconStart="@(new Icons.Filled.Size24.DocumentOnePageMultiple())"
                             Appearance="Appearance.Neutral" @onclick="FetchFilings" disabled="@IsButtonDisabled">
@@ -137,155 +138,150 @@ else
                     </FluentToolbar>
                 </FluentStack>
 
-
-
                 <!-- Loading State -->
-                                @if (IsLoading)
-                                {
-                                                <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px auto;" />
-                                                <p>Loading... Please wait.</p>
-                                }
+                @if (IsLoading)
+                {
+                    <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px auto;" />
+                    <p>Loading... Please wait.</p>
+                }
 
                 <!-- Error State -->
-                                @if (HasError)
-                                {
-                                    <FluentCard Style="padding: 15px; border-radius: 8px; background-color: var(--neutral-fill-rest);">
-                                        <strong style="color: red;">Error:</strong>
-                                        <p>@ErrorMessage</p>
-                                    </FluentCard>
-                                }
-
+                @if (HasError)
+                {
+                    <FluentCard Style="padding: 15px; border-radius: 8px; background-color: var(--neutral-fill-rest);">
+                        <strong style="color: red;">Error:</strong>
+                        <p>@ErrorMessage</p>
+                    </FluentCard>
+                }
 
                 <!-- Display Filings -->
-                                @if (Filings != null && Filings.Any())
-                                {
-                                    <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
-                                        <div
-                                            style="max-height: 400px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px;">
-                                            <FluentAccordion>
-                                    @foreach (var group in Filings.GroupBy(f => f.Form))
+                @if (Filings != null && Filings.Any())
+                {
+                    <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+                        <div
+                            style="max-height: 400px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px;">
+                            <FluentAccordion>
+                    @foreach (var group in Filings.GroupBy(f => f.Form))
+                    {
+                        <FluentAccordionItem Heading="@group.Key">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
+                                Slot="start" />
+                            <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                                <thead>
+                                    <tr style="background-color: var(--neutral-fill-hover);">
+                                        <th style="padding: 10px; text-align:left;">Filing Date</th>
+                                        <th style="padding: 10px; text-align:left;">Accession Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var filing in group)
                                     {
-                                                                                <FluentAccordionItem Heading="@group.Key">
+                                        <tr style="border-bottom: solid thin var(--neutral-outline-rest);">
+                                            <td style="padding:10px;">@filing.FilingDate</td>
+                                            <td style="padding:10px;">
+                                                <a href="javascript:void(0);" @onclick="() => ShowPdfPreview(filing)" @onclick:preventDefault>
+                                                    @filing.AccessionNumber
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </FluentAccordionItem>
+                    }
+                            </FluentAccordion>
+                        </div>
+                    </FluentCard>
+                }
+                <!-- Display PDF -->
+                @if (!string.IsNullOrEmpty(PDFDataUrl))
+                {
+                    <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+                        <object data="@PDFDataUrl" type="application/pdf" width="100%" height="500px">
+                            <embed src="@PDFDataUrl" type="application/pdf" />
+                        </object>
+                    </FluentCard>
+                }
+                <!-- Display HTML -->
+                @if (!string.IsNullOrEmpty(HTMLContent))
+                {
+                    <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+
+                        <iframe srcdoc="@HTMLContent" style="width:100%; height:500px;" frameborder="0"></iframe>
+                    </FluentCard>
+                }
+                @if (!string.IsNullOrEmpty(PlotHtml))
+                {
+                    <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+
+                        <div>@((MarkupString)PlotHtml)</div>
+                    </FluentCard>
+                }
+            </FluentCard>
+            <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
+                    <FluentIcon Value="@(new Icons.Regular.Size24.ChatSparkle())" Color="@Color.Accent" />
+                    <FluentLabel Typo="Typography.H4" Style="color: #347687;">AI Insights</FluentLabel>
+                </FluentStack>
+                @if (Submitting)
+                {
+                    <!-- Loading State -->
+                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
+                        <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">Please wait...</FluentLabel>
+                        <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px 0;" />
+                        <div id="currentLineContainer"
+                            style="margin-top: 20px; padding: 15px; border: 1px solid var(--neutral-outline-rest); background-color: var(--neutral-fill-rest); font-size: 16px; border-radius: 8px;">
+                            <strong style="color: #0078D4;">@CurrentLine</strong>
+                        </div>
+                    </FluentStack>
+                }
+                else
+                {
+                    <!-- Input Section -->
+                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
+                        Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
+                        <div class="textarea-container" style="width: 100%;">
+                            <textarea @bind="PromptText" @oninput="HandleInput" placeholder="Enter your prompt..." maxlength="500"
+                                id="animatedTextarea"
+                                style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; resize: vertical; transition: border-color 0.3s ease;">
+                                </textarea>
+                            <div class="char-counter" style="text-align: right; font-size: 14px; color: #555; margin-top: 5px;">
+                                @($"{PromptText.Length}/500 characters")
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <FluentButton IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" Appearance="Appearance.Neutral"
+                            @onclick="FetchCompletion" disabled="@IsPromptButtonDisabled" Style="margin: 15px auto; display: block;">
+                            Submit
+                        </FluentButton>
+                    </FluentStack>
+                }
+
+                <!-- Finalized Results Section -->
+                                @if (FinalizedGroups.Any())
+                                {
+                                    <FluentCard
+                                        Style="padding: 20px; max-width: 900px; margin: 40px auto; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
+                                        <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
+                                            <FluentAccordion>
+                                    @foreach (var (title, contentLines) in FinalizedGroups)
+                                    {
+                                                                                <FluentAccordionItem Heading="@title">
                                                                                     <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
                                                                                         Slot="start" />
-                                                                                    <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
-                                                                                        <thead>
-                                                                                            <tr style="background-color: var(--neutral-fill-hover);">
-                                                                                                <th style="padding: 10px; text-align:left;">Filing Date</th>
-                                                                                                <th style="padding: 10px; text-align:left;">Accession Number</th>
-                                                                                            </tr>
-                                                                                        </thead>
-                                                                                        <tbody>
-                                                    @foreach (var filing in group)
-                                                    {
-                                                                                                                            <tr style="border-bottom: solid thin var(--neutral-outline-rest);">
-                                                                                                                                <td style="padding:10px;">@filing.FilingDate</td>
-                                                                                                                                <td style="padding:10px;">
-                                                                                                                                    <a href="@ConstructFilingUrl(CIK, filing.AccessionNumber, filing.PrimaryDocument)"
-                                                                                                                                        target="_blank">
-                                                                    @filing.AccessionNumber
-                                                                                                                                    </a>
-                                                                                                                                </td>
-                                                                                                                            </tr>
-                                                    }
-                                                                                        </tbody>
-                                                                                    </table>
+                                            @foreach (var content in contentLines)
+                                            {
+                                                                                                                    <div
+                                                                                                                        style="margin-bottom: 15px; padding: 10px; border: 1px solid var(--neutral-outline-hover); border-radius: 8px; background-color: var(--neutral-fill-rest); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); font-size: 14px; line-height: 1.5; text-align: left;">
+                                                    @(new MarkupString(ParseLineToStyledHtml(content)))
+                                                                                                                    </div>
+                                            }
                                                                                 </FluentAccordionItem>
                                     }
                                             </FluentAccordion>
                                         </div>
                                     </FluentCard>
-                                }
-                <!-- Display PDF -->
-                                @if (!string.IsNullOrEmpty(PDFDataUrl))
-                                {
-                                    <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
-                                        <strong>PDF Preview:</strong>
-                                        <iframe src="@PDFDataUrl" style="width:100%; height:500px;" frameborder="0"></iframe>
-                                    </FluentCard>
-                                }
-                <!-- Display HTML -->
-                                @if (!string.IsNullOrEmpty(HTMLContent))
-                                {
-                                    <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
-
-                                        <strong>HTML Preview:</strong>
-                                        <iframe srcdoc="@HTMLContent" style="width:100%; height:500px;" frameborder="0"></iframe>
-                                    </FluentCard>
-                                }
-                                @if (!string.IsNullOrEmpty(PlotHtml))
-                                {
-                                    <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
-
-                                        <strong>XBRL Plot:</strong>
-                                        <div>@((MarkupString)PlotHtml)</div>
-                                    </FluentCard>
-                                }
-            </FluentCard>
-            <FluentCard Width="600px" Height="1200px" MinimalStyle="true">
-                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
-                    <FluentIcon Value="@(new Icons.Regular.Size24.ChatSparkle())" Color="@Color.Accent" />
-                    <FluentLabel Typo="Typography.H4" Style="color: #347687;">AI Insights</FluentLabel>
-                </FluentStack>
-                                @if (Submitting)
-                                {
-                                    <!-- Loading State -->
-                                    <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
-                                        <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">Please wait...</FluentLabel>
-                                        <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px 0;" />
-                                        <div id="currentLineContainer"
-                                            style="margin-top: 20px; padding: 15px; border: 1px solid var(--neutral-outline-rest); background-color: var(--neutral-fill-rest); font-size: 16px; border-radius: 8px;">
-                                            <strong style="color: #0078D4;">@CurrentLine</strong>
-                                        </div>
-                                    </FluentStack>
-                                }
-                                else
-                                {
-                                    <!-- Input Section -->
-                                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
-                                        Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
-                                        <div class="textarea-container" style="width: 100%;">
-                                            <textarea @bind="PromptText" @oninput="HandleInput" placeholder="Enter your prompt..." maxlength="500"
-                                                id="animatedTextarea"
-                                                style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; resize: vertical; transition: border-color 0.3s ease;">
-                                                </textarea>
-                                            <div class="char-counter" style="text-align: right; font-size: 14px; color: #555; margin-top: 5px;">
-                                                @($"{PromptText.Length}/500 characters")
-                                            </div>
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <FluentButton IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" Appearance="Appearance.Neutral"
-                                            @onclick="FetchCompletion" disabled="@IsPromptButtonDisabled" Style="margin: 15px auto; display: block;">
-                                            Submit
-                                        </FluentButton>
-                                    </FluentStack>
-                                }
-
-                <!-- Finalized Results Section -->
-                                @if (FinalizedGroups.Any())
-                                {
-                                                <FluentCard
-                                                    Style="padding: 20px; max-width: 900px; margin: 40px auto; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
-                                                    <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
-                                                        <FluentAccordion>
-                                                @foreach (var (title, contentLines) in FinalizedGroups)
-                                                {
-                                                                                            <FluentAccordionItem Heading="@title">
-                                                                                                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
-                                                                                                    Slot="start" />
-                                                        @foreach (var content in contentLines)
-                                                        {
-                                                                                                                                <div
-                                                                                                                                    style="margin-bottom: 15px; padding: 10px; border: 1px solid var(--neutral-outline-hover); border-radius: 8px; background-color: var(--neutral-fill-rest); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); font-size: 14px; line-height: 1.5; text-align: left;">
-                                                                @(new MarkupString(ParseLineToStyledHtml(content)))
-                                                                                                                                </div>
-                                                        }
-                                                                                            </FluentAccordionItem>
-                                                }
-                                                        </FluentAccordion>
-                                                    </div>
-                                                </FluentCard>
                                 }
 
                     </FluentCard>
@@ -478,7 +474,104 @@ else
             IsLoading = false;
         }
     }
+    private async Task ShowPdfPreview1(Filing filing)
+    {
+        try
+        {
+            IsLoading = true;
+            string filingUrl = ConstructFilingUrl(CIK, filing.AccessionNumber, filing.PrimaryDocument);
+            Console.WriteLine($"filingUrl: {filingUrl}");
+            byte[] pdfBytes = await GotenbergWSAppService.ConvertUrlToPdfAsync(filingUrl, userEmail); // Assuming userEmail is available
+            //filing.PdfDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
+            PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
 
+            FilingsJson = null; // Clear filings data when fetching new CIK
+            Filings = null;
+            StateHasChanged(); // Force component to re-render with updated PDF data
+        }
+        catch (Exception ex)
+        {
+            // Handle the error (e.g., log it or show an error message to the user)
+            Console.WriteLine($"Error converting URL to PDF: {ex.Message}");
+            PDFDataUrl = null; // Clear PDF preview on error
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+//   https://www.sec.gov/Archives/edgar/data/0001318605/000177134025000001/xslF345X05/edgardoc.xml
+    private async Task ShowPdfPreview(Filing filing)
+    {
+        try
+        {
+            IsLoading = true;
+            FilingsJson = null; // Clear previous filings data
+            Filings = null; // Clear previous filings
+
+            // Log the start of the process
+            Console.WriteLine("Starting PDF preview generation...");
+
+            // Ensure the CIK is padded to 10 digits (SEC EDGAR requirement)
+            var paddedCik = CIK?.PadLeft(10, '0');
+            if (string.IsNullOrWhiteSpace(paddedCik))
+            {
+                Console.WriteLine("Error: CIK is null or empty.");
+                PDFDataUrl = null; // Clear PDF preview on error
+                return;
+            }
+
+            // Validate filing data
+            if (string.IsNullOrWhiteSpace(filing.AccessionNumber))
+            {
+                Console.WriteLine("Error: Accession number is null or empty.");
+                PDFDataUrl = null; // Clear PDF preview on error
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(filing.PrimaryDocument))
+            {
+                Console.WriteLine("Error: Primary document is null or empty.");
+                PDFDataUrl = null; // Clear PDF preview on error
+                return;
+            }
+
+            Console.WriteLine($"Fetching HTML content for CIK: {paddedCik}, Accession Number: {filing.AccessionNumber}, Primary Document: {filing.PrimaryDocument}");
+            string filingUrl = ConstructFilingUrl(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
+            Console.WriteLine($"filingUrl: {filingUrl}");
+            //var accessionNumberWithoutDashes = filing.AccessionNumber.Replace("-", "");
+
+            // Fetch the HTML content
+            var htmlContent = await SECEdgarWSAppService.DownloadHtmlContentAsync(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
+            Logger.LogInformation($"htmlContent: {htmlContent}");
+            HTMLContent = htmlContent;
+            PDFDataUrl = null;
+            //if (string.IsNullOrWhiteSpace(htmlContent))
+            //{
+            //    Console.WriteLine("Error: Failed to retrieve HTML content for the specified filing.");
+            //    PDFDataUrl = null; // Clear PDF preview on error
+            //    return;
+            //}
+
+            Console.WriteLine("Successfully fetched HTML content. Converting to PDF...");
+
+            // Convert HTML to PDF and store as byte array
+            //var pdfBytes = await GoSECEdgarWSAppService.ConvertHtmlToPdfAsync(htmlContent);
+            //PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
+
+         }
+        catch (Exception ex)
+        {
+            // Log unexpected errors and clear the PDF preview
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+            PDFDataUrl = null;
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged(); // Force component to re-render with the updated state
+            Console.WriteLine("PDF preview generation process completed.");
+        }
+    }
     /// <summary>
     /// Fetches the filing history for the given ticker.
     /// </summary>
@@ -502,7 +595,7 @@ else
 
             // Fetch filings JSON from the service
             FilingsJson = await SECEdgarWSAppService.GetFilingsAsync(Ticker);
-            Console.WriteLine($"FilingsJson: {FilingsJson}");
+            //Console.WriteLine($"FilingsJson: {FilingsJson}");
 
             // Deserialize JSON into a list of Filing objects using Newtonsoft.Json
             if (!string.IsNullOrEmpty(FilingsJson))
@@ -549,7 +642,10 @@ else
         public string AccessionNumber { get; set; } = string.Empty;
         public string CIK { get; set; } = string.Empty;
         public string PrimaryDocument { get; set; } = string.Empty;
+        public string? PdfDataUrl { get; set; } // New property for PDF data URL
     }
+
+    // GotenbergWSAppService.ConvertUrlToPdfAsync
     private string ConstructFilingUrl(string cik, string accessionNumber, string primaryDocument)
     {
         // Ensure the CIK is padded to 10 digits (SEC EDGAR requirement)
@@ -561,92 +657,6 @@ else
         // Construct the SEC EDGAR URL
         return $"https://www.sec.gov/Archives/edgar/data/{paddedCik}/{accessionNumberWithoutDashes}/{primaryDocument}";
     }
-
-
-    /// <summary>
-    /// Downloads and displays the latest SEC filing as a PDF.
-    /// </summary>
-    /// <summary>
-    /// Downloads and displays the latest SEC filing as HTML.
-    /// </summary>
-    private async Task DownloadAndShowPDF()
-    {
-        try
-        {
-            IsLoading = true;
-            HasError = false;
-            ErrorMessage = string.Empty;
-
-            // Fetch HTML content as a string
-            var htmlContent = await SECEdgarWSAppService.DownloadLatest10KHtmlAsync(Ticker);
-
-            // Assign the HTML content to a variable for embedding in an iframe
-            //HTMLContent = htmlContent;
-
-            // Convert HTML to PDF and store as byte array
-            // Convert HTML to PDF and generate Data URL
-            var pdfBytes = await GoSECEdgarWSAppService.ConvertHtmlToPdfAsync(htmlContent);
-            PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
-
-
-            Console.WriteLine("HTML successfully downloaded and displayed.");
-            CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
-
-            FilingsJson = null; // Clear filings data when fetching new CIK
-            Filings = null;
-        }
-        catch (Exception ex)
-        {
-            HasError = true;
-            ErrorMessage = $"An error occurred while downloading the HTML for {Ticker}: {ex.Message}";
-            PDFDataUrl = null;
-            PlotHtml = null;
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    /// <summary>
-    /// Downloads and displays the latest SEC filing as HTML.
-    /// </summary>
-    private async Task DownloadAndShowHTML()
-    {
-        try
-        {
-            IsLoading = true;
-            HasError = false;
-            ErrorMessage = string.Empty;
-
-            // Fetch HTML content as a string
-            var htmlContent = await SECEdgarWSAppService.DownloadLatest10KHtmlAsync(Ticker);
-
-            // Assign the HTML content to a variable for embedding in an iframe
-            HTMLContent = htmlContent;
-
-
-            Console.WriteLine("HTML successfully downloaded and displayed.");
-            CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
-
-            FilingsJson = null; // Clear filings data when fetching new CIK
-            Filings = null;
-            PDFDataUrl = null; // Clear PDF preview when fetching new CIK
-            PlotHtml = null;
-
-        }
-        catch (Exception ex)
-        {
-            HasError = true;
-            ErrorMessage = $"An error occurred while downloading the HTML for {Ticker}: {ex.Message}";
-            HTMLContent = null;
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
 }
 @code {
     private bool isLoading = true;
@@ -1113,7 +1123,6 @@ else
             await DownloadSelectedFormPdf();
         }
     }
-
     private async Task DownloadSelectedFormPdf()
     {
         try
@@ -1124,17 +1133,18 @@ else
 
             // Fetch HTML content as a string
             var htmlContent = await SECEdgarWSAppService.DownloadLatestFilingHtmlAsync(Ticker, SelectedForm);
+            Logger.LogInformation($"htmlContent: {htmlContent}");
+            HTMLContent = htmlContent;
+            PDFDataUrl = null;
+            // Convert HTML to PDF using the new method that expects Gotenberg to handle pagination
+            //var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(htmlContent);
+            // Save PDF locally for testing
+            //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.pdf");
+            //await File.WriteAllBytesAsync(filePath, pdfBytes);
+            //Console.WriteLine($"PDF saved to: {filePath}");
+            //PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
 
-            // Assign the HTML content to a variable for embedding in an iframe
-            //HTMLContent = htmlContent;
-
-            // Convert HTML to PDF and store as byte array
-            // Convert HTML to PDF and generate Data URL
-            var pdfBytes = await GoSECEdgarWSAppService.ConvertHtmlToPdfAsync(htmlContent);
-            PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
-
-
-            Console.WriteLine("HTML successfully downloaded and displayed.");
+            //Console.WriteLine("HTML successfully downloaded and converted to PDF.");
             CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
 
             FilingsJson = null; // Clear filings data when fetching new CIK
@@ -1143,7 +1153,7 @@ else
         catch (Exception ex)
         {
             HasError = true;
-            ErrorMessage = $"An error occurred while downloading the HTML for {Ticker}: {ex.Message}";
+            ErrorMessage = $"An error occurred while downloading and converting the HTML for {Ticker}: {ex.Message}";
             PDFDataUrl = null;
             PlotHtml = null;
         }
@@ -1152,7 +1162,6 @@ else
             IsLoading = false;
         }
     }
-
 }
 @code
 {

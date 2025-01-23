@@ -18,6 +18,7 @@ import plotly.express as px
 from sec_data.company_info import CompanyInfo
 from sec_data.filings import SECFilings
 from tenacity import retry, stop_after_attempt, wait_exponential
+import urllib.parse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -580,62 +581,65 @@ async def download_latest_filing_html_python(ticker: str, form_type: str) -> tup
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         raise
 
-async def get_filing_url(request: Request):
+async def get_filing_url(ticker: str, form_type: str):
     """
     Endpoint to get the URL of the filing for a given form type and company ticker.
 
     Args:
-        request (Request): The HTTP request containing the path parameters.
+        ticker (str): The company ticker symbol.
+        form_type (str): The form type (e.g., 10-K, 10-Q).
 
     Returns:
         PlainTextResponse: A plain-text response containing the filing URL.
     """
     try:
-        # Extract ticker and form_type from the path parameters
-        ticker = request.path_params.get("ticker")
-        form_type = request.path_params.get("form_type")
-
         # Validate the ticker and form type format
         if not re.match(r"^[A-Za-z0-9]+$", ticker):
-            raise ValueError("Invalid ticker format. Only alphanumeric characters are allowed.")
+            return PlainTextResponse("Invalid ticker format. Only alphanumeric characters are allowed.", status_code=400)
+
         if not re.match(r"^[A-Za-z0-9/ -]+$", form_type):
-            raise ValueError("Invalid form type format. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.")
+            return PlainTextResponse("Invalid form type format. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.", status_code=400)
 
         # Get the company's CIK
         cik = company_info.get_cik_by_ticker(ticker)
         if not cik:
-            raise ValueError(f"CIK not found for ticker: {ticker}")
+            return PlainTextResponse(f"CIK not found for ticker: {ticker}", status_code=404)
 
         # Fetch filing data
         filings = sec_filings.get_company_filings(cik)
         filings_df = sec_filings.filings_to_dataframe(filings)
 
+        # Check if filings are available for the given form type
         if filings_df.empty or form_type not in filings_df["form"].values:
-            raise IndexError(f"No {form_type} filings found for ticker: {ticker}")
+            return PlainTextResponse(f"No {form_type} filings found for ticker: {ticker}", status_code=404)
 
         # Get the latest filing details for the specified form type
         latest_filing = filings_df[filings_df["form"] == form_type].iloc[0]
         accession_number = latest_filing["accessionNumber"].replace("-", "")
-        file_name = latest_filing["primaryDocument"]
+        primary_document = latest_filing["primaryDocument"]
 
         # Build the SEC filing base URL and full filing URL
         base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/"
-        filing_url = f"{base_url}{file_name}"
+        filing_url = f"{base_url}{primary_document}"
 
         # Return the filing URL as plain text
         return PlainTextResponse(filing_url)
 
     except IndexError:
-        logger.error(f"No {form_type} filings found for ticker {ticker}")
+        # Handle no filings found for the specified form type
+        logger.error(f"No {form_type} filings found for ticker: {ticker}")
         return PlainTextResponse(f"No {form_type} filings found for ticker: {ticker}", status_code=404)
+
     except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
+        # Handle validation errors
+        logger.error(f"Validation error for ticker {ticker}: {ve}")
         return PlainTextResponse(str(ve), status_code=400)
+
     except Exception as e:
+        # Handle unexpected errors
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return PlainTextResponse(f"An unexpected error occurred: {str(e)}", status_code=500)
-
-
+    
 async def download_latest_10k_html(request):
     """Web service endpoint to download the latest 10-K report as raw HTML with fixed image links."""
     ticker = request.path_params["ticker"]
@@ -661,14 +665,20 @@ async def download_latest_filing_html(request):
     """
     Web service endpoint to download the latest filing of a specified form type as raw HTML with fixed image links.
     """
-    ticker = request.path_params["ticker"]
-    form_type = request.path_params["form_type"].replace("_", "/")  # Replace _ with /
-    logger.info(f"ticker: {ticker}")
-
     try:
-        # Validate the ticker format
-        if not re.match(r"^[A-Za-z0-9.-]+$", ticker):
-            raise ValueError("Invalid ticker format. Only alphanumeric characters, dashes (-), and periods (.) are allowed.")
+        # Parse the JSON body for required parameters
+        body = await request.json()
+        ticker = body.get("ticker")
+        form_type = body.get("form_type")
+
+        # Validate the inputs
+        if not ticker or not re.match(r"^[A-Za-z0-9.-]+$", ticker):
+            raise ValueError("Invalid or missing ticker. Only alphanumeric characters, dashes (-), and periods (.) are allowed.")
+        if not form_type or not re.match(r"^[A-Za-z0-9/ -]+$", form_type):
+            raise ValueError("Invalid or missing form type. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.")
+
+        logger.info(f"Processing request for ticker: {ticker}, form_type: {form_type}")
+
         # Fetch available forms for the ticker
         cik = company_info.get_cik_by_ticker(ticker)
         filings = sec_filings.get_company_filings(cik)
@@ -688,15 +698,15 @@ async def download_latest_filing_html(request):
         return StreamingResponse(BytesIO(html_content.encode("utf-8")), media_type="text/html", headers=headers)
 
     except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
+        logger.error(f"Value error: {ve}")
         return JSONResponse({"error": str(ve)}, status_code=400)
     except IndexError:
         logger.error(f"No {form_type} filings found for ticker {ticker}")
         return JSONResponse({"error": f"No {form_type} filings found for ticker: {ticker}"}, status_code=404)
     except Exception as e:
-        logger.error(f"Unexpected error for ticker {ticker}: {e}")
+        logger.error(f"Unexpected error: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
+    
 async def get_xbrl_data(request):
     """
     Endpoint to fetch and process XBRL data for a given company ticker.
@@ -827,7 +837,68 @@ async def list_xbrl_concepts(request: Request):
     except Exception as e:
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-    
+
+# Route handler
+import requests
+from starlette.responses import JSONResponse
+import urllib.parse
+import logging
+
+logger = logging.getLogger(__name__)
+
+async def download_html_content_route(request: Request):
+    """
+    Route to download HTML content for a given filing based on POST request data.
+    """
+    try:
+        # Parse JSON body for required parameters
+        body = await request.json()
+        cik = body.get("cik")
+        accession_number = body.get("accession_number").replace("-", "")
+        primary_document = body.get("primary_document")
+
+        # Validate required fields
+        if not cik or not accession_number or not primary_document:
+            return JSONResponse(
+                {"error": "Missing required fields: cik, accession_number, primary_document"},
+                status_code=400
+            )
+
+        # Construct the full URL using the primary document as is
+        base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/"
+        full_url = f"{base_url}{primary_document}"
+
+        # Log the constructed URL
+        logger.info(f"Constructed URL: {full_url}")
+
+        # Fetch the document from the constructed URL
+        response = requests.get(full_url, headers={"User-Agent": "YourAppName (your_email@example.com)"})
+
+        # Check if the request was successful
+        if response.status_code != 200:
+            return JSONResponse(
+                {"error": f"Failed to retrieve document from {full_url}. Status code: {response.status_code}"},
+                status_code=response.status_code
+            )
+
+        # Modify the HTML content to fix relative image links
+        html_content = re.sub(
+            r'(?<=<img src=")([^":]+)',  # Match the src attribute of <img> tags that do not contain a full URL
+            lambda match: f"{base_url}{match.group(1)}",  # Replace with the full URL
+            response.text
+        )
+
+        # Return the modified HTML content as a streaming response
+        headers = {"Content-Disposition": f"attachment; filename={primary_document}"}
+        return StreamingResponse(BytesIO(html_content.encode("utf-8")), media_type="text/html", headers=headers)
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return JSONResponse(
+            {"error": f"An unexpected error occurred: {str(e)}"},
+            status_code=500
+        )
+                      
 async def root(request):
     """Root endpoint that says Hello."""
     return PlainTextResponse("Hello")
@@ -841,16 +912,16 @@ routes = [
     Route("/exchange/{ticker}", get_exchange),  # Fetch the CIK (Central Index Key) for a ticker
     Route("/tickersbyexchange/{exchange}", tickers_by_exchange, methods=["GET"]),  # Fetch tickers for a specific exchange
     Route("/filings/{ticker}", get_filings),  # Fetch all filings for a ticker
-    Route("/filing/url/{ticker}/{form_type}", get_filing_url, methods=["GET"]),    
+#    Route("/filing/url/{ticker}/{form_type}", get_filing_url, methods=["GET"]),    
     Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
-    Route("/filing/html/{ticker}/{form_type}", download_latest_filing_html, methods=["GET"]),  # Fetch the latest filing of a specified form type as raw HTML
-    Route("/filing/pdf/{ticker}/{form_type}", download_latest_filing_pdf, methods=["GET"]),    
+    Route("/filing/html", download_latest_filing_html, methods=["POST"]),  # Change to POST request#    Route("/filing/pdf/{ticker}/{form_type}", download_latest_filing_pdf, methods=["GET"]),    
     Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
-    Route("/10k/pdf/{ticker}", download_latest_10k),  # Fetch the latest 10-K as a PDF
-    Route("/10k/html/{ticker}", download_latest_10k_html),  # Fetch the latest 10-K as raw HTML
+#    Route("/10k/pdf/{ticker}", download_latest_10k),  # Fetch the latest 10-K as a PDF
+#    Route("/10k/html/{ticker}", download_latest_10k_html),  # Fetch the latest 10-K as raw HTML
     Route("/xbrl/{ticker}", get_xbrl_data),  # Fetch XBRL data as JSON
     Route("/xbrl/concepts/{ticker}", list_xbrl_concepts, methods=["GET"]),
     Route("/xbrl/plot/{ticker}", plot_xbrl_data),  # Plot XBRL data
+    Route("/html/download", download_html_content_route, methods=["POST"]),
 #    Route("/html-to-pdf", html_to_pdf, methods=["POST"]),  # Convert HTML content to a PDF
 ]
 
