@@ -28,7 +28,7 @@ COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy the JSON data file to the container
-COPY data/company_tickers_exchange.json data/company_tickers_exchange.json
+COPY data/company_tickers_exchange.json /app/data/company_tickers_exchange.json
 
 # Copy the application code to the container
 COPY . .
@@ -39,6 +39,9 @@ EXPOSE 8000
 # Set environment variables for Uvicorn
 ENV PORT=8000
 ENV HOST=0.0.0.0
+
+# Set the dataset path as an environment variable inside the container
+ENV DATASET_PATH=/app/data/company_tickers_exchange.json
 
 # Use non-root user for better security
 RUN addgroup --system appgroup && adduser --system --group appuser
