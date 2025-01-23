@@ -5,3 +5,5 @@ __pycache__/
 *.json
 *.html
 *.pdf
+# Exception for company_tickers_exchange.json
+!data/company_tickers_exchange.json
