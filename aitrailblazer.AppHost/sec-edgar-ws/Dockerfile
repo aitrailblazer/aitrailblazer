@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install system dependencies required by WeasyPrint
+# Install system dependencies required by WeasyPrint and wget for downloading
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libopenjp2-7-dev \
     zlib1g-dev \
     fonts-liberation \
+    wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,8 +28,8 @@ COPY requirements.txt requirements.txt
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy the JSON data file to the container
-COPY data/company_tickers_exchange.json /app/data/company_tickers_exchange.json
+# Download the JSON data file from SEC's website
+RUN wget -O /app/data/company_tickers_exchange.json "https://www.sec.gov/files/company_tickers_exchange.json"
 
 # Copy the application code to the container
 COPY . .
