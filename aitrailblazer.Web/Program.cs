@@ -485,6 +485,13 @@ builder.Services.AddHttpClient<WeatherApiClient>(client =>
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://apiservice");
     });
+// Register HttpClient for calling the Go API
+builder.Services.AddHttpClient("GoApi", client =>
+{
+    client.BaseAddress = new Uri("http://ginapp"); // Use service discovery name 'ginapp'
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 
 builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     {
@@ -517,10 +524,33 @@ builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
 */
+builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
+{
+     client.BaseAddress = new Uri("http://secedgarwsapp");
+    //client.BaseAddress = new("http://apiservice");
+
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
 
 builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
 {
-    client.BaseAddress = new Uri("http://0.0.0.0:8001");
+    client.BaseAddress = new Uri("http://gosecedgarwsapp");
     //client.BaseAddress = new("http://apiservice");
 
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
@@ -555,7 +585,6 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
