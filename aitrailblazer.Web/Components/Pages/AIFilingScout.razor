@@ -205,11 +205,10 @@ else
                 <!-- Display HTML -->
                 @if (!string.IsNullOrEmpty(HTMLContent))
                 {
-                    <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
-
-                        <iframe srcdoc="@HTMLContent" style="width:100%; height:500px;" frameborder="0"></iframe>
-                    </FluentCard>
-                }
+                    <div id="contentContainer" style="width: 800px; height: 600px; overflow: auto;">
+                        @((MarkupString)HTMLContent)
+                    </div>
+                }              
                 @if (!string.IsNullOrEmpty(PlotHtml))
                 {
                     <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
@@ -542,15 +541,13 @@ else
 
             // Fetch the HTML content
             var htmlContent = await SECEdgarWSAppService.DownloadHtmlContentAsync(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
-            Logger.LogInformation($"htmlContent: {htmlContent}");
+            //Logger.LogInformation($"htmlContent: {htmlContent}");
             HTMLContent = htmlContent;
             PDFDataUrl = null;
-            //if (string.IsNullOrWhiteSpace(htmlContent))
-            //{
-            //    Console.WriteLine("Error: Failed to retrieve HTML content for the specified filing.");
-            //    PDFDataUrl = null; // Clear PDF preview on error
-            //    return;
-            //}
+            HTMLContent = htmlContent;
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
+            await File.WriteAllTextAsync(filePath, HTMLContent);
+            Console.WriteLine($"HTML saved to: {filePath}");
 
             Console.WriteLine("Successfully fetched HTML content. Converting to PDF...");
 
@@ -1133,14 +1130,19 @@ else
 
             // Fetch HTML content as a string
             var htmlContent = await SECEdgarWSAppService.DownloadLatestFilingHtmlAsync(Ticker, SelectedForm);
-            Logger.LogInformation($"htmlContent: {htmlContent}");
+            //Logger.LogInformation($"htmlContent: {htmlContent}");
             HTMLContent = htmlContent;
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
+            await File.WriteAllTextAsync(filePath, HTMLContent);
+            Console.WriteLine($"HTML saved to: {filePath}");
+
             PDFDataUrl = null;
             // Convert HTML to PDF using the new method that expects Gotenberg to handle pagination
             //var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(htmlContent);
             // Save PDF locally for testing
             //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.pdf");
             //await File.WriteAllBytesAsync(filePath, pdfBytes);
+
             //Console.WriteLine($"PDF saved to: {filePath}");
             //PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
 
@@ -1176,4 +1178,14 @@ else
     private string helloMessage = string.Empty;
 
 
+}
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !string.IsNullOrEmpty(HTMLContent))
+        {
+            await JSRuntime.InvokeVoidAsync("initializeAnchorNavigation", "contentContainer");
+        }
+    }
 }
