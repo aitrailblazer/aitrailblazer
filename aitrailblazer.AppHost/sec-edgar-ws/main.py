@@ -14,7 +14,8 @@ from starlette.routing import Route
 from weasyprint import HTML
 from weasyprint import default_url_fetcher
 import plotly.express as px
-
+import csv
+from io import StringIO
 from sec_data.company_info import CompanyInfo
 from sec_data.filings import SECFilings
 from tenacity import retry, stop_after_attempt, wait_exponential
@@ -738,6 +739,424 @@ async def get_xbrl_data(request):
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
+import pandas as pd
+from starlette.responses import JSONResponse
+import logging
+from nixtla import NixtlaClient
+
+logger = logging.getLogger(__name__)
+    
+async def forecast_xbrl_data_as_csv(request):
+    """
+    Endpoint to fetch XBRL data, forecast it using Nixtla, and return the forecasted data as CSV.
+    """
+    ticker = request.path_params["ticker"]
+    concept = request.query_params.get("concept", "AssetsCurrent")
+    unit = request.query_params.get("unit", "USD")
+    horizon = int(request.query_params.get("h", 12))  # Forecast horizon
+
+    try:
+        logger.info(f"Starting forecast for ticker: {ticker}, concept: {concept}, unit: {unit}, horizon: {horizon}")
+
+        # Fetch and process XBRL data
+        xbrl_df = await fetch_xbrl_csv(ticker, concept, unit)
+
+        # Initialize Nixtla client
+        api_key = os.getenv("TIMEGEN_KEY")
+        base_url = os.getenv("TIMEGEN_ENDPOINT")
+        nixtla_client = NixtlaClient(api_key=api_key, base_url=base_url)
+
+        # Ensure timestamps are sorted and infer frequency
+        xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])
+        xbrl_df.set_index("End Date", inplace=True)
+        inferred_freq = pd.infer_freq(xbrl_df.index)
+
+        if not inferred_freq:
+            raise ValueError("Could not infer frequency from the XBRL data.")
+
+        # Reset index for Nixtla compatibility
+        xbrl_df.reset_index(inplace=True)
+
+        # Forecast using Nixtla
+        forecast_df = nixtla_client.forecast(
+            df=xbrl_df,
+            h=horizon,
+            time_col="End Date",
+            target_col="Value",
+            freq=inferred_freq
+        )
+
+        logger.info(f"Forecasting completed for ticker: {ticker}")
+
+        # Prepare forecasted data as CSV
+        output = StringIO()
+        forecast_df.to_csv(output, index=False)
+        output.seek(0)
+
+        # Stream the CSV as a response
+        response = StreamingResponse(
+            output,
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f"attachment; filename={ticker}_{concept}_forecast.csv"
+            },
+        )
+
+        return response
+
+    except ValueError as ve:
+        logger.error(f"Value error: {ve}")
+        return JSONResponse({"error": str(ve)}, status_code=400)
+    except Exception as e:
+        logger.error(f"Unexpected error during forecasting for ticker {ticker}: {e}")
+        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+from starlette.responses import HTMLResponse
+import plotly.express as px
+
+async def forecast_xbrl_data_plot(request):
+    """
+    Endpoint to fetch XBRL data, forecast it using Nixtla, and return the forecasted data as a Plotly plot.
+    """
+    ticker = request.path_params["ticker"]
+    concept = request.query_params.get("concept", "AssetsCurrent")
+    unit = request.query_params.get("unit", "USD")
+    horizon = int(request.query_params.get("h", 12))  # Forecast horizon
+
+    try:
+        logger.info(f"Starting forecast plot for ticker: {ticker}, concept: {concept}, unit: {unit}, horizon: {horizon}")
+
+        # Extract TimegenEndpoint and TimegenKey from the headers
+        timegen_endpoint = request.headers.get("X-Timegen-Endpoint")
+        timegen_key = request.headers.get("Authorization")
+
+        # Validate that the required headers are present
+        if not timegen_endpoint or not timegen_key:
+            raise ValueError("Missing required headers: X-Timegen-Endpoint or Authorization")
+
+        logger.info(f"Using TimegenEndpoint: {timegen_endpoint}")
+
+        # Fetch and process XBRL data
+        xbrl_df = await fetch_xbrl_csv(ticker, concept, unit)
+
+        # Initialize Nixtla client
+        nixtla_client = NixtlaClient(api_key=timegen_key, base_url=timegen_endpoint)
+
+        # Ensure timestamps are sorted and infer frequency
+        xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])
+        xbrl_df.set_index("End Date", inplace=True)
+        inferred_freq = pd.infer_freq(xbrl_df.index)
+
+        if not inferred_freq:
+            raise ValueError("Could not infer frequency from the XBRL data.")
+
+        # Reset index for Nixtla compatibility
+        xbrl_df.reset_index(inplace=True)
+
+        # Forecast using Nixtla
+        forecast_df = nixtla_client.forecast(
+            df=xbrl_df,
+            h=horizon,
+            time_col="End Date",
+            target_col="Value",
+            freq=inferred_freq
+        )
+
+        logger.info(f"Forecasting completed for ticker: {ticker}")
+
+        # Combine historical and forecasted data for plotting
+        xbrl_df["Type"] = "Historical"
+        forecast_df["Type"] = "Forecast"
+        forecast_df.rename(columns={"timestamp": "End Date"}, inplace=True)
+
+        combined_df = pd.concat(
+            [
+                xbrl_df[["End Date", "Value", "Type"]].rename(columns={"Value": "Revenues"}),
+                forecast_df[["End Date", "TimeGPT", "Type"]].rename(columns={"TimeGPT": "Revenues"}),
+            ],
+            ignore_index=True
+        )
+
+        # Create the Plotly plot
+        fig = px.line(
+            combined_df,
+            x="End Date",
+            y="Revenues",
+            color="Type",
+            title=f"{ticker}: {concept} Forecast",
+            labels={"End Date": "Date", "Revenues": f"Value ({unit})", "Type": "Data Type"},
+            template="plotly_white"
+        )
+
+        # Customize plot appearance
+        fig.update_traces(
+            mode="lines+markers",
+            line=dict(width=2),
+            marker=dict(size=6)
+        )
+        fig.update_layout(
+            plot_bgcolor="white",
+            xaxis=dict(showgrid=False, linecolor="black"),
+            yaxis=dict(showgrid=False, linecolor="black")
+        )
+        fig.update_traces(
+            hovertemplate="Date: %{x}<br>Value: %{y}<extra></extra>"
+        )
+
+        # Return the plot as HTML
+        return HTMLResponse(fig.to_html())
+
+    except ValueError as ve:
+        logger.error(f"Value error: {ve}")
+        return JSONResponse({"error": str(ve)}, status_code=400)
+    except Exception as e:
+        logger.error(f"Unexpected error during forecasting plot for ticker {ticker}: {e}")
+        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+async def forecast_xbrl_data_plot(request):
+    """
+    Endpoint to fetch XBRL data, forecast it using Nixtla, and return the forecasted data as a Plotly plot.
+    """
+    ticker = request.path_params["ticker"]
+    concept = request.query_params.get("concept", "AssetsCurrent")
+    unit = request.query_params.get("unit", "USD")
+    horizon = int(request.query_params.get("h", 12))  # Forecast horizon
+
+    try:
+        logger.info(f"Starting forecast plot for ticker: {ticker}, concept: {concept}, unit: {unit}, horizon: {horizon}")
+
+        # Extract TimegenEndpoint and TimegenKey from the headers
+        timegen_endpoint = request.headers.get("X-Timegen-Endpoint")
+        timegen_key = request.headers.get("Authorization")
+
+        # Validate that the required headers are present
+        if not timegen_endpoint or not timegen_key:
+            raise ValueError("Missing required headers: X-Timegen-Endpoint or Authorization")
+
+        logger.info(f"Using TimegenEndpoint: {timegen_endpoint}")
+
+        # Fetch and process XBRL data
+        xbrl_df = await fetch_xbrl_csv(ticker, concept, unit)
+
+        if xbrl_df.empty:
+            raise ValueError(f"No XBRL data available for ticker: {ticker}, concept: {concept}")
+
+        # Initialize Nixtla client
+        nixtla_client = NixtlaClient(api_key=timegen_key, base_url=timegen_endpoint)
+
+        # Ensure timestamps are sorted and infer frequency
+        xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])
+        xbrl_df.set_index("End Date", inplace=True)
+        inferred_freq = pd.infer_freq(xbrl_df.index)
+
+        if not inferred_freq:
+            raise ValueError("Could not infer frequency from the XBRL data.")
+
+        logger.info(f"Inferred frequency: {inferred_freq}")
+
+        # Reset index for Nixtla compatibility
+        xbrl_df.reset_index(inplace=True)
+
+        # Forecast using Nixtla
+        forecast_df = nixtla_client.forecast(
+            df=xbrl_df,
+            h=horizon,
+            time_col="End Date",
+            target_col="Value",
+            freq=inferred_freq
+        )
+
+        logger.info(f"Forecasting completed for ticker: {ticker}")
+
+        # Combine historical and forecasted data for plotting
+        xbrl_df["Type"] = "Historical"
+        forecast_df["Type"] = "Forecast"
+        forecast_df.rename(columns={"timestamp": "End Date"}, inplace=True)
+
+        combined_df = pd.concat(
+            [
+                xbrl_df[["End Date", "Value", "Type"]].rename(columns={"Value": "Revenues"}),
+                forecast_df[["End Date", "TimeGPT", "Type"]].rename(columns={"TimeGPT": "Revenues"}),
+            ],
+            ignore_index=True
+        )
+
+        if combined_df.empty:
+            raise ValueError("Combined DataFrame is empty. Check data sources or filters.")
+
+        # Create the Plotly plot
+        fig = px.line(
+            combined_df,
+            x="End Date",
+            y="Revenues",
+            color="Type",
+            title=f"{ticker}: {concept} Forecast",
+            labels={"End Date": "Date", "Revenues": f"Value ({unit})", "Type": "Data Type"},
+            template="plotly_white"
+        )
+
+        # Customize plot appearance
+        fig.update_traces(
+            mode="lines+markers",
+            line=dict(width=2),
+            marker=dict(size=6)
+        )
+        fig.update_layout(
+            plot_bgcolor="white",
+            xaxis=dict(showgrid=False, linecolor="black"),
+            yaxis=dict(showgrid=False, linecolor="black")
+        )
+        fig.update_traces(
+            hovertemplate="Date: %{x}<br>Value: %{y}<extra></extra>"
+        )
+
+        # Return the plot as HTML
+        return HTMLResponse(fig.to_html())
+
+    except ValueError as ve:
+        logger.error(f"Value error: {ve}")
+        return JSONResponse({"error": str(ve)}, status_code=400)
+    except Exception as e:
+        logger.error(f"Unexpected error during forecasting plot for ticker {ticker}: {e}")
+        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+async def generate_xbrl_csv(request):
+    """
+    Endpoint to fetch, process, and generate a CSV file for XBRL data of a given company ticker.
+    """
+    ticker = request.path_params["ticker"]
+    concept = request.query_params.get("concept", "AssetsCurrent")
+    unit = request.query_params.get("unit", "USD")
+
+    logger.info(f"Received request to generate CSV for ticker: {ticker}, concept: {concept}, unit: {unit}")
+
+    try:
+        # Get CIK and fetch XBRL data
+        logger.debug(f"Fetching CIK for ticker: {ticker}")
+        cik = company_info.get_cik_by_ticker(ticker)
+        if not cik:
+            logger.warning(f"No CIK found for ticker: {ticker}")
+            raise ValueError(f"CIK not found for ticker: {ticker}")
+
+        logger.debug(f"Fetching XBRL data for CIK: {cik}")
+        xbrl_data = sec_filings.get_xbrl_data(cik)
+        logger.debug("Processing XBRL data")
+        xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept, unit=unit)
+
+        # Add the concept as a column
+        xbrl_df["concept"] = concept
+
+        # Rename columns for better readability
+        column_mapping = {
+            "frame": "Reporting Period",
+            "end": "End Date",
+            "val": "Value",
+            "unit": "Unit",
+            "concept": "Concept",
+            "start": "Start Date",
+            "accn": "Accession Number",
+            "fy": "Fiscal Year",
+            "fp": "Fiscal Period",
+            "form": "Form Type",
+            "filed": "Filing Date"
+        }
+        xbrl_df.rename(columns=column_mapping, inplace=True)
+
+        # Filter valid frames
+        logger.debug("Filtering valid frames from XBRL data")
+        valid_frame_df = xbrl_df[xbrl_df["Reporting Period"].notna()]
+
+        # Log the filtered data
+        logger.info("Filtered XBRL Data:")
+        logger.info(valid_frame_df.to_string(index=False))
+
+        # Log the CSV content
+        logger.debug("Logging CSV content")
+        csv_content = ','.join(valid_frame_df.columns) + '\n'
+        csv_content += '\n'.join([','.join(map(str, row.values)) for _, row in valid_frame_df.iterrows()])
+        logger.debug(f"Generated CSV Content:\n{csv_content}")
+
+        # Create CSV file in memory
+        logger.debug("Creating CSV content in memory")
+        def iter_csv():
+            # Write header row
+            yield ','.join(valid_frame_df.columns) + '\n'
+            # Write data rows
+            for _, row in valid_frame_df.iterrows():
+                yield ','.join(map(str, row.values)) + '\n'
+
+        # Stream the CSV file as a response
+        logger.info(f"Streaming CSV response for ticker: {ticker}, concept: {concept}, unit: {unit}")
+        response = StreamingResponse(iter_csv(), media_type="text/csv")
+        response.headers["Content-Disposition"] = f"attachment; filename={ticker}_{concept}_{unit}.csv"
+
+        return response
+
+    except ValueError as ve:
+        logger.error(f"Value error for ticker {ticker}: {ve}")
+        return JSONResponse({"error": str(ve)}, status_code=400)
+    except Exception as e:
+        logger.error(f"Unexpected error generating CSV for ticker {ticker}: {e}")
+        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
+    """
+    Function to fetch and process XBRL data as a Pandas DataFrame.
+    """
+    try:
+        logger.info(f"Fetching XBRL data for ticker: {ticker}, concept: {concept}, unit: {unit}")
+
+        # Fetch the CIK for the given ticker
+        cik = company_info.get_cik_by_ticker(ticker)
+        if not cik:
+            logger.error(f"No CIK found for ticker: {ticker}")
+            raise ValueError(f"CIK not found for ticker: {ticker}")
+
+        # Fetch and process XBRL data
+        xbrl_data = sec_filings.get_xbrl_data(cik)
+        if not xbrl_data or "facts" not in xbrl_data:
+            logger.error(f"No XBRL data found for CIK: {cik}")
+            raise ValueError(f"No XBRL data found for ticker: {ticker}")
+
+        xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept, unit=unit)
+
+        # Add the concept as a column
+        xbrl_df["concept"] = concept
+
+        # Rename columns for better readability
+        column_mapping = {
+            "frame": "Reporting Period",
+            "end": "End Date",
+            "val": "Value",
+            "unit": "Unit",
+            "concept": "Concept",
+            "start": "Start Date",
+            "accn": "Accession Number",
+            "fy": "Fiscal Year",
+            "fp": "Fiscal Period",
+            "form": "Form Type",
+            "filed": "Filing Date"
+        }
+        xbrl_df.rename(columns=column_mapping, inplace=True)
+
+        # Filter valid frames
+        xbrl_df = xbrl_df[xbrl_df["Reporting Period"].notna()]
+        if xbrl_df.empty:
+            logger.error(f"XBRL data is empty for ticker: {ticker}, concept: {concept}")
+            raise ValueError(f"No XBRL data available for ticker: {ticker}")
+
+        # Log filtered data for debugging
+        logger.info(f"Processed XBRL data for ticker {ticker}:\n{xbrl_df.head()}")
+
+        return xbrl_df
+
+    except ValueError as ve:
+        logger.error(f"Value error for ticker {ticker}: {ve}")
+        raise ve
+    except Exception as e:
+        logger.error(f"Unexpected error while fetching XBRL data for ticker {ticker}: {e}")
+        raise e
+    
 async def plot_xbrl_data(request):
     """
     Endpoint to fetch, process, and plot XBRL data for a given company ticker.
@@ -789,6 +1208,7 @@ async def plot_xbrl_data(request):
     except Exception as e:
         logger.error(f"Error plotting XBRL data for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+    
 """
  the following concepts from your list are among the most significant:
 
@@ -918,9 +1338,11 @@ routes = [
     Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
 #    Route("/10k/pdf/{ticker}", download_latest_10k),  # Fetch the latest 10-K as a PDF
 #    Route("/10k/html/{ticker}", download_latest_10k_html),  # Fetch the latest 10-K as raw HTML
-    Route("/xbrl/{ticker}", get_xbrl_data),  # Fetch XBRL data as JSON
-    Route("/xbrl/concepts/{ticker}", list_xbrl_concepts, methods=["GET"]),
-    Route("/xbrl/plot/{ticker}", plot_xbrl_data),  # Plot XBRL data
+    Route("/xbrl/{ticker}/plot", plot_xbrl_data),  # Fetch, forecast, and return forecasted data as Plot
+    Route("/xbrl/{ticker}/data", get_xbrl_data),  # Fetch processed XBRL data as JSON    Route("/xbrl/{ticker}/csv", generate_xbrl_csv),  # Generate and download XBRL data as CSV    Route("/xbrl/concepts/{ticker}", list_xbrl_concepts, methods=["GET"]),
+    Route("/xbrl/{ticker}/csv", fetch_xbrl_csv),  # Generate and download XBRL data as CSV    Route("/xbrl/plot/{ticker}", plot_xbrl_data),  # Plot XBRL data
+    Route("/xbrl/{ticker}/forecast/csv", forecast_xbrl_data_as_csv),  # Fetch, forecast, and return forecasted data
+    Route("/xbrl/{ticker}/forecast/plot", forecast_xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
     Route("/html/download", download_html_content_route, methods=["POST"]),
 #    Route("/html-to-pdf", html_to_pdf, methods=["POST"]),  # Convert HTML content to a PDF
 ]

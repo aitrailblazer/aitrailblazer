@@ -37,3 +37,7 @@ kaleido>=0.2,<1.0          # For exporting Plotly figures as static images (opti
 
 # Optional: For handling XML in XBRL processing (if extended functionality is added)
 lxml>=4.9,<5.0             # High-performance XML and HTML parsing library
+
+zstandard>=0.15
+
+nixtla

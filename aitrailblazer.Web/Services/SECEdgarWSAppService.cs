@@ -85,7 +85,7 @@ public class SECEdgarWSAppService
         }
     }
 
-  
+
     public async Task<string> GetNameAsync(string ticker)
     {
         try
@@ -359,7 +359,7 @@ public class SECEdgarWSAppService
             return string.Empty; // Return an empty string for unexpected errors
         }
     }
-  /// <summary>
+    /// <summary>
     /// Fetches the HTML content of a filing given the CIK, accession number, and primary document name.
     /// </summary>
     /// <param name="cik">The Central Index Key (CIK) of the company.</param>
@@ -433,19 +433,159 @@ public class SECEdgarWSAppService
             return string.Empty;
         }
     }
-    public async Task<string> GetXBRLPlotAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD")
+    public async Task<Stream> GetXBRLCsvAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD")
     {
-        // Construct the endpoint URL with query parameters
-        string endpoint = $"/xbrl/plot/{ticker}?concept={concept}&unit={unit}";
+        if (string.IsNullOrWhiteSpace(ticker))
+        {
+            throw new ArgumentException("Ticker must not be null or empty.", nameof(ticker));
+        }
 
-        // Send a GET request to the endpoint
-        var response = await _httpClient.GetAsync(endpoint);
+        try
+        {
+            // Construct the endpoint URL with query parameters
+            string endpoint = $"/xbrl/{ticker}/csv?concept={concept}&unit={unit}";
 
-        // Ensure the request was successful
-        response.EnsureSuccessStatusCode();
+            // Log the request (optional, useful for debugging)
+            Console.WriteLine($"Fetching XBRL CSV from endpoint: {endpoint}");
 
-        // Return the HTML content as a string
-        return await response.Content.ReadAsStringAsync();
+            // Send a GET request to the endpoint
+            var response = await _httpClient.GetAsync(endpoint);
+
+            // Ensure the request was successful
+            response.EnsureSuccessStatusCode();
+
+            // Return the CSV content as a stream
+            return await response.Content.ReadAsStreamAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle HTTP-specific exceptions
+            Console.WriteLine($"HTTP request error: {ex.Message}");
+            throw new Exception("Failed to fetch XBRL CSV data. Please try again later.", ex);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+            throw new Exception("An unexpected error occurred while fetching XBRL CSV data.", ex);
+        }
+    }
+    public async Task<string> GetForecastPlotHtmlAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD", int horizon = 12)
+    {
+        try
+        {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(ticker) || !Regex.IsMatch(ticker, @"^[A-Za-z0-9]+$"))
+            {
+                Console.WriteLine("Invalid ticker format. Only alphanumeric characters are allowed.");
+                return string.Empty; // Return an empty string for invalid ticker
+            }
+
+            if (string.IsNullOrWhiteSpace(concept))
+            {
+                Console.WriteLine("Concept cannot be empty.");
+                return string.Empty; // Return an empty string for invalid concept
+            }
+
+            if (horizon <= 0)
+            {
+                Console.WriteLine("Horizon must be a positive integer.");
+                return string.Empty; // Return an empty string for invalid horizon
+            }
+
+            // Construct the endpoint URL with query parameters
+            string endpoint = $"/xbrl/{ticker}/forecast/plot?concept={concept}&unit={unit}&h={horizon}";
+
+            // Log the request (optional, useful for debugging)
+            Console.WriteLine($"Fetching forecast plot from endpoint: {endpoint}");
+
+            // Send a GET request to the endpoint
+            var response = await _httpClient.GetAsync(endpoint);
+
+            // Ensure the request was successful
+            response.EnsureSuccessStatusCode();
+
+            // Parse and return the HTML content as a string
+            var plotHtml = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Successfully fetched forecast plot for ticker {ticker}.");
+            return plotHtml;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Log the HTTP request error
+            Console.WriteLine($"HTTP request error: {httpEx.Message}");
+            return string.Empty; // Return an empty string for network-related issues
+        }
+        catch (Exception ex)
+        {
+            // Log unexpected errors
+            Console.WriteLine($"Unexpected error: {ex.Message}");
+            return string.Empty; // Return an empty string for unexpected errors
+        }
     }
 
+    public async Task<string> GetXBRLPlotHtmlAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD")
+    {
+        try
+        {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(ticker) || !Regex.IsMatch(ticker, @"^[A-Za-z0-9]+$"))
+            {
+                Console.WriteLine("Invalid ticker format. Only alphanumeric characters are allowed.");
+                return string.Empty;
+            }
+
+            if (string.IsNullOrWhiteSpace(concept))
+            {
+                Console.WriteLine("Concept cannot be empty.");
+                return string.Empty;
+            }
+
+            // Construct the endpoint URL with query parameters
+            string endpoint = $"/xbrl/{ticker}/plot?concept={concept}&unit={unit}";
+
+            // Log the request (optional, useful for debugging)
+            Console.WriteLine($"Fetching XBRL plot from endpoint: {endpoint}");
+
+            // Send a GET request to the endpoint
+            var response = await _httpClient.GetAsync(endpoint);
+
+            // Ensure the request was successful
+            response.EnsureSuccessStatusCode();
+
+            // Parse and return the HTML content as a string
+            var plotHtml = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Successfully fetched XBRL plot for ticker {ticker}.");
+            return plotHtml;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            // Log the HTTP request error
+            Console.WriteLine($"HTTP request error while fetching XBRL plot: {httpEx.Message}");
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+            // Log unexpected errors
+            Console.WriteLine($"Unexpected error while fetching XBRL plot: {ex.Message}");
+            return string.Empty;
+        }
+    }
+
+    // Fallback logic
+    public async Task<string> GetPlotHtmlWithFallbackAsync(string ticker, string concept = "AssetsCurrent", string unit = "USD", int horizon = 12)
+    {
+        // Try fetching the forecast plot first
+        var plotHtml = await GetForecastPlotHtmlAsync(ticker, concept, unit, horizon);
+        Console.WriteLine($"plotHtml: {plotHtml}");
+
+        // If the forecast plot fails, fallback to XBRL plot
+        if (string.IsNullOrWhiteSpace(plotHtml))
+        {
+            Console.WriteLine("Forecast plot fetch failed. Falling back to XBRL plot...");
+            plotHtml = await GetXBRLPlotHtmlAsync(ticker, concept, unit);
+        }
+
+        return plotHtml;
+    }
 }

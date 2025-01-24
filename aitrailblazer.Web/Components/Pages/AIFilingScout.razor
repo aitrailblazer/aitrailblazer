@@ -956,11 +956,28 @@ else
             HasError = false;
             ErrorMessage = string.Empty;
 
+            // Clear previous data
             FilingsJson = null; // Clear filings data when fetching new CIK
             Filings = null;
             PDFDataUrl = null; // Clear PDF preview when fetching new CIK
+            PlotHtml = null;   // Clear previous plot HTML
 
-            PlotHtml = await SECEdgarWSAppService.GetXBRLPlotAsync(Ticker, SelectedConcept, Unit);
+            // Fetch Plot HTML
+            PlotHtml = await SECEdgarWSAppService.GetPlotHtmlWithFallbackAsync(Ticker, SelectedConcept, Unit);
+
+            // Fetch CSV data
+            //var XBRLCsvStream = await SECEdgarWSAppService.GetXBRLCsvAsync(Ticker, SelectedConcept, Unit);
+
+            // Save CSV to a file
+            //string fileName = $"{Ticker}_{SelectedConcept}_Test.csv";
+            //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+
+            //using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            //{
+            //    await XBRLCsvStream.CopyToAsync(fileStream);
+            //}
+
+            //Console.WriteLine($"CSV saved to: {filePath}");
         }
         catch (Exception ex)
         {

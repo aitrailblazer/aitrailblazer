@@ -73,6 +73,9 @@ string storageConnectionString = secretClient.GetSecret("StorageConnectionString
 string storageContainerName = secretClient.GetSecret("StorageContainerName").Value.Value;
 string GTB_TOKEN = secretClient.GetSecret("GTB-TOKEN").Value.Value;
 
+string TimegenEndpoint = secretClient.GetSecret("TimegenEndpoint").Value.Value;
+string TimegenKey = secretClient.GetSecret("TimegenKey").Value.Value;
+
 // Fetch other secrets as needed
 string azureOpenAIModelName01 = secretClient.GetSecret("AzureOpenAIModelName01").Value.Value;
 string azureOpenAIModelName02 = secretClient.GetSecret("AzureOpenAIModelName02").Value.Value;
@@ -461,46 +464,40 @@ builder.Services.AddHttpClient<WeatherApiClient>(client =>
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://apiservice");
     });
+
+
+builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
+{
+    client.BaseAddress = new Uri("https+http://secedgarwsapp");
+    //client.BaseAddress = new("http://apiservice");
+
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+    // Add default headers for the Timegen API
+    client.DefaultRequestHeaders.Add("X-Timegen-Endpoint", TimegenEndpoint);
+    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {TimegenKey}");
+
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
+
+
 builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
-    {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new("https+http://gotenberg");
-    });
-builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
-    {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new("https+http://secedgarwsapp");
-    });
-/*
-
-builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
 {
-client.BaseAddress = new("http://secedgarwsapp");
-
-client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
-})
-.AddStandardResilienceHandler(options =>
-{
-// Retry policy configuration
-options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
-options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
-options.Retry.UseJitter = true; // Add jitter to avoid retry storms
-
-// Timeout policy configuration
-options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
-
-// Total request timeout (all retries combined)
-options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
-
-// Circuit breaker configuration
-options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
-});
-*/
-builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
-{
-    client.BaseAddress = new Uri("http://secedgarwsapp");
+    client.BaseAddress = new("https+http://gotenberg");
     //client.BaseAddress = new("http://apiservice");
 
     client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
@@ -521,31 +518,7 @@ builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     // Circuit breaker configuration
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
-/*
-builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
-{
-    client.BaseAddress = new Uri("http://gosecedgarwsapp");
-    //client.BaseAddress = new("http://apiservice");
 
-    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
-})
-.AddStandardResilienceHandler(options =>
-{
-    // Retry policy configuration
-    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
-    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
-    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
-
-    // Timeout policy configuration
-    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
-
-    // Total request timeout (all retries combined)
-    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
-
-    // Circuit breaker configuration
-    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
-});
-*/
 //builder.Services.AddScoped<SearchUrlPlugin>();
 builder.Services.AddScoped<NewsFunctions>();
 
