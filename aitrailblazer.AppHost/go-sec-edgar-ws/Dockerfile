@@ -12,8 +12,8 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o app
 
-# Use a base image with wkhtmltopdf pre-installed that aligns with older glibc versions
-FROM openlabs/docker-wkhtmltopdf-aas:latest
+# Use a base image with older glibc versions
+FROM debian:bullseye-slim
 
 # Set the working directory
 WORKDIR /app
