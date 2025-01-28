@@ -475,7 +475,6 @@ builder.Services.AddHttpClient<SECEdgarWSAppService>(client =>
     // Add default headers for the Timegen API
     client.DefaultRequestHeaders.Add("X-Timegen-Endpoint", TimegenEndpoint);
     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {TimegenKey}");
-
 })
 .AddStandardResilienceHandler(options =>
 {

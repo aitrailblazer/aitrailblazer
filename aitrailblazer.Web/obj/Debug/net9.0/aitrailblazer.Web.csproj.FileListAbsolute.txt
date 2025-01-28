@@ -445,7 +445,6 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/aitrailblazer.Web.genruntimeconfig.cache
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/ref/aitrailblazer.Web.dll
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Microsoft.ML.Tokenizers.Data.Cl100kBase.dll
-/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-gi52ef04sx.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/d4pk31d3nk-hlzdhfxoxx.gz
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIWritingAssistantNoContext.prompty
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIWritingAssistantWithContext.prompty
@@ -470,3 +469,6 @@
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/System.IO.Pipelines.dll
 /Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/HealthChecks.Uris.dll
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/obj/Debug/net9.0/compressed/5xd115tzb2-s3ocbuk4na.gz
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIAletheiaFinancialConcepts.prompty
+/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/bin/Debug/net9.0/Plugins/AIAletheiaFinancialConceptsQuestions.prompty

@@ -1587,7 +1587,7 @@ namespace AITrailblazer.net.Services
         {
             string pluginName = "AIClearNote";
             var input = panelInput + "\n\n" + userInput;
-            //_logger.LogInformation($"GenerateTitleAsync: {input}");
+            _logger.LogInformation($"GenerateAIClearNoteAsync: {input}");
 
             int maxTokens = 4096;
 
@@ -1596,6 +1596,49 @@ namespace AITrailblazer.net.Services
 
             return result;
         }
+
+        public async Task<string> GenerateAIAletheiaFinancialConceptsInstructionsAsync(
+            string userInput,
+            string panelInput,
+            string Ticker,
+            string SelectedConceptTitle)
+        {
+            string pluginName = "AIAletheiaFinancialConcepts"; //AIAletheiaFinancialConcepts.prompty
+
+            int maxTokens = 4096;
+               string result = await GetASAPInstructionsQuick(
+                pluginName, 
+                userInput, 
+                panelInput, 
+                maxTokens,
+                Ticker,
+                SelectedConceptTitle);
+            // _logger.LogInformation($"Generated aiClearNote : {result}");
+
+            return result;
+        }
+        public async Task<string> GenerateAIAletheiaFinancialConceptsQuestionsAsync(
+            string userInput,
+            string panelInput,
+            string Ticker,
+            string SelectedConceptTitle)
+        {
+            string pluginName = "AIAletheiaFinancialConceptsQuestions"; //AIAletheiaFinancialConcepts.prompty
+
+            int maxTokens = 4096;
+               string result = await GetASAPInstructionsQuick(
+                pluginName, 
+                userInput, 
+                panelInput, 
+                maxTokens,
+                Ticker,
+                SelectedConceptTitle);
+            // _logger.LogInformation($"Generated aiClearNote : {result}");
+
+            return result;
+        }
+
+
 
         public async Task<string> GenerateAIKeyPointsWizardAsync(
             string userInput,
@@ -2203,19 +2246,199 @@ namespace AITrailblazer.net.Services
                 };
 
                 // Update prompty template
-                promptyTemplate = UpdatepromptyTemplate(
-                    promptyTemplate,
-                    input,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    maxTokensStr);
+          promptyTemplate = UpdatepromptyTemplate(
+                promptyTemplate,
+                userInput: input,
+                panelInput: "",
+                creativity: "",
+                audienceLevel: "",
+                writingStyle: "",
+                relationSettings: "",
+                commandsCustom: "",
+                responseStylePreference: "",
+                masterSetting: "",
+                maxTokens: maxTokensStr,
+                Ticker: "",
+                SelectedConceptTitle: "");
                 // _logger.LogInformation($"GetASAPQuick promptyTemplate: {promptyTemplate}");
+
+                // Create kernel function from prompty
+                KernelFunction kernelFunction;
+                try
+                {
+                    kernelFunction = kernel.CreateFunctionFromPrompty(promptyTemplate);
+                }
+                catch (ArgumentException ex)
+                {
+                    // _logger.LogInformation($"Error creating function from prompty: {ex.Message}");
+                    return "Failed to create function from prompty template. Please check the template content.";
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // _logger.LogInformation($"Invalid operation creating function from prompty: {ex.Message}");
+                    return "Failed to create function from prompty template due to an invalid operation.";
+                }
+                catch (Exception ex)
+                {
+                    // _logger.LogInformation($"Unexpected error creating function from prompty: {ex.Message}");
+                    return "An unexpected error occurred while creating the function from the prompty template.";
+                }
+
+                // _logger.LogInformation($"GetASAPQuick Kernel function created from prompty file: {kernelFunction.Name}");
+                // _logger.LogInformation($"GetASAPQuick Kernel function description: {kernelFunction.Description}");
+                // _logger.LogInformation($"GetASAPQuick Kernel function parameters: {kernelFunction.Metadata.Parameters}");
+
+                // _logger.LogInformation($"GetASAPQuick input {input}");
+
+                var arguments = new KernelArguments(executionSettings)
+                {
+                    // Custom arguments can be added here
+                };
+
+                // _logger.LogInformation($"GetASAPQuick kernel.InvokeAsync ");
+
+                // Execute the kernel function
+                try
+                {
+                    var result = await kernel.InvokeAsync(kernelFunction, arguments);
+                    var response = result.GetValue<string>();
+                    return response;
+                }
+                catch (ArgumentException ex)
+                {
+                    // _logger.LogInformation($"GetASAPQuick Argument error: {ex.Message}");
+                    return "An error occurred with the arguments. Please try again.";
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // _logger.LogInformation($"GetASAPQuick Invalid operation: {ex.Message}");
+                    return "An invalid operation occurred during function execution. Please try again.";
+                }
+                catch (Exception ex)
+                {
+                    // _logger.LogError(ex, "GetASAPQuick An unexpected error occurred.");
+                    if (ex.InnerException != null)
+                    {
+                        _logger.LogError(ex.InnerException, "Inner Exception Details");
+                    }
+                    return "A critical error occurred. Please contact support.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // _logger.LogError(ex, "GetASAPQuick  A critical error occurred.");
+                if (ex.InnerException != null)
+                {
+                    // _logger.LogError(ex.InnerException, "Inner Exception Details");
+                }
+                return "A critical error occurred. Please contact support.";
+            }
+        }
+      public async Task<string> GetASAPInstructionsQuick(
+            string pluginName,
+            string userInput,
+            string PanelInput,
+            int maxTokens,
+            string Arg1,
+            string Arg2)
+        {
+            try
+            {
+                // Validate inputs
+                if (string.IsNullOrWhiteSpace(pluginName))
+                {
+                    // _logger.LogInformation("Plugin name cannot be null or empty.");
+                    return "Invalid plugin name.";
+                }
+                //if (string.IsNullOrWhiteSpace(userInput))
+                //{
+                    // _logger.LogInformation("Input cannot be null or empty.");
+                //    return "Invalid userInput.";
+                //}
+
+                // Build the kernel
+                string modelId = "Phi-4"; // gpt-4o Phi-4
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilderPhi(modelId, maxTokens);
+                //IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+                Kernel kernel = kernelBuilder.Build();
+
+                // Get the path to the prompty file
+                var pluginPath = _pluginService.GetPluginsPath() + "/" + pluginName + ".prompty";
+                // _logger.LogInformation($"GetASAPQuick Prompty file path: {pluginPath}");
+
+                // Read the prompty template
+                if (!File.Exists(pluginPath))
+                {
+                    // _logger.LogInformation("Prompty file not found.");
+                    return "Prompty file not found.";
+                }
+                var promptyTemplate = await File.ReadAllTextAsync(pluginPath);
+                if (!string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(userInput))
+                {
+
+                    promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+
+                }
+                else if (string.IsNullOrWhiteSpace(PanelInput) && !string.IsNullOrWhiteSpace(userInput))
+                {
+                    promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithoutContext);
+
+                }
+                else if (!string.IsNullOrWhiteSpace(PanelInput) && string.IsNullOrWhiteSpace(userInput))
+                {
+                    promptyTemplate = promptyTemplate.Replace("{{Instructions}}", promptyInstructionsWithContext);
+                }
+ 
+                // Validate prompty template
+                if (string.IsNullOrWhiteSpace(promptyTemplate))
+                {
+                    // _logger.LogInformation("Prompty template content is empty.");
+                    return "Prompty template is invalid.";
+                }
+                promptyTemplate = promptyTemplate + "user:\n";
+
+                if (!string.IsNullOrWhiteSpace(PanelInput))
+                {
+                    promptyTemplate = promptyTemplate + "- context: " + PanelInput + "\n";
+                }
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    promptyTemplate = promptyTemplate + "- input: " + userInput + "\n";
+                }
+                promptyTemplate = promptyTemplate + "\nassistant:\n";
+                
+                double temperature = 0.1;
+                double topP = 0.1;
+                int seed = 356;
+                var maxTokensStr = maxTokens.ToString() + " tokens";
+
+                // Enable automatic function calling
+                var executionSettings = new AzureOpenAIPromptExecutionSettings
+                {
+                    Temperature = temperature,
+                    TopP = topP,
+                    MaxTokens = maxTokens,
+                    Seed = seed,
+                    //ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+                };
+
+                // Update prompty template
+                promptyTemplate = UpdatepromptyTemplate(
+                    promptyTemplate: promptyTemplate,
+                    userInput: userInput,
+                    panelInput: PanelInput,
+                    creativity: "",
+                    audienceLevel: "",
+                    writingStyle: "",
+                    relationSettings: "",
+                    commandsCustom: "",
+                    responseStylePreference: "",
+                    masterSetting: "",
+                    maxTokens: maxTokensStr,
+                    Ticker: Arg1,
+                    SelectedConceptTitle: Arg2);
+                _logger.LogInformation($"GetASAPInstructionsQuick promptyTemplate: {promptyTemplate}");
 
                 // Create kernel function from prompty
                 KernelFunction kernelFunction;
@@ -2314,6 +2537,7 @@ namespace AITrailblazer.net.Services
             double temperature = 0.0;
             double topP = 0.0;
             int seed = 356;
+            var maxTokensStr = maxTokens.ToString() + " tokens";
 
             // Enable automatic function calling
             var executionSettings = new AzureOpenAIPromptExecutionSettings
@@ -2442,18 +2666,21 @@ namespace AITrailblazer.net.Services
                 ///     [Experimental("SKEXP0010")]
 
             };
-            promptyTemplate = UpdatepromptyTemplate(
-                promptyTemplate,
-                input,
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "");
+
+          promptyTemplate = UpdatepromptyTemplate(
+                promptyTemplate: promptyTemplate,
+                userInput: input,
+                panelInput: "",
+                creativity: "",
+                audienceLevel: "",
+                writingStyle: "",
+                relationSettings: "",
+                commandsCustom: "",
+                responseStylePreference: "",
+                masterSetting: "",
+                maxTokensStr,
+                Ticker: "",
+                SelectedConceptTitle: "");
             // _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
             // Create few-shot examples
 
@@ -2920,16 +3147,18 @@ namespace AITrailblazer.net.Services
 
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
-                "",
-                !string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
-                creativityStr,
-                audienceLevelStr,
-                writingStyleStr,
-                relationSettings,
-                commandsCustom,
-                responseStylePreferenceStr,
-                masterTextSettingsService,
-                maxTokensLabel);
+                userInput: "",
+                panelInput: "",//!string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
+                creativity: creativityStr,
+                audienceLevel: audienceLevelStr,
+                writingStyle: writingStyleStr,
+                relationSettings: relationSettings,
+                commandsCustom: commandsCustom,
+                responseStylePreference: responseStylePreferenceStr,
+                masterSetting: masterTextSettingsService,
+                maxTokens: maxTokensLabel,
+                Ticker: "",
+                SelectedConceptTitle: "");
 
 
             _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
@@ -3312,16 +3541,18 @@ namespace AITrailblazer.net.Services
 
             promptyTemplate = UpdatepromptyTemplate(
                 promptyTemplate,
-                "",
-                !string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
-                creativityStr,
-                audienceLevelStr,
-                writingStyleStr,
-                relationSettings,
-                commandsCustom,
-                responseStylePreferenceStr,
-                masterTextSettingsService,
-                maxTokensLabel);
+                userInput: "",
+                panelInput: !string.IsNullOrWhiteSpace(PanelInput) ? PanelInput : "", // context
+                creativity: creativityStr,
+                audienceLevel: audienceLevelStr,
+                writingStyle: writingStyleStr,
+                relationSettings: relationSettings,
+                commandsCustom: commandsCustom,
+                responseStylePreference: responseStylePreferenceStr,
+                masterSetting: masterTextSettingsService,
+                maxTokens: maxTokensLabel,
+                Ticker: "",
+                SelectedConceptTitle: "");
 
             _logger.LogInformation($"GenerateWithCohereAsync: promptyTemplate: {promptyTemplate}");
             var messages = new List<ChatRequestMessage>();
@@ -3446,7 +3677,7 @@ namespace AITrailblazer.net.Services
 
         public string UpdatepromptyTemplate(
         string promptyTemplate,
-        string input,
+        string userInput,
         string panelInput,
         string creativity,
         string audienceLevel,
@@ -3455,7 +3686,9 @@ namespace AITrailblazer.net.Services
         string commandsCustom,
         string responseStylePreference,
         string masterSetting,
-        string maxTokens)
+        string maxTokens,
+        string Ticker,
+        string SelectedConceptTitle)
         {
 
             // Add replacements for placeholders
@@ -3463,7 +3696,9 @@ namespace AITrailblazer.net.Services
             {
                 //{ "{{input}}", string.IsNullOrEmpty(input) ? "" : $"# Customer Input\n\nUse the provided \n<input>{input}</input>\nto guide and specify the content.\nThe <input> serves as the primary command or directive that shapes the output based on your understanding of the <context>." },
                 //{ "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"# Customer Context\n\nUse the provided\n<context>{panelInput}</context>\nto shape your response.\nThe <context> provides background information essential for tailoring the content to the specific needs and objectives." },
-                { "{{input}}", string.IsNullOrEmpty(input) ? "" : $"\n# Input:\n<input>{input}</input>" },
+                { "{{Ticker}}", string.IsNullOrEmpty(Ticker) ? "" : $"\n# Ticker:\n<Ticker>{Ticker}</Ticker>" },
+                { "{{SelectedConceptTitle}}", string.IsNullOrEmpty(SelectedConceptTitle) ? "" : $"\n# SelectedConceptTitle:\n<SelectedConceptTitle>{SelectedConceptTitle}</SelectedConceptTitle>" },
+                { "{{input}}", string.IsNullOrEmpty(userInput) ? "" : $"\n# Input:\n<input>{userInput}</input>" },
                 { "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"\n# Context:\n<context>{panelInput}</context>"},
                 //{ "{{generalSystemGuidelines}}", string.IsNullOrEmpty(generalSystemGuidelines) ? " " : $"\n# Guidelines:\n<generalSystemGuidelines>{generalSystemGuidelines}</generalSystemGuidelines>" },
                 { "{{creativity}}", string.IsNullOrEmpty(creativity) ? " " : $"\n# Creativity:\n<creativity>{creativity}</creativity>" },

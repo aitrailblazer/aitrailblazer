@@ -21,6 +21,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Create a writable directory for Matplotlib configuration
+RUN mkdir -p /tmp/matplotlib-config && chmod 777 /tmp/matplotlib-config
+
+# Set the MPLCONFIGDIR environment variable for Matplotlib
+ENV MPLCONFIGDIR=/tmp/matplotlib-config
+
 # Copy the requirements file to the container
 COPY requirements.txt requirements.txt
 

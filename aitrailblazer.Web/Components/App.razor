@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="app-fluent.css" />
     <link rel="stylesheet" href="aitrailblazer.Web.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+    <!-- Prism.js Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css">
     <HeadOutlet />
 
     <!-- Include the Timezone JavaScript -->
@@ -22,6 +24,24 @@
 
 <body>
     <Routes />
+    <!-- Prism.js Syntax Highlighter -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" defer></script>
+    <script>
+        // Highlight code dynamically after rendering new content
+        function highlightSyntax() {
+            Prism.highlightAll();
+        }
+
+        // Make highlightSyntax available globally for Blazor interop
+        window.highlightSyntax = highlightSyntax;
+
+        // Initial highlighting when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', highlightSyntax);
+
+        // For Blazor, you might also want to highlight on dynamic updates:
+        document.addEventListener('BlazorRenderCompleted', highlightSyntax);
+    </script>
     <script src="_framework/blazor.web.js"></script>
     <script>
         function copyToClipboard(text) {
@@ -82,6 +102,12 @@
                     });
                 });
             }
+        }
+    </script>
+    <script>
+        window.setImageFromBase64 = function (imgId, base64) {
+            var img = document.getElementById(imgId);
+            img.src = 'data:image/png;base64,' + base64;
         }
     </script>
 </body>

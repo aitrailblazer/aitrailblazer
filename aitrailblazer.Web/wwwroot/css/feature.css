@@ -73,6 +73,66 @@ body, html, .container, .fixed-top-nav, .chat-pane-container {
   margin: 0;
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
+.markdown-container {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.markdown-container h1 {
+  color: #1a73e8;
+  font-size: 2em;
+}
+
+.markdown-container p {
+  margin-bottom: 1em;
+}
+
+.markdown-container strong {
+  font-weight: bold;
+  color: #d63384;
+}
+
+.markdown-container em {
+  font-style: italic;
+  color: #95a5a6;
+}
+
+.markdown-container blockquote {
+  margin-left: 20px;
+  color: #555;
+  border-left: 4px solid #ccc;
+  padding-left: 15px;
+}
+
+.markdown-container code {
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-family: monospace;
+}
+
+pre {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 10px;
+  overflow-x: auto;
+  color: #2c3e50;
+}
+
+pre::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #d63384;
+  border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: #c2185b;
+}
 /* User.razor.css */
 .selected-item {
   background-color: #0078d4; /* Fluent UI accent color */

@@ -120,7 +120,7 @@ Knowledge base context is provided below:
                 dimensions: dimensions)
             .Build();
 
-        string modelId = "phi-3-5-moe-instruct";
+        string modelId = "Phi-4";
         kernelPhi = Kernel.CreateBuilder()
         .AddAzureAIInferenceChatCompletion(
             endpoint: new Uri(endpointPhi),
