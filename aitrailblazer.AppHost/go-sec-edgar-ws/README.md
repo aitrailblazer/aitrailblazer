@@ -37,8 +37,6 @@ curl -X POST http://localhost:8001/html-to-pdf \
      -H "Content-Type: application/json" \
      -d @<(jq -Rs '{html: .}' < TSLA_10K.html) \
      -o TSLA_10K.pdf
-
-
 ```
 
 ## Using the `/` Root Endpoint
@@ -47,4 +45,12 @@ You can access the root endpoint to get a simple "Hello" response. Here is an ex
 
 ```bash
 curl http://localhost:8001/
+```
+
+## Using the `/company-info` Endpoint
+
+You can retrieve company information using the `/company-info` endpoint. Here is an example curl command:
+
+```bash
+curl http://localhost:8001/company-info?ticker=AAPL
 ```

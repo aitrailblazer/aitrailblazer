@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	wkhtml "github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	"your-module-path/company_info"
 )
 
 // RequestBody defines the structure of the incoming JSON payload
@@ -110,10 +111,38 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// companyInfoHandler handles requests for company information
+func companyInfoHandler(ci *company_info.CompanyInfo) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ticker := r.URL.Query().Get("ticker")
+		if ticker == "" {
+			http.Error(w, "Ticker is required", http.StatusBadRequest)
+			return
+		}
+
+		cik, err := ci.GetCIKByTicker(ticker)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		response := map[string]string{"ticker": ticker, "cik": cik}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+	}
+}
+
 func main() {
+	// Initialize CompanyInfo
+	companyInfo, err := company_info.NewCompanyInfo("path/to/your/json/file.json")
+	if err != nil {
+		log.Fatalf("Failed to initialize CompanyInfo: %v", err)
+	}
+
 	// Register the root and /html-to-pdf handlers
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/html-to-pdf", pdfHandler)
+	http.HandleFunc("/company-info", companyInfoHandler(companyInfo))
 
 	port := "0.0.0.0:8001"
 	fmt.Printf("Starting server on %s...\n", port)
