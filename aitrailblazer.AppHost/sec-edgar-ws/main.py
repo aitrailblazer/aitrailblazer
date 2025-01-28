@@ -11,8 +11,6 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, StreamingResponse, PlainTextResponse, HTMLResponse
 from httpx import AsyncClient, RequestError
 from starlette.routing import Route
-from weasyprint import HTML
-from weasyprint import default_url_fetcher
 import plotly.express as px
 import csv
 from io import StringIO
@@ -218,31 +216,6 @@ async def get_available_forms(request):
         logger.error(f"Unexpected error fetching forms for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
-
-async def download_latest_10k(request):
-    """Fetch the latest 10-K report as HTML and convert it to a PDF."""
-    ticker = request.path_params["ticker"]
-    try:
-        # Fetch the HTML content and base URL directly using the Python function
-        html_content, base_url = await download_latest_10k_html_python(ticker)
-
-        # Convert HTML to PDF using the base_url for resource resolution
-        pdf_buffer = convert_html_to_pdf(html_content, base_url=base_url)
-
-        # Return the PDF as a streaming response
-        headers = {"Content-Disposition": f"attachment; filename={ticker}_latest_10K.pdf"}
-        return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
-
-    except IndexError:
-        logger.error(f"No 10-K filings found for ticker {ticker}")
-        return JSONResponse({"error": f"No 10-K filings found for ticker: {ticker}"}, status_code=404)
-    except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
-        return JSONResponse({"error": str(ve)}, status_code=400)
-    except Exception as e:
-        logger.error(f"Unexpected error for ticker {ticker}: {e}")
-        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
 async def download_latest_filing_pdf(request):
     """
     Web service endpoint to download the latest filing of a specified form type as a PDF.
@@ -284,247 +257,6 @@ async def download_latest_filing_pdf(request):
     except Exception as e:
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
-def custom_url_fetcher(url):
-    """
-    Custom URL fetcher using httpx to handle SSL issues, add custom headers, and provide better control over resource fetching.
-
-    Args:
-        url (str): The URL to fetch.
-
-    Returns:
-        dict: A dictionary containing the fetched resource data.
-
-    Raises:
-        Exception: If the resource cannot be fetched.
-    """
-    headers = {
-        "User-Agent": email,  # Replace with your email address
-        "Referer": "https://www.sec.gov/"  # Add Referer header if required
-    }
-
-    try:
-        # Use httpx to fetch the resource
-        with httpx.Client(timeout=30.0, headers=headers) as client:
-            response = client.get(url)
-            response.raise_for_status()  # Raise exception for HTTP errors
-
-            # Return the resource data in the format expected by WeasyPrint
-            return {
-                "string": response.content,  # Resource content as bytes
-                "mime_type": response.headers.get("Content-Type"),  # Content-Type of the resource
-                "encoding": None  # Encoding is usually None for binary resources like images
-            }
-
-    except httpx.RequestError as exc:
-        logger.error(f"An error occurred while requesting {exc.request.url!r}: {exc}")
-        raise
-
-    except httpx.HTTPStatusError as exc:
-        logger.error(f"HTTP error {exc.response.status_code} while requesting {exc.request.url!r}")
-        raise
-
-    except Exception as e:
-        logger.error(f"Failed to fetch resource: {url}. Error: {e}")
-        raise
-
-def convert_html_to_pdf(html_content, base_url=None):
-    """
-    Helper function to convert an HTML string to a PDF buffer.
-
-    Args:
-        html_content (str): The HTML content to convert to PDF.
-        base_url (str, optional): The base URL for resolving relative paths in the HTML.
-
-    Returns:
-        BytesIO: A buffer containing the generated PDF.
-
-    Raises:
-        ValueError: If the HTML content is empty.
-        Exception: For any other errors during conversion.
-    """
-    try:
-        # Validate HTML content
-        if not html_content or not html_content.strip():
-            raise ValueError("Empty HTML content provided.")
-
-        # Log the base_url for debugging purposes
-        if base_url:
-            logger.info(f"Base URL provided: {base_url}")
-        else:
-            logger.warning("No base URL provided. Relative paths may not resolve correctly.")
-
-        # Log the start of the conversion process
-        logger.info("Starting HTML to PDF conversion.")
-
-        # Convert HTML to PDF
-        pdf_buffer = BytesIO()
-        
-        # Pass the HTML content and base URL for resource resolution
-        html_obj = HTML(string=html_content, base_url=base_url, url_fetcher=custom_url_fetcher)
-        
-        # Add additional options like optimizing images or setting quality if needed
-        html_obj.write_pdf(target=pdf_buffer)
-
-        # Reset buffer position for reading/streaming
-        pdf_buffer.seek(0)
-
-        # Log success
-        logger.info("Successfully converted HTML to PDF.")
-        
-        return pdf_buffer
-
-    except ValueError as ve:
-        logger.error(f"Validation error: {ve}")
-        raise
-
-    except FileNotFoundError as fnfe:
-        logger.error(f"Resource not found: {fnfe}. Check image paths or base_url.")
-        raise
-
-    except Exception as e:
-        logger.error(f"Unexpected error during HTML to PDF conversion: {e}")
-        raise
-
-def convert_html_to_pdf1(html_content, base_url=None):
-    """
-    Helper function to convert an HTML string to a PDF buffer.
-
-    Args:
-        html_content (str): The HTML content to convert to PDF.
-        base_url (str, optional): The base URL for resolving relative paths in the HTML.
-
-    Returns:
-        BytesIO: A buffer containing the generated PDF.
-
-    Raises:
-        ValueError: If the HTML content is empty.
-        Exception: For any other errors during conversion.
-    """
-    try:
-        # Validate HTML content
-        if not html_content or not html_content.strip():
-            raise ValueError("Empty HTML content provided.")
-        # Log the base_url for debugging purposes
-        if base_url:
-            logger.info(f"Base URL provided: {base_url}")
-        else:
-            logger.warning("No base URL provided. Relative paths may not resolve correctly.")
-        # Log the start of the conversion process
-        logger.info("Starting HTML to PDF conversion.")
-
-        # Convert HTML to PDF
-        pdf_buffer = BytesIO()
-        
-        # Pass the HTML content and base URL for resource resolution
-        html_obj = HTML(string=html_content, base_url=base_url)
-        html_obj.write_pdf(target=pdf_buffer)
-        
-        # Reset buffer position for reading/streaming
-        pdf_buffer.seek(0)
-
-        # Log success
-        logger.info("Successfully converted HTML to PDF.")
-        
-        return pdf_buffer
-
-    except ValueError as ve:
-        logger.error(f"Validation error: {ve}")
-        raise
-
-    except FileNotFoundError as fnfe:
-        logger.error(f"Resource not found: {fnfe}. Check image paths or base_url.")
-        raise
-
-    except Exception as e:
-        logger.error(f"Unexpected error during HTML to PDF conversion: {e}")
-        raise
-
-async def html_to_pdf(request):
-    """Endpoint to convert an HTML string to a PDF via POST."""
-    if request.method != "POST":
-        return JSONResponse({"error": "Method not allowed. Use POST to submit HTML content."}, status_code=405)
-
-    try:
-        # Parse JSON body to retrieve the HTML string
-        body = await request.json()
-        html_content = body.get("html", "")
-
-        # Use the helper function to convert HTML to PDF
-        pdf_buffer = convert_html_to_pdf(html_content)
-
-        # Prepare and return the PDF as a streaming response
-        headers = {"Content-Disposition": "attachment; filename=converted.pdf"}
-        return StreamingResponse(pdf_buffer, media_type="application/pdf", headers=headers)
-
-    except ValueError as ve:
-        logger.error(f"Value error during HTML to PDF conversion: {ve}")
-        return JSONResponse({"error": str(ve)}, status_code=400)
-    except Exception as e:
-        logger.error(f"Unexpected error during HTML to PDF conversion: {e}")
-        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
-
-async def download_latest_10k_html_python(ticker: str) -> tuple[str, str]:
-    """
-    Fetch the latest 10-K report for a given company ticker as raw HTML with fixed image links.
-    
-    Returns:
-        tuple: (html_content, base_url)
-    """
-    try:
-        # Validate the ticker format
-        if not re.match(r"^[A-Za-z0-9]+$", ticker):
-            raise ValueError("Invalid ticker format. Only alphanumeric characters are allowed.")
-
-        # Get the company's CIK
-        cik = company_info.get_cik_by_ticker(ticker)
-        if not cik:
-            raise ValueError(f"CIK not found for ticker: {ticker}")
-
-        # Fetch filing data
-        filings = sec_filings.get_company_filings(cik)
-        filings_df = sec_filings.filings_to_dataframe(filings)
-
-        if filings_df.empty or "10-K" not in filings_df["form"].values:
-            raise IndexError(f"No 10-K filings found for ticker: {ticker}")
-
-        # Get the latest 10-K filing details
-        latest_10k = filings_df[filings_df["form"] == "10-K"].iloc[0]
-        accession_number = latest_10k["accessionNumber"].replace("-", "")
-        file_name = latest_10k["primaryDocument"]
-
-        # Build the SEC filing base URL and full filing URL
-        base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/"
-        filing_url = f"{base_url}{file_name}"
-
-        # Fetch the filing content
-        async with AsyncClient(timeout=120, headers={"User-Agent": email}) as client:
-            try:
-                html_content = await fetch_filing_with_retry(client, filing_url)
-            except RequestError as e:
-                logger.error(f"Failed to fetch filing for {ticker}: {e}")
-                raise Exception(f"Failed to fetch filing from SEC for {ticker}.")
-
-        # Replace relative image links with absolute URLs
-        html_content = re.sub(
-            r'(?<=<img src=")([^":]+)',  # Match the src attribute of <img> tags that do not contain a full URL
-            lambda match: f"{base_url}{match.group(1)}",  # Replace with the full URL
-            html_content,
-        )
-
-        # Return the modified HTML content and base URL
-        return html_content, base_url
-
-    except IndexError:
-        logger.error(f"No 10-K filings found for ticker {ticker}")
-        raise IndexError(f"No 10-K filings found for ticker: {ticker}")
-    except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
-        raise
-    except Exception as e:
-        logger.error(f"Unexpected error for ticker {ticker}: {e}")
-        raise
 
 async def download_latest_filing_html_python(ticker: str, form_type: str) -> tuple[str, str]:
     """
@@ -654,27 +386,6 @@ async def get_filing_url(ticker: str, form_type: str):
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return PlainTextResponse(f"An unexpected error occurred: {str(e)}", status_code=500)
     
-async def download_latest_10k_html(request):
-    """Web service endpoint to download the latest 10-K report as raw HTML with fixed image links."""
-    ticker = request.path_params["ticker"]
-    try:
-        # Call the Python function to fetch HTML content and base URL
-        html_content, base_url = await download_latest_10k_html_python(ticker)
-
-        # Return the modified HTML content as a streaming response
-        headers = {"Content-Disposition": f"attachment; filename={ticker}_latest_10K.html"}
-        return StreamingResponse(BytesIO(html_content.encode("utf-8")), media_type="text/html", headers=headers)
-
-    except IndexError:
-        logger.error(f"No 10-K filings found for ticker {ticker}")
-        return JSONResponse({"error": f"No 10-K filings found for ticker: {ticker}"}, status_code=404)
-    except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
-        return JSONResponse({"error": str(ve)}, status_code=400)
-    except Exception as e:
-        logger.error(f"Unexpected error for ticker {ticker}: {e}")
-        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
 async def download_latest_filing_html(request):
     """
     Web service endpoint to download the latest filing of a specified form type as raw HTML with fixed image links.
@@ -1690,9 +1401,7 @@ routes = [
     Route("/xbrl/{ticker}/forecast/plot", forecast_xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
     Route("/xbrl/{ticker}/anomalies/plot", anomalies_xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
     Route("/html/download", download_html_content_route, methods=["POST"]),
-#    Route("/html-to-pdf", html_to_pdf, methods=["POST"]),  # Convert HTML content to a PDF
 ]
-
 
 # Create Starlette app
 app = Starlette(debug=True, routes=routes)
