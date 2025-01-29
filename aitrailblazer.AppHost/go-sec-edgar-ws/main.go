@@ -3,13 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 	"sort"
 	"time"
-	"regexp"
-	"bytes"
-	"io/ioutil"
 
 	"github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws/company_info"
 	"github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws/filings"
@@ -244,7 +243,7 @@ func getAvailableForms(ci *company_info.CompanyInfo, sf *filings.SECFilings) htt
 	}
 }
 
-// downloadLatestFilingHTML handles the route /filing/html
+// Handles downloading the latest filing as HTML
 func downloadLatestFilingHTML(ci *company_info.CompanyInfo, sf *filings.SECFilings) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -252,96 +251,58 @@ func downloadLatestFilingHTML(ci *company_info.CompanyInfo, sf *filings.SECFilin
 			return
 		}
 
-		// Parse the JSON body for required parameters
-		body, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			log.Printf("[ERROR] Error reading request body: %v", err)
-			http.Error(w, "Failed to read request body", http.StatusBadRequest)
-			return
-		}
-
+		// Parse JSON request body
 		var requestData struct {
 			Ticker   string `json:"ticker"`
 			FormType string `json:"form_type"`
 		}
+
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Failed to read request body", http.StatusBadRequest)
+			return
+		}
+		defer r.Body.Close()
+
 		if err := json.Unmarshal(body, &requestData); err != nil {
-			log.Printf("[ERROR] Error parsing request body: %v", err)
-			http.Error(w, "Failed to parse request body", http.StatusBadRequest)
+			http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 			return
 		}
 
-		ticker := requestData.Ticker
-		formType := requestData.FormType
+		ticker, formType := requestData.Ticker, requestData.FormType
 
-		// Validate the inputs
+		// Validate input formats
 		if !regexp.MustCompile(`^[A-Za-z0-9.-]+$`).MatchString(ticker) {
-			http.Error(w, "Invalid or missing ticker. Only alphanumeric characters, dashes (-), and periods (.) are allowed.", http.StatusBadRequest)
+			http.Error(w, "Invalid ticker format", http.StatusBadRequest)
 			return
 		}
 		if !regexp.MustCompile(`^[A-Za-z0-9/ -]+$`).MatchString(formType) {
-			http.Error(w, "Invalid or missing form type. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.", http.StatusBadRequest)
+			http.Error(w, "Invalid form type format", http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("[INFO] Processing request for ticker: %s, form_type: %s", ticker, formType)
-
-		// Fetch available forms for the ticker
+		// Get CIK for ticker
 		cik, err := ci.GetCIKByTicker(ticker)
 		if err != nil {
-			log.Printf("[ERROR] Error fetching CIK for ticker %s: %v", ticker, err)
-			http.Error(w, "Failed to fetch CIK for ticker", http.StatusInternalServerError)
+			http.Error(w, "Invalid ticker: CIK not found", http.StatusNotFound)
 			return
 		}
 
-		filings, err := sf.GetCompanyFilings(cik)
+		// Fetch HTML content of the latest filing
+		htmlContent, baseURL, err := sf.DownloadLatestFilingHTML(cik, ticker, formType)
 		if err != nil {
-			log.Printf("[ERROR] Error fetching filings for CIK %s: %v", cik, err)
-			http.Error(w, "Failed to fetch filings for CIK", http.StatusInternalServerError)
+			log.Printf("[ERROR] Failed to retrieve filing HTML for %s: %v", ticker, err)
+			http.Error(w, "Failed to retrieve filing HTML", http.StatusInternalServerError)
 			return
 		}
 
-		dataFrame, err := sf.FilingsToDataFrame(filings)
-		if err != nil {
-			log.Printf("[ERROR] Error processing filings for CIK %s: %v", cik, err)
-			http.Error(w, "Failed to process filings for CIK", http.StatusInternalServerError)
-			return
-		}
+		log.Printf("[INFO] Filing retrieved successfully for %s - URL: %s", ticker, baseURL)
 
-		availableForms := make(map[string]bool)
-		for _, row := range dataFrame {
-			if form, ok := row["form"].(string); ok {
-				availableForms[form] = true
-			}
-		}
-
-		// Check if the requested form exists
-		if !availableForms[formType] {
-			http.Error(w, fmt.Sprintf("The requested form '%s' does not exist for ticker %s. Available forms: %v", formType, ticker, availableForms), http.StatusBadRequest)
-			return
-		}
-
-		// Fetch the HTML content and base URL for the requested form
-		htmlContent, baseURL, err := sf.DownloadLatestFilingHTML(ticker, formType)
-		if err != nil {
-			log.Printf("[ERROR] Error downloading latest filing HTML for ticker %s: %v", ticker, err)
-			http.Error(w, "Failed to download latest filing HTML", http.StatusInternalServerError)
-			return
-		}
-		log.Printf("[INFO] Base URL provided: %s", baseURL)
-
-		// Return the modified HTML content as a streaming response
-		headers := map[string]string{
-			"Content-Disposition": fmt.Sprintf("attachment; filename=%s_latest_%s.html", ticker, formType),
-		}
-		for key, value := range headers {
-			w.Header().Set(key, value)
-		}
+		// Set headers and return HTML content
+		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s_%s.html", ticker, formType))
 		w.Header().Set("Content-Type", "text/html")
 		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write([]byte(htmlContent)); err != nil {
-			log.Printf("[ERROR] Error writing response: %v", err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
+		_, _ = w.Write([]byte(htmlContent))
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -110,6 +111,72 @@ func (s *SECFilings) FilingsToDataFrame(filings map[string]interface{}) ([]map[s
 	}
 
 	return dataFrame, nil
+}
+
+// DownloadLatestFilingHTML retrieves the latest filing's HTML content for a given ticker and form type.
+func (s *SECFilings) DownloadLatestFilingHTML(cik, ticker, formType string) (string, string, error) {
+	// Fetch SEC filings
+	filings, err := s.GetCompanyFilings(cik)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get filings for ticker %s: %v", ticker, err)
+	}
+
+	// Extract SEC filings data
+	filingsData, filingsExists := filings["filings"].(map[string]interface{})
+	if !filingsExists {
+		return "", "", fmt.Errorf("missing 'filings' key in response for CIK %s", cik)
+	}
+
+	recentData, recentExists := filingsData["recent"].(map[string]interface{})
+	if !recentExists {
+		return "", "", fmt.Errorf("missing 'recent' key in response for CIK %s", cik)
+	}
+
+	// Extract required filing fields
+	formList, formExists := recentData["form"].([]interface{})
+	accessionList, accessionExists := recentData["accessionNumber"].([]interface{})
+	primaryDocList, docExists := recentData["primaryDocument"].([]interface{})
+
+	if !formExists || !accessionExists || !docExists {
+		return "", "", fmt.Errorf("SEC response missing required keys for CIK %s", cik)
+	}
+
+	log.Printf("[DEBUG] Available forms for %s: %v", ticker, formList)
+
+	// Find the latest filing that matches the requested form type
+	for i, form := range formList {
+		if formStr, ok := form.(string); ok && formStr == formType {
+			accessionNum, accOk := accessionList[i].(string)
+			primaryDoc, docOk := primaryDocList[i].(string)
+			if accOk && docOk {
+				// Format accession number correctly (remove dashes)
+				formattedAccessionNum := strings.ReplaceAll(accessionNum, "-", "")
+				baseURL := fmt.Sprintf("https://www.sec.gov/Archives/edgar/data/%s/%s/", cik, formattedAccessionNum)
+				filingURL := fmt.Sprintf("%s%s", baseURL, primaryDoc)
+
+				log.Printf("[INFO] Fetching HTML content from: %s", filingURL)
+
+				// Download the filing HTML content
+				htmlContent, err := s.DownloadHTMLContent(cik, formattedAccessionNum, primaryDoc)
+				if err != nil {
+					return "", "", fmt.Errorf("failed to download HTML for form %s, CIK %s: %v", formType, cik, err)
+				}
+
+				// Fix relative image links in HTML content
+				htmlContent = fixRelativeImageLinks(htmlContent, baseURL)
+
+				return htmlContent, baseURL, nil
+			}
+		}
+	}
+
+	return "", "", fmt.Errorf("no available filings found for ticker %s and form type %s", ticker, formType)
+}
+
+// fixRelativeImageLinks updates relative image URLs in HTML content
+func fixRelativeImageLinks(htmlContent, baseURL string) string {
+	re := regexp.MustCompile(`(?i)(<img\s+[^>]*src=")([^":]+)`)
+	return re.ReplaceAllString(htmlContent, fmt.Sprintf(`${1}%s$2`, baseURL))
 }
 
 // DownloadHTMLContent fetches the raw HTML content of a filing

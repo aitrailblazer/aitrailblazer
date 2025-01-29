@@ -51,3 +51,10 @@ curl -X GET "http://localhost:8001/sec-filings?ticker=AAPL" -H "Accept: applicat
 ```
 curl http://localhost:8001/forms?ticker=AAPL
 
+curl -X POST "http://localhost:8001/filing/html" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "ticker": "AAPL",
+           "form_type": "10-K"
+         }' \
+     -o "AAPL_latest_10-K.html"
