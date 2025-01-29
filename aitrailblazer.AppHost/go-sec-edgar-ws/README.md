@@ -54,3 +54,11 @@ You can retrieve company information using the `/company-info` endpoint. Here is
 ```bash
 curl http://localhost:8001/company-info?ticker=AAPL
 ```
+
+## Using the `/sec-filings` Endpoint
+
+You can retrieve SEC filings data using the `/sec-filings` endpoint. Here is an example curl command:
+
+```bash
+curl http://localhost:8001/sec-filings?ticker=AAPL
+```
