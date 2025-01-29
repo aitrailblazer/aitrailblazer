@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws/company_info"
+	"github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws/filings"
 )
 
 // measureSpeedMiddleware logs execution time for each request
@@ -89,15 +90,57 @@ func companyInfoHandler(ci *company_info.CompanyInfo) http.HandlerFunc {
 	}
 }
 
+// secFilingsHandler serves SEC filings data
+func secFilingsHandler(sf *filings.SECFilings) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		ticker := r.URL.Query().Get("ticker")
+		if ticker == "" {
+			http.Error(w, "Ticker is required", http.StatusBadRequest)
+			return
+		}
+
+		cik, err := companyInfo.GetCIKByTicker(ticker)
+		if err != nil {
+			log.Printf("Error fetching CIK for ticker %s: %v", ticker, err)
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		filings, err := sf.GetCompanyFilings(cik)
+		if err != nil {
+			log.Printf("Error fetching filings for CIK %s: %v", cik, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(filings); err != nil {
+			log.Printf("Error encoding response: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		}
+	}
+}
+
+var companyInfo *company_info.CompanyInfo
+
 func main() {
-	companyInfo, err := company_info.NewCompanyInfo("./data/company_tickers_exchange.json")
+	var err error
+	companyInfo, err = company_info.NewCompanyInfo("./data/company_tickers_exchange.json")
 	if err != nil {
 		log.Fatalf("Failed to initialize CompanyInfo: %v", err)
 	}
 
+	secFilings := filings.NewSECFilings("your-email@example.com")
+
 	// Register handlers with middleware
 	http.HandleFunc("/", measureSpeedMiddleware(rootHandler))
 	http.HandleFunc("/company-info", measureSpeedMiddleware(companyInfoHandler(companyInfo)))
+	http.HandleFunc("/sec-filings", measureSpeedMiddleware(secFilingsHandler(secFilings)))
 
 	port := "8001"
 	fmt.Printf("Starting server on 0.0.0.0:%s...\n", port)
