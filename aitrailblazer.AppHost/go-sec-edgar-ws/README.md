@@ -45,5 +45,9 @@ You can retrieve SEC filings data using the `/sec-filings` endpoint. Here is an 
 
 ```bash
 curl http://localhost:8001/sec-filings?ticker=AAPL
+
+curl -X GET "http://localhost:8001/sec-filings?ticker=AAPL" -H "Accept: application/json"
+
 ```
+curl http://localhost:8001/forms?ticker=AAPL
 

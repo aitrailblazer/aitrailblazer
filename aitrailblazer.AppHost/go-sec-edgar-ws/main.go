@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws/company_info"
@@ -90,8 +91,8 @@ func companyInfoHandler(ci *company_info.CompanyInfo) http.HandlerFunc {
 	}
 }
 
-// secFilingsHandler serves SEC filings data
-func secFilingsHandler(sf *filings.SECFilings) http.HandlerFunc {
+// SEC Filings Handler
+func secFilingsHandler(ci *company_info.CompanyInfo, sf *filings.SECFilings) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -104,25 +105,41 @@ func secFilingsHandler(sf *filings.SECFilings) http.HandlerFunc {
 			return
 		}
 
-		cik, err := companyInfo.GetCIKByTicker(ticker)
+		// Fetch CIK
+		cik, err := ci.GetCIKByTicker(ticker)
 		if err != nil {
-			log.Printf("Error fetching CIK for ticker %s: %v", ticker, err)
+			log.Printf("[ERROR] Error fetching CIK for ticker %s: %v", ticker, err)
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
 
+		// Fetch filings from SEC
 		filings, err := sf.GetCompanyFilings(cik)
 		if err != nil {
-			log.Printf("Error fetching filings for CIK %s: %v", cik, err)
+			log.Printf("[ERROR] Error fetching filings for CIK %s: %v", cik, err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(filings); err != nil {
-			log.Printf("Error encoding response: %v", err)
-			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		// Convert filings to structured format
+		dataFrame, err := sf.FilingsToDataFrame(filings)
+		if err != nil {
+			log.Printf("[ERROR] Error processing filings for CIK %s: %v", cik, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+
+		// Pretty-print JSON response
+		responseJSON, err := json.MarshalIndent(dataFrame, "", "  ")
+		if err != nil {
+			log.Printf("[ERROR] Error encoding response: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
+
+		// Send JSON response
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(responseJSON)
 	}
 }
 
@@ -142,38 +159,85 @@ func getAvailableForms(ci *company_info.CompanyInfo, sf *filings.SECFilings) htt
 
 		cik, err := ci.GetCIKByTicker(ticker)
 		if err != nil {
-			log.Printf("Error fetching CIK for ticker %s: %v", ticker, err)
+			log.Printf("[ERROR] Error fetching CIK for ticker %s: %v", ticker, err)
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
 
 		filings, err := sf.GetCompanyFilings(cik)
 		if err != nil {
-			log.Printf("Error fetching filings for CIK %s: %v", cik, err)
+			log.Printf("[ERROR] Error fetching filings for CIK %s: %v", cik, err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		uniqueForms := make(map[string]bool)
-		for _, filing := range filings {
-			uniqueForms[filing.Form] = true
+		// Debug Full Response
+		responseJSON, _ := json.MarshalIndent(filings, "", "  ")
+		log.Printf("[DEBUG] Full SEC Response for %s:\n%s", cik, string(responseJSON))
+
+		// Validate "filings" key
+		filingsData, filingsExists := filings["filings"].(map[string]interface{})
+		if !filingsExists {
+			log.Printf("[ERROR] 'filings' key missing or invalid for CIK %s", cik)
+			http.Error(w, "Failed to parse filings data", http.StatusInternalServerError)
+			return
 		}
 
+		// Validate "recent" key
+		recentRaw, recentExists := filingsData["recent"]
+		if !recentExists {
+			log.Printf("[ERROR] 'recent' key missing for CIK %s", cik)
+			http.Error(w, "Failed to parse filings data", http.StatusInternalServerError)
+			return
+		}
+
+		// Ensure "recent" is a map
+		recentMap, ok := recentRaw.(map[string]interface{})
+		if !ok {
+			log.Printf("[ERROR] 'recent' key is not a map for CIK %s", cik)
+			http.Error(w, "Unexpected response format", http.StatusInternalServerError)
+			return
+		}
+
+		// Extract forms from recent
+		formList, formExists := recentMap["form"].([]interface{})
+		if !formExists {
+			log.Printf("[ERROR] 'form' key missing or invalid in 'recent' for CIK %s", cik)
+			http.Error(w, "Failed to parse filings data", http.StatusInternalServerError)
+			return
+		}
+
+		uniqueForms := make(map[string]bool)
+		for _, form := range formList {
+			if formStr, ok := form.(string); ok {
+				uniqueForms[formStr] = true
+			} else {
+				log.Printf("[WARNING] Unexpected type for form: %T", form)
+			}
+		}
+
+		// Convert to sorted slice
 		forms := make([]string, 0, len(uniqueForms))
 		for form := range uniqueForms {
 			forms = append(forms, form)
 		}
+		sort.Strings(forms) // 🔥 Sort forms alphabetically
 
+		// Log extracted forms
+		if len(forms) == 0 {
+			log.Printf("[WARNING] No valid form types found for CIK %s", cik)
+		} else {
+			log.Printf("[INFO] Extracted & Sorted Form Types for CIK %s: %+v", cik, forms)
+		}
+
+		// Return prettified JSON response
 		response := map[string]interface{}{
 			"ticker": ticker,
 			"forms":  forms,
 		}
-
+		prettyJSON, _ := json.MarshalIndent(response, "", "  ")
 		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(response); err != nil {
-			log.Printf("Error encoding response: %v", err)
-			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-		}
+		w.Write(prettyJSON)
 	}
 }
 
@@ -191,7 +255,7 @@ func main() {
 	// Register handlers with middleware
 	http.HandleFunc("/", measureSpeedMiddleware(rootHandler))
 	http.HandleFunc("/company-info", measureSpeedMiddleware(companyInfoHandler(companyInfo)))
-	http.HandleFunc("/sec-filings", measureSpeedMiddleware(secFilingsHandler(secFilings)))
+	http.HandleFunc("/sec-filings", measureSpeedMiddleware(secFilingsHandler(companyInfo, secFilings)))
 	http.HandleFunc("/forms", measureSpeedMiddleware(getAvailableForms(companyInfo, secFilings)))
 
 	port := "8001"

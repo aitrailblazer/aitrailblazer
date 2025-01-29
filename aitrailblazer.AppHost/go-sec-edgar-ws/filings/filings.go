@@ -7,8 +7,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-
-	"github.com/shopspring/decimal"
 )
 
 // SECFilings represents the SEC filings handler
@@ -31,9 +29,8 @@ func NewSECFilings(email string) *SECFilings {
 	}
 }
 
-// GetCompanyFilings fetches SEC filings and logs request/response details
 func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("https://data.sec.gov/submissions/CIK%s.json", strings.Repeat("0", 10-len(cik))+cik)
+	url := fmt.Sprintf("https://data.sec.gov/submissions/CIK%s.json", padCIK(cik))
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -41,9 +38,8 @@ func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, erro
 	}
 	s.setHeaders(req)
 
-	log.Printf("Fetching SEC filings for CIK: %s", cik)
-	log.Printf("Request URL: %s", url)
-	log.Printf("Request Headers: %v", req.Header)
+	log.Printf("[INFO] Fetching SEC filings for CIK: %s", cik)
+	log.Printf("[INFO] Request URL: %s", url)
 
 	resp, err := s.Client.Do(req)
 	if err != nil {
@@ -51,7 +47,8 @@ func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, erro
 	}
 	defer resp.Body.Close()
 
-	log.Printf("Response Status: %d", resp.StatusCode)
+	log.Printf("[INFO] Response Status: %d", resp.StatusCode)
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to fetch data for CIK %s: %s", cik, resp.Status)
 	}
@@ -61,7 +58,8 @@ func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, erro
 		return nil, fmt.Errorf("failed to read response body for CIK %s: %v", cik, err)
 	}
 
-	//log.Printf("Response Body (First 500 chars): %s", truncateString(string(body), 500))
+	// Log full SEC response (limit it to avoid excessive logs)
+	log.Printf("[DEBUG] Full SEC Response: %s", truncateString(string(body), 1000))
 
 	var filings map[string]interface{}
 	if err := json.Unmarshal(body, &filings); err != nil {
@@ -71,20 +69,44 @@ func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, erro
 	return filings, nil
 }
 
-// FilingsToDataFrame converts SEC filings data into a structured format
 func (s *SECFilings) FilingsToDataFrame(filings map[string]interface{}) ([]map[string]interface{}, error) {
-	recentFilings, ok := filings["filings"].(map[string]interface{})["recent"].([]interface{})
+	log.Printf("[DEBUG] Raw Filings Data: %+v", filings)
+
+	// Check if "filings" exists
+	filingsData, ok := filings["filings"].(map[string]interface{})
 	if !ok {
-		return nil, fmt.Errorf("failed to parse recent filings")
+		log.Printf("[ERROR] Missing or invalid 'filings' key in response")
+		return nil, fmt.Errorf("unexpected response format: missing 'filings' key")
 	}
 
+	// Check if "recent" exists and is a map instead of a list
+	recentData, ok := filingsData["recent"].(map[string]interface{})
+	if !ok {
+		log.Printf("[ERROR] 'recent' key is missing or not a valid map")
+		return nil, fmt.Errorf("unexpected response format: 'recent' key is not a map")
+	}
+
+	// Extract filing data from the column-wise format (parallel arrays)
+	numFilings := len(recentData["form"].([]interface{})) // Get the number of filings
 	var dataFrame []map[string]interface{}
-	for _, filing := range recentFilings {
-		if filingMap, ok := filing.(map[string]interface{}); ok {
-			dataFrame = append(dataFrame, filingMap)
-		} else {
-			return nil, fmt.Errorf("failed to parse filing")
+
+	for i := 0; i < numFilings; i++ {
+		filing := make(map[string]interface{})
+
+		// Iterate over each field in `recentData`
+		for key, value := range recentData {
+			if valueList, ok := value.([]interface{}); ok && i < len(valueList) {
+				filing[key] = valueList[i] // Extract the ith filing's value
+			} else {
+				log.Printf("[WARNING] Key '%s' does not contain a valid list", key)
+			}
 		}
+
+		dataFrame = append(dataFrame, filing)
+	}
+
+	if len(dataFrame) == 0 {
+		log.Printf("[WARNING] No valid filings found in response")
 	}
 
 	return dataFrame, nil
@@ -100,7 +122,7 @@ func (s *SECFilings) DownloadHTMLContent(cik, accessionNumber, fileName string) 
 	}
 	s.setHeaders(req)
 
-	log.Printf("Downloading SEC filing HTML for CIK: %s, Accession: %s, File: %s", cik, accessionNumber, fileName)
+	log.Printf("[INFO] Downloading SEC filing HTML for CIK: %s, Accession: %s, File: %s", cik, accessionNumber, fileName)
 
 	resp, err := s.Client.Do(req)
 	if err != nil {
@@ -122,7 +144,7 @@ func (s *SECFilings) DownloadHTMLContent(cik, accessionNumber, fileName string) 
 
 // GetXBRLData fetches XBRL (financial) data for a given CIK
 func (s *SECFilings) GetXBRLData(cik string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("https://data.sec.gov/api/xbrl/companyfacts/CIK%s.json", strings.Repeat("0", 10-len(cik))+cik)
+	url := fmt.Sprintf("https://data.sec.gov/api/xbrl/companyfacts/CIK%s.json", padCIK(cik))
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -130,7 +152,7 @@ func (s *SECFilings) GetXBRLData(cik string) (map[string]interface{}, error) {
 	}
 	s.setHeaders(req)
 
-	log.Printf("Fetching XBRL data for CIK: %s", cik)
+	log.Printf("[INFO] Fetching XBRL data for CIK: %s", cik)
 
 	resp, err := s.Client.Do(req)
 	if err != nil {
@@ -150,31 +172,6 @@ func (s *SECFilings) GetXBRLData(cik string) (map[string]interface{}, error) {
 	return xbrlData, nil
 }
 
-// ProcessXBRLData extracts and processes XBRL facts based on a concept and unit
-func (s *SECFilings) ProcessXBRLData(xbrlData map[string]interface{}, concept, unit string) ([]map[string]interface{}, error) {
-	facts, ok := xbrlData["facts"].(map[string]interface{})["us-gaap"].(map[string]interface{})[concept].(map[string]interface{})["units"].(map[string]interface{})[unit].([]interface{})
-	if !ok {
-		return nil, fmt.Errorf("concept '%s' or unit '%s' not found in XBRL data", concept, unit)
-	}
-
-	var dataFrame []map[string]interface{}
-	for _, fact := range facts {
-		factMap, ok := fact.(map[string]interface{})
-		if !ok {
-			return nil, fmt.Errorf("failed to parse XBRL fact")
-		}
-
-		// Convert float values to decimal for better precision
-		if val, ok := factMap["val"].(float64); ok {
-			factMap["val"] = decimal.NewFromFloat(val).String()
-		}
-
-		dataFrame = append(dataFrame, factMap)
-	}
-
-	return dataFrame, nil
-}
-
 // Helper function to set headers in a request
 func (s *SECFilings) setHeaders(req *http.Request) {
 	for key, value := range s.Headers {
@@ -188,4 +185,9 @@ func truncateString(s string, maxLen int) string {
 		return s[:maxLen] + "..."
 	}
 	return s
+}
+
+// padCIK ensures CIK is always 10 digits long (SEC format)
+func padCIK(cik string) string {
+	return strings.Repeat("0", 10-len(cik)) + cik
 }

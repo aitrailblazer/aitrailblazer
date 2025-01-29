@@ -1,3 +1,4 @@
+# main.py
 import os
 import re
 import logging
@@ -231,6 +232,9 @@ async def get_available_forms(request):
     """
     Endpoint to fetch all unique forms available for a given company ticker.
     """
+
+    start_time = time.time()  # Start the timer
+
     ticker = request.path_params["ticker"]
     try:
         # Validate ticker format
@@ -244,6 +248,10 @@ async def get_available_forms(request):
 
         # Fetch all unique forms
         unique_forms = filings_df["form"].unique().tolist()
+
+       # Calculate execution time in milliseconds
+        duration_ms = (time.time() - start_time) * 1000
+        logger.info(f"Fetching filings for ticker {ticker} took {duration_ms:.3f} ms")
 
         # Return the unique forms
         return JSONResponse({"ticker": ticker, "forms": unique_forms})
