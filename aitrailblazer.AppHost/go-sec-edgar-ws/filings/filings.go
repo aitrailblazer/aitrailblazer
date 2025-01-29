@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/jung-kurt/gofpdf"
 	"github.com/shopspring/decimal"
 )
 
@@ -83,21 +82,6 @@ func (s *SECFilings) DownloadHTMLContent(cik, accessionNumber, fileName string) 
 	}
 
 	return string(content), nil
-}
-
-func (s *SECFilings) ConvertHTMLToPDF(htmlContent, outputPath string) error {
-	pdf := gofpdf.New("P", "mm", "A4", "")
-	pdf.AddPage()
-	pdf.SetFont("Arial", "", 12)
-
-	html := pdf.HTMLBasicNew()
-	html.Write(10, htmlContent)
-
-	if err := pdf.OutputFileAndClose(outputPath); err != nil {
-		return fmt.Errorf("failed to generate PDF: %v", err)
-	}
-
-	return nil
 }
 
 func (s *SECFilings) GetXBRLData(cik string) (map[string]interface{}, error) {
