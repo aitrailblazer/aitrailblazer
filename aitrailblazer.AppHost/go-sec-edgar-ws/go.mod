@@ -6,7 +6,4 @@ toolchain go1.23.4
 
 replace github.com/aitrailblazer/aitrailblazer/go-sec-edgar-ws => ./
 
-require (
-	github.com/jung-kurt/gofpdf v1.0.0
-	github.com/shopspring/decimal v1.2.0
-)
+require github.com/shopspring/decimal v1.2.0

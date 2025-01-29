@@ -2,6 +2,10 @@ import requests
 import pandas as pd
 import numpy as np
 from weasyprint import HTML  # Import WeasyPrint for PDF generation
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SECFilings:
     BASE_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
@@ -15,7 +19,18 @@ class SECFilings:
         Fetch company filings from the SEC EDGAR API using the CIK.
         """
         url = self.BASE_URL.format(cik=str(cik).zfill(10))
+        
+        logger.info(f"Fetching SEC filings for CIK: {cik}")
+        logger.info(f"Request URL: {url}")
+        logger.info(f"Request Headers: {self.headers}")
+
         response = requests.get(url, headers=self.headers)
+
+        # Log response status and content
+        logger.info(f"Response Status Code: {response.status_code}")
+        logger.info(f"Response Headers: {response.headers}")
+
+
         if response.status_code == 200:
             return response.json()
         else:

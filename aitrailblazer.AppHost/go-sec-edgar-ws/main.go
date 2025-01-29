@@ -135,7 +135,7 @@ func main() {
 		log.Fatalf("Failed to initialize CompanyInfo: %v", err)
 	}
 
-	secFilings := filings.NewSECFilings("your-email@example.com")
+	secFilings := filings.NewSECFilings("FinanceDataCorp your-email@example.com")
 
 	// Register handlers with middleware
 	http.HandleFunc("/", measureSpeedMiddleware(rootHandler))

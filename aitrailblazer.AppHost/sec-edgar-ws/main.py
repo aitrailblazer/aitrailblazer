@@ -72,10 +72,19 @@ async def get_cik(request):
         logger.error(f"Unexpected error fetching CIK for ticker {ticker}: {e}")
         return PlainTextResponse(f"Server Error: {str(e)}", status_code=500)
 
+import time
+import re
+import logging
+from starlette.responses import PlainTextResponse
+
+logger = logging.getLogger(__name__)
+
 async def get_name(request):
     """
-    Endpoint to fetch the Company Name for a given company ticker.
+    Endpoint to fetch the Company Name for a given company ticker, with execution time measurement in milliseconds.
     """
+    start_time = time.time()  # Start the timer
+    
     ticker = request.path_params["ticker"]
     try:
         # Validate the ticker format
@@ -85,16 +94,23 @@ async def get_name(request):
         # Fetch the company name
         name = company_info.get_name_by_ticker(ticker)
         
+        # Calculate execution time in milliseconds
+        duration_ms = (time.time() - start_time) * 1000
+        logger.info(f"Fetching Company Name for ticker {ticker} took {duration_ms:.3f} ms")
+        
         # Return the company name as plain text
         return PlainTextResponse(name)
     
     except ValueError as e:
-        logger.error(f"Error fetching Company Name for ticker {ticker}: {e}")
+        duration_ms = (time.time() - start_time) * 1000
+        logger.error(f"Error fetching Company Name for ticker {ticker} (Took {duration_ms:.3f} ms): {e}")
         return PlainTextResponse(f"Error: {str(e)}", status_code=400)
+    
     except Exception as e:
-        logger.error(f"Unexpected error fetching Company Name for ticker {ticker}: {e}")
+        duration_ms = (time.time() - start_time) * 1000
+        logger.error(f"Unexpected error fetching Company Name for ticker {ticker} (Took {duration_ms:.3f} ms): {e}")
         return PlainTextResponse(f"Error: An unexpected error occurred: {str(e)}", status_code=500)
-
+    
 async def get_exchange(request):
     """
     Endpoint to fetch the exchange for a given company ticker.
@@ -170,23 +186,46 @@ async def tickers_by_exchange(request: Request):
     except Exception as e:
         logger.error(f"Unexpected error fetching companies for exchange {exchange}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+import time
+import re
+import logging
+from starlette.responses import JSONResponse
+
+logger = logging.getLogger(__name__)
+
 async def get_filings(request):
-    """Endpoint to fetch filing history for a given company ticker."""
+    """Endpoint to fetch filing history for a given company ticker, with execution time measurement."""
+    
+    start_time = time.time()  # Start the timer
+    
     ticker = request.path_params["ticker"]
     try:
+        # Validate ticker format
         if not re.match(r"^[A-Za-z0-9]+$", ticker):
             raise ValueError("Invalid ticker format. Only alphanumeric characters are allowed.")
+        
+        # Fetch CIK and filings
         cik = company_info.get_cik_by_ticker(ticker)
         filings = sec_filings.get_company_filings(cik)
         filings_df = sec_filings.filings_to_dataframe(filings)
+        
+        # Calculate execution time in milliseconds
+        duration_ms = (time.time() - start_time) * 1000
+        logger.info(f"Fetching filings for ticker {ticker} took {duration_ms:.3f} ms")
+        
         return JSONResponse(filings_df.to_dict(orient="records"))
+    
     except ValueError as e:
-        logger.error(f"Error fetching filings for ticker {ticker}: {e}")
+        duration_ms = (time.time() - start_time) * 1000
+        logger.error(f"Error fetching filings for ticker {ticker} (Took {duration_ms:.3f} ms): {e}")
         return JSONResponse({"error": str(e)}, status_code=400)
+    
     except Exception as e:
-        logger.error(f"Unexpected error fetching filings for ticker {ticker}: {e}")
+        duration_ms = (time.time() - start_time) * 1000
+        logger.error(f"Unexpected error fetching filings for ticker {ticker} (Took {duration_ms:.3f} ms): {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
+    
 
 async def get_available_forms(request):
     """
@@ -1387,7 +1426,6 @@ routes = [
     Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
     Route("/filing/html", download_latest_filing_html, methods=["POST"]),  # Change to POST request#    
     Route("/filing/pdf/{ticker}/{form_type}", download_latest_filing_pdf, methods=["GET"]),    
-    Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
 #    Route("/10k/pdf/{ticker}", download_latest_10k),  # Fetch the latest 10-K as a PDF
 #    Route("/10k/html/{ticker}", download_latest_10k_html),  # Fetch the latest 10-K as raw HTML
     Route("/xbrl/{ticker}/plot", xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
