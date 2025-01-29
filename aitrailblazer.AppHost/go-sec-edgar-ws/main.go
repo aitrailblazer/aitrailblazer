@@ -126,6 +126,57 @@ func secFilingsHandler(sf *filings.SECFilings) http.HandlerFunc {
 	}
 }
 
+// getAvailableForms handles the route /forms/{ticker}
+func getAvailableForms(ci *company_info.CompanyInfo, sf *filings.SECFilings) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		ticker := r.URL.Query().Get("ticker")
+		if ticker == "" {
+			http.Error(w, "Ticker is required", http.StatusBadRequest)
+			return
+		}
+
+		cik, err := ci.GetCIKByTicker(ticker)
+		if err != nil {
+			log.Printf("Error fetching CIK for ticker %s: %v", ticker, err)
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		filings, err := sf.GetCompanyFilings(cik)
+		if err != nil {
+			log.Printf("Error fetching filings for CIK %s: %v", cik, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		uniqueForms := make(map[string]bool)
+		for _, filing := range filings {
+			uniqueForms[filing.Form] = true
+		}
+
+		forms := make([]string, 0, len(uniqueForms))
+		for form := range uniqueForms {
+			forms = append(forms, form)
+		}
+
+		response := map[string]interface{}{
+			"ticker": ticker,
+			"forms":  forms,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			log.Printf("Error encoding response: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		}
+	}
+}
+
 var companyInfo *company_info.CompanyInfo
 
 func main() {
@@ -141,6 +192,7 @@ func main() {
 	http.HandleFunc("/", measureSpeedMiddleware(rootHandler))
 	http.HandleFunc("/company-info", measureSpeedMiddleware(companyInfoHandler(companyInfo)))
 	http.HandleFunc("/sec-filings", measureSpeedMiddleware(secFilingsHandler(secFilings)))
+	http.HandleFunc("/forms", measureSpeedMiddleware(getAvailableForms(companyInfo, secFilings)))
 
 	port := "8001"
 	fmt.Printf("Starting server on 0.0.0.0:%s...\n", port)
