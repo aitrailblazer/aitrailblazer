@@ -633,10 +633,10 @@ namespace AITrailblazer.net.Services
                 SelectedModel = SelectedModel switch
                 {
                     "GPT-4o" => "gpt-4o",
-                    "GPT-4o-mini" => "gpt-4o-mini",
-                    "Phi-4" => "Phi-4",
+                    //"o1-mini" => "o1-mini",
+                    //"Phi-4" => "Phi-4",
                     "Cohere-Command-R+" => "Cohere-command-r-08-2024",
-                    "Codestral" => "Codestral-2501",
+                    //"Codestral" => "Codestral-2501",
                     _ => throw new ArgumentException($"Unsupported modelId: {SelectedModel}")
                 };
 
@@ -1601,9 +1601,14 @@ namespace AITrailblazer.net.Services
             string userInput,
             string panelInput,
             string Ticker,
-            string SelectedConceptTitle)
+            string SelectedConceptTitle,
+            string SelectedConceptDescription,
+            string SelectedConceptQuestionTitle,
+            string SelectedConceptQuestionDescription,            
+            string JSONdata)
         {
             string pluginName = "AIAletheiaFinancialConcepts"; //AIAletheiaFinancialConcepts.prompty
+            _logger.LogInformation($"GenerateAIAletheiaFinancialConceptsInstructionsAsync: {pluginName}");
 
             int maxTokens = 4096;
                string result = await GetASAPInstructionsQuick(
@@ -1612,8 +1617,45 @@ namespace AITrailblazer.net.Services
                 panelInput, 
                 maxTokens,
                 Ticker,
-                SelectedConceptTitle);
+                SelectedConceptTitle,
+                SelectedConceptDescription,
+                SelectedConceptQuestionTitle,
+                SelectedConceptQuestionDescription,
+                JSONdata);
             // _logger.LogInformation($"Generated aiClearNote : {result}");
+            // Remove the <|end_of_document|> tag from the result.
+            result = result.Replace("<|end_of_document|>", "");
+
+            return result;
+        }
+        public async Task<string> GenerateAIAletheiaForecastFinancialConceptsInstructionsAsync(
+            string userInput,
+            string panelInput,
+            string Ticker,
+            string SelectedConceptTitle,
+            string SelectedConceptDescription,
+            string SelectedConceptQuestionTitle,
+            string SelectedConceptQuestionDescription,  
+            string JSONdata)      
+        {
+            string pluginName = "AIAletheiaForecastFinancialConcepts"; //AIAletheiaFinancialConcepts.prompty
+            _logger.LogInformation($"GenerateAIAletheiaForecastFinancialConceptsInstructionsAsync: {pluginName}");
+
+            int maxTokens = 4096;
+               string result = await GetASAPInstructionsQuick(
+                pluginName, 
+                userInput, 
+                panelInput, 
+                maxTokens,
+                Ticker,
+                SelectedConceptTitle,
+                SelectedConceptDescription,
+                SelectedConceptQuestionTitle,
+                SelectedConceptQuestionDescription,  
+                JSONdata);
+            // _logger.LogInformation($"Generated aiClearNote : {result}");
+            // Remove the <|end_of_document|> tag from the result.
+            result = result.Replace("<|end_of_document|>", "");
 
             return result;
         }
@@ -1621,7 +1663,8 @@ namespace AITrailblazer.net.Services
             string userInput,
             string panelInput,
             string Ticker,
-            string SelectedConceptTitle)
+            string SelectedConceptTitle,
+            string SelectedConceptDescription)
         {
             string pluginName = "AIAletheiaFinancialConceptsQuestions"; //AIAletheiaFinancialConcepts.prompty
 
@@ -1632,7 +1675,12 @@ namespace AITrailblazer.net.Services
                 panelInput, 
                 maxTokens,
                 Ticker,
-                SelectedConceptTitle);
+                SelectedConceptTitle,
+                SelectedConceptDescription,
+                "",
+                "",
+                ""
+                );
             // _logger.LogInformation($"Generated aiClearNote : {result}");
 
             return result;
@@ -1850,10 +1898,10 @@ namespace AITrailblazer.net.Services
 
         public async Task<string> BingTextSearchAsync(string question)
         {
-            string modelId = "gpt-4o-mini";
             int maxTokens = 256;
 
             // Initialize the kernel with modelId and maxTokens
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
 
@@ -1871,10 +1919,10 @@ namespace AITrailblazer.net.Services
         // Function to rephrase the question using AI
         private async Task<string> RephraseQuestionAsync(string question)
         {
-            string modelId = "gpt-4o-mini";
             int maxTokens = 256;
 
             // Initialize the kernel with modelId and maxTokens
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
             const string RephrasePrompt = """
@@ -2090,8 +2138,8 @@ namespace AITrailblazer.net.Services
         {
             //Kernel kernel = new();
             // Build the kernel
-            string modelId = "gpt-4o-mini";
             int maxTokens = 256;
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
@@ -2204,7 +2252,7 @@ namespace AITrailblazer.net.Services
                 }
 
                 // Build the kernel
-                string modelId = "gpt-4o-mini";
+                string modelId = "gpt-4o"; // gpt-4o Phi-4
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 //kernelBuilder.Plugins.AddFromType<TimeInformation>();
                 Kernel kernel = kernelBuilder.Build();
@@ -2259,7 +2307,11 @@ namespace AITrailblazer.net.Services
                 masterSetting: "",
                 maxTokens: maxTokensStr,
                 Ticker: "",
-                SelectedConceptTitle: "");
+                SelectedConceptTitle: "",
+                SelectedConceptDescription: "",
+                SelectedConceptQuestionTitle: "",
+                SelectedConceptQuestionDescription: "",
+                JSONdata: "");
                 // _logger.LogInformation($"GetASAPQuick promptyTemplate: {promptyTemplate}");
 
                 // Create kernel function from prompty
@@ -2340,7 +2392,11 @@ namespace AITrailblazer.net.Services
             string PanelInput,
             int maxTokens,
             string Arg1,
-            string Arg2)
+            string Arg2,
+            string Arg3,
+            string Arg4,
+            string Arg5,
+            string Arg6)
         {
             try
             {
@@ -2357,12 +2413,17 @@ namespace AITrailblazer.net.Services
                 //}
 
                 // Build the kernel
-                string modelId = "Phi-4"; // gpt-4o Phi-4
-                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilderPhi(modelId, maxTokens);
-                //IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                //IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilderPhi(modelId, maxTokens);
+                //string modelId = "o1-mini"; // gpt-4o-mini gpt-4o Phi-4
+                
+                //IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuildero1mini(modelId, maxTokens);
                 //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+                
+                string modelId = "gpt-4o"; // gpt-4o Phi-4
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 Kernel kernel = kernelBuilder.Build();
 
+              
                 // Get the path to the prompty file
                 var pluginPath = _pluginService.GetPluginsPath() + "/" + pluginName + ".prompty";
                 // _logger.LogInformation($"GetASAPQuick Prompty file path: {pluginPath}");
@@ -2437,13 +2498,18 @@ namespace AITrailblazer.net.Services
                     masterSetting: "",
                     maxTokens: maxTokensStr,
                     Ticker: Arg1,
-                    SelectedConceptTitle: Arg2);
+                    SelectedConceptTitle: Arg2,
+                    SelectedConceptDescription: Arg3,
+                    SelectedConceptQuestionTitle: Arg4,
+                    SelectedConceptQuestionDescription: Arg5,
+                    JSONdata: Arg6);
                 _logger.LogInformation($"GetASAPInstructionsQuick promptyTemplate: {promptyTemplate}");
 
                 // Create kernel function from prompty
                 KernelFunction kernelFunction;
                 try
                 {
+
                     kernelFunction = kernel.CreateFunctionFromPrompty(promptyTemplate);
                 }
                 catch (ArgumentException ex)
@@ -2473,11 +2539,13 @@ namespace AITrailblazer.net.Services
                     // Custom arguments can be added here
                 };
 
-                // _logger.LogInformation($"GetASAPQuick kernel.InvokeAsync ");
+                _logger.LogInformation($"GetASAPInstructionsQuick kernel.InvokeAsync ");
 
                 // Execute the kernel function
                 try
                 {
+                    _logger.LogInformation($"GetASAPInstructionsQuick: {kernelFunction}");
+
                     var result = await kernel.InvokeAsync(kernelFunction, arguments);
                     var response = result.GetValue<string>();
                     return response;
@@ -2524,11 +2592,10 @@ namespace AITrailblazer.net.Services
         public async Task<string> GetIntentPrompty(string input, string masterTextSetting)
         {
             int maxTokens = 16;
-            string modelId = "gpt-4o-mini";
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-
-            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
+            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + "GetIntent" + ".prompty";
             // _logger.LogInformation($"Prompty file path: {pluginPath}");
@@ -2680,7 +2747,11 @@ namespace AITrailblazer.net.Services
                 masterSetting: "",
                 maxTokensStr,
                 Ticker: "",
-                SelectedConceptTitle: "");
+                SelectedConceptTitle: "",
+                SelectedConceptDescription: "",
+                SelectedConceptQuestionTitle: "",
+                SelectedConceptQuestionDescription: "",
+                JSONdata: "");
             // _logger.LogInformation($"promptyTemplate: {promptyTemplate}");
             // Create few-shot examples
 
@@ -2731,11 +2802,10 @@ namespace AITrailblazer.net.Services
         public async Task<string> GetIntent(string input)
         {
             int maxTokens = 16;
-            string modelId = "gpt-4o-mini";
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
-
-            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             Kernel kernel = kernelBuilder.Build();
+            //kernelBuilder.Plugins.AddFromType<TimeInformation>();
             var pluginPath = _pluginService.GetPluginsPath();
             pluginPath = pluginPath + "/" + "GetIntent" + ".yaml";
             // _logger.LogInformation($"Prompty file path: {pluginPath}");
@@ -3027,20 +3097,21 @@ namespace AITrailblazer.net.Services
             modelId = modelId switch
             {
                 "GPT-4o" => "gpt-4o",
-                "GPT-4o-mini" => "gpt-4o-mini",
-                "Phi-4" => "Phi-4",
+                //"o1-mini" => "o1-mini",
+                //"Phi-4" => "Phi-4",
                 "Cohere-Command-R+" => "Cohere-command-r-08-2024",
-                "Codestral" => "Codestral-2501",
+                //"Codestral" => "Codestral-2501",
                 _ => throw new ArgumentException($"Unsupported modelId: {modelId}")
             };
             int maxTokens = ResponseLengthService.TransformResponseLength(responseLengthVal);
             var maxTokensLabel = TokenLabelService.GetLabelForMaxTokensFromInt(maxTokens); // Call the method on the type
-
             IKernelBuilder kernelBuilder = modelId.StartsWith("Phi")
                 ? _kernelService.CreateKernelBuilderPhi(modelId, maxTokens)
                 : modelId.StartsWith("Codestral")
                     ? _kernelService.CreateKernelBuilderCodestral(modelId, maxTokens)
-                    : _kernelService.CreateKernelBuilder(modelId, maxTokens);
+                    : modelId.StartsWith("o1-mini")
+                        ? _kernelService.CreateKernelBuildero1mini(modelId, maxTokens)
+                        : _kernelService.CreateKernelBuilder(modelId, maxTokens);
 
             Kernel kernel = kernelBuilder.Build();
 
@@ -3158,7 +3229,11 @@ namespace AITrailblazer.net.Services
                 masterSetting: masterTextSettingsService,
                 maxTokens: maxTokensLabel,
                 Ticker: "",
-                SelectedConceptTitle: "");
+                SelectedConceptTitle: "",
+                SelectedConceptDescription: "",
+                SelectedConceptQuestionTitle: "",
+                SelectedConceptQuestionDescription: "",
+                JSONdata: "");
 
 
             _logger.LogInformation($"GenerateWithPromptyAsync: promptyTemplate: {promptyTemplate}");
@@ -3552,7 +3627,11 @@ namespace AITrailblazer.net.Services
                 masterSetting: masterTextSettingsService,
                 maxTokens: maxTokensLabel,
                 Ticker: "",
-                SelectedConceptTitle: "");
+                SelectedConceptTitle: "",
+                SelectedConceptDescription: "",
+                SelectedConceptQuestionTitle: "",
+                SelectedConceptQuestionDescription: "",
+                JSONdata: "");
 
             _logger.LogInformation($"GenerateWithCohereAsync: promptyTemplate: {promptyTemplate}");
             var messages = new List<ChatRequestMessage>();
@@ -3688,7 +3767,11 @@ namespace AITrailblazer.net.Services
         string masterSetting,
         string maxTokens,
         string Ticker,
-        string SelectedConceptTitle)
+        string SelectedConceptTitle,
+        string SelectedConceptDescription,
+        string SelectedConceptQuestionTitle,
+        string SelectedConceptQuestionDescription,      
+        string JSONdata)
         {
 
             // Add replacements for placeholders
@@ -3698,6 +3781,10 @@ namespace AITrailblazer.net.Services
                 //{ "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"# Customer Context\n\nUse the provided\n<context>{panelInput}</context>\nto shape your response.\nThe <context> provides background information essential for tailoring the content to the specific needs and objectives." },
                 { "{{Ticker}}", string.IsNullOrEmpty(Ticker) ? "" : $"\n# Ticker:\n<Ticker>{Ticker}</Ticker>" },
                 { "{{SelectedConceptTitle}}", string.IsNullOrEmpty(SelectedConceptTitle) ? "" : $"\n# SelectedConceptTitle:\n<SelectedConceptTitle>{SelectedConceptTitle}</SelectedConceptTitle>" },
+                { "{{SelectedConceptDescription}}", string.IsNullOrEmpty(SelectedConceptDescription) ? "" : $"\n# SelectedConceptDescription:\n<SelectedConceptDescription>{SelectedConceptDescription}</SelectedConceptDescription>" },
+                { "{{SelectedConceptQuestionTitle}}", string.IsNullOrEmpty(SelectedConceptQuestionTitle) ? "" : $"\n# SelectedConceptQuestionTitle:\n<SelectedConceptQuestionTitle>{SelectedConceptQuestionTitle}</SelectedConceptTitle>" },
+                { "{{SelectedConceptQuestionDescription}}", string.IsNullOrEmpty(SelectedConceptQuestionDescription) ? "" : $"\n# SelectedConceptQuestionDescription:\n<SelectedConceptQuestionDescription>{SelectedConceptQuestionDescription}</SelectedConceptQuestionDescription>" },
+                { "{{JSONdata}}", string.IsNullOrEmpty(JSONdata) ? "" : $"\n# JSONdata:\n<JSONdata>{JSONdata}</JSONdata>" },
                 { "{{input}}", string.IsNullOrEmpty(userInput) ? "" : $"\n# Input:\n<input>{userInput}</input>" },
                 { "{{context}}", string.IsNullOrEmpty(panelInput) ? "" : $"\n# Context:\n<context>{panelInput}</context>"},
                 //{ "{{generalSystemGuidelines}}", string.IsNullOrEmpty(generalSystemGuidelines) ? " " : $"\n# Guidelines:\n<generalSystemGuidelines>{generalSystemGuidelines}</generalSystemGuidelines>" },
@@ -3823,9 +3910,8 @@ namespace AITrailblazer.net.Services
                 //        => DateTime.UtcNow.ToString("R");
 
                 // Build the kernel
-                string modelId = "gpt-4o-mini";
-                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, 1024);
-                //kernelBuilder.Plugins.AddFromType<TimeInformation>();
+                string modelId = "gpt-4o"; // gpt-4o Phi-4
+                IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 Kernel kernel = kernelBuilder.Build();
 
 
@@ -3932,13 +4018,14 @@ You are a highly capable AI assistant designed to perform various actions based 
 
             }
         }
+        /*
         public async Task<string> StruturedOutputTestAsync(string input)
         {
             //int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini";
-
-            Microsoft.TypeChat.OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId); ;
+            string modelId = "GPT-4o";
+            var maxTokens = 1024;
+            IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             TranslationSettings settings = new TranslationSettings
             {
                 MaxTokens = 1000,
@@ -3997,10 +4084,10 @@ You are a highly capable AI assistant designed to perform various actions based 
                 return "An unexpected error occurred during execution. Please try again.";
             }
         }
-
+        */
         public async Task<string> StructuredOutputByClassAsync<TClass>(string input)
         {
-            string modelId = "gpt-4o-mini";
+            string modelId = "gpt-4o";
 
             Microsoft.TypeChat.OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId);
             TranslationSettings settings = new TranslationSettings
@@ -4057,7 +4144,7 @@ You are a highly capable AI assistant designed to perform various actions based 
         {
             //int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini";
+            string modelId = "gpt-4o";
 
 
             Microsoft.TypeChat.OpenAIConfig config = _kernelService.CreateOpenAIConfig(modelId); ;
@@ -4112,7 +4199,7 @@ You are a highly capable AI assistant designed to perform various actions based 
         {
             int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            string modelId = "gpt-4o"; // gpt-4o Phi-4
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
 
@@ -4218,7 +4305,7 @@ You are a highly capable AI assistant designed to perform various actions based 
         public async Task<string> ShowNewsAsync(string input)
         {
             const int maxTokens = 16000;
-            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            const string modelId = "gpt-4o"; // Ensure this is the correct model ID
             const double temperature = 0.1;
             const double topP = 0.1;
             const int seed = 356;
@@ -4343,7 +4430,7 @@ After determining the function, execute it, and return the response in JSON form
         public async Task<string> CalendarAsync(string input)
         {
             const int maxTokens = 16000;
-            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            const string modelId = "gpt-4o"; // Ensure this is the correct model ID
             const double temperature = 0.1;
             const double topP = 0.1;
             const int seed = 356;
@@ -4507,7 +4594,7 @@ After determining the function, execute it, and return the response in JSON form
         public async Task<string> ShowEmailsAsync(string input)
         {
             const int maxTokens = 16000;
-            const string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            const string modelId = "gpt-4o"; // Ensure this is the correct model ID
             const double temperature = 0.1;
             const double topP = 0.1;
             const int seed = 356;
@@ -4641,7 +4728,7 @@ Determines if the email requires immediate action or follow-up, based on phrases
                 }
 
                 // Build the kernel
-                string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+                string modelId = "gpt-4o"; // gpt-4o Phi-4
                 IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
                 Kernel kernel = kernelBuilder.Build();
 

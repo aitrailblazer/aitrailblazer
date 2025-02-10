@@ -16,17 +16,17 @@ var secedgarwsapp = builder.AddDockerfile(
     "Dockerfile"
 ).WithHttpEndpoint(8000, 8000); // Map container's port 80 to host's port 5000
 
-//var gosecedgarwsapp = builder.AddDockerfile(
-//    "gosecedgarwsapp", 
-//    "./go-sec-edgar-ws", // The directory where your backend project and Dockerfile are located
-//    "Dockerfile"
-//).WithHttpEndpoint(8001, 8001); // Map container's port 80 to host's port 5000
+var gosecedgarwsapp = builder.AddDockerfile(
+    "gosecedgarwsapp", 
+    "./go-sec-edgar-ws", // The directory where your backend project and Dockerfile are located
+    "Dockerfile"
+).WithHttpEndpoint(8001, 8001); // Map container's port 80 to host's port 5000
 
 builder.AddProject<Projects.aitrailblazer_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(apiService)
     .WithReference(gotenberg.GetEndpoint("http"))
-    //.WithReference(gosecedgarwsapp.GetEndpoint("http"))
+    .WithReference(gosecedgarwsapp.GetEndpoint("http"))
     .WithReference(secedgarwsapp.GetEndpoint("http"));
 
 //

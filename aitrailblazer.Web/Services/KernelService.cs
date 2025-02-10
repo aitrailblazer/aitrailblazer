@@ -70,6 +70,53 @@ namespace AITrailblazer.net.Services
             return kernelPhi;
 
         }
+        // https://aitrailblazereastus.openai.azure.com/openai/deployments/o1-mini-2024-09-12/chat/completions?api-version=2024-08-01-preview
+        public IKernelBuilder CreateKernelBuildero1mini(string modelId, int maxTokens)
+        {
+
+                IKernelBuilder kernelBuilder = Kernel.CreateBuilder();
+
+            string deploymentName;
+            string apiKey;
+            string endpoint;
+            int embeddingsdDimensions;
+
+            deploymentName = "o1-mini-2024-09-12";
+            // Convert the string endpoint to a Uri
+            Uri endpointUri = new Uri(_parametersAzureService.AzureOpenAIEndpoint02);
+            endpoint = _parametersAzureService.AzureOpenAIEndpoint02;
+
+            apiKey = _parametersAzureService.AzureOpenAIKey02;
+            embeddingsdDimensions = _parametersAzureService.AzureEmbeddingsdDimensions;
+
+            modelId = modelId;
+            Console.WriteLine($"Deployment Name: {deploymentName}");
+            Console.WriteLine($"Endpoint: {endpoint}");
+            // https://aitrailblazereastus2.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2024-08-01-preview
+            //Console.WriteLine($"endpointUri: {endpointUri}");
+
+            //Console.WriteLine($"API Key: {apiKey}");
+            //Console.WriteLine($"Model ID: {modelId}");
+
+            // Create HttpClient with custom headers and timeout
+            var httpClient = new HttpClient();
+            //httpClient.DefaultRequestHeaders.Add("My-Custom-Header", "My Custom Value");
+            httpClient.Timeout = TimeSpan.FromSeconds(300);  // Set NetworkTimeout to 30 seconds
+
+
+            kernelBuilder.AddAzureOpenAIChatCompletion(
+                deploymentName: deploymentName,
+                endpoint: endpoint,
+                apiKey: apiKey,
+                modelId: modelId, // Optional name of the underlying model if the deployment name doesn't match the model name
+                                  //serviceId: "YOUR_SERVICE_ID", // Optional; for targeting specific services within Semantic Kernel
+                httpClient: httpClient, // Optional; if not provided, the HttpClient from the kernel will be used
+                apiVersion: "2024-08-01-preview" //2024-09-12
+                );
+
+            return kernelBuilder;
+        }
+
         public IKernelBuilder CreateKernelBuilderCohere(string modelId, int maxTokens)
         {
             string endpoint = _parametersAzureService.CohereCommandREndpoint;

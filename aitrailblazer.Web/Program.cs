@@ -80,8 +80,14 @@ string TimegenKey = secretClient.GetSecret("TimegenKey").Value.Value;
 string azureOpenAIModelName01 = secretClient.GetSecret("AzureOpenAIModelName01").Value.Value;
 string azureOpenAIModelName02 = secretClient.GetSecret("AzureOpenAIModelName02").Value.Value;
 string azureOpenAIModelName03 = secretClient.GetSecret("AzureOpenAIModelName03").Value.Value;
+
+
+string azureOpenAIEndpoint02 = secretClient.GetSecret("AzureOpenAIEndpoint02").Value.Value;
 string azureOpenAIEndpoint03 = secretClient.GetSecret("AzureOpenAIEndpoint03").Value.Value;
+
+string azureOpenAIKey02 = secretClient.GetSecret("AzureOpenAIKey02").Value.Value;
 string azureOpenAIKey03 = secretClient.GetSecret("AzureOpenAIKey03").Value.Value;
+
 string bingSearchApiKey = secretClient.GetSecret("BING-API-KEY").Value.Value;
 string searchApiKey = secretClient.GetSecret("searchApiKey").Value.Value;
 string searchEndpoint = secretClient.GetSecret("searchEndpoint").Value.Value;
@@ -113,7 +119,7 @@ string chatContainerName = "chat";
 string cacheContainerName = "cache";
 string productContainerName = "products";
 string organizerContainerName = "organizer";
-string knowledgeBaseContainerName = "raghybrid"; // rag
+string knowledgeBaseContainerName = "secrag"; // rag
 
 string productDataSourceURI = "https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-vectorized/product-text-3-large-1536.json";
 
@@ -242,8 +248,12 @@ var parametersAzureService = new ParametersAzureService
     //GOOGLE_MODEL_ID = GOOGLE_MODEL_ID,
     //GOOGLE_API_KEY = GOOGLE_API_KEY,
 
+    AzureOpenAIEndpoint02 = azureOpenAIEndpoint02,
+    AzureOpenAIKey02 = azureOpenAIKey02,
+
     AzureOpenAIEndpoint03 = azureOpenAIEndpoint03,
     AzureOpenAIKey03 = azureOpenAIKey03,
+
     AzureEmbeddingsModelName03 = azureEmbeddingsModelName03,
     AzureEmbeddingsdDimensions = azureEmbeddingsdDimensions,
 
@@ -314,7 +324,7 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
 
     return new SemanticKernelService(
             endpoint: azureOpenAIEndpoint03,
-            completionDeploymentName: azureOpenAIModelName02,
+            completionDeploymentName: azureOpenAIModelName03,
             embeddingDeploymentName: azureEmbeddingsModelName03,
             apiKey: azureOpenAIKey03,
             endpointPhi: PhiEndpoint,
@@ -518,6 +528,29 @@ builder.Services.AddHttpClient<GotenbergWSAppService>(client =>
     options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
 });
 
+builder.Services.AddHttpClient<GoSECEdgarWSAppService>(client =>
+{
+    client.BaseAddress = new("https+http://gosecedgarwsapp");
+    //client.BaseAddress = new("http://apiservice");
+
+    client.Timeout = TimeSpan.FromMinutes(5); // Total timeout for all retries combined
+})
+.AddStandardResilienceHandler(options =>
+{
+    // Retry policy configuration
+    options.Retry.MaxRetryAttempts = 5; // Retry up to 5 times
+    options.Retry.Delay = TimeSpan.FromSeconds(2); // Fixed delay between retries
+    options.Retry.UseJitter = true; // Add jitter to avoid retry storms
+
+    // Timeout policy configuration
+    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(60); // Timeout for individual attempts
+
+    // Total request timeout (all retries combined)
+    options.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(5);
+
+    // Circuit breaker configuration
+    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(120); // At least double the attempt timeout
+});
 //builder.Services.AddScoped<SearchUrlPlugin>();
 builder.Services.AddScoped<NewsFunctions>();
 

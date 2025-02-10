@@ -110,6 +110,32 @@
             img.src = 'data:image/png;base64,' + base64;
         }
     </script>
+    <script>
+        // Generic download function that supports both plain text (CSV) and Base64–encoded binary (PDF) content.
+        window.downloadFileWithMime = (fileName, content, mimeType, isBase64 = false) => {
+            let blob;
+            if (isBase64) {
+                // Decode the Base64 string into binary data.
+                const binary = atob(content);
+                const len = binary.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                blob = new Blob([bytes], { type: mimeType });
+            } else {
+                blob = new Blob([content], { type: mimeType });
+            }
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement("a");
+            anchorElement.href = url;
+            anchorElement.download = fileName;
+            document.body.appendChild(anchorElement);
+            anchorElement.click();
+            document.body.removeChild(anchorElement);
+            URL.revokeObjectURL(url);
+        };
+    </script>
 </body>
 
 </html>

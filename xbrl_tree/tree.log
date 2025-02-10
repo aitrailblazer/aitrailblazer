@@ -1,0 +1,2036 @@
+- START
+ - Statement of Financial Position, Classified 74
+  - >Assets
+   - >> Assets | Assets | Quarterly
+   - >Assets, Current
+    - >> AssetsCurrent | Assets, Current | Quarterly
+    - >Cash, Cash Equivalents, and Short-Term Investments
+     - >Cash and Cash Equivalent
+      - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+     - >Restricted Cash and Investments, Current
+      - Restricted Cash And Cash Equivalents Current
+       - >> RestrictedCashAndCashEquivalentsAtCarryingValue | Restricted Cash and Cash Equivalents, Current | Quarterly
+       - >> RestrictedCashCurrent | Restricted Cash, Current | Quarterly
+      - >> RestrictedCashAndInvestmentsCurrent | Restricted Cash and Investments, Current | Quarterly
+     - >Short-Term Investments
+      - >> MarketableSecuritiesCurrent | Marketable Securities, Current | Quarterly
+      - >> ShortTermInvestments | Short-term Investments | Quarterly
+    - >Inventory, Net
+     - >> InventoryFinishedGoods | Inventory, Finished Goods, Gross | Quarterly
+     - >> InventoryNet | Inventory, Net | Quarterly
+     - >> InventoryWorkInProcess | Inventory, Work in Process, Gross | Quarterly
+    - >Receivables, Net, Current
+     - >Accounts and Financing Receivable, after Allowance for Credit Loss, Current
+      - >Accounts Receivable, after Allowance for Credit Loss, Current
+       - >> AccountsReceivableNetCurrent | Accounts Receivable, after Allowance for Credit Loss, Current | Quarterly
+      - >Financing Receivable, after Allowance for Credit Loss, Current
+       - >> NotesAndLoansReceivableNetCurrent | Financing Receivable, after Allowance for Credit Loss, Current | Quarterly
+   - >Assets, Noncurrent
+    - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+    - >> FinanceLeaseRightOfUseAsset | Finance Lease, Right-of-Use Asset, after Accumulated Amortization | Yearly
+    - >> Goodwill | Goodwill | Quarterly
+    - >Intangible Assets, Net (Excluding Goodwill)
+     - >Finite-Lived Intangible Assets, Net
+      - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+      - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+      - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+     - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+     - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+    - >Long-Term Investments and Receivables, Net
+     - >Accounts and Financing Receivable, after Allowance for Credit Loss, Noncurrent
+      - >> LongTermAccountsNotesAndLoansReceivableNetNoncurrent | Accounts and Financing Receivable, after Allowance for Credit Loss, Noncurrent | Quarterly
+    - >> OperatingLeaseRightOfUseAsset | Operating Lease, Right-of-Use Asset | Quarterly
+    - >> OtherAssetsNoncurrent | Other Assets, Noncurrent | Quarterly
+    - >Property, Plant and Equipment, Net
+     - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+     - >Property, Plant and Equipment, Gross
+      - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+     - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+    - >Regulated Entity, Other Assets, Noncurrent
+     - >> UnamortizedDebtIssuanceExpense | Unamortized Debt Issuance Expense | Quarterly
+    - >Restricted Cash and Investments, Noncurrent
+     - >Restricted Cash and Cash Equivalent, Noncurrent
+      - >> RestrictedCashAndCashEquivalentsNoncurrent | Restricted Cash and Cash Equivalents, Noncurrent | Quarterly
+      - >> RestrictedCashNoncurrent | Restricted Cash, Noncurrent | Quarterly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >> Liabilities | Liabilities | Quarterly
+    - >Liabilities, Current
+     - >Accounts Payable and Accrued Liabilities, Current
+      - >> AccountsPayableCurrent | Accounts Payable, Current | Quarterly
+      - >Accrued Liabilities, Current
+       - >> AccruedLiabilitiesCurrent | Accrued Liabilities, Current | Quarterly
+       - >> EmployeeRelatedLiabilitiesCurrent | Employee-related Liabilities, Current | Quarterly
+       - >Taxes Payable, Current
+        - >> TaxesPayableCurrent | Taxes Payable, Current | Quarterly
+     - >> AccruedEnvironmentalLossContingenciesCurrent | Accrued Environmental Loss Contingencies, Current | Quarterly
+     - >Debt, Current
+      - >> DebtCurrent | Debt, Current | Quarterly
+      - >Long-Term Debt and Lease Obligation, Current
+       - >> FinanceLeaseLiabilityCurrent | Finance Lease, Liability, Current | Quarterly
+       - >> LongTermDebtAndCapitalLeaseObligationsCurrent | Long-term Debt and Lease Obligation, Current | Quarterly
+       - >Long-Term Debt, Current Maturities
+        - >> ConvertibleDebtCurrent | Convertible Debt, Current | Quarterly
+        - >> LongTermDebtCurrent | Long-term Debt, Current Maturities | Quarterly
+     - >Deferred Revenue and Credits, Current
+      - >> ContractWithCustomerLiabilityCurrent | Contract with Customer, Liability, Current | Quarterly
+      - >> DeferredRevenueCurrent | Deferred Revenue, Current | Quarterly
+     - >> LiabilitiesCurrent | Liabilities, Current | Quarterly
+     - >> OtherLiabilitiesCurrent | Other Liabilities, Current | Quarterly
+    - >Liabilities, Noncurrent
+     - Liabilities Other Than Long Term Debt Noncurrent
+      - >> AccruedEnvironmentalLossContingenciesNoncurrent | Accrued Environmental Loss Contingencies, Noncurrent | Quarterly
+      - >Asset Retirement Obligations, Noncurrent
+       - >> AssetRetirementObligationsNoncurrent | Asset Retirement Obligations, Noncurrent | Quarterly
+      - >> DeferredRentCreditNoncurrent | Deferred Rent Credit, Noncurrent | Quarterly
+      - >Deferred Revenue and Credits, Noncurrent
+       - >> ContractWithCustomerLiabilityNoncurrent | Contract with Customer, Liability, Noncurrent | Quarterly
+       - >> DeferredRevenueNoncurrent | Deferred Revenue, Noncurrent | Quarterly
+      - Derivative Instruments And Hedges Liabilities Noncurrent
+       - >> DerivativeLiabilitiesNoncurrent | Derivative Liability, Noncurrent | Quarterly
+      - >> OperatingLeaseLiabilityNoncurrent | Operating Lease, Liability, Noncurrent | Quarterly
+      - >> OtherLiabilitiesNoncurrent | Other Liabilities, Noncurrent | Quarterly
+     - >Long-Term Debt and Lease Obligation
+      - >> FinanceLeaseLiabilityNoncurrent | Finance Lease, Liability, Noncurrent | Quarterly
+      - >> LongTermDebtAndCapitalLeaseObligations | Long-term Debt and Lease Obligation | Quarterly
+      - >Long-Term Debt, Excluding Current Maturities
+       - >> ConvertibleDebtNoncurrent | Convertible Debt, Noncurrent | Quarterly
+       - >> LongTermDebtNoncurrent | Long-term Debt, Excluding Current Maturities | Quarterly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - Limited Liability Company LLC Members Equity Including Portion Attributable To Noncontrolling Interest
+    - Limited Liability Company LLC Members Equity
+     - >Members' Equity
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Partners' Capital, Including Portion Attributable to Noncontrolling Interest
+    - >Partners' Capital
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >Retained Earnings (Accumulated Deficit)
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Temporary Equity
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+      - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+ - Statement of Financial Position, Unclassified - Deposit Based Operations 40
+  - >Assets
+   - >> Assets | Assets | Quarterly
+   - >Cash, Cash Equivalents, and Federal Funds Sold
+    - >Cash and Cash Equivalent
+     - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+   - >Debt Securities
+    - >> AvailableForSaleSecuritiesDebtSecurities | Debt Securities, Available-for-sale | Quarterly
+   - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+   - >> FinanceLeaseRightOfUseAsset | Finance Lease, Right-of-Use Asset, after Accumulated Amortization | Yearly
+   - >> Goodwill | Goodwill | Quarterly
+   - >Intangible Assets, Net (Excluding Goodwill)
+    - >Finite-Lived Intangible Assets, Net
+     - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+     - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+     - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+    - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+    - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+   - >> MarketableSecurities | Marketable Securities | Quarterly
+   - >Financing Receivable, after Allowance for Credit Loss
+    - >> FinancingReceivableAllowanceForCreditLosses | Financing Receivable, Allowance for Credit Loss | Quarterly
+    - >> NotesReceivableNet | Financing Receivable, after Allowance for Credit Loss | Quarterly
+   - >> OperatingLeaseRightOfUseAsset | Operating Lease, Right-of-Use Asset | Quarterly
+   - >Property, Plant and Equipment, Net
+    - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+    - >Property, Plant and Equipment, Gross
+     - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+    - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+   - >Restricted Cash and Investments
+    - >Restricted Cash and Cash Equivalent
+     - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >Accounts Payable and Accrued Liabilities
+     - >Accrued Liabilities
+      - >> UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued | Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued | Approx 4018 days
+    - >> ContractWithCustomerLiability | Contract with Customer, Liability | Quarterly
+    - >Debt and Lease Obligation
+     - >> FinanceLeaseLiability | Finance Lease, Liability | Yearly
+     - >Long-Term Debt
+      - >> LongTermDebt | Long-term Debt | Quarterly
+    - >> Liabilities | Liabilities | Quarterly
+    - >> OperatingLeaseLiability | Operating Lease, Liability | Yearly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >Retained Earnings (Accumulated Deficit)
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Temporary Equity
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+      - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+  - Stockholders Equity Number Of Shares Par Value And Other Disclosures
+   - Common Stock Number Of Shares Par Value And Other Disclosures
+    - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+   - Preferred Stock Number Of Shares Par Value And Other Disclosures
+    - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+ - Statement of Financial Position, Unclassified - Insurance Based Operations 40
+  - >Assets
+   - >> Assets | Assets | Quarterly
+   - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+   - >> Goodwill | Goodwill | Quarterly
+   - >Intangible Assets, Net (Excluding Goodwill)
+    - >Finite-Lived Intangible Assets, Net
+     - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+     - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+     - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+    - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+    - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+   - >Investments and Cash
+    - >Cash and Cash Equivalent
+     - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+    - >Investments
+     - >Debt Securities
+      - >> AvailableForSaleSecuritiesDebtSecurities | Debt Securities, Available-for-sale | Quarterly
+     - >> MarketableSecurities | Marketable Securities | Quarterly
+   - >Premiums and Other Receivables, Net
+    - >Financing Receivable, after Allowance for Credit Loss
+     - >> FinancingReceivableAllowanceForCreditLosses | Financing Receivable, Allowance for Credit Loss | Quarterly
+     - >> NotesReceivableNet | Financing Receivable, after Allowance for Credit Loss | Quarterly
+   - >Property, Plant and Equipment, Net
+    - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+    - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+    - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+   - >Restricted Cash and Cash Equivalent
+    - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >Debt and Lease Obligation
+     - Long Term Debt And Capital Lease Obligations Including Current Maturities
+      - >> FinanceLeaseLiability | Finance Lease, Liability | Yearly
+      - >Long-Term Debt
+       - >> LongTermDebt | Long-term Debt | Quarterly
+    - >> Liabilities | Liabilities | Quarterly
+    - >> OperatingLeaseLiability | Operating Lease, Liability | Yearly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - Limited Liability Company LLC Members Equity Including Portion Attributable To Noncontrolling Interest
+    - Limited Liability Company LLC Members Equity
+     - >Members' Equity
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Partners' Capital, Including Portion Attributable to Noncontrolling Interest
+    - >Partners' Capital
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >Retained Earnings (Accumulated Deficit)
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Stockholders Equity Number Of Shares Par Value And Other Disclosures
+    - Common Stock Number Of Shares Par Value And Other Disclosures
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+    - Preferred Stock Number Of Shares Par Value And Other Disclosures
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+   - Temporary Equity
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+      - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+ - Statement of Financial Position, Classified - Real Estate Operations 71
+  - >Assets
+   - >> Assets | Assets | Quarterly
+   - >Assets, Current
+    - >> AssetsCurrent | Assets, Current | Quarterly
+    - >Cash, Cash Equivalents, and Short-Term Investments
+     - >Cash and Cash Equivalent
+      - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+     - >Restricted Cash and Investments, Current
+      - Restricted Cash And Cash Equivalents Current
+       - >> RestrictedCashAndCashEquivalentsAtCarryingValue | Restricted Cash and Cash Equivalents, Current | Quarterly
+       - >> RestrictedCashCurrent | Restricted Cash, Current | Quarterly
+      - >> RestrictedCashAndInvestmentsCurrent | Restricted Cash and Investments, Current | Quarterly
+     - >Short-Term Investments
+      - >> MarketableSecuritiesCurrent | Marketable Securities, Current | Quarterly
+      - >> ShortTermInvestments | Short-term Investments | Quarterly
+    - >Inventory, Net
+     - >> InventoryNet | Inventory, Net | Quarterly
+    - >Receivables, Net, Current
+     - >Accounts and Financing Receivable, after Allowance for Credit Loss, Current
+      - >Accounts Receivable, after Allowance for Credit Loss, Current
+       - >> AccountsReceivableNetCurrent | Accounts Receivable, after Allowance for Credit Loss, Current | Quarterly
+      - >Financing Receivable, after Allowance for Credit Loss, Current
+       - >> NotesAndLoansReceivableNetCurrent | Financing Receivable, after Allowance for Credit Loss, Current | Quarterly
+   - >Assets, Noncurrent
+    - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+    - >> Goodwill | Goodwill | Quarterly
+    - >Intangible Assets, Net (Excluding Goodwill)
+     - >Finite-Lived Intangible Assets, Net
+      - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+      - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+      - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+     - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+     - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+    - >Long-Term Investments and Receivables, Net
+     - >Accounts and Financing Receivable, after Allowance for Credit Loss, Noncurrent
+      - >> LongTermAccountsNotesAndLoansReceivableNetNoncurrent | Accounts and Financing Receivable, after Allowance for Credit Loss, Noncurrent | Quarterly
+    - >> OtherAssetsNoncurrent | Other Assets, Noncurrent | Quarterly
+    - >Property, Plant and Equipment, Net
+     - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+     - >Property, Plant and Equipment, Gross
+      - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+     - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+    - >Restricted Cash and Investments, Noncurrent
+     - >Restricted Cash and Cash Equivalent, Noncurrent
+      - >> RestrictedCashAndCashEquivalentsNoncurrent | Restricted Cash and Cash Equivalents, Noncurrent | Quarterly
+      - >> RestrictedCashNoncurrent | Restricted Cash, Noncurrent | Quarterly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >> Liabilities | Liabilities | Quarterly
+    - >Liabilities, Current
+     - >Accounts Payable and Accrued Liabilities, Current
+      - >> AccountsPayableCurrent | Accounts Payable, Current | Quarterly
+      - >Accrued Liabilities, Current
+       - >> AccruedLiabilitiesCurrent | Accrued Liabilities, Current | Quarterly
+       - >> EmployeeRelatedLiabilitiesCurrent | Employee-related Liabilities, Current | Quarterly
+       - >Taxes Payable, Current
+        - >> TaxesPayableCurrent | Taxes Payable, Current | Quarterly
+     - >> AccruedEnvironmentalLossContingenciesCurrent | Accrued Environmental Loss Contingencies, Current | Quarterly
+     - >Debt, Current
+      - >> DebtCurrent | Debt, Current | Quarterly
+      - >Long-Term Debt and Lease Obligation, Current
+       - >> FinanceLeaseLiabilityCurrent | Finance Lease, Liability, Current | Quarterly
+       - >> LongTermDebtAndCapitalLeaseObligationsCurrent | Long-term Debt and Lease Obligation, Current | Quarterly
+       - >Long-Term Debt, Current Maturities
+        - >> ConvertibleDebtCurrent | Convertible Debt, Current | Quarterly
+        - >> LongTermDebtCurrent | Long-term Debt, Current Maturities | Quarterly
+     - >Deferred Revenue and Credits, Current
+      - >> ContractWithCustomerLiabilityCurrent | Contract with Customer, Liability, Current | Quarterly
+      - >> DeferredRevenueCurrent | Deferred Revenue, Current | Quarterly
+     - >> LiabilitiesCurrent | Liabilities, Current | Quarterly
+     - >> OtherLiabilitiesCurrent | Other Liabilities, Current | Quarterly
+    - >Liabilities, Noncurrent
+     - Liabilities Other Than Long Term Debt Noncurrent
+      - >> AccruedEnvironmentalLossContingenciesNoncurrent | Accrued Environmental Loss Contingencies, Noncurrent | Quarterly
+      - >> AssetRetirementObligationsNoncurrent | Asset Retirement Obligations, Noncurrent | Quarterly
+      - >> DeferredRentCreditNoncurrent | Deferred Rent Credit, Noncurrent | Quarterly
+      - >Deferred Revenue and Credits, Noncurrent
+       - >> ContractWithCustomerLiabilityNoncurrent | Contract with Customer, Liability, Noncurrent | Quarterly
+       - >> DeferredRevenueNoncurrent | Deferred Revenue, Noncurrent | Quarterly
+      - Derivative Instruments And Hedges Liabilities Noncurrent
+       - >> DerivativeLiabilitiesNoncurrent | Derivative Liability, Noncurrent | Quarterly
+      - >> OperatingLeaseLiabilityNoncurrent | Operating Lease, Liability, Noncurrent | Quarterly
+      - >> OtherLiabilitiesNoncurrent | Other Liabilities, Noncurrent | Quarterly
+     - >Long-Term Debt and Lease Obligation
+      - >> FinanceLeaseLiabilityNoncurrent | Finance Lease, Liability, Noncurrent | Quarterly
+      - >> LongTermDebtAndCapitalLeaseObligations | Long-term Debt and Lease Obligation | Quarterly
+      - >Long-Term Debt, Excluding Current Maturities
+       - >> ConvertibleDebtNoncurrent | Convertible Debt, Noncurrent | Quarterly
+       - >> LongTermDebtNoncurrent | Long-term Debt, Excluding Current Maturities | Quarterly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - Limited Liability Company LLC Members Equity Including Portion Attributable To Noncontrolling Interest
+    - Limited Liability Company LLC Members Equity
+     - >Members' Equity
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Partners' Capital, Including Portion Attributable to Noncontrolling Interest
+    - >Partners' Capital
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >Retained Earnings (Accumulated Deficit)
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Stockholders Equity Number Of Shares Par Value And Other Disclosures
+    - Common Stock Number Of Shares Par Value And Other Disclosures
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+    - Preferred Stock Number Of Shares Par Value And Other Disclosures
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+   - Temporary Equity
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+      - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+ - Statement of Financial Position, Unclassified - Real Estate Operations 47
+  - >Assets
+   - >Accounts and Financing Receivable, after Allowance for Credit Loss
+    - >> AccountsAndNotesReceivableNet | Accounts and Financing Receivable, after Allowance for Credit Loss | Quarterly
+   - >> Assets | Assets | Quarterly
+   - >Cash and Cash Equivalent
+    - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+   - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+   - >> FinanceLeaseRightOfUseAsset | Finance Lease, Right-of-Use Asset, after Accumulated Amortization | Yearly
+   - >> Goodwill | Goodwill | Quarterly
+   - >Intangible Assets, Net (Excluding Goodwill)
+    - >Finite-Lived Intangible Assets, Net
+     - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+     - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+     - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+    - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+    - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+   - >Investments
+    - >Debt Securities
+     - >> AvailableForSaleSecuritiesDebtSecurities | Debt Securities, Available-for-sale | Quarterly
+    - >> MarketableSecurities | Marketable Securities | Quarterly
+   - >> OperatingLeaseRightOfUseAsset | Operating Lease, Right-of-Use Asset | Quarterly
+   - >Other Restricted Assets
+    - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+   - >Property, Plant and Equipment, Net
+    - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+    - >Property, Plant and Equipment, Gross
+     - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+     - >> PropertySubjectToOrAvailableForOperatingLeaseGross | Property Subject to or Available for Operating Lease, Gross | Quarterly
+    - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+   - >Restricted Cash and Cash Equivalent
+    - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >Accounts Payable and Accrued Liabilities
+     - >Accrued Liabilities
+      - >> UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued | Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued | Approx 4018 days
+    - >> AssetRetirementObligationsNoncurrent | Asset Retirement Obligations, Noncurrent | Quarterly
+    - >Debt and Lease Obligation
+     - >> FinanceLeaseLiability | Finance Lease, Liability | Yearly
+     - >Long-Term Debt
+      - >> LongTermDebt | Long-term Debt | Quarterly
+    - >Deferred Revenue
+     - >> ContractWithCustomerLiability | Contract with Customer, Liability | Quarterly
+     - >> DeferredRevenue | Deferred Revenue | Yearly
+    - >> Liabilities | Liabilities | Quarterly
+    - >> OperatingLeaseLiability | Operating Lease, Liability | Yearly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - Limited Liability Company LLC Members Equity Including Portion Attributable To Noncontrolling Interest
+    - Limited Liability Company LLC Members Equity
+     - >Members' Equity
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Partners' Capital, Including Portion Attributable to Noncontrolling Interest
+    - >Partners' Capital
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Stockholders Equity Number Of Shares Par Value And Other Disclosures
+    - Common Stock Number Of Shares Par Value And Other Disclosures
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+    - Preferred Stock Number Of Shares Par Value And Other Disclosures
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+   - Temporary Equity
+    - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+     - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+ - Statement of Financial Position, Unclassified - Securities Based Operations 39
+  - >Assets
+   - >> Assets | Assets | Quarterly
+   - >Cash and Cash Equivalent
+    - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+   - Cash And Securities Segregated Under Federal And Other Regulations
+    - >Restricted Cash and Cash Equivalent
+     - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+   - >> DeferredIncomeTaxAssetsNet | Deferred Income Tax Assets, Net | Quarterly
+   - >> Goodwill | Goodwill | Quarterly
+   - >Intangible Assets, Net (Excluding Goodwill)
+    - >Finite-Lived Intangible Assets, Net
+     - >> FiniteLivedIntangibleAssetsAccumulatedAmortization | Finite-Lived Intangible Assets, Accumulated Amortization | Quarterly
+     - >> FiniteLivedIntangibleAssetsGross | Finite-Lived Intangible Assets, Gross | Quarterly
+     - >> FiniteLivedIntangibleAssetsNet | Finite-Lived Intangible Assets, Net | Quarterly
+    - >> IndefiniteLivedIntangibleAssetsExcludingGoodwill | Indefinite-lived Intangible Assets (Excluding Goodwill) | Quarterly
+    - >> IntangibleAssetsNetExcludingGoodwill | Intangible Assets, Net (Excluding Goodwill) | Quarterly
+   - >Financing Receivable, after Allowance for Credit Loss
+    - >> FinancingReceivableAllowanceForCreditLosses | Financing Receivable, Allowance for Credit Loss | Quarterly
+    - >> NotesReceivableNet | Financing Receivable, after Allowance for Credit Loss | Quarterly
+   - >Property, Plant and Equipment, Net
+    - >> AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment | Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment | Quarterly
+    - >> PropertyPlantAndEquipmentGross | Property, Plant and Equipment, Gross | Quarterly
+    - >> PropertyPlantAndEquipmentNet | Property, Plant and Equipment, Net | Quarterly
+  - >Liabilities and Equity
+   - >Liabilities
+    - >> ContractWithCustomerLiability | Contract with Customer, Liability | Quarterly
+    - >> FinanceLeaseLiability | Finance Lease, Liability | Yearly
+    - >> Liabilities | Liabilities | Quarterly
+    - >Long-Term Debt
+     - >> LongTermDebt | Long-term Debt | Quarterly
+    - >> OperatingLeaseLiability | Operating Lease, Liability | Yearly
+   - >> LiabilitiesAndStockholdersEquity | Liabilities and Equity | Quarterly
+   - Limited Liability Company LLC Members Equity Including Portion Attributable To Noncontrolling Interest
+    - Limited Liability Company LLC Members Equity
+     - >Members' Equity
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Partners' Capital, Including Portion Attributable to Noncontrolling Interest
+    - >Partners' Capital
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+   - >Equity, Including Portion Attributable to Noncontrolling Interest
+    - >> MinorityInterest | Stockholders' Equity Attributable to Noncontrolling Interest | Quarterly
+    - >Equity, Attributable to Parent
+     - >Accumulated Other Comprehensive Income (Loss), Net of Tax
+      - >> AccumulatedOtherComprehensiveIncomeLossNetOfTax | Accumulated Other Comprehensive Income (Loss), Net of Tax | Quarterly
+     - >Additional Paid in Capital
+      - >> AdditionalPaidInCapital | Additional Paid in Capital | Quarterly
+      - >> AdditionalPaidInCapitalCommonStock | Additional Paid in Capital, Common Stock | Quarterly
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+     - >Retained Earnings (Accumulated Deficit)
+      - >> RetainedEarningsAccumulatedDeficit | Retained Earnings (Accumulated Deficit) | Quarterly
+     - >> StockholdersEquity | Stockholders' Equity Attributable to Parent | Quarterly
+    - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Stockholders Equity Number Of Shares Par Value And Other Disclosures
+    - Common Stock Number Of Shares Par Value And Other Disclosures
+     - >> CommonStockValue | Common Stock, Value, Issued | Quarterly
+    - Preferred Stock Number Of Shares Par Value And Other Disclosures
+     - >> PreferredStockValue | Preferred Stock, Value, Issued | Quarterly
+   - Temporary Equity
+    - >Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests
+     - >Redeemable Noncontrolling Interest, Equity, Carrying Amount
+      - >> RedeemableNoncontrollingInterestEquityCarryingAmount | Redeemable Noncontrolling Interest, Equity, Carrying Amount | Quarterly
+     - >> TemporaryEquityCarryingAmountAttributableToParent | Temporary Equity, Carrying Amount, Attributable to Parent | Quarterly
+     - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+ - Statement of Income (Including Gross Margin) 67
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+       - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+       - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+        - >Interest and Debt Expense
+         - >Interest Expense, Nonoperating
+          - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+          - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+          - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+          - >> InterestExpenseNonoperating | <nil> | Quarterly
+        - >Nonoperating Income (Expense)
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+         - >Investment Income, Nonoperating
+          - >Investment Income, Net
+           - >Investment Income, Interest and Dividend
+            - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+          - >Nonoperating Gains (Losses)
+           - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+         - >Other Nonoperating Income (Expense)
+          - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+        - >Operating Income (Loss)
+         - >Gross Profit
+          - >Cost of Revenue
+           - >Cost of Goods and Services Sold
+            - >Cost of Goods and Service, Excluding Depreciation, Depletion, and Amortization
+             - >> CostOfGoodsSoldSalesTypeLease | Cost of Goods Sold, Sales-type Lease | Quarterly
+             - >Production Related Impairments or Charges
+              - >> InventoryWriteDown | Inventory Write-down | Quarterly
+           - >> CostOfRevenue | Cost of Revenue | Quarterly
+          - >> GrossProfit | Gross Profit | Quarterly
+          - >Revenues
+           - >> Revenues | Revenues | Quarterly
+           - >> SalesTypeLeaseRevenue | Sales-type Lease, Revenue | Quarterly
+         - Operating Expenses
+          - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+           - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+           - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+           - >Gain (Loss) on Disposition of Property Plant Equipment
+            - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+          - Operating Costs And Expenses
+           - Depreciation Depletion And Amortization Nonproduction
+            - >Amortization of Deferred Charges
+             - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+             - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+            - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+           - >Research and Development Expense
+            - >> ResearchAndDevelopmentExpense | Research and Development Expense | Quarterly
+           - >Restructuring, Settlement and Impairment Provisions
+            - >Asset Impairment Charges
+             - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+             - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+            - >Restructuring Charges
+             - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> OperatingExpenses | Operating Expenses | Quarterly
+          - >Selling, General and Administrative Expense
+           - >General and Administrative Expense
+            - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+           - Selling And Marketing Expense
+            - >Marketing and Advertising Expense
+             - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+            - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+           - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+         - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+  - Partnership Income
+   - >Income (Loss) Attributable to Parent, before Tax
+    - >Income (Loss), Including Portion Attributable to Noncontrolling Interest, before Tax
+     - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+      - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Interest and Debt Expense
+        - >Interest Expense, Nonoperating
+         - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+         - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+         - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+         - >> InterestExpenseNonoperating | <nil> | Quarterly
+       - >Nonoperating Income (Expense)
+        - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Investment Income, Nonoperating
+         - >Investment Income, Net
+          - >Investment Income, Interest and Dividend
+           - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+         - >Nonoperating Gains (Losses)
+          - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+        - >Other Nonoperating Income (Expense)
+         - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+       - >Operating Income (Loss)
+        - >Gross Profit
+         - >Cost of Revenue
+          - >Cost of Goods and Services Sold
+           - >Cost of Goods and Service, Excluding Depreciation, Depletion, and Amortization
+            - >> CostOfGoodsSoldSalesTypeLease | Cost of Goods Sold, Sales-type Lease | Quarterly
+            - >Production Related Impairments or Charges
+             - >> InventoryWriteDown | Inventory Write-down | Quarterly
+          - >> CostOfRevenue | Cost of Revenue | Quarterly
+         - >> GrossProfit | Gross Profit | Quarterly
+         - >Revenues
+          - >> Revenues | Revenues | Quarterly
+          - >> SalesTypeLeaseRevenue | Sales-type Lease, Revenue | Quarterly
+        - Operating Expenses
+         - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+          - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+          - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+          - >Gain (Loss) on Disposition of Property Plant Equipment
+           - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+         - Operating Costs And Expenses
+          - Depreciation Depletion And Amortization Nonproduction
+           - >Amortization of Deferred Charges
+            - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+            - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+           - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+          - >Research and Development Expense
+           - >> ResearchAndDevelopmentExpense | Research and Development Expense | Quarterly
+          - >Restructuring, Settlement and Impairment Provisions
+           - >Asset Impairment Charges
+            - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+            - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+           - >Restructuring Charges
+            - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+         - >> OperatingExpenses | Operating Expenses | Quarterly
+         - >Selling, General and Administrative Expense
+          - >General and Administrative Expense
+           - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+          - Selling And Marketing Expense
+           - >Marketing and Advertising Expense
+            - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+           - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+          - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+        - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+ - Statement of Income 61
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+       - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+       - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+        - >Interest and Debt Expense
+         - >Interest Expense, Nonoperating
+          - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+          - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+          - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+          - >> InterestExpenseNonoperating | <nil> | Quarterly
+        - >Nonoperating Income (Expense)
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+         - >Investment Income, Nonoperating
+          - >Investment Income, Net
+           - >Investment Income, Interest and Dividend
+            - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+          - >Nonoperating Gains (Losses)
+           - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+         - >Other Nonoperating Income (Expense)
+          - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+        - >Operating Income (Loss)
+         - >Costs and Expenses
+          - >Cost of Revenue
+           - >Cost of Goods and Services Sold
+            - >Cost of Goods and Service, Excluding Depreciation, Depletion, and Amortization
+             - >Production Related Impairments or Charges
+              - >> InventoryWriteDown | Inventory Write-down | Quarterly
+           - >> CostOfRevenue | Cost of Revenue | Quarterly
+          - Operating Expenses
+           - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+            - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+            - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+            - >Gain (Loss) on Disposition of Property Plant Equipment
+             - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+           - Operating Costs And Expenses
+            - Depreciation Depletion And Amortization Nonproduction
+             - >Amortization of Deferred Charges
+              - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+              - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+             - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+            - >Research and Development Expense
+             - >> ResearchAndDevelopmentExpense | Research and Development Expense | Quarterly
+            - >Restructuring, Settlement and Impairment Provisions
+             - >Asset Impairment Charges
+              - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+              - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+             - >Restructuring Charges
+              - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+           - >> OperatingExpenses | Operating Expenses | Quarterly
+           - >Selling, General and Administrative Expense
+            - >General and Administrative Expense
+             - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+            - Selling And Marketing Expense
+             - >Marketing and Advertising Expense
+              - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+             - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+            - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+         - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+         - >Revenues
+          - >> Revenues | Revenues | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+  - Partnership Income
+   - >Income (Loss) Attributable to Parent, before Tax
+    - >Income (Loss), Including Portion Attributable to Noncontrolling Interest, before Tax
+     - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+      - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Interest and Debt Expense
+        - >Interest Expense, Nonoperating
+         - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+         - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+         - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+         - >> InterestExpenseNonoperating | <nil> | Quarterly
+       - >Nonoperating Income (Expense)
+        - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Investment Income, Nonoperating
+         - >Investment Income, Net
+          - >Investment Income, Interest and Dividend
+           - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+         - >Nonoperating Gains (Losses)
+          - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+        - >Other Nonoperating Income (Expense)
+         - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+       - >Operating Income (Loss)
+        - >Costs and Expenses
+         - >Cost of Revenue
+          - >Cost of Goods and Services Sold
+           - >Cost of Goods and Service, Excluding Depreciation, Depletion, and Amortization
+            - >Production Related Impairments or Charges
+             - >> InventoryWriteDown | Inventory Write-down | Quarterly
+          - >> CostOfRevenue | Cost of Revenue | Quarterly
+         - Operating Expenses
+          - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+           - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+           - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+           - >Gain (Loss) on Disposition of Property Plant Equipment
+            - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+          - Operating Costs And Expenses
+           - Depreciation Depletion And Amortization Nonproduction
+            - >Amortization of Deferred Charges
+             - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+             - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+            - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+           - >Research and Development Expense
+            - >> ResearchAndDevelopmentExpense | Research and Development Expense | Quarterly
+           - >Restructuring, Settlement and Impairment Provisions
+            - >Asset Impairment Charges
+             - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+             - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+            - >Restructuring Charges
+             - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> OperatingExpenses | Operating Expenses | Quarterly
+          - >Selling, General and Administrative Expense
+           - >General and Administrative Expense
+            - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+           - Selling And Marketing Expense
+            - >Marketing and Advertising Expense
+             - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+            - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+           - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+        - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+        - >Revenues
+         - >> Revenues | Revenues | Quarterly
+ - Statement of Income, Additional Statement of Income Elements 3
+  - Supplemental Income Statement Elements
+   - Goodwill And Intangible Asset Impairment
+    - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+    - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+   - >Interest Expense, Operating and Nonoperating
+    - >> InterestExpense | Interest Expense | Quarterly
+ - Statement of Income, Interest Based Revenue 16
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Noninterest Expense
+        - Depreciation Depletion And Amortization Nonproduction
+         - >Amortization of Deferred Charges
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+         - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+        - >Marketing and Advertising Expense
+         - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+        - >Restructuring, Settlement and Impairment Provisions
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Charges
+          - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+        - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+       - >Revenues, Net of Interest Expense
+        - >Interest Income (Expense), after Provision for Loan Loss
+         - >Interest Income (Expense), Operating
+          - >Interest Expense, Operating
+           - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+        - >Noninterest Income
+         - Gains Losses On Sales Of Assets
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+         - >Noninterest Income, Other
+          - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+      - Minority Interest In Net Income Loss Of Consolidated Entities
+       - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+ - Statement of Income, Insurance Based Revenue 16
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Benefits, Losses and Expenses
+        - Depreciation Depletion And Amortization Nonproduction
+         - >Amortization of Deferred Charges
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+         - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+        - >> InterestExpense | Interest Expense | Quarterly
+        - >Restructuring, Settlement and Impairment Provisions
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Charges
+          - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+        - >Selling, General and Administrative Expense
+         - >General and Administrative Expense
+          - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+         - Selling And Marketing Expense
+          - >Marketing and Advertising Expense
+           - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+         - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+       - >Revenues
+        - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+        - >> Revenues | Revenues | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+ - Statement of Income, Securities Based Income 19
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - Operating Expenses
+        - Depreciation Depletion And Amortization Nonproduction
+         - >Amortization of Deferred Charges
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+         - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+        - Gains Losses On Sales Of Assets
+         - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >Marketing and Advertising Expense
+         - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+        - >> OperatingExpenses | Operating Expenses | Quarterly
+        - >Restructuring, Settlement and Impairment Provisions
+         - >Restructuring Charges
+          - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+       - >Revenues, Net of Interest Expense
+        - >Revenues
+         - >> Revenues | Revenues | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+  - Partnership Income
+   - >Income (Loss) Attributable to Parent, before Tax
+    - >Income (Loss), Including Portion Attributable to Noncontrolling Interest, before Tax
+     - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+      - Operating Expenses
+       - Depreciation Depletion And Amortization Nonproduction
+        - >Amortization of Deferred Charges
+         - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+        - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+       - Gains Losses On Sales Of Assets
+        - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+       - >Marketing and Advertising Expense
+        - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+       - >> OperatingExpenses | Operating Expenses | Quarterly
+       - >Restructuring, Settlement and Impairment Provisions
+        - >Restructuring Charges
+         - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+      - >Revenues, Net of Interest Expense
+       - >Revenues
+        - >> Revenues | Revenues | Quarterly
+ - Statement of Income, Real Estate, Excluding REITs 61
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+       - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+       - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+        - >Interest and Debt Expense
+         - >Interest Expense, Nonoperating
+          - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+          - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+          - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+          - >> InterestExpenseNonoperating | <nil> | Quarterly
+        - >Nonoperating Income (Expense)
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+         - >Investment Income, Net
+          - >Investment Income, Interest and Dividend
+           - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+         - >Nonoperating Gains (Losses)
+          - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+         - >Other Nonoperating Income (Expense)
+          - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+        - >Operating Income (Loss)
+         - >Gross Profit
+          - >Cost of Revenue
+           - >Cost of Goods and Services Sold
+            - >> InventoryWriteDown | Inventory Write-down | Quarterly
+           - >> CostOfRevenue | Cost of Revenue | Quarterly
+          - >> GrossProfit | Gross Profit | Quarterly
+          - >Revenues
+           - >> Revenues | Revenues | Quarterly
+         - Operating Expenses
+          - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+           - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+           - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+           - >Gain (Loss) on Disposition of Property Plant Equipment
+            - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+          - Operating Costs And Expenses
+           - Depreciation Depletion And Amortization Nonproduction
+            - >Amortization of Deferred Charges
+             - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+             - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+            - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+           - >Restructuring, Settlement and Impairment Provisions
+            - >Asset Impairment Charges
+             - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+             - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+            - >Restructuring Charges
+             - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> OperatingExpenses | Operating Expenses | Quarterly
+          - >Selling, General and Administrative Expense
+           - >General and Administrative Expense
+            - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+           - Selling And Marketing Expense
+            - >Marketing and Advertising Expense
+             - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+            - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+           - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+         - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+  - Partnership Income
+   - >Income (Loss) Attributable to Parent, before Tax
+    - >Income (Loss), Including Portion Attributable to Noncontrolling Interest, before Tax
+     - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+      - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Interest and Debt Expense
+        - >Interest Expense, Nonoperating
+         - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+         - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+         - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+         - >> InterestExpenseNonoperating | <nil> | Quarterly
+       - >Nonoperating Income (Expense)
+        - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Investment Income, Net
+         - >Investment Income, Interest and Dividend
+          - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+        - >Nonoperating Gains (Losses)
+         - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+        - >Other Nonoperating Income (Expense)
+         - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+       - >Operating Income (Loss)
+        - >Gross Profit
+         - >Cost of Revenue
+          - >Cost of Goods and Services Sold
+           - >> InventoryWriteDown | Inventory Write-down | Quarterly
+          - >> CostOfRevenue | Cost of Revenue | Quarterly
+         - >> GrossProfit | Gross Profit | Quarterly
+         - >Revenues
+          - >> Revenues | Revenues | Quarterly
+        - Operating Expenses
+         - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+          - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+          - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+          - >Gain (Loss) on Disposition of Property Plant Equipment
+           - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+         - Operating Costs And Expenses
+          - Depreciation Depletion And Amortization Nonproduction
+           - >Amortization of Deferred Charges
+            - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+            - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+           - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+          - >Restructuring, Settlement and Impairment Provisions
+           - >Asset Impairment Charges
+            - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+            - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+           - >Restructuring Charges
+            - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+         - >> OperatingExpenses | Operating Expenses | Quarterly
+         - >Selling, General and Administrative Expense
+          - >General and Administrative Expense
+           - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+          - Selling And Marketing Expense
+           - >Marketing and Advertising Expense
+            - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+           - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+          - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+        - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+ - Statement of Income, Real Estate Investment Trusts 61
+  - >Net Income (Loss) Available to Common Stockholders, Basic
+   - >Net Income (Loss) Attributable to Parent
+    - Minority Interest In Net Income Loss Of Consolidated Entities
+     - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+    - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+    - Net Income Loss Attributable To Reporting Entity
+     - >Income (Loss) from Continuing Operations, Net of Tax, Attributable to Parent
+      - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+       - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+       - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+        - >Interest and Debt Expense
+         - >Interest Expense, Nonoperating
+          - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+          - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+          - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+          - >> InterestExpenseNonoperating | <nil> | Quarterly
+        - >Nonoperating Income (Expense)
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+         - >Investment Income, Net
+          - >Investment Income, Interest and Dividend
+           - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+         - >Nonoperating Gains (Losses)
+          - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+         - >Other Nonoperating Income (Expense)
+          - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+        - >Operating Income (Loss)
+         - >Gross Profit
+          - >Cost of Revenue
+           - >Cost of Goods and Services Sold
+            - >> InventoryWriteDown | Inventory Write-down | Quarterly
+           - >> CostOfRevenue | Cost of Revenue | Quarterly
+          - >> GrossProfit | Gross Profit | Quarterly
+          - >Revenues
+           - >> Revenues | Revenues | Quarterly
+         - Operating Expenses
+          - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+           - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+           - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+           - >Gain (Loss) on Disposition of Property Plant Equipment
+            - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+          - Operating Costs And Expenses
+           - Depreciation Depletion And Amortization Nonproduction
+            - >Amortization of Deferred Charges
+             - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+             - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+            - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+           - >Restructuring, Settlement and Impairment Provisions
+            - >Asset Impairment Charges
+             - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+             - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+            - >Restructuring Charges
+             - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> OperatingExpenses | Operating Expenses | Quarterly
+          - >Selling, General and Administrative Expense
+           - >General and Administrative Expense
+            - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+           - Selling And Marketing Expense
+            - >Marketing and Advertising Expense
+             - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+            - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+           - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+         - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+      - >> IncomeTaxExpenseBenefit | Income Tax Expense (Benefit) | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> NetIncomeLossAvailableToCommonStockholdersBasic | Net Income (Loss) Available to Common Stockholders, Basic | Quarterly
+  - Partnership Income
+   - >Income (Loss) Attributable to Parent, before Tax
+    - >Income (Loss), Including Portion Attributable to Noncontrolling Interest, before Tax
+     - >Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest
+      - >> IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest | Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest | Quarterly
+      - >Income (Loss) from Continuing Operations before Equity Method Investments, Income Taxes, Noncontrolling Interest
+       - >Interest and Debt Expense
+        - >Interest Expense, Nonoperating
+         - >> DebtRelatedCommitmentFeesAndDebtIssuanceCosts | Debt Related Commitment Fees and Debt Issuance Costs | Quarterly
+         - >> FinanceLeaseInterestExpense | Finance Lease, Interest Expense | Yearly
+         - >> InterestExpenseDebt | Interest Expense, Debt | Quarterly
+         - >> InterestExpenseNonoperating | <nil> | Quarterly
+       - >Nonoperating Income (Expense)
+        - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Investment Income, Net
+         - >Investment Income, Interest and Dividend
+          - >> InvestmentIncomeInterest | Investment Income, Interest | Quarterly
+        - >Nonoperating Gains (Losses)
+         - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+        - >Other Nonoperating Income (Expense)
+         - >> OtherNonoperatingIncomeExpense | Other Nonoperating Income (Expense) | Quarterly
+       - >Operating Income (Loss)
+        - >Gross Profit
+         - >Cost of Revenue
+          - >Cost of Goods and Services Sold
+           - >> InventoryWriteDown | Inventory Write-down | Quarterly
+          - >> CostOfRevenue | Cost of Revenue | Quarterly
+         - >> GrossProfit | Gross Profit | Quarterly
+         - >Revenues
+          - >> Revenues | Revenues | Quarterly
+        - Operating Expenses
+         - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+          - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+          - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+          - >Gain (Loss) on Disposition of Property Plant Equipment
+           - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+         - Operating Costs And Expenses
+          - Depreciation Depletion And Amortization Nonproduction
+           - >Amortization of Deferred Charges
+            - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+            - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+           - >> DepreciationAndAmortization | Depreciation, Depletion and Amortization, Nonproduction | Quarterly
+          - >Restructuring, Settlement and Impairment Provisions
+           - >Asset Impairment Charges
+            - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+            - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+           - >Restructuring Charges
+            - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+         - >> OperatingExpenses | Operating Expenses | Quarterly
+         - >Selling, General and Administrative Expense
+          - >General and Administrative Expense
+           - >> OperatingLeaseExpense | Operating Lease, Expense | Quarterly
+          - Selling And Marketing Expense
+           - >Marketing and Advertising Expense
+            - >> MarketingAndAdvertisingExpense | Marketing and Advertising Expense | Yearly
+           - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+          - >> SellingGeneralAndAdministrativeExpense | Selling, General and Administrative Expense | Quarterly
+        - >> OperatingIncomeLoss | Operating Income (Loss) | Quarterly
+ - Statement of Comprehensive Income 14
+  - >Comprehensive Income (Loss), Net of Tax, Attributable to Parent
+   - >> ComprehensiveIncomeNetOfTax | Comprehensive Income (Loss), Net of Tax, Attributable to Parent | Quarterly
+   - >Other Comprehensive Income (Loss), Net of Tax, Portion Attributable to Parent
+    - >Other Comprehensive Income (Loss), Available-for-Sale Securities Adjustment, Net of Tax, Portion Attributable to Parent
+     - Other Comprehensive Income Available For Sale Securities Adjustment Net Of Tax Period Increase Decrease
+      - >> OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax | OCI, Debt Securities, Available-for-Sale, Gain (Loss), after Adjustment and Tax | Yearly
+      - >> OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax | Other Comprehensive Income (Loss), Reclassification Adjustment from AOCI for Sale of Securities, Net of Tax | Quarterly
+    - >Other Comprehensive Income (Loss), Foreign Currency Transaction and Translation Adjustment, Net of Tax, Portion Attributable to Parent
+     - Other Comprehensive Income Foreign Currency Transaction And Translation Adjustment Net Of Tax Period Increase Decrease
+      - >> OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax | Other Comprehensive Income (Loss), Foreign Currency Transaction and Translation Adjustment, Net of Tax | Quarterly
+    - >> OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent | Other Comprehensive Income (Loss), Net of Tax, Portion Attributable to Parent | Quarterly
+  - >Comprehensive Income (Loss), Net of Tax, Attributable to Noncontrolling Interest
+   - >> ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest | Comprehensive Income (Loss), Net of Tax, Attributable to Noncontrolling Interest | Quarterly
+  - >Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest
+   - >> ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest | Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - Other Comprehensive Income Loss Net Of Tax Period Increase Decrease
+    - Other Comprehensive Income Available For Sale Securities Adjustment Net Of Tax Period Increase Decrease
+     - >> OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax | OCI, Debt Securities, Available-for-Sale, Gain (Loss), after Adjustment and Tax | Yearly
+     - >> OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax | Other Comprehensive Income (Loss), Reclassification Adjustment from AOCI for Sale of Securities, Net of Tax | Quarterly
+    - Other Comprehensive Income Foreign Currency Transaction And Translation Adjustment Net Of Tax Period Increase Decrease
+     - >> OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax | Other Comprehensive Income (Loss), Foreign Currency Transaction and Translation Adjustment, Net of Tax | Quarterly
+    - >> OtherComprehensiveIncomeLossNetOfTax | Other Comprehensive Income (Loss), Net of Tax | Quarterly
+  - >Net Income (Loss) Attributable to Parent
+   - >> NetIncomeLoss | Net Income (Loss) Attributable to Parent | Quarterly
+   - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+   - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+ - Statement of Shareholders' Equity 19
+  - IncreaseDecreaseInStockholdersEquityRollForward
+   - Adjustments To Additional Paid In Capital
+    - Adjustments To Additional Paid In Capital Sharebased Compensation Requisite Service Period Recognition
+     - >> AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue | APIC, Share-based Payment Arrangement, Increase for Cost Recognition | Quarterly
+    - >> AdjustmentsToAdditionalPaidInCapitalWarrantIssued | Adjustments to Additional Paid in Capital, Warrant Issued | Quarterly
+   - >Net Income (Loss), Including Portion Attributable to Nonredeemable Noncontrolling Interest
+    - >> NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest | Net Income (Loss), Including Portion Attributable to Nonredeemable Noncontrolling Interest | Quarterly
+    - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> OtherComprehensiveIncomeLossNetOfTax | Other Comprehensive Income (Loss), Net of Tax | Quarterly
+   - Stock Issued During Period Sharebased Compensation
+    - >> StockIssuedDuringPeriodValueStockOptionsExercised | Stock Issued During Period, Value, Stock Options Exercised | Yearly
+   - >> StockIssuedDuringPeriodValueAcquisitions | Stock Issued During Period, Value, Acquisitions | Quarterly
+   - Stock Issued During Period Value Conversion Of Convertible Securities Net Of Adjustments
+    - >> AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt | Adjustments to Additional Paid in Capital, Equity Component of Convertible Debt | Yearly
+    - >> StockIssuedDuringPeriodValueConversionOfConvertibleSecurities | Stock Issued During Period, Value, Conversion of Convertible Securities | Quarterly
+   - >> StockIssuedDuringPeriodValueEmployeeStockPurchasePlan | Stock Issued During Period, Value, Employee Stock Purchase Plan | Yearly
+   - >> StockIssuedDuringPeriodValueNewIssues | Stock Issued During Period, Value, New Issues | Yearly
+   - >> StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest | Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> StockholdersEquityOther | Stockholders' Equity, Other | Quarterly
+  - IncreaseDecreaseInTemporaryEquityRollForward
+   - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+   - >> TemporaryEquityNetIncome | Temporary Equity, Net Income | Quarterly
+  - Noncontrolling Interest Items
+   - >> ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest | Comprehensive Income (Loss), Net of Tax, Attributable to Noncontrolling Interest | Quarterly
+   - >> MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders | Noncontrolling Interest, Decrease from Distributions to Noncontrolling Interest Holders | Quarterly
+   - >> MinorityInterestDecreaseFromRedemptions | Noncontrolling Interest, Decrease from Redemptions or Purchase of Interests | Quarterly
+   - Minority Interest In Net Income Loss Of Consolidated Entities
+    - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+ - Statement of Partners' Capital 10
+  - IncreaseDecreaseInPartnersCapitalRollForward
+   - >Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest
+    - >> ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest | Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest | Quarterly
+    - >Net Income (Loss), Including Portion Attributable to Nonredeemable Noncontrolling Interest
+     - >> NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest | Net Income (Loss), Including Portion Attributable to Nonredeemable Noncontrolling Interest | Quarterly
+     - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+    - >> OtherComprehensiveIncomeLossNetOfTax | Other Comprehensive Income (Loss), Net of Tax | Quarterly
+  - IncreaseDecreaseInTemporaryEquityRollForward
+   - >> TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests | Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests | Quarterly
+   - >> TemporaryEquityNetIncome | Temporary Equity, Net Income | Quarterly
+  - Noncontrolling Interest Items
+   - >> ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest | Comprehensive Income (Loss), Net of Tax, Attributable to Noncontrolling Interest | Quarterly
+   - >> MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders | Noncontrolling Interest, Decrease from Distributions to Noncontrolling Interest Holders | Quarterly
+   - >> MinorityInterestDecreaseFromRedemptions | Noncontrolling Interest, Decrease from Redemptions or Purchase of Interests | Quarterly
+   - Minority Interest In Net Income Loss Of Consolidated Entities
+    - >> NetIncomeLossAttributableToNoncontrollingInterest | Net Income (Loss) Attributable to Noncontrolling Interest | Quarterly
+ - Statement of Cash Flows 83
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Including Exchange Rate Effect and Discontinued Operation
+   - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Excluding Exchange Rate Effect, Including Discontinued Operation
+    - Net Cash Provided By Used In Discontinued Operations And Continuing Operations
+     - >Cash Provided by (Used in) Continuing Operation
+      - >> NetCashProvidedByUsedInContinuingOperations | Net Cash Provided by (Used in) Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Cash Provided by (Used in) Financing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInFinancingActivities | Net Cash Provided by (Used in) Financing Activities | Quarterly
+     - >Cash Provided by (Used in) Financing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >Payment of Financing and Stock Issuance Costs
+       - >> PaymentOfFinancingAndStockIssuanceCosts | Payment of Financing and Stock Issuance Costs | Quarterly
+       - >Payments of Financing Costs
+        - >> PaymentsOfDebtIssuanceCosts | Payments of Debt Issuance Costs | Quarterly
+        - >> PaymentsOfFinancingCosts | Payments of Financing Costs | Quarterly
+       - >> PaymentsOfStockIssuanceCosts | Payments of Stock Issuance Costs | Quarterly
+      - Payments For Proceeds From Hedge Financing Activities
+       - >> PaymentsForHedgeFinancingActivities | Payments for Hedge, Financing Activities | Quarterly
+       - >> PaymentsForProceedsFromHedgeFinancingActivities | Payments for (Proceeds from) Hedge, Financing Activities | Quarterly
+       - >> ProceedsFromHedgeFinancingActivities | Proceeds from Hedge, Financing Activities | Quarterly
+      - Proceeds From Payments To Minority Shareholders
+       - >> PaymentsToMinorityShareholders | Payments to Noncontrolling Interests | Quarterly
+       - >> ProceedsFromMinorityShareholders | Proceeds from Noncontrolling Interests | Quarterly
+      - Proceeds From Repayments Of Debt
+       - >Proceeds from (Repayments of) Long-Term Debt and Capital Securities
+        - >Proceeds from Issuance of Long-Term Debt and Capital Securities, Net
+         - >Proceeds from Issuance of Long-Term Debt
+          - >> ProceedsFromConvertibleDebt | Proceeds from Convertible Debt | Quarterly
+          - >> ProceedsFromIssuanceOfLongTermDebt | Proceeds from Issuance of Long-term Debt | Quarterly
+        - >> ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities | Proceeds from (Repayments of) Long-term Debt and Capital Securities | Quarterly
+        - >> ProceedsFromRepaymentsOfSecuredDebt | Proceeds from (Repayments of) Secured Debt | Quarterly
+        - >Repayment of Long-Term Debt, Long-Term Lease Obligation, and Capital Security
+         - >> FinanceLeasePrincipalPayments | Finance Lease, Principal Payments | Quarterly
+         - >Repayments of Long-Term Debt
+          - >> RepaymentsOfConvertibleDebt | Repayments of Convertible Debt | Quarterly
+          - >> RepaymentsOfLongTermDebt | Repayments of Long-term Debt | Quarterly
+          - >> RepaymentsOfRelatedPartyDebt | Repayments of Related Party Debt | Quarterly
+      - Proceeds From Repurchase Of Equity
+       - >Payments for Repurchase of Equity
+        - >> PaymentsForRepurchaseOfWarrants | Payments for Repurchase of Warrants | Quarterly
+       - >Proceeds from Issuance or Sale of Equity
+        - >> ProceedsFromIssuanceOfCommonStock | Proceeds from Issuance of Common Stock | Quarterly
+        - >> ProceedsFromIssuanceOfPrivatePlacement | Proceeds from Issuance of Private Placement | Quarterly
+        - >Proceeds, Issuance of Shares, Share-Based Payment Arrangement, Including Option Exercised
+         - >> ProceedsFromIssuanceOfSharesUnderIncentiveAndShareBasedCompensationPlansIncludingStockOptions | Proceeds, Issuance of Shares, Share-based Payment Arrangement, Including Option Exercised | Quarterly
+        - >> ProceedsFromIssuanceOfWarrants | Proceeds from Issuance of Warrants | Quarterly
+    - >Cash Provided by (Used in) Investing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInInvestingActivities | Net Cash Provided by (Used in) Investing Activities | Quarterly
+     - >Cash Provided by (Used in) Investing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - Payments For Proceeds From Businesses And Interest In Affiliates
+       - >Payments to Acquire Businesses and Interest in Affiliates
+        - >Payments to Acquire Businesses, Net of Cash Acquired
+         - >> PaymentsToAcquireBusinessesNetOfCashAcquired | Payments to Acquire Businesses, Net of Cash Acquired | Quarterly
+      - Payments For Proceeds From Investments
+       - >Payments to Acquire Investments
+        - >> PaymentsToAcquireInvestments | Payments to Acquire Investments | Quarterly
+        - >> PaymentsToAcquireMarketableSecurities | Payments to Acquire Marketable Securities | Quarterly
+       - >Proceeds from Sale, Maturity and Collection of Investments
+        - >Proceeds from Sale and Maturity of Debt Securities, Available-for-Sale
+         - >> ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities | Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale | Quarterly
+        - >> ProceedsFromSaleAndMaturityOfMarketableSecurities | Proceeds from Sale and Maturity of Marketable Securities | Quarterly
+        - >> ProceedsFromSaleMaturityAndCollectionsOfInvestments | Proceeds from Sale, Maturity and Collection of Investments | Quarterly
+      - Payments For Proceeds From Productive Assets
+       - >Payments to Acquire Productive Assets
+        - >> PaymentsToAcquireIntangibleAssets | Payments to Acquire Intangible Assets | Quarterly
+        - >Payments to Acquire Property, Plant, and Equipment
+         - >> PaymentsToAcquirePropertyPlantAndEquipment | Payments to Acquire Property, Plant, and Equipment | Quarterly
+    - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+     - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+      - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+        - >> AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities | Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities | Quarterly
+        - >Deferred Income Taxes and Tax Credits
+         - >> DeferredIncomeTaxExpenseBenefit | Deferred Income Tax Expense (Benefit) | Yearly
+         - >> InvestmentTaxCredit | Investment Tax Credit | Yearly
+        - >Depreciation, Depletion and Amortization, Nonproduction
+         - >Amortization
+          - >Amortization of Debt Issuance Costs and Discounts
+           - >> AmortizationOfDebtDiscountPremium | Amortization of Debt Discount (Premium) | Quarterly
+           - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+           - >> AmortizationOfFinancingCostsAndDiscounts | Amortization of Debt Issuance Costs and Discounts | Quarterly
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+          - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+         - >Depreciation
+          - >> Depreciation | Depreciation | Quarterly
+         - >> DepreciationDepletionAndAmortization | Depreciation, Depletion and Amortization | Quarterly
+        - >Employee Benefits and Share-Based Compensation
+         - >Share-Based Payment Arrangement, Noncash Expense
+          - >> ShareBasedCompensation | Share-based Payment Arrangement, Noncash Expense | Quarterly
+        - >Gain (Loss), Foreign Currency Transaction, before Tax
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+         - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+         - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+         - >Gain (Loss) on Disposition of Property Plant Equipment
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >> InventoryWriteDown | Inventory Write-down | Quarterly
+        - >Other Noncash Income (Expense)
+         - >> OtherNoncashIncomeExpense | Other Noncash Income (Expense) | Quarterly
+        - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+        - >Restructuring Costs and Asset Impairment Charges
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Costs
+          - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly
+          - >Restructuring Charges
+           - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> RestructuringCosts | Restructuring Costs | Approx 184 days
+        - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+        - >Increase (Decrease) in Operating Assets
+         - >Increase (Decrease) in Inventories
+          - >> IncreaseDecreaseInInventories | Increase (Decrease) in Inventories | Quarterly
+         - >Increase (Decrease) in Other Operating Assets
+          - >> IncreaseDecreaseInOtherNoncurrentAssets | Increase (Decrease) in Other Noncurrent Assets | Quarterly
+          - >> IncreaseDecreaseInOtherOperatingAssets | Increase (Decrease) in Other Operating Assets | Quarterly
+         - >Increase (Decrease) in Prepaid Expense and Other Assets
+          - >> IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets | Increase (Decrease) in Prepaid Expense and Other Assets | Quarterly
+         - >Increase (Decrease) in Receivables
+          - >> IncreaseDecreaseInAccountsReceivable | Increase (Decrease) in Accounts Receivable | Quarterly
+        - >Increase (Decrease) in Operating Liabilities
+         - >Increase (Decrease) in Accounts Payable and Accrued Liabilities
+          - >Increase (Decrease) in Accounts Payable
+           - >> IncreaseDecreaseInAccountsPayable | Increase (Decrease) in Accounts Payable | Quarterly
+          - >> IncreaseDecreaseInAccountsPayableAndAccruedLiabilities | Increase (Decrease) in Accounts Payable and Accrued Liabilities | Quarterly
+          - >Increase (Decrease) in Accrued Liabilities
+           - >> IncreaseDecreaseInAccruedLiabilities | Increase (Decrease) in Accrued Liabilities | Quarterly
+         - >> IncreaseDecreaseInContractWithCustomerLiability | Increase (Decrease) in Contract with Customer, Liability | Quarterly
+         - >> IncreaseDecreaseInDeferredRevenue | Increase (Decrease) in Deferred Revenue | Quarterly
+         - >Increase (Decrease) in Other Operating Liabilities
+          - >> IncreaseDecreaseInOtherNoncurrentLiabilities | Increase (Decrease) in Other Noncurrent Liabilities | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+      - Net Income Loss Attributable To Reporting Entity
+       - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect | Quarterly
+   - >Effect of Exchange Rate on Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+ - Statement of Cash Flows, Additional Cash Flow Elements 15
+  - Additional Cash Flow Elements
+   - Additional Cash Flow Elements Financing Activities
+    - Proceeds From Repayments Of Debt
+     - >> ProceedsFromIssuanceOfDebt | Proceeds from Issuance of Debt | Quarterly
+     - >> RepaymentsOfDebtAndCapitalLeaseObligations | Repayments of Debt and Lease Obligation | Quarterly
+   - Additional Cash Flow Elements Investing Activities
+    - Payments For Investing Activities
+     - >> PaymentsToAcquireAssetsInvestingActivities | Payments to Acquire Assets, Investing Activities | Monthly
+    - Payments For Proceeds From Investments Alternative
+     - Payments For Proceeds From Short Term Investments Alternative
+      - >Proceeds from Sale, Maturity and Collection of Short-Term Investments
+       - >> ProceedsFromSaleOfShortTermInvestments | Proceeds from Sale of Short-term Investments | Quarterly
+   - Additional Cash Flow Elements Operating Activities
+    - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+     - >Gain (Loss), Foreign Currency Transaction, before Tax
+      - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+      - >> ForeignCurrencyTransactionGainLossRealized | Foreign Currency Transaction Gain (Loss), Realized | Quarterly
+      - >> ForeignCurrencyTransactionGainLossUnrealized | Foreign Currency Transaction Gain (Loss), Unrealized | Quarterly
+     - >Gain (Loss) on Investments
+      - >> GainLossOnInvestments | Gain (Loss) on Investments | Approx 275 days
+      - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+     - >Unrealized Gain (Loss) on Derivatives and Commodity Contracts
+      - >> UnrealizedGainLossOnDerivatives | Unrealized Gain (Loss) on Derivatives | Quarterly
+    - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+     - >Increase (Decrease) in Operating Assets
+      - >> IncreaseDecreaseInOtherNoncurrentAssets | Increase (Decrease) in Other Noncurrent Assets | Quarterly
+     - >Increase (Decrease) in Operating Liabilities
+      - >> IncreaseDecreaseInOtherNoncurrentLiabilities | Increase (Decrease) in Other Noncurrent Liabilities | Quarterly
+   - Additional Cash Flow Elements Summations
+    - Cash And Cash Equivalents At Carrying Value Including Discontinued Operations
+     - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+  - Supplemental Cash Flow Information
+   - >Interest Paid, Including Capitalized Interest, Operating and Investing Activities
+    - >> InterestPaid | Interest Paid, Including Capitalized Interest, Operating and Investing Activities | Yearly
+    - >> InterestPaidNet | Interest Paid, Excluding Capitalized Interest, Operating Activities | Yearly
+ - Statement of Cash Flows, Supplemental Disclosures 11
+  - CashFlowSupplementalDisclosuresTextBlock
+   - ScheduleOfCashFlowSupplementalDisclosuresTableTextBlock
+    - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Continuing Operation
+     - >> CashAndCashEquivalentsAtCarryingValue | Cash and Cash Equivalents, at Carrying Value | Quarterly
+     - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+     - >Restricted Cash and Cash Equivalent
+      - >> RestrictedCashAndCashEquivalents | Restricted Cash and Cash Equivalents | Yearly
+      - >> RestrictedCashAndCashEquivalentsAtCarryingValue | Restricted Cash and Cash Equivalents, Current | Quarterly
+      - >> RestrictedCashAndCashEquivalentsNoncurrent | Restricted Cash and Cash Equivalents, Noncurrent | Quarterly
+    - Cash Flow Noncash Investing And Financing Activities Disclosure
+     - ScheduleOfDebtConversionsTextBlock
+      - DebtConversionTable
+       - DebtConversionLineItems
+        - >> DebtConversionConvertedInstrumentAmount1 | Debt Conversion, Converted Instrument, Amount | Quarterly
+        - >> DebtConversionOriginalDebtAmount1 | Debt Conversion, Original Debt, Amount | Quarterly
+     - ScheduleOfNoncashOrPartNoncashAcquisitionsTextBlock
+      - NoncashOrPartNoncashAcquisitionsTable
+       - NoncashOrPartNoncashAcquisitionsLineItems
+        - Noncash Or Part Noncash Acquisition Net Nonmonetary Assets Acquired Liabilities Assumed
+         - Noncash Or Part Noncash Acquisition Value Of Assets Acquired
+          - >> NoncashOrPartNoncashAcquisitionValueOfAssetsAcquired1 | Noncash or Part Noncash Acquisition, Value of Assets Acquired | Quarterly
+    - Supplemental Cash Flow Information
+     - >Income Taxes Paid, Net
+      - >> IncomeTaxesPaid | Income Taxes Paid | Yearly
+     - >Interest Paid, Including Capitalized Interest, Operating and Investing Activities
+      - >> InterestPaid | Interest Paid, Including Capitalized Interest, Operating and Investing Activities | Yearly
+      - >> InterestPaidNet | Interest Paid, Excluding Capitalized Interest, Operating Activities | Yearly
+ - Statement of Cash Flows, Deposit Based Operations 73
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Including Exchange Rate Effect and Discontinued Operation
+   - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Excluding Exchange Rate Effect, Including Discontinued Operation
+    - Net Cash Provided By Used In Discontinued Operations And Continuing Operations
+     - >Cash Provided by (Used in) Continuing Operation
+      - >> NetCashProvidedByUsedInContinuingOperations | Net Cash Provided by (Used in) Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Cash Provided by (Used in) Financing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInFinancingActivities | Net Cash Provided by (Used in) Financing Activities | Quarterly
+     - >Cash Provided by (Used in) Financing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> PaymentOfFinancingAndStockIssuanceCosts | Payment of Financing and Stock Issuance Costs | Quarterly
+      - Payments For Proceeds From Hedge Financing Activities
+       - >> PaymentsForHedgeFinancingActivities | Payments for Hedge, Financing Activities | Quarterly
+       - >> PaymentsForProceedsFromHedgeFinancingActivities | Payments for (Proceeds from) Hedge, Financing Activities | Quarterly
+       - >> ProceedsFromHedgeFinancingActivities | Proceeds from Hedge, Financing Activities | Quarterly
+      - >Payments of Financing Costs
+       - >> PaymentsOfDebtIssuanceCosts | Payments of Debt Issuance Costs | Quarterly
+       - >> PaymentsOfFinancingCosts | Payments of Financing Costs | Quarterly
+      - >> PaymentsOfStockIssuanceCosts | Payments of Stock Issuance Costs | Quarterly
+      - Proceeds From Payments To Minority Shareholders
+       - >> PaymentsToMinorityShareholders | Payments to Noncontrolling Interests | Quarterly
+       - >> ProceedsFromMinorityShareholders | Proceeds from Noncontrolling Interests | Quarterly
+      - Proceeds From Repayments Of Debt
+       - >Proceeds from (Repayments of) Long-Term Debt and Capital Securities
+        - >Proceeds from Issuance of Long-Term Debt and Capital Securities, Net
+         - >Proceeds from Issuance of Long-Term Debt
+          - >> ProceedsFromConvertibleDebt | Proceeds from Convertible Debt | Quarterly
+          - >> ProceedsFromIssuanceOfLongTermDebt | Proceeds from Issuance of Long-term Debt | Quarterly
+        - >> ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities | Proceeds from (Repayments of) Long-term Debt and Capital Securities | Quarterly
+        - >Repayment of Long-Term Debt, Long-Term Lease Obligation, and Capital Security
+         - >> FinanceLeasePrincipalPayments | Finance Lease, Principal Payments | Quarterly
+         - >Repayments of Long-Term Debt
+          - >> RepaymentsOfConvertibleDebt | Repayments of Convertible Debt | Quarterly
+          - >> RepaymentsOfLongTermDebt | Repayments of Long-term Debt | Quarterly
+          - >> RepaymentsOfRelatedPartyDebt | Repayments of Related Party Debt | Quarterly
+      - Proceeds From Repurchase Of Equity
+       - >Payments for Repurchase of Equity
+        - >> PaymentsForRepurchaseOfWarrants | Payments for Repurchase of Warrants | Quarterly
+       - >Proceeds from Issuance or Sale of Equity
+        - >> ProceedsFromIssuanceOfCommonStock | Proceeds from Issuance of Common Stock | Quarterly
+        - >Proceeds from Issuance of Preferred Stock, Preference Stock, and Warrants
+         - >> ProceedsFromIssuanceOfWarrants | Proceeds from Issuance of Warrants | Quarterly
+        - >> ProceedsFromIssuanceOfPrivatePlacement | Proceeds from Issuance of Private Placement | Quarterly
+    - >Cash Provided by (Used in) Investing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInInvestingActivities | Net Cash Provided by (Used in) Investing Activities | Quarterly
+     - >Cash Provided by (Used in) Investing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - Payments For Proceeds From Businesses And Interest In Affiliates
+       - >Payments to Acquire Businesses and Interest in Affiliates
+        - >Payments to Acquire Businesses, Net of Cash Acquired
+         - >> PaymentsToAcquireBusinessesNetOfCashAcquired | Payments to Acquire Businesses, Net of Cash Acquired | Quarterly
+      - Payments For Proceeds From Investments
+       - >Payments to Acquire Investments
+        - >> PaymentsToAcquireInvestments | Payments to Acquire Investments | Quarterly
+        - >> PaymentsToAcquireMarketableSecurities | Payments to Acquire Marketable Securities | Quarterly
+       - >Proceeds from Sale, Maturity and Collection of Investments
+        - >Proceeds from Sale and Maturity of Debt Securities, Available-for-Sale
+         - >> ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities | Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale | Quarterly
+        - >> ProceedsFromSaleAndMaturityOfMarketableSecurities | Proceeds from Sale and Maturity of Marketable Securities | Quarterly
+        - >> ProceedsFromSaleMaturityAndCollectionsOfInvestments | Proceeds from Sale, Maturity and Collection of Investments | Quarterly
+      - Payments For Proceeds From Productive Assets
+       - >Payments to Acquire Productive Assets
+        - >> PaymentsToAcquireIntangibleAssets | Payments to Acquire Intangible Assets | Quarterly
+        - >Payments to Acquire Property, Plant, and Equipment
+         - >> PaymentsToAcquirePropertyPlantAndEquipment | Payments to Acquire Property, Plant, and Equipment | Quarterly
+    - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+     - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+      - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+        - >> AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities | Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities | Quarterly
+        - >Amortization of Debt Issuance Costs and Discounts
+         - >> AmortizationOfDebtDiscountPremium | Amortization of Debt Discount (Premium) | Quarterly
+         - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+         - >> AmortizationOfFinancingCostsAndDiscounts | Amortization of Debt Issuance Costs and Discounts | Quarterly
+        - >Deferred Income Taxes and Tax Credits
+         - >> DeferredIncomeTaxExpenseBenefit | Deferred Income Tax Expense (Benefit) | Yearly
+         - >> InvestmentTaxCredit | Investment Tax Credit | Yearly
+        - >Depreciation, Amortization and Accretion, Net
+         - >Amortization
+          - >> AccretionAmortizationOfDiscountsAndPremiumsInvestments | Accretion (Amortization) of Discounts and Premiums, Investments | Quarterly
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+        - >Employee Benefits and Share-Based Compensation
+         - >Share-Based Payment Arrangement, Noncash Expense
+          - >> ShareBasedCompensation | Share-based Payment Arrangement, Noncash Expense | Quarterly
+        - >Gain (Loss), Foreign Currency Transaction, before Tax
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+         - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+         - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+         - >Gain (Loss) on Disposition of Property Plant Equipment
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >Other Noncash Income (Expense)
+         - >> OtherNoncashIncomeExpense | Other Noncash Income (Expense) | Quarterly
+        - >Restructuring Costs and Asset Impairment Charges
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Costs
+          - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly
+          - >Restructuring Charges
+           - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> RestructuringCosts | Restructuring Costs | Approx 184 days
+        - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+        - >Increase (Decrease) in Operating Assets
+         - >> IncreaseDecreaseInOtherOperatingAssets | Increase (Decrease) in Other Operating Assets | Quarterly
+         - >Increase (Decrease) in Prepaid Expense and Other Assets
+          - >> IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets | Increase (Decrease) in Prepaid Expense and Other Assets | Quarterly
+         - >Increase (Decrease) in Receivables
+          - >> IncreaseDecreaseInAccountsReceivable | Increase (Decrease) in Accounts Receivable | Quarterly
+        - >Increase (Decrease) in Operating Liabilities
+         - >Increase (Decrease) in Accounts Payable and Accrued Liabilities
+          - >Increase (Decrease) in Accounts Payable
+           - >> IncreaseDecreaseInAccountsPayable | Increase (Decrease) in Accounts Payable | Quarterly
+          - >> IncreaseDecreaseInAccountsPayableAndAccruedLiabilities | Increase (Decrease) in Accounts Payable and Accrued Liabilities | Quarterly
+          - >Increase (Decrease) in Accrued Liabilities
+           - >> IncreaseDecreaseInAccruedLiabilities | Increase (Decrease) in Accrued Liabilities | Quarterly
+         - >> IncreaseDecreaseInDeferredRevenue | Increase (Decrease) in Deferred Revenue | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+      - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect | Quarterly
+   - >Effect of Exchange Rate on Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+ - Statement of Cash Flows, Insurance Based Operations 74
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Including Exchange Rate Effect and Discontinued Operation
+   - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Excluding Exchange Rate Effect, Including Discontinued Operation
+    - Net Cash Provided By Used In Discontinued Operations And Continuing Operations
+     - >Cash Provided by (Used in) Continuing Operation
+      - >> NetCashProvidedByUsedInContinuingOperations | Net Cash Provided by (Used in) Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Cash Provided by (Used in) Financing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInFinancingActivities | Net Cash Provided by (Used in) Financing Activities | Quarterly
+     - >Cash Provided by (Used in) Financing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> PaymentOfFinancingAndStockIssuanceCosts | Payment of Financing and Stock Issuance Costs | Quarterly
+      - Payments For Proceeds From Hedge Financing Activities
+       - >> PaymentsForHedgeFinancingActivities | Payments for Hedge, Financing Activities | Quarterly
+       - >> PaymentsForProceedsFromHedgeFinancingActivities | Payments for (Proceeds from) Hedge, Financing Activities | Quarterly
+       - >> ProceedsFromHedgeFinancingActivities | Proceeds from Hedge, Financing Activities | Quarterly
+      - >Payments of Financing Costs
+       - >> PaymentsOfDebtIssuanceCosts | Payments of Debt Issuance Costs | Quarterly
+       - >> PaymentsOfFinancingCosts | Payments of Financing Costs | Quarterly
+      - >> PaymentsOfStockIssuanceCosts | Payments of Stock Issuance Costs | Quarterly
+      - Proceeds From Payments To Minority Shareholders
+       - >> PaymentsToMinorityShareholders | Payments to Noncontrolling Interests | Quarterly
+       - >> ProceedsFromMinorityShareholders | Proceeds from Noncontrolling Interests | Quarterly
+      - Proceeds From Repayments Of Debt
+       - >Proceeds from (Repayments of) Long-Term Debt and Capital Securities
+        - >Proceeds from Issuance of Long-Term Debt and Capital Securities, Net
+         - >Proceeds from Issuance of Long-Term Debt
+          - >> ProceedsFromConvertibleDebt | Proceeds from Convertible Debt | Quarterly
+          - >> ProceedsFromIssuanceOfLongTermDebt | Proceeds from Issuance of Long-term Debt | Quarterly
+        - >> ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities | Proceeds from (Repayments of) Long-term Debt and Capital Securities | Quarterly
+        - >Repayment of Long-Term Debt, Long-Term Lease Obligation, and Capital Security
+         - >> FinanceLeasePrincipalPayments | Finance Lease, Principal Payments | Quarterly
+         - >Repayments of Long-Term Debt
+          - >> RepaymentsOfConvertibleDebt | Repayments of Convertible Debt | Quarterly
+          - >> RepaymentsOfLongTermDebt | Repayments of Long-term Debt | Quarterly
+          - >> RepaymentsOfRelatedPartyDebt | Repayments of Related Party Debt | Quarterly
+       - Proceeds From Repayments Of Short Term Debt
+        - >Proceeds from Short-Term Debt
+         - >Proceeds from Notes Payable
+          - >> ProceedsFromSecuredNotesPayable | Proceeds from Secured Notes Payable | Quarterly
+      - Proceeds From Repurchase Of Equity
+       - >Payments for Repurchase of Equity
+        - >> PaymentsForRepurchaseOfWarrants | Payments for Repurchase of Warrants | Quarterly
+       - >Proceeds from Issuance or Sale of Equity
+        - >> ProceedsFromIssuanceOfCommonStock | Proceeds from Issuance of Common Stock | Quarterly
+        - >> ProceedsFromIssuanceOfPrivatePlacement | Proceeds from Issuance of Private Placement | Quarterly
+        - >> ProceedsFromIssuanceOfWarrants | Proceeds from Issuance of Warrants | Quarterly
+    - >Cash Provided by (Used in) Investing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInInvestingActivities | Net Cash Provided by (Used in) Investing Activities | Quarterly
+     - >Cash Provided by (Used in) Investing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - Payments For Proceeds From Businesses And Interest In Affiliates
+       - >Payments to Acquire Businesses and Interest in Affiliates
+        - >Payments to Acquire Businesses, Net of Cash Acquired
+         - >> PaymentsToAcquireBusinessesNetOfCashAcquired | Payments to Acquire Businesses, Net of Cash Acquired | Quarterly
+      - Payments For Proceeds From Investments
+       - >Payments to Acquire Investments
+        - >> PaymentsToAcquireInvestments | Payments to Acquire Investments | Quarterly
+        - >> PaymentsToAcquireMarketableSecurities | Payments to Acquire Marketable Securities | Quarterly
+       - >Proceeds from Sale, Maturity and Collection of Investments
+        - >Proceeds from Sale and Maturity of Debt Securities, Available-for-Sale
+         - >> ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities | Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale | Quarterly
+        - >> ProceedsFromSaleAndMaturityOfMarketableSecurities | Proceeds from Sale and Maturity of Marketable Securities | Quarterly
+        - >> ProceedsFromSaleMaturityAndCollectionsOfInvestments | Proceeds from Sale, Maturity and Collection of Investments | Quarterly
+      - Payments For Proceeds From Productive Assets
+       - >Payments to Acquire Productive Assets
+        - >> PaymentsToAcquireIntangibleAssets | Payments to Acquire Intangible Assets | Quarterly
+        - >Payments to Acquire Property, Plant, and Equipment
+         - >> PaymentsToAcquirePropertyPlantAndEquipment | Payments to Acquire Property, Plant, and Equipment | Quarterly
+    - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+     - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+      - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+        - >> AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities | Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities | Quarterly
+        - >Amortization of Debt Issuance Costs and Discounts
+         - >> AmortizationOfDebtDiscountPremium | Amortization of Debt Discount (Premium) | Quarterly
+         - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+         - >> AmortizationOfFinancingCostsAndDiscounts | Amortization of Debt Issuance Costs and Discounts | Quarterly
+        - >Deferred Income Taxes and Tax Credits
+         - >> DeferredIncomeTaxExpenseBenefit | Deferred Income Tax Expense (Benefit) | Yearly
+         - >> InvestmentTaxCredit | Investment Tax Credit | Yearly
+        - >Depreciation, Amortization and Accretion, Net
+         - >Amortization
+          - >> AccretionAmortizationOfDiscountsAndPremiumsInvestments | Accretion (Amortization) of Discounts and Premiums, Investments | Quarterly
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+        - >Employee Benefits and Share-Based Compensation
+         - >Share-Based Payment Arrangement, Noncash Expense
+          - >> ShareBasedCompensation | Share-based Payment Arrangement, Noncash Expense | Quarterly
+        - >Gain (Loss), Foreign Currency Transaction, before Tax
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+         - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+         - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+         - >Gain (Loss) on Disposition of Property Plant Equipment
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >Other Noncash Income (Expense)
+         - >> OtherNoncashIncomeExpense | Other Noncash Income (Expense) | Quarterly
+        - >Restructuring Costs and Asset Impairment Charges
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Costs
+          - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly
+          - >Restructuring Charges
+           - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> RestructuringCosts | Restructuring Costs | Approx 184 days
+        - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+        - >Increase (Decrease) in Operating Assets
+         - >> IncreaseDecreaseInOtherOperatingAssets | Increase (Decrease) in Other Operating Assets | Quarterly
+         - >Increase (Decrease) in Prepaid Expense and Other Assets
+          - >> IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets | Increase (Decrease) in Prepaid Expense and Other Assets | Quarterly
+         - >Increase (Decrease) in Receivables
+          - >> IncreaseDecreaseInAccountsReceivable | Increase (Decrease) in Accounts Receivable | Quarterly
+        - >Increase (Decrease) in Operating Liabilities
+         - >Increase (Decrease) in Accounts Payable and Accrued Liabilities
+          - >Increase (Decrease) in Accounts Payable
+           - >> IncreaseDecreaseInAccountsPayable | Increase (Decrease) in Accounts Payable | Quarterly
+          - >> IncreaseDecreaseInAccountsPayableAndAccruedLiabilities | Increase (Decrease) in Accounts Payable and Accrued Liabilities | Quarterly
+          - >Increase (Decrease) in Accrued Liabilities
+           - >> IncreaseDecreaseInAccruedLiabilities | Increase (Decrease) in Accrued Liabilities | Quarterly
+         - >> IncreaseDecreaseInDeferredRevenue | Increase (Decrease) in Deferred Revenue | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+      - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect | Quarterly
+   - >Effect of Exchange Rate on Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+ - Statement of Cash Flows, Securities Based Operations 72
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Including Exchange Rate Effect and Discontinued Operation
+   - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Excluding Exchange Rate Effect, Including Discontinued Operation
+    - Net Cash Provided By Used In Discontinued Operations And Continuing Operations
+     - >Cash Provided by (Used in) Continuing Operation
+      - >> NetCashProvidedByUsedInContinuingOperations | Net Cash Provided by (Used in) Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Cash Provided by (Used in) Financing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInFinancingActivities | Net Cash Provided by (Used in) Financing Activities | Quarterly
+     - >Cash Provided by (Used in) Financing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> PaymentOfFinancingAndStockIssuanceCosts | Payment of Financing and Stock Issuance Costs | Quarterly
+      - Payments For Proceeds From Hedge Financing Activities
+       - >> PaymentsForHedgeFinancingActivities | Payments for Hedge, Financing Activities | Quarterly
+       - >> PaymentsForProceedsFromHedgeFinancingActivities | Payments for (Proceeds from) Hedge, Financing Activities | Quarterly
+       - >> ProceedsFromHedgeFinancingActivities | Proceeds from Hedge, Financing Activities | Quarterly
+      - >Payments of Financing Costs
+       - >> PaymentsOfDebtIssuanceCosts | Payments of Debt Issuance Costs | Quarterly
+       - >> PaymentsOfFinancingCosts | Payments of Financing Costs | Quarterly
+      - >> PaymentsOfStockIssuanceCosts | Payments of Stock Issuance Costs | Quarterly
+      - Proceeds From Payments To Minority Shareholders
+       - >> PaymentsToMinorityShareholders | Payments to Noncontrolling Interests | Quarterly
+       - >> ProceedsFromMinorityShareholders | Proceeds from Noncontrolling Interests | Quarterly
+      - Proceeds From Repayments Of Debt
+       - >Proceeds from (Repayments of) Long-Term Debt and Capital Securities
+        - >Proceeds from Issuance of Long-Term Debt and Capital Securities, Net
+         - >Proceeds from Issuance of Long-Term Debt
+          - >> ProceedsFromConvertibleDebt | Proceeds from Convertible Debt | Quarterly
+          - >> ProceedsFromIssuanceOfLongTermDebt | Proceeds from Issuance of Long-term Debt | Quarterly
+        - >> ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities | Proceeds from (Repayments of) Long-term Debt and Capital Securities | Quarterly
+        - >Repayment of Long-Term Debt, Long-Term Lease Obligation, and Capital Security
+         - >> FinanceLeasePrincipalPayments | Finance Lease, Principal Payments | Quarterly
+         - >Repayments of Long-Term Debt
+          - >> RepaymentsOfConvertibleDebt | Repayments of Convertible Debt | Quarterly
+          - >> RepaymentsOfLongTermDebt | Repayments of Long-term Debt | Quarterly
+          - >> RepaymentsOfRelatedPartyDebt | Repayments of Related Party Debt | Quarterly
+      - Proceeds From Repurchase Of Equity
+       - >Payments for Repurchase of Equity
+        - >> PaymentsForRepurchaseOfWarrants | Payments for Repurchase of Warrants | Quarterly
+       - >Proceeds from Issuance or Sale of Equity
+        - >> ProceedsFromIssuanceOfCommonStock | Proceeds from Issuance of Common Stock | Quarterly
+        - >> ProceedsFromIssuanceOfPrivatePlacement | Proceeds from Issuance of Private Placement | Quarterly
+        - >> ProceedsFromIssuanceOfWarrants | Proceeds from Issuance of Warrants | Quarterly
+    - >Cash Provided by (Used in) Investing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInInvestingActivities | Net Cash Provided by (Used in) Investing Activities | Quarterly
+     - >Cash Provided by (Used in) Investing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - Payments For Proceeds From Businesses And Interest In Affiliates
+       - >Payments to Acquire Businesses and Interest in Affiliates
+        - >Payments to Acquire Businesses, Net of Cash Acquired
+         - >> PaymentsToAcquireBusinessesNetOfCashAcquired | Payments to Acquire Businesses, Net of Cash Acquired | Quarterly
+      - Payments For Proceeds From Investments
+       - >Payments to Acquire Investments
+        - >> PaymentsToAcquireInvestments | Payments to Acquire Investments | Quarterly
+        - >> PaymentsToAcquireMarketableSecurities | Payments to Acquire Marketable Securities | Quarterly
+       - >Proceeds from Sale, Maturity and Collection of Investments
+        - >Proceeds from Sale and Maturity of Debt Securities, Available-for-Sale
+         - >> ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities | Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale | Quarterly
+        - >> ProceedsFromSaleAndMaturityOfMarketableSecurities | Proceeds from Sale and Maturity of Marketable Securities | Quarterly
+        - >> ProceedsFromSaleMaturityAndCollectionsOfInvestments | Proceeds from Sale, Maturity and Collection of Investments | Quarterly
+      - Payments For Proceeds From Productive Assets
+       - >Payments to Acquire Productive Assets
+        - >> PaymentsToAcquireIntangibleAssets | Payments to Acquire Intangible Assets | Quarterly
+        - >Payments to Acquire Property, Plant, and Equipment
+         - >> PaymentsToAcquirePropertyPlantAndEquipment | Payments to Acquire Property, Plant, and Equipment | Quarterly
+    - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+     - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+      - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+        - >> AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities | Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities | Quarterly
+        - >Amortization of Debt Issuance Costs and Discounts
+         - >> AmortizationOfDebtDiscountPremium | Amortization of Debt Discount (Premium) | Quarterly
+         - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+         - >> AmortizationOfFinancingCostsAndDiscounts | Amortization of Debt Issuance Costs and Discounts | Quarterly
+        - >Deferred Income Taxes and Tax Credits
+         - >> DeferredIncomeTaxExpenseBenefit | Deferred Income Tax Expense (Benefit) | Yearly
+         - >> InvestmentTaxCredit | Investment Tax Credit | Yearly
+        - >Depreciation, Amortization and Accretion, Net
+         - >Amortization
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+        - >Employee Benefits and Share-Based Compensation
+         - >Share-Based Payment Arrangement, Noncash Expense
+          - >> ShareBasedCompensation | Share-based Payment Arrangement, Noncash Expense | Quarterly
+        - >Gain (Loss), Foreign Currency Transaction, before Tax
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+         - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+         - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+         - >Gain (Loss) on Disposition of Property Plant Equipment
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >Other Noncash Income (Expense)
+         - >> OtherNoncashIncomeExpense | Other Noncash Income (Expense) | Quarterly
+        - >Restructuring Costs and Asset Impairment Charges
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Costs
+          - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly
+          - >Restructuring Charges
+           - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> RestructuringCosts | Restructuring Costs | Approx 184 days
+        - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+        - >Increase (Decrease) in Operating Assets
+         - >> IncreaseDecreaseInOtherOperatingAssets | Increase (Decrease) in Other Operating Assets | Quarterly
+         - >Increase (Decrease) in Prepaid Expense and Other Assets
+          - >> IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets | Increase (Decrease) in Prepaid Expense and Other Assets | Quarterly
+         - >Increase (Decrease) in Receivables
+          - >> IncreaseDecreaseInAccountsReceivable | Increase (Decrease) in Accounts Receivable | Quarterly
+        - >Increase (Decrease) in Operating Liabilities
+         - >Increase (Decrease) in Accounts Payable and Accrued Liabilities
+          - >Increase (Decrease) in Accounts Payable
+           - >> IncreaseDecreaseInAccountsPayable | Increase (Decrease) in Accounts Payable | Quarterly
+          - >> IncreaseDecreaseInAccountsPayableAndAccruedLiabilities | Increase (Decrease) in Accounts Payable and Accrued Liabilities | Quarterly
+          - >Increase (Decrease) in Accrued Liabilities
+           - >> IncreaseDecreaseInAccruedLiabilities | Increase (Decrease) in Accrued Liabilities | Quarterly
+         - >> IncreaseDecreaseInDeferredRevenue | Increase (Decrease) in Deferred Revenue | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+      - Net Income Loss Attributable To Reporting Entity
+       - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect | Quarterly
+   - >Effect of Exchange Rate on Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+ - Statement of Cash Flows, Real Estate, Including REITs 81
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+  - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+  - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Including Exchange Rate Effect and Discontinued Operation
+   - >Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Period Increase (Decrease), Excluding Exchange Rate Effect, Including Discontinued Operation
+    - Net Cash Provided By Used In Discontinued Operations And Continuing Operations
+     - >Cash Provided by (Used in) Continuing Operation
+      - >> NetCashProvidedByUsedInContinuingOperations | Net Cash Provided by (Used in) Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Cash Provided by (Used in) Financing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInFinancingActivities | Net Cash Provided by (Used in) Financing Activities | Quarterly
+     - >Cash Provided by (Used in) Financing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInFinancingActivitiesContinuingOperations | Net Cash Provided by (Used in) Financing Activities, Continuing Operations | Quarterly
+      - >Payment of Financing and Stock Issuance Costs
+       - >> PaymentOfFinancingAndStockIssuanceCosts | Payment of Financing and Stock Issuance Costs | Quarterly
+       - >Payments of Financing Costs
+        - >> PaymentsOfDebtIssuanceCosts | Payments of Debt Issuance Costs | Quarterly
+        - >> PaymentsOfFinancingCosts | Payments of Financing Costs | Quarterly
+       - >> PaymentsOfStockIssuanceCosts | Payments of Stock Issuance Costs | Quarterly
+      - Payments For Proceeds From Hedge Financing Activities
+       - >> PaymentsForHedgeFinancingActivities | Payments for Hedge, Financing Activities | Quarterly
+       - >> PaymentsForProceedsFromHedgeFinancingActivities | Payments for (Proceeds from) Hedge, Financing Activities | Quarterly
+       - >> ProceedsFromHedgeFinancingActivities | Proceeds from Hedge, Financing Activities | Quarterly
+      - Proceeds From Payments To Minority Shareholders
+       - >> PaymentsToMinorityShareholders | Payments to Noncontrolling Interests | Quarterly
+       - >> ProceedsFromMinorityShareholders | Proceeds from Noncontrolling Interests | Quarterly
+      - Proceeds From Repayments Of Debt
+       - >Proceeds from (Repayments of) Long-Term Debt and Capital Securities
+        - >Proceeds from Issuance of Long-Term Debt and Capital Securities, Net
+         - >Proceeds from Issuance of Long-Term Debt
+          - >> ProceedsFromConvertibleDebt | Proceeds from Convertible Debt | Quarterly
+          - >> ProceedsFromIssuanceOfLongTermDebt | Proceeds from Issuance of Long-term Debt | Quarterly
+        - >> ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities | Proceeds from (Repayments of) Long-term Debt and Capital Securities | Quarterly
+        - >> ProceedsFromRepaymentsOfSecuredDebt | Proceeds from (Repayments of) Secured Debt | Quarterly
+        - >Repayment of Long-Term Debt, Long-Term Lease Obligation, and Capital Security
+         - >> FinanceLeasePrincipalPayments | Finance Lease, Principal Payments | Quarterly
+         - >Repayments of Long-Term Debt
+          - >> RepaymentsOfConvertibleDebt | Repayments of Convertible Debt | Quarterly
+          - >> RepaymentsOfLongTermDebt | Repayments of Long-term Debt | Quarterly
+          - >> RepaymentsOfRelatedPartyDebt | Repayments of Related Party Debt | Quarterly
+      - Proceeds From Repurchase Of Equity
+       - >Payments for Repurchase of Equity
+        - >> PaymentsForRepurchaseOfWarrants | Payments for Repurchase of Warrants | Quarterly
+       - >Proceeds from Issuance or Sale of Equity
+        - >> ProceedsFromIssuanceOfCommonStock | Proceeds from Issuance of Common Stock | Quarterly
+        - >> ProceedsFromIssuanceOfPrivatePlacement | Proceeds from Issuance of Private Placement | Quarterly
+        - >Proceeds, Issuance of Shares, Share-Based Payment Arrangement, Including Option Exercised
+         - >> ProceedsFromIssuanceOfSharesUnderIncentiveAndShareBasedCompensationPlansIncludingStockOptions | Proceeds, Issuance of Shares, Share-based Payment Arrangement, Including Option Exercised | Quarterly
+        - >> ProceedsFromIssuanceOfWarrants | Proceeds from Issuance of Warrants | Quarterly
+    - >Cash Provided by (Used in) Investing Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInInvestingActivities | Net Cash Provided by (Used in) Investing Activities | Quarterly
+     - >Cash Provided by (Used in) Investing Activity, Continuing Operation
+      - >> NetCashProvidedByUsedInInvestingActivitiesContinuingOperations | Net Cash Provided by (Used in) Investing Activities, Continuing Operations | Quarterly
+      - Payments For Proceeds From Businesses And Interest In Affiliates
+       - >Payments to Acquire Businesses and Interest in Affiliates
+        - >Payments to Acquire Businesses, Net of Cash Acquired
+         - >> PaymentsToAcquireBusinessesNetOfCashAcquired | Payments to Acquire Businesses, Net of Cash Acquired | Quarterly
+      - Payments For Proceeds From Investments
+       - >Payments to Acquire Investments
+        - >> PaymentsToAcquireInvestments | Payments to Acquire Investments | Quarterly
+        - >> PaymentsToAcquireMarketableSecurities | Payments to Acquire Marketable Securities | Quarterly
+       - >Proceeds from Sale, Maturity and Collection of Investments
+        - >Proceeds from Sale and Maturity of Debt Securities, Available-for-Sale
+         - >> ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities | Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale | Quarterly
+        - >> ProceedsFromSaleAndMaturityOfMarketableSecurities | Proceeds from Sale and Maturity of Marketable Securities | Quarterly
+        - >> ProceedsFromSaleMaturityAndCollectionsOfInvestments | Proceeds from Sale, Maturity and Collection of Investments | Quarterly
+      - Payments For Proceeds From Productive Assets
+       - >Payments to Acquire Productive Assets
+        - >> PaymentsToAcquireIntangibleAssets | Payments to Acquire Intangible Assets | Quarterly
+    - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+     - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+     - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+      - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Noncash Item
+        - >> AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities | Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities | Quarterly
+        - >Deferred Income Taxes and Tax Credits
+         - >> DeferredIncomeTaxExpenseBenefit | Deferred Income Tax Expense (Benefit) | Yearly
+         - >> InvestmentTaxCredit | Investment Tax Credit | Yearly
+        - >Depreciation, Depletion and Amortization, Nonproduction
+         - >Amortization
+          - >Amortization of Debt Issuance Costs and Discounts
+           - >> AmortizationOfDebtDiscountPremium | Amortization of Debt Discount (Premium) | Quarterly
+           - >> AmortizationOfFinancingCosts | Amortization of Debt Issuance Costs | Quarterly
+           - >> AmortizationOfFinancingCostsAndDiscounts | Amortization of Debt Issuance Costs and Discounts | Quarterly
+          - >> AmortizationOfIntangibleAssets | Amortization of Intangible Assets | Yearly
+          - >> FinanceLeaseRightOfUseAssetAmortization | Finance Lease, Right-of-Use Asset, Amortization | Yearly
+         - >Depreciation
+          - >> Depreciation | Depreciation | Quarterly
+         - >> DepreciationDepletionAndAmortization | Depreciation, Depletion and Amortization | Quarterly
+        - >Employee Benefits and Share-Based Compensation
+         - >Share-Based Payment Arrangement, Noncash Expense
+          - >> ShareBasedCompensation | Share-based Payment Arrangement, Noncash Expense | Quarterly
+        - >Gain (Loss), Foreign Currency Transaction, before Tax
+         - >> ForeignCurrencyTransactionGainLossBeforeTax | Foreign Currency Transaction Gain (Loss), before Tax | Quarterly
+        - >Gain (Loss) on Disposition of Property Plant Equipment, Excluding Oil and Gas Property and Timber Property
+         - >> GainLossOnDispositionOfAssets1 | Gain (Loss) on Disposition of Assets | Quarterly
+         - >> GainLossOnDispositionOfIntangibleAssets | Gain (Loss) on Disposition of Intangible Assets | Quarterly
+         - >Gain (Loss) on Disposition of Property Plant Equipment
+          - >> GainLossOnSaleOfPropertyPlantEquipment | Gain (Loss) on Disposition of Property Plant Equipment | Quarterly
+        - >> InventoryWriteDown | Inventory Write-down | Quarterly
+        - >Other Noncash Income (Expense)
+         - >> OtherNoncashIncomeExpense | Other Noncash Income (Expense) | Quarterly
+        - >> ProductWarrantyExpense | Product Warranty Expense | Quarterly
+        - >Restructuring Costs and Asset Impairment Charges
+         - >Asset Impairment Charges
+          - >> GoodwillImpairmentLoss | Goodwill, Impairment Loss | Yearly
+          - >> ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill | Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill) | Yearly
+         - >Restructuring Costs
+          - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly
+          - >Restructuring Charges
+           - >> BusinessExitCosts1 | Business Exit Costs | Quarterly
+          - >> RestructuringCosts | Restructuring Costs | Approx 184 days
+        - >> UnrealizedGainLossOnInvestments | Unrealized Gain (Loss) on Investments | Quarterly
+       - >Adjustment to Reconcile Net Income to Cash Provided by (Used in) Operating Activity, Increase (Decrease) in Operating Capital
+        - >Increase (Decrease) in Operating Assets
+         - >> IncreaseDecreaseInInventories | Increase (Decrease) in Inventories | Quarterly
+         - >Increase (Decrease) in Other Operating Assets
+          - >> IncreaseDecreaseInOtherNoncurrentAssets | Increase (Decrease) in Other Noncurrent Assets | Quarterly
+          - >> IncreaseDecreaseInOtherOperatingAssets | Increase (Decrease) in Other Operating Assets | Quarterly
+         - >Increase (Decrease) in Prepaid Expense and Other Assets
+          - >> IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets | Increase (Decrease) in Prepaid Expense and Other Assets | Quarterly
+         - >Increase (Decrease) in Receivables
+          - >> IncreaseDecreaseInAccountsReceivable | Increase (Decrease) in Accounts Receivable | Quarterly
+        - >Increase (Decrease) in Operating Liabilities
+         - >Increase (Decrease) in Accounts Payable and Accrued Liabilities
+          - >Increase (Decrease) in Accounts Payable
+           - >> IncreaseDecreaseInAccountsPayable | Increase (Decrease) in Accounts Payable | Quarterly
+          - >> IncreaseDecreaseInAccountsPayableAndAccruedLiabilities | Increase (Decrease) in Accounts Payable and Accrued Liabilities | Quarterly
+          - >Increase (Decrease) in Accrued Liabilities
+           - >> IncreaseDecreaseInAccruedLiabilities | Increase (Decrease) in Accrued Liabilities | Quarterly
+         - >> IncreaseDecreaseInDeferredRevenue | Increase (Decrease) in Deferred Revenue | Quarterly
+         - >Increase (Decrease) in Other Operating Liabilities
+          - >> IncreaseDecreaseInOtherNoncurrentLiabilities | Increase (Decrease) in Other Noncurrent Liabilities | Quarterly
+      - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+      - Net Income Loss Attributable To Reporting Entity
+       - >> ProfitLoss | Net Income (Loss), Including Portion Attributable to Noncontrolling Interest | Quarterly
+   - >> CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect | Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect | Quarterly
+   - >Effect of Exchange Rate on Cash, Cash Equivalent, Restricted Cash, and Restricted Cash Equivalent, Including Discontinued Operation
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents | Quarterly
+    - >> EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations | Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations | Quarterly
+ - Statement of Cash Flows, Direct Method Operating Activities 7
+  - >Cash Provided by (Used in) Operating Activity, Including Discontinued Operation
+   - >> NetCashProvidedByUsedInOperatingActivities | Net Cash Provided by (Used in) Operating Activities | Quarterly
+   - >Cash Provided by (Used in) Operating Activity, Continuing Operation
+    - >> NetCashProvidedByUsedInOperatingActivitiesContinuingOperations | Net Cash Provided by (Used in) Operating Activities, Continuing Operations | Quarterly
+    - >Payments for Operating Activities
+     - >> FinanceLeaseInterestPaymentOnLiability | Finance Lease, Interest Payment on Liability | Yearly
+     - >> IncomeTaxesPaid | Income Taxes Paid | Yearly
+     - >> InterestPaidNet | Interest Paid, Excluding Capitalized Interest, Operating Activities | Yearly
+     - >> OperatingLeasePayments | Operating Lease, Payments | Yearly
+     - >> PaymentsForRestructuring | Payments for Restructuring | Quarterly

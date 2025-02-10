@@ -1,0 +1,108 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"strings"
+
+	"github.com/gorilla/mux"
+)
+
+// SECFilings represents the structure for fetching SEC data
+type SECFilings struct {
+	BaseURL string
+	Headers map[string]string
+}
+
+// NewSECFilings initializes the SEC filings service
+func NewSECFilings(userAgent string) *SECFilings {
+	return &SECFilings{
+		BaseURL: "https://data.sec.gov/submissions/CIK%s.json",
+		Headers: map[string]string{
+			"User-Agent": userAgent,
+		},
+	}
+}
+
+// GetCompanyFilings fetches SEC filings by CIK
+func (s *SECFilings) GetCompanyFilings(cik string) (map[string]interface{}, error) {
+	url := fmt.Sprintf(s.BaseURL, fmt.Sprintf("%010s", cik))
+
+	fmt.Printf("Fetching SEC filings for CIK: %s", cik)
+	fmt.Printf("Request URL: %s", url)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range s.Headers {
+		req.Header.Set(k, v)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch SEC filings for CIK %s: %d", cik, resp.StatusCode)
+	}
+
+	var filings map[string]interface{}
+	err = json.NewDecoder(resp.Body).Decode(&filings)
+	if err != nil {
+		return nil, err
+	}
+
+	return filings, nil
+}
+
+// getFilingsHandler handles API requests for fetching SEC filings
+func getFilingsHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ticker := strings.ToUpper(vars["ticker"])
+
+	// Assume a function that maps ticker to CIK (implement a proper lookup)
+	cik := getCIKFromTicker(ticker)
+	if cik == "" {
+		http.Error(w, "Invalid ticker symbol", http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("Ticker: %s, CIK: %s\n", ticker, cik)
+
+	secService := NewSECFilings("FinanceDataCorp your-email@example.com")
+	filings, err := secService.GetCompanyFilings(cik)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error fetching SEC filings: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(filings)
+}
+
+// getCIKFromTicker mocks a function that converts a stock ticker to a CIK (use a proper mapping in production)
+func getCIKFromTicker(ticker string) string {
+	tickerToCIK := map[string]string{
+		"AAPL":  "0000320193",
+		"MSFT":  "0000789019",
+		"TSLA":  "0001318605",
+		"GOOGL": "0001652044",
+	}
+	return tickerToCIK[ticker]
+}
+
+// curl http://localhost:8002/sec-filings/AAPL
+
+func main() {
+	router := mux.NewRouter()
+	router.HandleFunc("/sec-filings/{ticker}", getFilingsHandler).Methods("GET")
+
+	fmt.Println("Server is running on port 8002...")
+	log.Fatal(http.ListenAndServe(":8002", router))
+}

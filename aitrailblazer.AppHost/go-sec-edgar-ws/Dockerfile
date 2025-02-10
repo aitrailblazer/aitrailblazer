@@ -1,31 +1,38 @@
-# Use Go 1.23 image for the build stage but with an older glibc
-FROM golang:1.23-bullseye as builder
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy Go module files and download dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the source code and build the application for Linux AMD64, disabling CGO to avoid glibc issues
-COPY . .
-RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o app
-
-# Use a base image with older glibc versions
-FROM debian:bullseye-slim
+# Use Go 1.23 image for building
+FROM golang:1.23-bullseye AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the Go binary from the builder stage
+# Copy Go module files first (leveraging caching)
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the application
+COPY . .
+
+# Build the application (static binary)
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
+
+# Use a minimal base image for final deployment
+FROM scratch
+
+# Set the working directory
+WORKDIR /app
+
+# Copy CA certificates (needed for HTTPS requests)
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+# Copy the Go binary
 COPY --from=builder /app/app .
 
-# Ensure the binary is executable
-RUN chmod +x app
+# Copy the data directory (if needed)
+COPY --from=builder /app/data ./data
 
-# Expose the application port
+COPY --from=builder /app/us-gaap-2024 ./us-gaap-2024
+
+# Expose the application's port
 EXPOSE 8001
 
 # Run the Go application
-ENTRYPOINT ["./app"]
+ENTRYPOINT ["/app/app"]

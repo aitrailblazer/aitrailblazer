@@ -67,7 +67,7 @@ namespace AITrailblazer.net.Services
         {
             int maxTokens = 1024;
 
-            string modelId = "gpt-4o-mini"; // Ensure this is the correct model ID
+            string modelId = "gpt-4o"; // Ensure this is the correct model ID
             IKernelBuilder kernelBuilder = _kernelService.CreateKernelBuilder(modelId, maxTokens);
             Kernel kernel = kernelBuilder.Build();
 

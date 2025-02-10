@@ -1,6 +1,7 @@
 # main.py
 import os
 import re
+import requests
 import logging
 from io import BytesIO
 import httpx
@@ -21,6 +22,33 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 import urllib.parse
 import io
 import json
+import logging
+import pandas as pd
+import plotly.graph_objects as go
+from nixtla import NixtlaClient
+
+from pydantic import BaseModel, Field
+from typing import List, Optional, Any, Dict
+import pandas as pd
+import plotly.express as px
+
+from pydantic import BaseModel, Field
+from typing import Any, Dict
+import pandas as pd
+import plotly.express as px
+
+from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.routing import Route
+from starlette.responses import JSONResponse
+from starlette.exceptions import HTTPException
+
+
+
+import numpy as np
+import math
+import logging
+from starlette.responses import JSONResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -188,10 +216,7 @@ async def tickers_by_exchange(request: Request):
         logger.error(f"Unexpected error fetching companies for exchange {exchange}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
-import time
-import re
-import logging
-from starlette.responses import JSONResponse
+
 
 logger = logging.getLogger(__name__)
 
@@ -305,75 +330,8 @@ async def download_latest_filing_pdf(request):
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
-async def download_latest_filing_html_python(ticker: str, form_type: str) -> tuple[str, str]:
-    """
-    Fetch the latest filing of a given form type for a company ticker as raw HTML with fixed image links.
-    
-    Args:
-        ticker (str): The company ticker symbol.
-        form_type (str): The type of SEC form to fetch (e.g., "10-K", "10-Q").
-    
-    Returns:
-        tuple: (html_content, base_url)
-    """
-    try:
-        # Validate the ticker and form type format
-        if not re.match(r"^[A-Za-z0-9]+$", ticker):
-            raise ValueError("Invalid ticker format. Only alphanumeric characters are allowed.")
-        if not re.match(r"^[A-Za-z0-9/ -]+$", form_type):
-            raise ValueError("Invalid form type format. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.")
 
-        # Get the company's CIK
-        cik = company_info.get_cik_by_ticker(ticker)
-        if not cik:
-            raise ValueError(f"CIK not found for ticker: {ticker}")
-
-        # Fetch filing data
-        filings = sec_filings.get_company_filings(cik)
-        filings_df = sec_filings.filings_to_dataframe(filings)
-
-        if filings_df.empty or form_type not in filings_df["form"].values:
-            raise IndexError(f"No {form_type} filings found for ticker: {ticker}")
-
-        # Get the latest filing details for the specified form type
-        latest_filing = filings_df[filings_df["form"] == form_type].iloc[0]
-        accession_number = latest_filing["accessionNumber"].replace("-", "")
-        file_name = latest_filing["primaryDocument"]
-
-        # Build the SEC filing base URL and full filing URL
-        base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/"
-        filing_url = f"{base_url}{file_name}"
-
-        print(filing_url)
-
-        # Fetch the filing content
-        async with AsyncClient(timeout=120, headers={"User-Agent": email}) as client:
-            try:
-                html_content = await fetch_filing_with_retry(client, filing_url)
-            except RequestError as e:
-                logger.error(f"Failed to fetch filing for {ticker}: {e}")
-                raise Exception(f"Failed to fetch filing from SEC for {ticker}.")
-
-        # Replace relative image links with absolute URLs
-        html_content = re.sub(
-            r'(?<=<img src=")([^":]+)',  # Match the src attribute of <img> tags that do not contain a full URL
-            lambda match: f"{base_url}{match.group(1)}",  # Replace with the full URL
-            html_content,
-        )
-
-        # Return the modified HTML content and base URL
-        return html_content, base_url
-
-    except IndexError:
-        logger.error(f"No {form_type} filings found for ticker {ticker}")
-        raise IndexError(f"No {form_type} filings found for ticker: {ticker}")
-    except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
-        raise
-    except Exception as e:
-        logger.error(f"Unexpected error for ticker {ticker}: {e}")
-        raise
-
+                          
 async def get_filing_url(ticker: str, form_type: str):
     """
     Endpoint to get the URL of the filing for a given form type and company ticker.
@@ -478,7 +436,78 @@ async def download_latest_filing_html(request):
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
+
+
+async def download_latest_filing_html_python(ticker: str, form_type: str) -> tuple[str, str]:
+    """
+    Fetch the latest filing of a given form type for a company ticker as raw HTML with fixed image links.
     
+    Args:
+        ticker (str): The company ticker symbol.
+        form_type (str): The type of SEC form to fetch (e.g., "10-K", "10-Q").
+    
+    Returns:
+        tuple: (html_content, base_url)
+    """
+    try:
+        # Validate the ticker and form type format
+        if not re.match(r"^[A-Za-z0-9]+$", ticker):
+            raise ValueError("Invalid ticker format. Only alphanumeric characters are allowed.")
+        if not re.match(r"^[A-Za-z0-9/ -]+$", form_type):
+            raise ValueError("Invalid form type format. Only alphanumeric characters, dashes (-), slashes (/), and spaces are allowed.")
+
+        # Get the company's CIK
+        cik = company_info.get_cik_by_ticker(ticker)
+        if not cik:
+            raise ValueError(f"CIK not found for ticker: {ticker}")
+
+        # Fetch filing data
+        filings = sec_filings.get_company_filings(cik)
+        filings_df = sec_filings.filings_to_dataframe(filings)
+
+        if filings_df.empty or form_type not in filings_df["form"].values:
+            raise IndexError(f"No {form_type} filings found for ticker: {ticker}")
+
+        # Get the latest filing details for the specified form type
+        latest_filing = filings_df[filings_df["form"] == form_type].iloc[0]
+        accession_number = latest_filing["accessionNumber"].replace("-", "")
+        file_name = latest_filing["primaryDocument"]
+
+        # Build the SEC filing base URL and full filing URL
+        base_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_number}/"
+        filing_url = f"{base_url}{file_name}"
+
+        print(filing_url)
+
+        # Fetch the filing content
+        async with AsyncClient(timeout=120, headers={"User-Agent": email}) as client:
+            try:
+                html_content = await fetch_filing_with_retry(client, filing_url)
+            except RequestError as e:
+                logger.error(f"Failed to fetch filing for {ticker}: {e}")
+                raise Exception(f"Failed to fetch filing from SEC for {ticker}.")
+
+        # Replace relative image links with absolute URLs
+        html_content = re.sub(
+            r'(?<=<img src=")([^":]+)',  # Match the src attribute of <img> tags that do not contain a full URL
+            lambda match: f"{base_url}{match.group(1)}",  # Replace with the full URL
+            html_content,
+        )
+
+        # Return the modified HTML content and base URL
+        return html_content, base_url
+
+    except IndexError:
+        logger.error(f"No {form_type} filings found for ticker {ticker}")
+        raise IndexError(f"No {form_type} filings found for ticker: {ticker}")
+    except ValueError as ve:
+        logger.error(f"Value error for ticker {ticker}: {ve}")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error for ticker {ticker}: {e}")
+        raise
+
+
 async def get_xbrl_data(request):
     """
     Endpoint to fetch and process XBRL data for a given company ticker.
@@ -510,13 +539,7 @@ async def get_xbrl_data(request):
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
-import pandas as pd
-from starlette.responses import JSONResponse
-import logging
-from nixtla import NixtlaClient
 
-logger = logging.getLogger(__name__)
-    
 async def forecast_xbrl_data_as_csv(request):
     """
     Endpoint to fetch XBRL data, forecast it using Nixtla, and return the forecasted data as CSV string.
@@ -547,22 +570,22 @@ async def forecast_xbrl_data_as_csv(request):
         xbrl_df = await fetch_xbrl_csv(ticker, concept, unit)
 
         # Ensure timestamps are sorted and infer frequency
-        xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])
-        xbrl_df.set_index("End Date", inplace=True)
+        xbrl_df = xbrl_df.sort_values(by="enddate").drop_duplicates(subset=["enddate"])
+        xbrl_df.set_index("enddate", inplace=True)
         inferred_freq = pd.infer_freq(xbrl_df.index)
 
         if not inferred_freq:
             raise ValueError("Could not infer frequency from the XBRL data.")
 
         # Reset index for Nixtla compatibility
-        xbrl_df.reset_index(inplace=True)
+        # xbrl_df.reset_index(inplace=True)
 
         # Forecast using Nixtla
         forecast_df = nixtla_client.forecast(
             df=xbrl_df,
             h=horizon,
-            time_col="End Date",
-            target_col="Value",
+            time_col="enddate",
+            target_col="value",
             freq=inferred_freq
         )
 
@@ -581,143 +604,640 @@ async def forecast_xbrl_data_as_csv(request):
         logger.error(f"Unexpected error during forecasting for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
 
-from starlette.responses import HTMLResponse
+# Assume fetch_xbrl_csv and clean_and_infer_frequency are defined elsewhere.
 
-import base64
-import io
-import pandas as pd
-import plotly.express as px
+def sanitize_value(x, threshold=1e+308):
+    """If x is a float and either not finite or its absolute value exceeds threshold, return None."""
+    if isinstance(x, float):
+        if not math.isfinite(x) or abs(x) > threshold:
+            return None
+    return x
 
-      
-import base64
-import io
-import pandas as pd
+def sanitize_df(df, threshold=1e+308):
+    """Apply sanitize_value elementwise."""
+    return df.applymap(lambda x: sanitize_value(x, threshold))
 
-import io
-import base64
-import pandas as pd
-from starlette.responses import JSONResponse
-from starlette.requests import Request
-import logging
+def replace_nan_in_dict(record):
+    """Replace any float NaN in a dict with None."""
+    for key, value in record.items():
+        if isinstance(value, float) and np.isnan(value):
+            record[key] = None
+    return record
 
-logger = logging.getLogger(__name__)
-import base64
-import io
-import pandas as pd
-import plotly.express as px
+def convert_dates(df):
+    """Convert 'enddate' column to datetime and format as 'YYYY-MM-DD' (dropping any time component)."""
+    df["enddate"] = pd.to_datetime(df["enddate"], errors='coerce').dt.strftime("%Y-%m-%d")
+    return df
 
-async def forecast_xbrl_data_plot(request):
+def split_title(title: str, threshold: int = 50) -> str:
+    """Insert an HTML line break (<br>) in the title if its length exceeds the threshold."""
+    if len(title) > threshold:
+        split_index = title.find(" ", threshold)
+        if split_index == -1:
+            split_index = threshold
+        return title[:split_index] + "<br>" + title[split_index+1:]
+    return title
+
+async def forecast_xbrl_data_plot(request: Request):
     """
-    Endpoint to fetch XBRL data, forecast it using Nixtla, and return the forecasted data 
-    as a JSON object containing the original, forecasted, and combined data along with a Plotly plot in Base64 format.
+    Endpoint to fetch XBRL data, optionally forecast it using Nixtla, and return a JSON object containing:
+      - original_data_json: JSON representation of the original (historical) data,
+      - forecast_data_json: JSON representation of the forecast data (empty if forecast is skipped),
+      - combined_data_json: JSON representation of the combined historical and forecast data,
+      - combined_data_csv: CSV string generated from the combined DataFrame,
+      - combined_plot_html: an HTML snippet of a Plotly chart combining historical and (if available) forecast data,
+      - forecast_plot_html: an HTML snippet of a forecast-only Plotly chart (empty if forecast is skipped).
+    
+    The JSON body should include:
+      - "concept": concept identifier,
+      - "label": a label for the chart,
+      - "unit": (optional, default "USD"),
+      - "h": (optional forecast horizon; default 12),
+      - "data": a list of data records,
+      - "inferred_freq": the inferred frequency,
+      - "name": a concept identifier,
+      - "forecast": (optional boolean; default true; if false, forecasting is skipped).
     """
-    ticker = request.path_params.get("ticker")
-    concept_param = request.query_params.get("concept", "AssetsCurrent|Assets")
-    unit = request.query_params.get("unit", "USD")
-    horizon = int(request.query_params.get("h", 12))  # Forecast horizon
-
+    logger = logging.getLogger(__name__)
     try:
-        # Validate ticker
-        if not ticker:
-            return JSONResponse({"error": "Ticker is required in the path parameters."}, status_code=400)
+        # 1. Parse Request and Extract Parameters.
+        body = await request.json()
+        # logger.info(f"Request Body: {body}")
+        
+        ticker = request.path_params.get("ticker")
+        concept_name = body.get("concept")
+        concept_label = body.get("label", concept_name)
+        unit = body.get("unit", "USD")
+        try:
+            horizon = int(body.get("h", 12))
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid forecast horizon value.")
+        data = body.get("data")
+        inferred_freq = body.get("inferred_freq")
+        name = body.get("name")
+        companyName = body.get("companyName")
+        exchange = body.get("exchange")
+        cik = body.get("cik")
 
-        # Split concept into name and label
-        concept_parts = concept_param.split("|")
-        concept_name = concept_parts[0]
-        concept_label = concept_parts[1].strip() if len(concept_parts) > 1 else concept_name
-
-        # Extract TimegenEndpoint and TimegenKey from the headers
+        # Optional flag: forecast (default: True)
+        do_forecast = body.get("forecast", True)
+        if not isinstance(do_forecast, bool):
+            do_forecast = str(do_forecast).lower() in ["true", "1", "yes"]
+        
+        logger.info(f"Extracted Parameters: Ticker={ticker}, Concept={concept_name}, Concept Label={concept_label}, Unit={unit}, Horizon={horizon}, Forecast={do_forecast}")
+        if not ticker or not concept_name:
+            return JSONResponse({"error": "Ticker and concept are required."}, status_code=400)
+        
+        # 2. Validate API Authentication Headers.
         timegen_endpoint = request.headers.get("X-Timegen-Endpoint")
         timegen_key = request.headers.get("Authorization")
-
         if not timegen_endpoint or not timegen_key:
             return JSONResponse({"error": "Missing required headers: X-Timegen-Endpoint or Authorization"}, status_code=400)
-
-        # Fetch and process XBRL data
-        xbrl_df = await fetch_xbrl_csv(ticker, concept_name, unit)
-
-        # Sort timestamps, drop duplicates, and select only necessary columns
-        xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])[["End Date", "Value"]]
-        xbrl_df.set_index("End Date", inplace=True)
-        inferred_freq = pd.infer_freq(xbrl_df.index)
-
-        if not inferred_freq:
-            return JSONResponse({"error": "Could not infer frequency from the XBRL data."}, status_code=400)
-
-        # Reset index for Nixtla compatibility
-        xbrl_df.reset_index(inplace=True)
-
-        # Forecast using Nixtla
-        nixtla_client = NixtlaClient(api_key=timegen_key, base_url=timegen_endpoint)
-        forecast_df = nixtla_client.forecast(
-            df=xbrl_df,
-            h=horizon,
-            model="azureai",
-            time_col="End Date",
-            target_col="Value",
-            freq=inferred_freq
-        )
-
-        # Combine historical and forecasted data for plotting
-        xbrl_df["Type"] = "Historical"
-        forecast_df["Type"] = "Forecast"
-        forecast_df.rename(columns={"timestamp": "End Date", "TimeGPT": "Forecasted Value"}, inplace=True)
-
-        combined_df = pd.concat(
-            [
-                xbrl_df[["End Date", "Value", "Type"]].rename(columns={"Value": concept_label}),
-                forecast_df[["End Date", "Forecasted Value", "Type"]].rename(columns={"Forecasted Value": concept_label}),
-            ],
-            ignore_index=True
-        )
-
-        # Convert Timestamps to ISO format
-        xbrl_df["End Date"] = xbrl_df["End Date"].apply(lambda x: x.isoformat() if isinstance(x, pd.Timestamp) else x)
-        forecast_df["End Date"] = forecast_df["End Date"].apply(lambda x: x.isoformat() if isinstance(x, pd.Timestamp) else x)
-        combined_df["End Date"] = combined_df["End Date"].apply(lambda x: x.isoformat() if isinstance(x, pd.Timestamp) else x)
-
-        # Convert dataframes to JSON
-        original_data_json = xbrl_df.to_dict(orient="records")
-        forecast_data_json = forecast_df.to_dict(orient="records")
+        
+        # 3. Process the XBRL Data.
+        original_df = pd.DataFrame(data)
+        # Preserve the original fetched data.
+        historical_df = original_df.copy()
+        historical_df["Type"] = "Historical"
+        
+        # Clean and infer frequency (using your helper function).
+        cleaned_df, inferred_freq = clean_and_infer_frequency(original_df, ticker, concept_name)
+        logger.info(f"Inferred Frequency: {inferred_freq}")
+        
+        # 4. Forecast Data (if requested).
+        if do_forecast:
+            nixtla_client = NixtlaClient(api_key=timegen_key, base_url=timegen_endpoint)
+            if inferred_freq.lower().startswith("q"):
+                horizon = 4
+            elif inferred_freq.lower().startswith("a"):
+                horizon = 1
+            logger.info(f"Using forecast horizon: {horizon}")
+            forecast_df = nixtla_client.forecast(df=cleaned_df, h=horizon, time_col="enddate", target_col="value")
+            
+            forecast_df["Type"] = "Forecast"
+            if "timestamp" in forecast_df.columns:
+                forecast_df.rename(columns={"timestamp": "enddate"}, inplace=True)
+            if "TimeGPT" in forecast_df.columns:
+                forecast_df.rename(columns={"TimeGPT": "forecastedvalue"}, inplace=True)
+            if "forecastedvalue" not in forecast_df.columns and "value" in forecast_df.columns:
+                forecast_df.rename(columns={"value": "forecastedvalue"}, inplace=True)
+            
+            try:
+                last_historical_value = cleaned_df["value"].iloc[-1]
+            except Exception:
+                last_historical_value = forecast_df["forecastedvalue"].iloc[0]
+            forecast_df["change_percent"] = ((forecast_df["forecastedvalue"] - last_historical_value) /
+                                             last_historical_value * 100).round(2)
+            forecast_df["trend"] = forecast_df["change_percent"].apply(
+                lambda cp: "upward" if cp > 0 else ("downward" if cp < 0 else "stable")
+            )
+            def confidence(row):
+                cp = row["change_percent"]
+                if abs(cp) > 20:
+                    return "High Confidence"
+                elif abs(cp) > 10:
+                    return "Moderate Confidence"
+                else:
+                    return "Low Confidence"
+            forecast_df["forecast_confidence"] = forecast_df.apply(confidence, axis=1)
+            forecast_df["forecast_comment"] = forecast_df["trend"].map({
+                "upward": "Bullish outlook",
+                "downward": "Bearish outlook",
+                "stable": "Stable outlook"
+            })
+        else:
+            forecast_df = pd.DataFrame()  # Empty forecast DataFrame.
+        
+        # 5. Prepare DataFrames for Combined Output.
+        orig_cols = ["enddate", "value", "Type", "AccessionNumber", "FiscalYear",
+                     "FiscalPeriod", "FormType", "FilingDate", "Reporting Period", "Concept"]
+        fcst_cols = ["forecastedvalue", "change_percent", "trend", "forecast_confidence", "forecast_comment"]
+        all_cols = orig_cols + fcst_cols
+        
+        for col in fcst_cols:
+            if col not in historical_df.columns:
+                historical_df[col] = None
+        for col in orig_cols:
+            if col not in forecast_df.columns:
+                forecast_df[col] = None
+            forecast_df["Concept"] = concept_name
+        
+        historical_df = historical_df.reindex(columns=all_cols)
+        forecast_df = forecast_df.reindex(columns=all_cols)
+        if forecast_df.empty:
+            combined_df = historical_df.copy()
+        else:
+            combined_df = pd.concat([historical_df, forecast_df], ignore_index=True, sort=False)
+        
+        # Replace NaNs and sanitize data.
+        historical_df = historical_df.replace({np.nan: None})
+        forecast_df = forecast_df.replace({np.nan: None})
+        combined_df = combined_df.replace({np.nan: None})
+        historical_df = sanitize_df(historical_df)
+        forecast_df = sanitize_df(forecast_df)
+        combined_df = sanitize_df(combined_df)
+        historical_df = convert_dates(historical_df)
+        forecast_df = convert_dates(forecast_df)
+        combined_df = convert_dates(combined_df)
+        
+        original_data_json = historical_df.to_dict(orient="records")
+        forecast_data_json = forecast_df.to_dict(orient="records") if do_forecast and not forecast_df.empty else []
         combined_data_json = combined_df.to_dict(orient="records")
-        logger.info(f"forecast_xbrl_data_plot original_data_json: {original_data_json}")
-        logger.info(f"forecast_xbrl_data_plot forecast_data_json: {forecast_data_json}")
-        logger.info(f"forecast_xbrl_data_plot combined_data_json: {combined_data_json}")
+        original_data_json = [replace_nan_in_dict(rec) for rec in original_data_json]
+        forecast_data_json = [replace_nan_in_dict(rec) for rec in forecast_data_json]
+        combined_data_json = [replace_nan_in_dict(rec) for rec in combined_data_json]
+        
+        combined_data_csv = combined_df.to_csv(index=False)
+        
+        # 6. Create Plotly Figures.
+        # --- Figure 1: Combined Plot (Historical and, if available, Forecast) ---
+        var_hist_plot = historical_df[["enddate", "value"]].rename(columns={"value": "orig_value"})
+        var_hist_plot["enddate"] = pd.to_datetime(var_hist_plot["enddate"], format="%Y-%m-%d", errors="coerce")
+        var_hist_plot["value_millions"] = var_hist_plot["orig_value"] / 1e6
 
-        # Create the Plotly plot
-        fig = px.line(
-            combined_df,
-            x="End Date",
-            y=concept_label,
-            color="Type",
-            title=f"{ticker}: {concept_label} Forecast",
-            labels={"End Date": "Date", concept_label: f"Value ({unit})", "Type": "Data Type"},
-            template="plotly_white"
+        fig_combined = go.Figure()
+        fig_combined.add_trace(go.Scatter(
+            x=var_hist_plot["enddate"],
+            y=var_hist_plot["value_millions"],
+            mode="lines+markers",
+            name="Historical",
+            line=dict(color="royalblue", width=2),
+            marker=dict(size=6),
+            hovertemplate=f"<b>Date</b>: %{{x|%Y-%m-%d}}<br><b>{concept_label}</b>: $%{{y:.2f}}M<extra></extra>"
+        ))
+        
+        if do_forecast and not forecast_df.empty:
+            var_fcst_plot = forecast_df[["enddate", "forecastedvalue"]].rename(columns={"forecastedvalue": "fcst_value"})
+            var_fcst_plot["enddate"] = pd.to_datetime(var_fcst_plot["enddate"], format="%Y-%m-%d", errors="coerce")
+            var_fcst_plot["value_millions"] = var_fcst_plot["fcst_value"] / 1e6
+            fig_combined.add_trace(go.Scatter(
+                x=var_fcst_plot["enddate"],
+                y=var_fcst_plot["value_millions"],
+                mode="lines+markers",
+                name="Forecast",
+                line=dict(color="firebrick", width=2, dash="dash"),
+                marker=dict(size=6),
+                hovertemplate=f"<b>Date</b>: %{{x|%Y-%m-%d}}<br><b>{concept_label}</b>: $%{{y:.2f}}M<extra></extra>"
+            ))
+        
+        # Set x-axis boundaries.
+        if do_forecast and not forecast_df.empty:
+            x_min_plot = min(var_hist_plot["enddate"].min(), var_fcst_plot["enddate"].min())
+            x_max_plot = max(var_hist_plot["enddate"].max(), var_fcst_plot["enddate"].max())
+        else:
+            x_min_plot = var_hist_plot["enddate"].min()
+            x_max_plot = var_hist_plot["enddate"].max()
+        bands = pd.date_range(start=x_min_plot, end=x_max_plot, freq="Q")
+        toggle = True
+        prev_date = x_min_plot
+        for band_end in bands:
+            if toggle:
+                fig_combined.add_vrect(
+                    x0=prev_date,
+                    x1=band_end,
+                    fillcolor="LightGray",
+                    opacity=0.3,
+                    line_width=0
+                )
+            toggle = not toggle
+            prev_date = band_end
+        if toggle and prev_date < x_max_plot:
+            fig_combined.add_vrect(
+                x0=prev_date,
+                x1=x_max_plot,
+                fillcolor="LightGray",
+                opacity=0.3,
+                line_width=0
+            )
+        if do_forecast and not forecast_df.empty:
+            for idx, row in var_fcst_plot.iterrows():
+                y_val = row["value_millions"]
+                if pd.notnull(y_val):
+                    fig_combined.add_hline(
+                        y=y_val,
+                        line_dash="dot",
+                        line_color="gray",
+                        opacity=0.5,
+                        annotation_text=f"${y_val:.2f}M",
+                        annotation_position="right",
+                        annotation_yshift=10
+                    )
+        combined_title = (
+            f"{ticker}: {concept_label} Historical"
+            + (" and Forecast Data" if do_forecast and not forecast_df.empty else " Data")
         )
+        combined_title = split_title(combined_title, threshold=50)
+        fig_combined.update_layout(
+            title={
+                "text": combined_title,
+                "y": 0.95,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top"
+            },
+            xaxis_title="Date",
+            yaxis=dict(
+                title="Value (Million USD)",
+                range=[
+                    min(var_hist_plot["value_millions"].min(), 
+                        var_fcst_plot["value_millions"].min() if do_forecast and not forecast_df.empty else var_hist_plot["value_millions"].min()) * 0.9,
+                    max(var_hist_plot["value_millions"].max(), 
+                        var_fcst_plot["value_millions"].max() if do_forecast and not forecast_df.empty else var_hist_plot["value_millions"].max()) * 1.1
+                ],
+                showgrid=True,
+                gridcolor="LightGray",
+                gridwidth=1,
+                linecolor="black",
+                ticks="outside"
+            ),
+            template="plotly_white",
+            plot_bgcolor="white",
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=-0.15,
+                xanchor="center",
+                x=0.5
+            ),
+            margin=dict(t=80, b=150)
+        )
+        # Add a copyright annotation.
+        fig_combined.add_annotation(
+            xref="paper", yref="paper",
+            x=0.99,
+            y=-0.05,
+            text="© 2025, AITrailblazer, powered by Filing Scout AI",
+            showarrow=False,
+            font=dict(size=10, color="gray"),
+            xanchor="right",
+            yanchor="top"
+        )
+        if do_forecast and not forecast_df.empty:
+            forecast_start_date = var_fcst_plot["enddate"].min()
+            forecast_start_value = var_fcst_plot.loc[var_fcst_plot["enddate"] == forecast_start_date, "value_millions"].values[0]
+            fig_combined.add_annotation(
+                x=forecast_start_date,
+                y=forecast_start_value,
+                text="Forecast Begins",
+                showarrow=True,
+                arrowhead=2,
+                ax=0,
+                ay=-30
+            )
+        
+        # ----- NEW: Add Company Information Block to Combined Figure -----
+        company_info = (
+            f"<b>{ticker}</b><br>"
+            f"<b>{companyName}</b><br>"
+            f"Exchange: {exchange}<br>"
+            f"CIK: {cik}"
+        )
+        fig_combined.add_annotation(
+            xref="paper",
+            yref="paper",
+             x=0.0,        # Exactly at the left edge (or use 0.01 if you prefer a small margin)
+            y=1.0,        # Exactly at the top edge (or use 0.99 for a slight offset)
+            xanchor="left",
+            yanchor="top",
+            text=company_info,
+            showarrow=False,
+            align="left",
+            font=dict(size=12, color="black"),
+            bordercolor="black",
+            borderwidth=1,
+            borderpad=4,
+            bgcolor="rgba(255, 255, 255, 0.8)"  # semi-transparent background
+        )
+        # -------------------------------------------------
 
-        # Customize plot appearance
-        fig.update_traces(mode="lines+markers", line=dict(width=2), marker=dict(size=6))
-        fig.update_layout(plot_bgcolor="white", xaxis=dict(showgrid=False, linecolor="black"),
-                          yaxis=dict(showgrid=False, linecolor="black"))
-        fig.update_traces(hovertemplate="Date: %{x}<br>Value: %{y}<extra></extra>")
+        # Optional: Write the combined figure HTML to disk.
+        #html_combined = fig_combined.to_html(full_html=True)
+        #with open("html_combined.html", "w", encoding="utf-8") as f:
+        #    f.write(html_combined)
 
-        # Build the JSON response
+        partial_html_combined = fig_combined.to_html(full_html=False)
+        
+        # --- Figure 2: Forecast-Only Figure (if forecast performed) ---
+        if do_forecast and not forecast_df.empty:
+            fcst_min = var_fcst_plot["value_millions"].min()
+            fcst_max = var_fcst_plot["value_millions"].max()
+            fcst_range_val = fcst_max - fcst_min
+            narrow_threshold = 0.1  # million USD
+            expansion_factor = 50 if (fcst_range_val < narrow_threshold) else 1
+            var_fcst_plot["fcst_value_trans"] = var_fcst_plot["value_millions"] * expansion_factor
+
+            fig_forecast = go.Figure()
+            fig_forecast.add_trace(go.Scatter(
+                x=var_fcst_plot["enddate"],
+                y=var_fcst_plot["fcst_value_trans"],
+                mode="lines+markers",
+                name="Forecast",
+                line=dict(color="firebrick", width=2, dash="dash"),
+                marker=dict(size=6),
+                customdata=var_fcst_plot["value_millions"],
+                hovertemplate=f"<b>Date</b>: %{{x|%Y-%m-%d}}<br><b>{concept_label}</b>: $%{{customdata:.2f}}M<extra></extra>"
+            ))
+            x_min_fore = var_fcst_plot["enddate"].min()
+            x_max_fore = var_fcst_plot["enddate"].max()
+            bands_fore = pd.date_range(start=x_min_fore, end=x_max_fore, freq="Q")
+            toggle = True
+            prev_date = x_min_fore
+            for band_end in bands_fore:
+                if toggle:
+                    fig_forecast.add_vrect(
+                        x0=prev_date,
+                        x1=band_end,
+                        fillcolor="LightGray",
+                        opacity=0.3,
+                        line_width=0
+                    )
+                toggle = not toggle
+                prev_date = band_end
+            if toggle and prev_date < x_max_fore:
+                fig_forecast.add_vrect(
+                    x0=prev_date,
+                    x1=x_max_fore,
+                    fillcolor="LightGray",
+                    opacity=0.3,
+                    line_width=0
+                )
+            for idx, row in var_fcst_plot.iterrows():
+                y_val_trans = row["fcst_value_trans"]
+                if pd.notnull(y_val_trans):
+                    fig_forecast.add_hline(
+                        y=y_val_trans,
+                        line_dash="dot",
+                        line_color="gray",
+                        opacity=0.5,
+                        annotation_text=f"${row['value_millions']:.2f}M",
+                        annotation_position="right",
+                        annotation_yshift=10
+                    )
+            trans_min = var_fcst_plot["value_millions"].min() * expansion_factor
+            trans_max = var_fcst_plot["value_millions"].max() * expansion_factor
+            forecast_y_range = [trans_min * 0.95, trans_max * 1.05]
+
+            fig_forecast.update_layout(
+                title={
+                    "text": (
+                        f"{ticker}: {concept_label} Forecast (Expanded Scale)<br>"
+                        f"(Forecast values multiplied by {expansion_factor}x)<br>"
+                    ),
+                    "y": 0.95,
+                    "x": 0.5,
+                    "xanchor": "center",
+                    "yanchor": "top"
+                },
+                xaxis_title="Date",
+                yaxis=dict(
+                    title="Forecast Value (Expanded, Million USD)",
+                    range=forecast_y_range,
+                    showgrid=True,
+                    gridcolor="LightGray",
+                    gridwidth=1,
+                    linecolor="black",
+                    ticks="outside"
+                ),
+                template="plotly_white",
+                plot_bgcolor="white",
+                legend=dict(
+                    orientation="h",
+                    yanchor="top",
+                    y=-0.15,
+                    xanchor="center",
+                    x=0.5
+                ),
+                margin=dict(t=80, b=150)
+            )
+            fig_forecast.add_annotation(
+                xref="paper", yref="paper",
+                x=0.99,
+                y=-0.05,
+                text="© 2025, AITrailblazer, powered by Filing Scout AI",
+                showarrow=False,
+                font=dict(size=10, color="gray"),
+                xanchor="right",
+                yanchor="top"
+            )
+            forecast_start_date = var_fcst_plot["enddate"].min()
+            forecast_start_value_trans = var_fcst_plot.loc[var_fcst_plot["enddate"] == forecast_start_date, "fcst_value_trans"].values[0]
+            fig_forecast.add_annotation(
+                x=forecast_start_date,
+                y=forecast_start_value_trans,
+                text="Forecast Begins",
+                showarrow=True,
+                arrowhead=2,
+                ax=0,
+                ay=-30
+            )
+            # ----- NEW: Add Company Information Block to Forecast Figure -----
+            fig_forecast.add_annotation(
+                xref="paper",
+                yref="paper",
+                x=0.0,
+                y=1.0,
+                xanchor="left",
+                yanchor="top",
+                text=company_info,
+                showarrow=False,
+                align="left",
+                font=dict(size=12, color="black"),
+                bordercolor="black",
+                borderwidth=1,
+                borderpad=4,
+                bgcolor="rgba(255, 255, 255, 0.8)"
+            )
+            # -------------------------------------------------
+            partial_html_forecast = fig_forecast.to_html(full_html=False)
+        else:
+            partial_html_forecast = ""  # No forecast plot if forecast is skipped.
+        
+        # 7. Export combined data as CSV.
+        combined_data_csv = combined_df.to_csv(index=False)
+        combined_data_json = json.dumps(combined_data_json, indent=4)
+        logger.info(f"combined_data_json: {combined_data_json}")
+
+        # --- Return JSON with both plot HTML snippets and data outputs ---
         response_data = {
             "ticker": ticker,
             "concept": concept_name,
+            "concept_label": concept_label,
             "unit": unit,
-            "original_data_json": original_data_json,
-            "forecast_data_json": forecast_data_json,
+            "original_data_json": json.dumps(original_data_json, indent=4),
+            "forecast_data_json": json.dumps(forecast_data_json, indent=4),
             "combined_data_json": combined_data_json,
-            "plot_html": fig.to_html(),
+            "combined_data_csv": combined_data_csv,
+            "combined_plot_html": partial_html_combined,
+            "forecast_plot_html": partial_html_forecast
         }
-
+        
         return JSONResponse(response_data)
-
+    
     except Exception as e:
-        logger.error(f"Unexpected error during forecasting plot for ticker {ticker}: {e}")
+        logger.error(f"Unexpected error during forecasting plot: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-      
+        
+def map_timedelta_to_freq(delta):
+    """
+    Map a typical gap (delta) to a standard frequency string.
+    This example uses some heuristics:
+      - ~7 days    => Weekly ('W')
+      - ~30 days   => Monthly ('M')
+      - ~90 days   => Quarterly ('Q')
+      - ~365 days  => Annual ('A')
+    You can adjust these thresholds as needed.
+    """
+    days = delta / pd.Timedelta(days=1)
+    if abs(days - 7) < 1:
+        return "W"
+    elif 27 <= days <= 32:
+        return "M"
+    elif abs(days - 91) < 3 or abs(days - 92) < 3 or abs(days - 91.25) < 3:
+        return "Q"
+    elif abs(days - 365) < 10:
+        return "A"
+    else:
+        return None
+
+def clean_and_infer_frequency(df, ticker, concept_name, min_valid_rows=5, tolerance=1.5):
+    """
+    Clean the XBRL dataframe and infer the time frequency from the largest contiguous
+    block of timestamps with "regular" intervals.
+    
+    Parameters:
+      df : DataFrame
+         Must contain at least "enddate" and "value" columns.
+      ticker : str
+         Ticker symbol (used for adding a unique_id column).
+      concept_name : str
+         For logging purposes.
+      min_valid_rows : int
+         Minimum number of rows required for a block to be considered.
+      tolerance : float
+         Multiplier applied to the median gap. Any gap larger than tolerance*median_gap
+         is treated as a break in regularity.
+    
+    Returns:
+      (df_clean, inferred_freq) where df_clean is the cleaned DataFrame (with columns:
+      unique_id, enddate, and value) and inferred_freq is the inferred frequency string.
+    """
+    # Convert enddate to datetime, drop missing or duplicate dates, and sort.
+    df["enddate"] = pd.to_datetime(df["enddate"], errors="coerce")
+    df = df.dropna(subset=["enddate"]).sort_values("enddate").drop_duplicates(subset=["enddate"])
+    if df.empty or len(df) < min_valid_rows:
+        logger.error(f"Not enough valid dates for {ticker} - {concept_name}")
+        return None, None
+    df = df.copy()  # avoid modifying original dataframe
+    df.set_index("enddate", inplace=True)
+    
+    # Compute gaps between consecutive timestamps.
+    diffs = df.index.to_series().diff().dropna()
+    if diffs.empty:
+        logger.error(f"Insufficient differences in dates for {ticker} - {concept_name}")
+        return None, None
+
+    median_gap = diffs.median()
+    gap_threshold = tolerance * median_gap
+    logger.info(f"Median gap: {median_gap}, using gap threshold of {gap_threshold}")
+
+    # Identify contiguous blocks where each consecutive gap is less than the threshold.
+    timestamps = df.index
+    blocks = []
+    start_idx = 0
+    for i in range(1, len(timestamps)):
+        gap = timestamps[i] - timestamps[i - 1]
+        # If the gap is too large, consider that a break between blocks.
+        if gap > gap_threshold:
+            block = timestamps[start_idx:i]
+            if len(block) >= min_valid_rows:
+                blocks.append(block)
+            start_idx = i  # start a new block
+    # Add the final block if it meets the criteria.
+    final_block = timestamps[start_idx:]
+    if len(final_block) >= min_valid_rows:
+        blocks.append(final_block)
+
+    if not blocks:
+        logger.error(f"No contiguous block of sufficient length found for {ticker} - {concept_name}")
+        return None, None
+
+    # Choose the longest block.
+    best_block = max(blocks, key=len)
+    logger.info(f"Selected block from {best_block[0]} to {best_block[-1]} with {len(best_block)} rows.")
+
+    # Use the block for inference.
+    df_block = df.loc[best_block[0]: best_block[-1]]
+    
+    # Try built-in frequency inference.
+    inferred_freq = pd.infer_freq(df_block.index)
+    if inferred_freq is None:
+        # Fallback: use the mode of the differences.
+        block_diffs = df_block.index.to_series().diff().dropna()
+        if not block_diffs.empty:
+            mode_diff = block_diffs.mode()[0]
+            mapped = map_timedelta_to_freq(mode_diff)
+            if mapped:
+                inferred_freq = mapped
+                logger.info(f"Manual mapping: {mode_diff} mapped to frequency: {mapped}")
+            else:
+                # As a fallback, use the offset string from the mode difference.
+                inferred_freq = str(pd.tseries.frequencies.to_offset(mode_diff))
+                logger.info(f"Manual inference yielded offset: {inferred_freq}")
+        else:
+            logger.warning(f"Block differences empty for {ticker} - {concept_name}, defaulting to 'Q'")
+            inferred_freq = "Q"
+    else:
+        logger.info(f"pd.infer_freq yielded: {inferred_freq}")
+
+    # Log final inferred frequency.
+    logger.info(f"clean_and_infer_frequency: Final inferred frequency for {ticker} - {concept_name}: {inferred_freq}")
+
+    # Format dataframe for downstream processing.
+    df_block = df_block.reset_index()
+    df_block["unique_id"] = ticker
+    df_clean = df_block[["unique_id", "enddate", "value"]]
+    return df_clean, inferred_freq
+    
 async def anomalies_xbrl_data_plot(request: Request):
     """
     Endpoint to fetch XBRL data, detect anomalies using Nixtla, and return the results as JSON containing 
@@ -760,7 +1280,7 @@ async def anomalies_xbrl_data_plot(request: Request):
             return JSONResponse({"error": f"No XBRL data found for ticker: {ticker}, concept: {concept_name}."}, status_code=404)
 
         # Prepare the dataframe for anomaly detection
-        xbrl_df.rename(columns={"End Date": "timestamp", "Value": "value"}, inplace=True)
+        xbrl_df.rename(columns={"enddate": "timestamp", "value": "value"}, inplace=True)
         xbrl_df = xbrl_df.sort_values(by="timestamp").drop_duplicates(subset=["timestamp"])
         xbrl_df = xbrl_df[["timestamp", "value"]]
 
@@ -786,14 +1306,14 @@ async def anomalies_xbrl_data_plot(request: Request):
 
         # Detect anomalies using Nixtla
         anomalies_df = nixtla_client.detect_anomalies(
-            df=xbrl_df, time_col="timestamp", target_col="value", freq=inferred_freq
+            df=xbrl_df, time_col="enddate", target_col="value", freq=inferred_freq
         )
         anomalies_json = anomalies_df.to_dict(orient="records") if not anomalies_df.empty else []
 
         logger.info(f"Anomalies detected: {len(anomalies_json)} records")
 
         # Generate the plot
-        plot_fig = nixtla_client.plot(xbrl_df, anomalies_df, time_col="timestamp", target_col="value")
+        plot_fig = nixtla_client.plot(xbrl_df, anomalies_df, time_col="enddate", target_col="value")
 
         # Save the plot to a PNG in memory
         png_bytes = io.BytesIO()
@@ -823,7 +1343,7 @@ async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
     Function to fetch and process XBRL data as a Pandas DataFrame.
     """
     try:
-        logger.info(f"fetch_xbrl_csv Fetching XBRL data for ticker: {ticker}, concept: {concept}, unit: {unit}")
+        # logger.info(f"fetch_xbrl_csv Fetching XBRL data for ticker: {ticker}, concept: {concept}, unit: {unit}")
 
         # Fetch the CIK for the given ticker
         cik = company_info.get_cik_by_ticker(ticker)
@@ -838,7 +1358,7 @@ async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
             raise ValueError(f"No XBRL data found for ticker: {ticker}")
 
         xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept, unit=unit)
-        logger.info(f"XBRL data for ticker {ticker}:\n{xbrl_df.head()}")
+        #  logger.info(f"XBRL data for ticker {ticker}:\n{xbrl_df.head()}")
 
         # Add the ticker as a column
         # xbrl_df["unique_id"] = ticker
@@ -854,17 +1374,17 @@ async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
         #  "start","end","val","accn","fy","fp","form","filed","frame"
         # Rename columns for better readability
         column_mapping = {
-            "frame": "Reporting Period",
-            "end": "End Date",
-            "val": "Value",
+            "frame": "ReportingPeriod",
+            "end": "enddate",
+            "val": "value",
             "unit": "Unit",
             "concept": "Concept",
-            "start": "Start Date",
-            "accn": "Accession Number",
-            "fy": "Fiscal Year",
-            "fp": "Fiscal Period",
-            "form": "Form Type",
-            "filed": "Filing Date"
+            "start": "StartDate",
+            "accn": "AccessionNumber",
+            "fy": "FiscalYear",
+            "fp": "FiscalPeriod",
+            "form": "FormType",
+            "filed": "FilingDate"
         }
         xbrl_df.rename(columns=column_mapping, inplace=True)
 
@@ -875,7 +1395,7 @@ async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
             raise ValueError(f"No XBRL data available for ticker: {ticker}")
 
         # Log filtered data for debugging
-        logger.info(f"Processed XBRL data for ticker {ticker}:\n{xbrl_df.head()}")
+        # logger.info(f"Processed XBRL data for ticker {ticker}:\n{xbrl_df.head()}")
 
         return xbrl_df
 
@@ -889,14 +1409,14 @@ async def fetch_xbrl_csv(ticker, concept="AssetsCurrent", unit="USD"):
 async def fetch_xbrl_concept_json(ticker, concept="AssetsCurrent", unit="USD"):
     """
     Function to fetch XBRL data, log column names, and return data as JSON.
+    Prints execution time on the terminal but does not include it in the response.
     """
+    start_time = time.perf_counter()  # Start high-precision timer
+
     try:
-        logger.info(f"fetch_xbrl_concept_json Fetching XBRL data for ticker: {ticker}, concept: {concept}, unit: {unit}")
-        
         concept_parts = concept.split("|")
         concept_name = concept_parts[0]
-        #concept_label = concept_parts[1] if len(concept_parts) > 1 else concept_name
-        logger.info(f"fetch_xbrl_concept_json Received request to generate JSON for ticker: {ticker}, concept: {concept_name}, unit: {unit}")
+        logger.info(f"fetch_xbrl_concept_json Received request: ticker={ticker}, concept={concept_name}, unit={unit}")
 
         # Fetch the CIK for the given ticker
         cik = company_info.get_cik_by_ticker(ticker)
@@ -911,11 +1431,9 @@ async def fetch_xbrl_concept_json(ticker, concept="AssetsCurrent", unit="USD"):
             raise ValueError(f"No XBRL data found for ticker: {ticker}")
 
         # Process XBRL data into a DataFrame
+        processing_start = time.perf_counter()  # Start timer for data processing
         xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept_name, unit=unit)
-        logger.info(f"fetch_xbrl_concept_json XBRL data for ticker {ticker} fetched successfully.")
-
-        # Log all column names for inspection
-        logger.info(f"fetch_xbrl_concept_json Column names in XBRL data for ticker {ticker}: {list(xbrl_df.columns)}")
+        processing_duration_ms = (time.perf_counter() - processing_start) * 1000  # Time in ms
 
         # Add the concept as a column
         xbrl_df["concept"] = concept_name
@@ -923,192 +1441,91 @@ async def fetch_xbrl_concept_json(ticker, concept="AssetsCurrent", unit="USD"):
         # Convert DataFrame to JSON
         xbrl_json = xbrl_df.to_dict(orient="records")
 
-        # Return JSON data along with column names
+        # Measure total execution time
+        total_duration_ms = (time.perf_counter() - start_time) * 1000  # Time in ms
+
+        logger.info(f"Fetching fetch_xbrl_concept_json for ticker {ticker} took {total_duration_ms:.3f} ms")
+        
+        # **Print execution time on the terminal only**
+        logger.info(f"[Terminal] Execution time for {ticker}: Total={total_duration_ms:.3f}ms, Processing={processing_duration_ms:.3f}ms")
+        # Return JSON response **without execution time**
         return {
             "columns": list(xbrl_df.columns),
             "data": xbrl_json
         }
 
     except ValueError as ve:
-        logger.error(f"Value error for ticker {ticker}: {ve}")
+        duration_ms = (time.perf_counter() - start_time) * 1000
+        logger.error(f"Value error for ticker {ticker} (Took {duration_ms:.3f}ms): {ve}")
+        print(f"[Terminal] Error: {ve} (Execution time: {duration_ms:.3f}ms)")
         raise ve
+
     except Exception as e:
-        logger.error(f"fetch_xbrl_concept_json Unexpected error while fetching XBRL data for ticker {ticker}: {e}")
+        duration_ms = (time.perf_counter() - start_time) * 1000
+        logger.error(f"Unexpected error for ticker {ticker} (Took {duration_ms:.3f}ms): {e}")
+        print(f"[Terminal] Unexpected error: {e} (Execution time: {duration_ms:.3f}ms)")
         raise e
-    
+            
 import json
 from starlette.responses import JSONResponse, HTMLResponse
 import plotly.express as px
 import logging
 
 logger = logging.getLogger(__name__)
+    
+    # Custom pretty-print JSON response
+class PrettyJSONResponse(JSONResponse):
+    def render(self, content) -> bytes:
+        return json.dumps(content, indent=4).encode("utf-8")
 
-async def xbrl_data_plot1(request):
+
+
+class XBRLDataItem(BaseModel):
+    Reporting_Period: Optional[str] = Field(None, alias="Reporting Period")
+    End_Date: str = Field(..., alias="End Date")
+    Value: float = Field(..., alias="Value")
+    Unit: str = Field(..., alias="Unit")
+    Concept: str = Field(..., alias="Concept")
+    Start_Date: str = Field(..., alias="Start Date")
+    Accession_Number: str = Field(..., alias="Accession Number")
+    Fiscal_Year: int = Field(..., alias="Fiscal Year")
+    Fiscal_Period: str = Field(..., alias="Fiscal Period")
+    Form_Type: str = Field(..., alias="Form Type")
+    Filing_Date: str = Field(..., alias="Filing Date")
+
+    class Config:
+        # For Pydantic V1 use:
+        # allow_population_by_field_name = True
+        # For Pydantic V2, uncomment the following line:
+        populate_by_name = True
+
+class XBRLData(BaseModel):
+    available_units: List[str]
+    data: List[XBRLDataItem]
+    inferred_freq: str
+    label: str
+    name: str
+
+    class Config:
+        # For Pydantic V1 use:
+        # allow_population_by_field_name = True
+        # For Pydantic V2, uncomment the following line:
+        populate_by_name = True
+
+    
+# Pydantic model for the overall payload
+class XBRLData(BaseModel):
+    available_units: List[str]
+    data: List[XBRLDataItem]
+    inferred_freq: str
+    label: str
+    name: str
+
+    class Config:
+        allow_population_by_field_name = True
+
+
     """
-    Endpoint to fetch, process, and plot XBRL data for a given company ticker,
-    returning both the plot and the processed data.
-    """
-    ticker = request.path_params.get("ticker")
-    concept_param = request.query_params.get("concept", "AssetsCurrent|Assets")
-    unit = request.query_params.get("unit", "USD")
-
-    try:
-        # Validate ticker
-        if not ticker:
-            raise ValueError("Ticker is required in the path parameters.")
-
-        # Split concept into name and label
-        logger.info(f"xbrl_data_plot concept_param: {concept_param}")
-        concept_parts = concept_param.split("|")
-        concept_name = concept_parts[0]
-        concept_label = concept_parts[1].strip() if len(concept_parts) > 1 else concept_name
-
-        logger.info(
-            f"xbrl_data_plot Starting plot for ticker: {ticker}, concept: {concept_name}, label: {concept_label}, unit: {unit}"
-        )
-
-        # Get CIK and fetch XBRL data
-        cik = company_info.get_cik_by_ticker(ticker)
-        xbrl_data = sec_filings.get_xbrl_data(cik)
-
-        logger.info(f"xbrl_data_plot Processing XBRL data for concept: {concept_name}, unit: {unit}")
-        xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept_name, unit=unit)
-
-        # Filter valid frames and validate dataframe
-        valid_frame_df = xbrl_df[xbrl_df.frame.notna()]
-        if valid_frame_df.empty:
-            raise ValueError(f"No valid data found for ticker {ticker} and concept {concept_name}.")
-
-        # Create the plot with enhancements
-        fig = px.line(
-            valid_frame_df,
-            x="end",
-            y="val",
-            title=f"{ticker}: {concept_label} Over Time",
-            labels={"end": "Quarter End", "val": f"Value ({unit})"},
-            template="plotly_white"  # Apply a clean theme
-        )
-
-        # Customize line and markers
-        fig.update_traces(
-            mode="lines+markers",
-            line=dict(width=2),
-            marker=dict(size=6)
-        )
-
-        # Remove gridlines and set background color
-        fig.update_layout(
-            plot_bgcolor='white',
-            xaxis=dict(showgrid=False, linecolor='black'),
-            yaxis=dict(showgrid=False, linecolor='black')
-        )
-
-        # Add hover information
-        fig.update_traces(
-            hovertemplate='Quarter End: %{x}<br>Value: %{y}<extra></extra>'
-        )
-
-        # Convert processed data to JSON
-        data_json = valid_frame_df.to_dict(orient="records")
-        logger.info(f"xbrl_data_plot data_json: {data_json}")
-
-        # Build the response with both the plot HTML and the data
-        response_data = {
-            "plot_html": fig.to_html(),
-            "data_json": data_json
-        }
-
-        return JSONResponse(response_data)
-
-    except ValueError as ve:
-        logger.error(f"ValueError: {ve}")
-        return JSONResponse({"error": str(ve)}, status_code=400)
-    except Exception as e:
-        logger.error(f"Error plotting XBRL data for ticker {ticker}: {e}")
-        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
-
-async def xbrl_data_plot(request):
-    """
-    Endpoint to fetch, process, and plot XBRL data for a given company ticker,
-    returning both the plot and the processed data.
-    """
-    ticker = request.path_params.get("ticker")
-    concept_param = request.query_params.get("concept", "AssetsCurrent|Assets")
-    unit = request.query_params.get("unit", "USD")
-
-    try:
-        # Validate ticker
-        if not ticker:
-            raise ValueError("Ticker is required in the path parameters.")
-
-        # Split concept into name and label
-        logger.info(f"xbrl_data_plot concept_param: {concept_param}")
-        concept_parts = concept_param.split("|")
-        concept_name = concept_parts[0]
-        concept_label = concept_parts[1].strip() if len(concept_parts) > 1 else concept_name
-
-        logger.info(
-            f"xbrl_data_plot Starting plot for ticker: {ticker}, concept: {concept_name}, label: {concept_label}, unit: {unit}"
-        )
-
-        # Use the fetch_xbrl_csv function to fetch and process XBRL data
-        xbrl_df = await fetch_xbrl_csv(ticker, concept=concept_name, unit=unit)
-
-        # Validate dataframe
-        if xbrl_df.empty:
-            raise ValueError(f"No valid data found for ticker {ticker} and concept {concept_name}.")
-
-        # Create the plot with enhancements
-        fig = px.line(
-            xbrl_df,
-            x="End Date",
-            y="Value",
-            title=f"{ticker}: {concept_label} Over Time",
-            labels={"End Date": "Quarter End", "Value": f"Value ({unit})"},
-            template="plotly_white"  # Apply a clean theme
-        )
-
-        # Customize line and markers
-        fig.update_traces(
-            mode="lines+markers",
-            line=dict(width=2),
-            marker=dict(size=6)
-        )
-
-        # Remove gridlines and set background color
-        fig.update_layout(
-            plot_bgcolor='white',
-            xaxis=dict(showgrid=False, linecolor='black'),
-            yaxis=dict(showgrid=False, linecolor='black')
-        )
-
-        # Add hover information
-        fig.update_traces(
-            hovertemplate='Quarter End: %{x}<br>Value: %{y}<extra></extra>'
-        )
-
-        # Convert processed data to JSON
-        data_json = xbrl_df.to_dict(orient="records")
-        logger.info(f"xbrl_data_plot data_json: {data_json}")
-
-        # Build the response with both the plot HTML and the data
-        response_data = {
-            "plot_html": fig.to_html(),
-            "data_json": data_json
-        }
-
-        return JSONResponse(response_data)
-
-    except ValueError as ve:
-        logger.error(f"ValueError: {ve}")
-        return JSONResponse({"error": str(ve)}, status_code=400)
-    except Exception as e:
-        logger.error(f"Error plotting XBRL data for ticker {ticker}: {e}")
-        return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
-
-
-"""
  the following concepts from your list are among the most significant:
 
 Assets: Represents the total resources owned by the company.
@@ -1140,7 +1557,7 @@ async def fetch_xbrl_concept_json(request):
         concept_parts = concept_param.split("|")
         concept_name = concept_parts[0]
         # concept_label = concept_parts[1] if len(concept_parts) > 1 else concept_name
-        logger.info(f"fetch_xbrl_concept_json Fetching XBRL data for ticker: {ticker}, concept: {concept_name}, unit: {unit}")
+        # logger.info(f"fetch_xbrl_concept_json Fetching XBRL data for ticker: {ticker}, concept: {concept_name}, unit: {unit}")
 
         # Fetch the CIK for the given ticker
         cik = company_info.get_cik_by_ticker(ticker)
@@ -1156,11 +1573,11 @@ async def fetch_xbrl_concept_json(request):
 
         # Process XBRL data into a DataFrame
         xbrl_df = sec_filings.process_xbrl_data(xbrl_data, concept=concept_name, unit=unit)
-        logger.info(f"fetch_xbrl_concept_json XBRL data for ticker {ticker} fetched successfully.")
+        #  logger.info(f"fetch_xbrl_concept_json XBRL data for ticker {ticker} fetched successfully.")
 
         # Log column names for debugging purposes
         column_names = list(xbrl_df.columns)
-        logger.info(f"fetch_xbrl_concept_json Column names in XBRL data for ticker {ticker}: {column_names}")
+        #  logger.info(f"fetch_xbrl_concept_json Column names in XBRL data for ticker {ticker}: {column_names}")
 
         # Add the concept as a column for additional context
         xbrl_df["concept"] = concept_name
@@ -1230,20 +1647,26 @@ async def list_xbrl_concepts_as_json1(request: Request):
 async def list_xbrl_concepts_as_json(request: Request):
     """
     Endpoint to list all available XBRL concepts and their fields for a given company ticker in JSON format.
-    Includes inferred frequency for each concept and streams the results concept by concept.
+    Includes inferred frequency for each concept and streams the results concept by concept with execution time.
+    Execution time is logged in the console.
     """
     ticker = request.path_params["ticker"]
 
     async def concept_stream():
         try:
+            overall_start = time.perf_counter()  # High-precision timer
+            logger.info(f"Starting processing for ticker: {ticker}")
+
             # Validate ticker format
             if not re.match(r"^[A-Za-z0-9]+$", ticker):
+                logger.error(f"Invalid ticker format: {ticker}")
                 yield json.dumps({"error": "Invalid ticker format. Only alphanumeric characters are allowed."}) + "\n"
                 return
 
             # Get CIK for the ticker
             cik = company_info.get_cik_by_ticker(ticker)
             if not cik:
+                logger.error(f"CIK not found for ticker: {ticker}")
                 yield json.dumps({"error": f"CIK not found for ticker: {ticker}"}) + "\n"
                 return
 
@@ -1253,46 +1676,81 @@ async def list_xbrl_concepts_as_json(request: Request):
             # Extract available concepts
             concepts = xbrl_data.get("facts", {}).get("us-gaap", {})
             if not concepts:
+                logger.error(f"No XBRL concepts found for ticker: {ticker}")
                 yield json.dumps({"error": f"No XBRL concepts found for ticker: {ticker}"}) + "\n"
                 return
 
-            # Loop through each concept, sorting and limiting to top 200
+            logger.info(f"Found {len(concepts)} concepts for ticker: {ticker}")
+
+            # Loop through each concept, sorting and limiting to top 50
             for concept_name, details in sorted(concepts.items())[:50]:
+            # for concept_name, details in sorted(concepts.items()):
+                concept_start_time = time.perf_counter()  # Start time for each concept
+
                 try:
-                    # Skip concepts where the label contains "Deprecated"
+                    # Skip deprecated concepts
                     label = details.get("label", "")
                     if "Deprecated" in label:
                         continue
+
+                    # Get available units for the concept
+                    available_units = list(details.get("units", {}).keys())
+
+                    # Ensure USD is available
+                    if "USD" not in available_units:
+                        logger.warning(f"Skipping {concept_name}: USD unit not available")
+                        continue  # Skip if no USD data
 
                     # Fetch and process XBRL data for the concept
                     xbrl_df = await fetch_xbrl_csv(ticker, concept_name, "USD")
 
                     # Ensure timestamps are sorted and infer frequency
-                    xbrl_df = xbrl_df.sort_values(by="End Date").drop_duplicates(subset=["End Date"])
-                    xbrl_df.set_index("End Date", inplace=True)
+                    xbrl_df = xbrl_df.sort_values(by="enddate").drop_duplicates(subset=["enddate"])
+                    xbrl_df.set_index("enddate", inplace=True)
 
                     # Infer frequency
                     inferred_freq = pd.infer_freq(xbrl_df.index)
 
-                    # Stream concept details with inferred frequency
+                    concept_duration_ms = (time.perf_counter() - concept_start_time) * 1000  # Execution time in ms
+
+                    # Log execution time in console
+                    # logger.info(
+                    #     f"Processed {concept_name} (Label: {label}, Available Units: {available_units}) "
+                    #     f"in {round(concept_duration_ms, 3)} ms"
+                    # )
+
+                    # Stream concept details
                     yield json.dumps({
                         "name": concept_name,
                         "label": label,
-                        "inferred_freq": bool(inferred_freq),  # True if frequency inference succeeds, False otherwise
+                        "available_units": available_units,
+                        "inferred_freq": bool(inferred_freq)  # True if frequency inference succeeds
                     }) + "\n"
 
                 except Exception as e:
+                    concept_duration_ms = (time.perf_counter() - concept_start_time) * 1000
+
+                    # Log error in console
+                    logger.error(f"Error processing {concept_name}: {e} (Execution time: {round(concept_duration_ms, 3)} ms)")
+
                     # Stream error for the specific concept
                     yield json.dumps({
                         "name": concept_name,
                         "label": details.get("label", ""),
+                        "available_units": available_units,
                         "inferred_freq": False,  # False in case of error
-                        "error": str(e),
+                        "error": str(e)
                     }) + "\n"
 
+            overall_duration_ms = (time.perf_counter() - overall_start) * 1000
+            logger.info(f"Completed processing for ticker {ticker} in {round(overall_duration_ms, 3)} ms")
+
+            yield json.dumps({"message": "Processing complete"}) + "\n"
+
         except Exception as e:
-            # Handle unexpected errors
-            yield json.dumps({"error": f"An unexpected error occurred: {str(e)}"}) + "\n"
+            error_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(error_msg)
+            yield json.dumps({"error": error_msg}) + "\n"
 
     # Return streaming response
     return StreamingResponse(concept_stream(), media_type="application/json")
@@ -1356,14 +1814,6 @@ async def list_xbrl_concepts_as_csv(request: Request):
         logger.error(f"Unexpected error for ticker {ticker}: {e}")
         return JSONResponse({"error": f"An unexpected error occurred: {str(e)}"}, status_code=500)
     
-# Route handler
-import requests
-from starlette.responses import JSONResponse
-import urllib.parse
-import logging
-
-logger = logging.getLogger(__name__)
-
 async def download_html_content_route(request: Request):
     """
     Route to download HTML content for a given filing based on POST request data.
@@ -1430,21 +1880,16 @@ routes = [
     Route("/exchange/{ticker}", get_exchange),  # Fetch the CIK (Central Index Key) for a ticker
     Route("/tickersbyexchange/{exchange}", tickers_by_exchange, methods=["GET"]),  # Fetch tickers for a specific exchange
     Route("/filings/{ticker}", get_filings),  # Fetch all filings for a ticker
-#    Route("/filing/url/{ticker}/{form_type}", get_filing_url, methods=["GET"]),    
     Route("/forms/{ticker}", get_available_forms, methods=["GET"]),
     Route("/filing/html", download_latest_filing_html, methods=["POST"]),  # Change to POST request#    
     Route("/filing/pdf/{ticker}/{form_type}", download_latest_filing_pdf, methods=["GET"]),    
-#    Route("/10k/pdf/{ticker}", download_latest_10k),  # Fetch the latest 10-K as a PDF
-#    Route("/10k/html/{ticker}", download_latest_10k_html),  # Fetch the latest 10-K as raw HTML
-    Route("/xbrl/{ticker}/plot", xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
     Route("/xbrl/{ticker}/data", get_xbrl_data),  # Fetch processed XBRL data as JSON    
-    # Generate and download XBRL data as CSV    
     Route("/xbrl/{ticker}/json", fetch_xbrl_concept_json),  # Generate and download XBRL data as JSON    
     Route("/xbrl/concepts/{ticker}/json", list_xbrl_concepts_as_json, methods=["GET"]),
     Route("/xbrl/concepts/{ticker}/csv", list_xbrl_concepts_as_csv, methods=["GET"]),
     Route("/xbrl/{ticker}/csv", fetch_xbrl_csv),  # Generate and download XBRL data as CSV    
     Route("/xbrl/{ticker}/forecast/csv", forecast_xbrl_data_as_csv),  # Fetch, forecast, and return forecasted data
-    Route("/xbrl/{ticker}/forecast/plot", forecast_xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
+    Route("/xbrl/{ticker}/forecast/plot", forecast_xbrl_data_plot, methods=["POST"]),  # Fetch, forecast, and return forecasted data as Plot
     Route("/xbrl/{ticker}/anomalies/plot", anomalies_xbrl_data_plot),  # Fetch, forecast, and return forecasted data as Plot
     Route("/html/download", download_html_content_route, methods=["POST"]),
 ]

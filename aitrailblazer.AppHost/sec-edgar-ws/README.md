@@ -120,6 +120,8 @@ docker build -t sec-edgar-ws .
 docker run -p 8000:8000 sec-edgar-ws
 
 # Fetch the CIK for AAPL
+curl http://localhost:8000/forms/T
+
 curl http://localhost:8000/cik/AAPL
 curl http://localhost:8000/forms/AAPL
 {"ticker":"AAPL","forms":["4","144","S-3ASR","10-K","8-K","5","10-Q","UPLOAD","CORRESP","SD","3","SC 13G/A","PX14A6G","25-NSE","DEFA14A","DEF 14A","424B2","FWP","4/A","S-8","S-8 POS","PX14A6N","IRANNOTICE","CERT","8-A12B","3/A","25","SC 13G","8-K/A","CERTNYS","NO ACT"]}
@@ -168,10 +170,15 @@ curl -o AAPL_10K.html http://localhost:8000/10k/html/AAPL
 # Download the latest 10-K HTML for TSLA
 curl -o TSLA_10K.html http://localhost:8000/10k/html/TSLA
 
-curl -o AAPLconcepts.json http://localhost:8000/xbrl/concepts/AAPL
+curl -o AAPLconcepts.json http://localhost:8000/xbrl/concepts/AAPL/json
+
+curl -o TSLAconcepts.json http://localhost:8000/xbrl/concepts/TSLA/json
 
 
 curl http://localhost:8000/xbrl/AAPL?concept=AssetsCurrent&unit=USD
+
+curl -X GET "http://localhost:8000/xbrl/AAPL/json?concept=AssetsCurrent&unit=USD" -H "Content-Type: application/json"
+
 
 curl http://localhost:8000/xbrl/plot/AAPL?concept=AssetsCurrent&unit=USD
 
@@ -249,8 +256,17 @@ curl -X POST http://localhost:8000/html-to-pdf \
 ### `/xbrl/concepts/{ticker}`
 - **Purpose**: List all available XBRL concepts for a given company ticker.
 - **Example Usage**:
+
+    Route("/xbrl/concepts/{ticker}/json", list_xbrl_concepts_as_json, methods=["GET"]),
+
+
   ```bash
-  curl -o AAPLconcepts.json http://localhost:8000/xbrl/concepts/AAPL
+  curl -o AAPLconcepts.json http://localhost:8000/xbrl/concepts/TSLA
+
+    curl -o TSLAconcepts.json http://localhost:8000/xbrl/concepts/TSLA
+
+
+    curl http://localhost:8000/xbrl/concepts/TSLA/json
   ```
 
 ### `/xbrl/plot/{ticker}`
@@ -258,5 +274,100 @@ curl -X POST http://localhost:8000/html-to-pdf \
 - **Example Usage**:
   ```bash
   curl -o AAPL_AssetsCurrent.html "http://localhost:8000/xbrl/plot/AAPL?concept=AssetsCurrent&unit=USD"
+
+  
+
+
   ```
 
+```bash
+curl -X POST "http://localhost:8000/html/download" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "cik": "0001318605",
+           "accession_number": "0001628280-24-002390",
+           "primary_document": "tsla-20231231.htm"
+         }' \
+     -o downloaded_filing.html
+
+```
+
+
+```bash
+
+     
+curl -X POST "http://localhost:8000/xbrl/TSLA/plot/AssetsCurrent" \
+  -H "Content-Type: application/json" \
+  -d @TSLA_AccountsAndNotesReceivableNet.json  \
+  -o TSLA_AccountsAndNotesReceivableNet.html
+
+
+
+
+# Define header variables
+inferred_freq="Q"
+content_type="application/json"
+
+timegen_endpoint="https://AITTimeGEN-1.eastus.models.ai.azure.com/"  # Replace with your actual endpoint
+authorization="8a2yygOxL2e3aEaVtsooZKdpGmhozylK"  # Replace with your actual token if needed
+#name="AccountsAndNotesReceivableNet"
+
+#concept="AccountsAndNotesReceivableNet"
+#label="Accounts and Financing Receivable, after Allowance for Credit Loss"
+
+#filename="TSLA_AccountsAndNotesReceivableNet.json"
+
+# concept="AdditionalPaidInCapital"
+# label="Additional Paid in Capital"
+
+# concept="CapitalLeasesFutureMinimumPaymentsDueInFourYears"
+# label="Capital Leases, Future Minimum Payments Due in Four Years"
+#name="DeferredIncomeTaxAssetsNet"                      
+#concept="DeferredIncomeTaxAssetsNet"
+#label="Deferred Income Tax Assets, Net"
+
+name="Assets"                      
+concept="Assets"
+label="Assets"
+
+filename="TSLA_Assets.json"
+companyName="CompanyName"
+exchange="Exchange"
+cik="CIK"
+unit="USD"
+h="12"    
+
+# Use the variables in your curl POST command
+curl -X POST "http://localhost:8000/xbrl/TSLA/forecast/plot" \
+  -H "Content-Type: application/json" \
+  -H "X-Timegen-Endpoint: $timegen_endpoint" \
+  -H "Authorization: $authorization" \
+  -d "$(
+        jq -n \
+          --arg concept "$concept" \
+          --arg label "$label" \
+          --arg unit "$unit" \
+          --arg h "$h" \
+          --arg inferred_freq "$inferred_freq" \
+          --arg name "$name" \
+          --arg companyName "$companyName" \
+          --arg exchange "$exchange" \
+          --arg cik "$cik" \
+          --argjson forecast false \
+          --slurpfile data "$filename" \
+          '{
+              concept: $concept,
+              label: $label,
+              unit: $unit,
+              h: ($h | tonumber),
+              inferred_freq: $inferred_freq,
+              name: $name,
+              forecast: $forecast,
+              companyName: $companyName,
+              exchange: $exchange,
+              cik: $cik,
+              data: $data[0]
+          }'
+      )"
+
+```

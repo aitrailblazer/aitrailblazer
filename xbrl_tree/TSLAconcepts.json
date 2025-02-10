@@ -1,0 +1,3663 @@
+[
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accounts and Financing Receivable, after Allowance for Credit Loss",
+      "name": "AccountsAndNotesReceivableNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accounts Payable, Current",
+      "name": "AccountsPayableCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accounts Receivable, after Allowance for Credit Loss, Current",
+      "name": "AccountsReceivableNetCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accretion (Amortization) of Discounts and Premiums, Investments",
+      "name": "AccretionAmortizationOfDiscountsAndPremiumsInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accrual for Environmental Loss Contingencies",
+      "name": "AccrualForEnvironmentalLossContingencies"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accrued Environmental Loss Contingencies, Current",
+      "name": "AccruedEnvironmentalLossContingenciesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accrued Environmental Loss Contingencies, Noncurrent",
+      "name": "AccruedEnvironmentalLossContingenciesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accrued Liabilities, Current",
+      "name": "AccruedLiabilitiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accumulated Depreciation, Depletion and Amortization, Property, Plant, and Equipment",
+      "name": "AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+      "name": "AccumulatedOtherComprehensiveIncomeLossNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Additional Paid in Capital",
+      "name": "AdditionalPaidInCapital"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Additional Paid in Capital, Common Stock",
+      "name": "AdditionalPaidInCapitalCommonStock"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Adjustments, Noncash Items, to Reconcile Net Income (Loss) to Cash Provided by (Used in) Operating Activities",
+      "name": "AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Adjustments to Additional Paid in Capital, Equity Component of Convertible Debt",
+      "name": "AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Adjustments to Additional Paid in Capital, Other",
+      "name": "AdjustmentsToAdditionalPaidInCapitalOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "APIC, Share-based Payment Arrangement, Increase for Cost Recognition",
+      "name": "AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Adjustments to Additional Paid in Capital, Income Tax Benefit from Share-based Compensation",
+      "name": "AdjustmentsToAdditionalPaidInCapitalTaxEffectFromShareBasedCompensation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Adjustments to Additional Paid in Capital, Warrant Issued",
+      "name": "AdjustmentsToAdditionalPaidInCapitalWarrantIssued"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Expense",
+      "name": "AllocatedShareBasedCompensationExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Amortization of Debt Discount (Premium)",
+      "name": "AmortizationOfDebtDiscountPremium"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Amortization of Debt Issuance Costs",
+      "name": "AmortizationOfFinancingCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Amortization of Debt Issuance Costs and Discounts",
+      "name": "AmortizationOfFinancingCostsAndDiscounts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Amortization of Intangible Assets",
+      "name": "AmortizationOfIntangibleAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Asset-Backed Securities, at Carrying Value",
+      "name": "AssetBackedSecuritiesAtCarryingValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Asset Retirement Obligations, Noncurrent",
+      "name": "AssetRetirementObligationsNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Assets",
+      "name": "Assets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Assets, Current",
+      "name": "AssetsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Assets, Fair Value Disclosure",
+      "name": "AssetsFairValueDisclosure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Accumulated Gross Unrealized Gain, before Tax",
+      "name": "AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Accumulated Gross Unrealized Loss, before Tax",
+      "name": "AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Amortized Cost",
+      "name": "AvailableForSaleDebtSecuritiesAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Unrealized Gain",
+      "name": "AvailableForSaleDebtSecuritiesGrossUnrealizedGain"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Unrealized Loss",
+      "name": "AvailableForSaleDebtSecuritiesGrossUnrealizedLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Available-for-sale Securities",
+      "name": "AvailableForSaleSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Available-for-sale Securities, Amortized Cost Basis",
+      "name": "AvailableForSaleSecuritiesAmortizedCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling within One Year, Amortized Cost",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesNextRollingTwelveMonthsAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling within One Year, Fair Value",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesNextRollingTwelveMonthsFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling after 10 Years, Amortized Cost",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesRollingAfterYearTenAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling after Five Through Ten Years, Amortized Cost",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesRollingYearSixThroughTenAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling after Five Through Ten Years, Fair Value",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesRollingYearSixThroughTenFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling after One Through Five Years, Amortized Cost",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesRollingYearTwoThroughFiveAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Rolling after One Through Five Years, Fair Value",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesRollingYearTwoThroughFiveFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Fair Value",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesSingleMaturityDate"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale, Maturity, Allocated and Single Maturity Date, Amortized Cost",
+      "name": "AvailableForSaleSecuritiesDebtMaturitiesSingleMaturityDateAmortizedCostBasis"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Securities, Available-for-sale",
+      "name": "AvailableForSaleSecuritiesDebtSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Business Combination, Consideration Transferred, Equity Interests Issued and Issuable",
+      "name": "BusinessCombinationConsiderationTransferredEquityInterestsIssuedAndIssuable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Business Exit Costs",
+      "name": "BusinessExitCosts1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Lease Obligations",
+      "name": "CapitalLeaseObligations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Lease Obligations, Current",
+      "name": "CapitalLeaseObligationsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Lease Obligations, Noncurrent",
+      "name": "CapitalLeaseObligationsNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leased Assets, Gross",
+      "name": "CapitalLeasedAssetsGross"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Balance Sheet, Assets by Major Class, Net",
+      "name": "CapitalLeasesBalanceSheetAssetsByMajorClassNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due",
+      "name": "CapitalLeasesFutureMinimumPaymentsDue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due, Next Twelve Months",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due in Five Years",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueInFiveYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due in Four Years",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueInFourYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due in Three Years",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueInThreeYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due in Two Years",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueInTwoYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments Due Thereafter",
+      "name": "CapitalLeasesFutureMinimumPaymentsDueThereafter"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Future Minimum Payments, Interest Included in Payments",
+      "name": "CapitalLeasesFutureMinimumPaymentsInterestIncludedInPayments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Capital Leases, Lessee Balance Sheet, Assets by Major Class, Accumulated Depreciation",
+      "name": "CapitalLeasesLesseeBalanceSheetAssetsByMajorClassAccumulatedDeprecation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash and Cash Equivalents, at Carrying Value",
+      "name": "CashAndCashEquivalentsAtCarryingValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash and Cash Equivalents, Period Increase (Decrease)",
+      "name": "CashAndCashEquivalentsPeriodIncreaseDecrease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash, Cash Equivalents, and Short-term Investments",
+      "name": "CashCashEquivalentsAndShortTermInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents",
+      "name": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations",
+      "name": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect",
+      "name": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Common Stock, Value, Issued",
+      "name": "CommonStockValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Parent",
+      "name": "ComprehensiveIncomeNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Noncontrolling Interest",
+      "name": "ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest",
+      "name": "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Construction Payable",
+      "name": "ConstructionPayableCurrentAndNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Contract with Customer, Liability",
+      "name": "ContractWithCustomerLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Contract with Customer, Liability, Current",
+      "name": "ContractWithCustomerLiabilityCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Contract with Customer, Liability, Noncurrent",
+      "name": "ContractWithCustomerLiabilityNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Contract with Customer, Liability, Revenue Recognized",
+      "name": "ContractWithCustomerLiabilityRevenueRecognized"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Conversion of Stock, Amount Converted",
+      "name": "ConversionOfStockAmountConverted1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Convertible Debt, Current",
+      "name": "ConvertibleDebtCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Convertible Debt, Noncurrent",
+      "name": "ConvertibleDebtNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Convertible Notes Payable, Noncurrent",
+      "name": "ConvertibleLongTermNotesPayable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Convertible Notes Payable, Current",
+      "name": "ConvertibleNotesPayableCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cost of Goods Sold, Sales-type Lease",
+      "name": "CostOfGoodsSoldSalesTypeLease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Cost of Revenue",
+      "name": "CostOfRevenue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Crypto Asset Cost",
+      "name": "CryptoAssetCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Crypto Asset Fair Value",
+      "name": "CryptoAssetFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Crypto Asset Unrealized Gain Loss Operating And Nonoperating",
+      "name": "CryptoAssetUnrealizedGainLossOperatingAndNonoperating"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Current Federal Tax Expense (Benefit)",
+      "name": "CurrentFederalTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Current Foreign Tax Expense (Benefit)",
+      "name": "CurrentForeignTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Current Income Tax Expense (Benefit)",
+      "name": "CurrentIncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Current State and Local Tax Expense (Benefit)",
+      "name": "CurrentStateAndLocalTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Customer Advances, Current",
+      "name": "CustomerAdvancesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Customer Deposits, Current",
+      "name": "CustomerDepositsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Customer Funds",
+      "name": "CustomerFunds"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Conversion, Converted Instrument, Amount",
+      "name": "DebtConversionConvertedInstrumentAmount1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Conversion, Original Debt, Amount",
+      "name": "DebtConversionOriginalDebtAmount1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt, Current",
+      "name": "DebtCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt, Gross",
+      "name": "DebtInstrumentCarryingAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Instrument, Convertible, Carrying Amount of Equity Component",
+      "name": "DebtInstrumentConvertibleCarryingAmountOfTheEquityComponent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Instrument, Face Amount",
+      "name": "DebtInstrumentFaceAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Instrument, Fee Amount",
+      "name": "DebtInstrumentFeeAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Instrument, Unamortized Discount",
+      "name": "DebtInstrumentUnamortizedDiscount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Instrument, Unused Borrowing Capacity, Amount",
+      "name": "DebtInstrumentUnusedBorrowingCapacityAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Related Commitment Fees and Debt Issuance Costs",
+      "name": "DebtRelatedCommitmentFeesAndDebtIssuanceCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Decrease in Restricted Cash",
+      "name": "DecreaseInRestrictedCash"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Federal Income Tax Expense (Benefit)",
+      "name": "DeferredFederalIncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Debt Issuance Costs, Net",
+      "name": "DeferredFinanceCostsNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Foreign Income Tax Expense (Benefit)",
+      "name": "DeferredForeignIncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Income Tax Assets, Net",
+      "name": "DeferredIncomeTaxAssetsNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Income Tax Expense (Benefit)",
+      "name": "DeferredIncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Gross",
+      "name": "DeferredIncomeTaxLiabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Offering Costs",
+      "name": "DeferredOfferingCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Rent Credit, Noncurrent",
+      "name": "DeferredRentCreditNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Revenue",
+      "name": "DeferredRevenue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Revenue and Credits",
+      "name": "DeferredRevenueAndCredits"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Revenue, Current",
+      "name": "DeferredRevenueCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Revenue, Noncurrent",
+      "name": "DeferredRevenueNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred State and Local Income Tax Expense (Benefit)",
+      "name": "DeferredStateAndLocalIncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax and Other Liabilities, Noncurrent",
+      "name": "DeferredTaxAndOtherLiabilitiesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Deferred Income",
+      "name": "DeferredTaxAssetsDeferredIncome"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Derivative Instruments",
+      "name": "DeferredTaxAssetsDerivativeInstruments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Gross",
+      "name": "DeferredTaxAssetsGross"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Inventory",
+      "name": "DeferredTaxAssetsInventory"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Investments",
+      "name": "DeferredTaxAssetsInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Net",
+      "name": "DeferredTaxAssetsLiabilitiesNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Net of Valuation Allowance",
+      "name": "DeferredTaxAssetsNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Net of Valuation Allowance, Noncurrent",
+      "name": "DeferredTaxAssetsNetNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Operating Loss Carryforwards",
+      "name": "DeferredTaxAssetsOperatingLossCarryforwards"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Operating Loss Carryforwards, Domestic",
+      "name": "DeferredTaxAssetsOperatingLossCarryforwardsDomestic"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Other",
+      "name": "DeferredTaxAssetsOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Property, Plant and Equipment",
+      "name": "DeferredTaxAssetsPropertyPlantAndEquipment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Tax Credit Carryforwards, Foreign",
+      "name": "DeferredTaxAssetsTaxCreditCarryforwardsForeign"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Tax Credit Carryforwards, Other",
+      "name": "DeferredTaxAssetsTaxCreditCarryforwardsOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Tax Credit Carryforwards, Research",
+      "name": "DeferredTaxAssetsTaxCreditCarryforwardsResearch"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Share-based Compensation Cost",
+      "name": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Tax Deferred Expense, Reserves and Accruals, Other",
+      "name": "DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Assets, Valuation Allowance",
+      "name": "DeferredTaxAssetsValuationAllowance"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Net",
+      "name": "DeferredTaxLiabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Derivatives",
+      "name": "DeferredTaxLiabilitiesDerivatives"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Investments",
+      "name": "DeferredTaxLiabilitiesInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Net, Noncurrent",
+      "name": "DeferredTaxLiabilitiesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Other",
+      "name": "DeferredTaxLiabilitiesOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Property, Plant and Equipment",
+      "name": "DeferredTaxLiabilitiesPropertyPlantAndEquipment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Tax Deferred Income",
+      "name": "DeferredTaxLiabilitiesTaxDeferredIncome"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liabilities, Undistributed Foreign Earnings",
+      "name": "DeferredTaxLiabilitiesUndistributedForeignEarnings"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deferred Tax Liability Not Recognized, Amount of Unrecognized Deferred Tax Liability, Undistributed Earnings of Foreign Subsidiaries",
+      "name": "DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Defined Contribution Plan, Employer Discretionary Contribution Amount",
+      "name": "DefinedContributionPlanEmployerDiscretionaryContributionAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Defined Contribution Plan, Maximum Annual Contributions Per Employee, Amount",
+      "name": "DefinedContributionPlanMaximumAnnualContributionsPerEmployeeAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Deposit Liabilities, Accrued Interest",
+      "name": "DepositLiabilitiesAccruedInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Depreciation",
+      "name": "Depreciation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Depreciation, Depletion and Amortization, Nonproduction",
+      "name": "DepreciationAndAmortization"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Depreciation, Depletion and Amortization",
+      "name": "DepreciationDepletionAndAmortization"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Derivative, Cost of Hedge",
+      "name": "DerivativeCostOfHedge"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Derivative Liability, Noncurrent",
+      "name": "DerivativeLiabilitiesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Derivative, Net Hedge Ineffectiveness Gain (Loss)",
+      "name": "DerivativeNetHedgeIneffectivenessGainLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Dilutive Securities, Effect on Basic Earnings Per Share, Dilutive Convertible Securities",
+      "name": "DilutiveSecuritiesEffectOnBasicEarningsPerShareOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Due to Other Related Parties, Current",
+      "name": "DueToOtherRelatedPartiesClassifiedCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Due to Related Parties, Current",
+      "name": "DueToRelatedPartiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Due to Related Parties",
+      "name": "DueToRelatedPartiesCurrentAndNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effect of Exchange Rate on Cash and Cash Equivalents",
+      "name": "EffectOfExchangeRateOnCashAndCashEquivalents"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents",
+      "name": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Including Disposal Group and Discontinued Operations",
+      "name": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation Gilti Amount",
+      "name": "EffectiveIncomeTaxRateReconciliationGiltiAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Tax Expense (Benefit), Share-based Payment Arrangement, Amount",
+      "name": "EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Employee-related Liabilities, Current",
+      "name": "EmployeeRelatedLiabilitiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Amount Capitalized",
+      "name": "EmployeeServiceShareBasedCompensationAllocationOfRecognizedPeriodCostsCapitalizedAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Nonvested Award, Cost Not yet Recognized, Amount",
+      "name": "EmployeeServiceShareBasedCompensationNonvestedAwardsTotalCompensationCostNotYetRecognized"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Expense, Tax Benefit",
+      "name": "EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Exercise of Option, Tax Benefit",
+      "name": "EmployeeServiceShareBasedCompensationTaxBenefitFromExerciseOfStockOptions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Excess Tax Benefit from Share-based Compensation, Financing Activities",
+      "name": "ExcessTaxBenefitFromShareBasedCompensationFinancingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Excess Tax Benefit from Share-based Compensation, Operating Activities",
+      "name": "ExcessTaxBenefitFromShareBasedCompensationOperatingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Extinguishment of Debt, Amount",
+      "name": "ExtinguishmentOfDebtAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Fair Value Adjustment of Warrants",
+      "name": "FairValueAdjustmentOfWarrants"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Fair Value, Concentration of Risk, Foreign Currency Contracts",
+      "name": "FairValueConcentrationOfRiskForeignCurrencyContracts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Fair Value, Net Asset (Liability)",
+      "name": "FairValueNetAssetLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Interest Expense",
+      "name": "FinanceLeaseInterestExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Interest Payment on Liability",
+      "name": "FinanceLeaseInterestPaymentOnLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability",
+      "name": "FinanceLeaseLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, Current",
+      "name": "FinanceLeaseLiabilityCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, Noncurrent",
+      "name": "FinanceLeaseLiabilityNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, Payment, Due",
+      "name": "FinanceLeaseLiabilityPaymentsDue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, after Year Five",
+      "name": "FinanceLeaseLiabilityPaymentsDueAfterYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Year One",
+      "name": "FinanceLeaseLiabilityPaymentsDueNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Year Five",
+      "name": "FinanceLeaseLiabilityPaymentsDueYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Year Four",
+      "name": "FinanceLeaseLiabilityPaymentsDueYearFour"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Year Three",
+      "name": "FinanceLeaseLiabilityPaymentsDueYearThree"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Year Two",
+      "name": "FinanceLeaseLiabilityPaymentsDueYearTwo"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, to be Paid, Remainder of Fiscal Year",
+      "name": "FinanceLeaseLiabilityPaymentsRemainderOfFiscalYear"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Liability, Undiscounted Excess Amount",
+      "name": "FinanceLeaseLiabilityUndiscountedExcessAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Principal Payments",
+      "name": "FinanceLeasePrincipalPayments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Right-of-Use Asset, after Accumulated Amortization",
+      "name": "FinanceLeaseRightOfUseAsset"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finance Lease, Right-of-Use Asset, Amortization",
+      "name": "FinanceLeaseRightOfUseAssetAmortization"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financing Receivable, Allowance for Credit Loss",
+      "name": "FinancingReceivableAllowanceForCreditLosses"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financing Receivable, Nonaccrual",
+      "name": "FinancingReceivableRecordedInvestmentNonaccrualStatus"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financing Receivable, Past Due",
+      "name": "FinancingReceivableRecordedInvestmentPastDue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Assets, Accumulated Amortization",
+      "name": "FiniteLivedIntangibleAssetsAccumulatedAmortization"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, after Year Five",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseAfterYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Year One",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Remainder of Fiscal Year",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseRemainderOfFiscalYear"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Year Five",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Year Four",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseYearFour"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Year Three",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseYearThree"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Asset, Expected Amortization, Year Two",
+      "name": "FiniteLivedIntangibleAssetsAmortizationExpenseYearTwo"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Assets, Gross",
+      "name": "FiniteLivedIntangibleAssetsGross"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Finite-Lived Intangible Assets, Net",
+      "name": "FiniteLivedIntangibleAssetsNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Currency Cash Flow Hedge Gain (Loss) to be Reclassified During Next 12 Months",
+      "name": "ForeignCurrencyCashFlowHedgeGainLossToBeReclassifiedDuringNext12Months"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Currency Contracts, Liability, Fair Value Disclosure",
+      "name": "ForeignCurrencyContractsLiabilityFairValueDisclosure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Currency Transaction Gain (Loss), before Tax",
+      "name": "ForeignCurrencyTransactionGainLossBeforeTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Currency Transaction Gain (Loss), Realized",
+      "name": "ForeignCurrencyTransactionGainLossRealized"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Currency Transaction Gain (Loss), Unrealized",
+      "name": "ForeignCurrencyTransactionGainLossUnrealized"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Foreign Earnings Repatriated",
+      "name": "ForeignEarningsRepatriated"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gain (Loss) on Disposition of Assets",
+      "name": "GainLossOnDispositionOfAssets1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gain (Loss) on Disposition of Intangible Assets",
+      "name": "GainLossOnDispositionOfIntangibleAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gain (Loss) on Investments",
+      "name": "GainLossOnInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gain (Loss) on Disposition of Property Plant Equipment",
+      "name": "GainLossOnSaleOfPropertyPlantEquipment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gain (Loss) on Extinguishment of Debt",
+      "name": "GainsLossesOnExtinguishmentOfDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Goodwill",
+      "name": "Goodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Goodwill, Impaired, Accumulated Impairment Loss",
+      "name": "GoodwillImpairedAccumulatedImpairmentLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Goodwill, Impairment Loss",
+      "name": "GoodwillImpairmentLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Goodwill, Period Increase (Decrease)",
+      "name": "GoodwillPeriodIncreaseDecrease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Gross Profit",
+      "name": "GrossProfit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Guarantor Obligations, Maximum Exposure, Undiscounted",
+      "name": "GuaranteeObligationsMaximumExposure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Impairment of Intangible Assets (Excluding Goodwill)",
+      "name": "ImpairmentOfIntangibleAssetsExcludingGoodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Impairment of Intangible Assets, Indefinite-lived (Excluding Goodwill)",
+      "name": "ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income (Loss) from Continuing Operations before Income Taxes, Domestic",
+      "name": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
+      "name": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income (Loss) from Continuing Operations before Income Taxes, Foreign",
+      "name": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income Tax Effects Allocated Directly to Equity, Employee Stock Options",
+      "name": "IncomeTaxEffectsAllocatedDirectlyToEquityEmployeeStockOptions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income Tax Expense (Benefit)",
+      "name": "IncomeTaxExpenseBenefit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Change in Deferred Tax Assets Valuation Allowance, Amount",
+      "name": "IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Foreign Income Tax Rate Differential, Amount",
+      "name": "IncomeTaxReconciliationForeignIncomeTaxRateDifferential"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation at Federal Statutory Income Tax Rate, Amount",
+      "name": "IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Noncontrolling Interest Income (Loss), Amount",
+      "name": "IncomeTaxReconciliationMinorityInterestIncomeExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Nondeductible Expense, Amount",
+      "name": "IncomeTaxReconciliationNondeductibleExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Nondeductible Expense, Other, Amount",
+      "name": "IncomeTaxReconciliationNondeductibleExpenseOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Nondeductible Expense, Share-based Payment Arrangement, Amount",
+      "name": "IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Other Reconciling Items, Amount",
+      "name": "IncomeTaxReconciliationOtherReconcilingItems"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, State and Local Income Taxes, Amount",
+      "name": "IncomeTaxReconciliationStateAndLocalIncomeTaxes"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Tax Credit, Amount",
+      "name": "IncomeTaxReconciliationTaxCredits"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Effective Income Tax Rate Reconciliation, Tax Credit, Investment, Amount",
+      "name": "IncomeTaxReconciliationTaxCreditsInvestment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Income Taxes Paid",
+      "name": "IncomeTaxesPaid"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Accounts Payable",
+      "name": "IncreaseDecreaseInAccountsPayable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Accounts Payable and Accrued Liabilities",
+      "name": "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Accounts Receivable",
+      "name": "IncreaseDecreaseInAccountsReceivable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Accrued Liabilities",
+      "name": "IncreaseDecreaseInAccruedLiabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Contract with Customer, Liability",
+      "name": "IncreaseDecreaseInContractWithCustomerLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Customer Advances",
+      "name": "IncreaseDecreaseInCustomerAdvances"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Customer Deposits",
+      "name": "IncreaseDecreaseInCustomerDeposits"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Deferred Revenue",
+      "name": "IncreaseDecreaseInDeferredRevenue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Deferred Revenue and Customer Advances and Deposits",
+      "name": "IncreaseDecreaseInDeferredRevenueAndCustomerAdvancesAndDeposits"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Inventories",
+      "name": "IncreaseDecreaseInInventories"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Notes Receivables",
+      "name": "IncreaseDecreaseInNotesReceivables"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Other Noncurrent Assets",
+      "name": "IncreaseDecreaseInOtherNoncurrentAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Other Noncurrent Liabilities",
+      "name": "IncreaseDecreaseInOtherNoncurrentLiabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Other Operating Assets",
+      "name": "IncreaseDecreaseInOtherOperatingAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Prepaid Expense and Other Assets",
+      "name": "IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Increase (Decrease) in Restricted Cash",
+      "name": "IncreaseDecreaseInRestrictedCash"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Indefinite-lived Intangible Assets (Excluding Goodwill)",
+      "name": "IndefiniteLivedIntangibleAssetsExcludingGoodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Intangible Assets, Gross (Excluding Goodwill)",
+      "name": "IntangibleAssetsGrossExcludingGoodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Intangible Assets, Net (Excluding Goodwill)",
+      "name": "IntangibleAssetsNetExcludingGoodwill"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Costs Capitalized",
+      "name": "InterestCostsCapitalized"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Expense",
+      "name": "InterestExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Expense, Debt",
+      "name": "InterestExpenseDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Expense, Debt, Excluding Amortization",
+      "name": "InterestExpenseDebtExcludingAmortization"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Expense Nonoperating",
+      "name": "InterestExpenseNonoperating"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Income Short Term Investment Other",
+      "name": "InterestIncomeShortTermInvestmentOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Paid, Including Capitalized Interest, Operating and Investing Activities",
+      "name": "InterestPaid"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Paid, Excluding Capitalized Interest, Operating Activities",
+      "name": "InterestPaidNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Interest Payable",
+      "name": "InterestPayableCurrentAndNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory Adjustments",
+      "name": "InventoryAdjustments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Finished Goods, Gross",
+      "name": "InventoryFinishedGoods"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Finished Goods, Net of Reserves",
+      "name": "InventoryFinishedGoodsNetOfReserves"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Net",
+      "name": "InventoryNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Parts and Components, Net of Reserves",
+      "name": "InventoryPartsAndComponentsNetOfReserves"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Raw Materials, Gross",
+      "name": "InventoryRawMaterials"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Raw Materials, Net of Reserves",
+      "name": "InventoryRawMaterialsNetOfReserves"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Work in Process, Gross",
+      "name": "InventoryWorkInProcess"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory, Work in Process, Net of Reserves",
+      "name": "InventoryWorkInProcessNetOfReserves"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Inventory Write-down",
+      "name": "InventoryWriteDown"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Investment Income, Interest",
+      "name": "InvestmentIncomeInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Investment Tax Credit",
+      "name": "InvestmentTaxCredit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lease, Cost",
+      "name": "LeaseCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, after Year Five",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Year One",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Year Five",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Year Four",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueYearFour"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Year Three",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueYearThree"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Year Two",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsDueYearTwo"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, to be Paid, Remainder of Fiscal Year",
+      "name": "LesseeOperatingLeaseLiabilityPaymentsRemainderOfFiscalYear"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessee, Operating Lease, Liability, Undiscounted Excess Amount",
+      "name": "LesseeOperatingLeaseLiabilityUndiscountedExcessAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payments to be Received",
+      "name": "LessorOperatingLeasePaymentsToBeReceived"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Year Five",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedFiveYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Year Four",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedFourYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Year One",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Remainder of Fiscal Year",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedRemainderOfFiscalYear"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, after Year Five",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedThereafter"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Year Three",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedThreeYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lessor, Operating Lease, Payment to be Received, Year Two",
+      "name": "LessorOperatingLeasePaymentsToBeReceivedTwoYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Letters of Credit Outstanding, Amount",
+      "name": "LettersOfCreditOutstandingAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Liabilities",
+      "name": "Liabilities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Liabilities and Equity",
+      "name": "LiabilitiesAndStockholdersEquity"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Liabilities, Current",
+      "name": "LiabilitiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financial and Nonfinancial Liabilities, Fair Value Disclosure",
+      "name": "LiabilitiesFairValueDisclosure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Line of Credit",
+      "name": "LineOfCredit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Line of Credit Facility, Maximum Borrowing Capacity",
+      "name": "LineOfCreditFacilityMaximumBorrowingCapacity"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Line of Credit Facility, Remaining Borrowing Capacity",
+      "name": "LineOfCreditFacilityRemainingBorrowingCapacity"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Lines of Credit, Fair Value Disclosure",
+      "name": "LinesOfCreditFairValueDisclosure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Litigation Settlement, Expense",
+      "name": "LitigationSettlementExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Accounts and Financing Receivable, after Allowance for Credit Loss, Noncurrent",
+      "name": "LongTermAccountsNotesAndLoansReceivableNetNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt",
+      "name": "LongTermDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt and Lease Obligation",
+      "name": "LongTermDebtAndCapitalLeaseObligations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt and Lease Obligation, Current",
+      "name": "LongTermDebtAndCapitalLeaseObligationsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt, Current Maturities",
+      "name": "LongTermDebtCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt, Fair Value",
+      "name": "LongTermDebtFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, after Year Five",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, Year One",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, Year Five",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, Year Four",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, Year Three",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Term Debt, Maturity, Year Two",
+      "name": "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-term Debt, Excluding Current Maturities",
+      "name": "LongTermDebtNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Loans Payable, Noncurrent",
+      "name": "LongTermLoansPayable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Loss Contingency, Damages Awarded, Value",
+      "name": "LossContingencyDamagesAwardedValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Loss Contingency, Damages Sought, Value",
+      "name": "LossContingencyDamagesSoughtValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Marketable Securities",
+      "name": "MarketableSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Marketable Securities, Current",
+      "name": "MarketableSecuritiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Marketable Securities, Unrealized Gain (Loss)",
+      "name": "MarketableSecuritiesUnrealizedGainLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Marketing and Advertising Expense",
+      "name": "MarketingAndAdvertisingExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stockholders' Equity Attributable to Noncontrolling Interest",
+      "name": "MinorityInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Noncontrolling Interest, Decrease from Distributions to Noncontrolling Interest Holders",
+      "name": "MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Noncontrolling Interest, Decrease from Redemptions or Purchase of Interests",
+      "name": "MinorityInterestDecreaseFromRedemptions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Continuing Operations",
+      "name": "NetCashProvidedByUsedInContinuingOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Financing Activities",
+      "name": "NetCashProvidedByUsedInFinancingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Financing Activities, Continuing Operations",
+      "name": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Investing Activities",
+      "name": "NetCashProvidedByUsedInInvestingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Investing Activities, Continuing Operations",
+      "name": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Operating Activities",
+      "name": "NetCashProvidedByUsedInOperatingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Cash Provided by (Used in) Operating Activities, Continuing Operations",
+      "name": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss) Attributable to Parent",
+      "name": "NetIncomeLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss) Attributable to Noncontrolling Interest",
+      "name": "NetIncomeLossAttributableToNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss) Available to Common Stockholders, Basic",
+      "name": "NetIncomeLossAvailableToCommonStockholdersBasic"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss) Available to Common Stockholders, Diluted",
+      "name": "NetIncomeLossAvailableToCommonStockholdersDiluted"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss), Including Portion Attributable to Nonredeemable Noncontrolling Interest",
+      "name": "NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Noncash or Part Noncash Acquisition, Value of Assets Acquired",
+      "name": "NoncashOrPartNoncashAcquisitionValueOfAssetsAcquired1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Noncontrolling Interest, Increase from Business Combination",
+      "name": "NoncontrollingInterestIncreaseFromBusinessCombination"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Long-Lived Assets",
+      "name": "NoncurrentAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financing Receivable, after Allowance for Credit Loss, Current",
+      "name": "NotesAndLoansReceivableNetCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Notes Payable, Related Parties",
+      "name": "NotesPayableRelatedPartiesCurrentAndNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Financing Receivable, after Allowance for Credit Loss",
+      "name": "NotesReceivableNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Expenses",
+      "name": "OperatingExpenses"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Income (Loss)",
+      "name": "OperatingIncomeLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Cost",
+      "name": "OperatingLeaseCost"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Expense",
+      "name": "OperatingLeaseExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Liability",
+      "name": "OperatingLeaseLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Liability, Current",
+      "name": "OperatingLeaseLiabilityCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Liability, Noncurrent",
+      "name": "OperatingLeaseLiabilityNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Payments",
+      "name": "OperatingLeasePayments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Lease, Right-of-Use Asset",
+      "name": "OperatingLeaseRightOfUseAsset"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Due",
+      "name": "OperatingLeasesFutureMinimumPaymentsDue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Due, Next Twelve Months",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments, Due in Five Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueInFiveYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments, Due in Four Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueInFourYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments, Due in Three Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueInThreeYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments, Due in Two Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueInTwoYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments, Due Thereafter",
+      "name": "OperatingLeasesFutureMinimumPaymentsDueThereafter"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, Current",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, in Five Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableInFiveYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, in Four Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableInFourYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, in Three Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableInThreeYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, in Two Years",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableInTwoYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Future Minimum Payments Receivable, Thereafter",
+      "name": "OperatingLeasesFutureMinimumPaymentsReceivableThereafter"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Income Statement, Lease Revenue",
+      "name": "OperatingLeasesIncomeStatementLeaseRevenue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Operating Leases, Rent Expense, Net",
+      "name": "OperatingLeasesRentExpenseNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Accrued Liabilities, Current",
+      "name": "OtherAccruedLiabilitiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Assets, Miscellaneous, Noncurrent",
+      "name": "OtherAssetsMiscellaneousNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Assets, Noncurrent",
+      "name": "OtherAssetsNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "OCI, Debt Securities, Available-for-Sale, Gain (Loss), after Adjustment and Tax",
+      "name": "OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Cash Flow Hedge, Gain (Loss), after Reclassification and Tax",
+      "name": "OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Derivatives Qualifying as Hedges, Net of Tax",
+      "name": "OtherComprehensiveIncomeLossDerivativesQualifyingAsHedgesNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Foreign Currency Transaction and Translation Adjustment, Net of Tax",
+      "name": "OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Net of Tax",
+      "name": "OtherComprehensiveIncomeLossNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Net of Tax, Portion Attributable to Parent",
+      "name": "OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Reclassification Adjustment from AOCI for Sale of Securities, Net of Tax",
+      "name": "OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Reclassification Adjustment from AOCI on Derivatives, Net of Tax",
+      "name": "OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIOnDerivativesNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Comprehensive Income (Loss), Unrealized Gain (Loss) on Derivatives Arising During Period, Net of Tax",
+      "name": "OtherComprehensiveIncomeUnrealizedGainLossOnDerivativesArisingDuringPeriodNetOfTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Intangible Assets, Net",
+      "name": "OtherIntangibleAssetsNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Inventories, Spare Parts, Gross",
+      "name": "OtherInventoriesSpareParts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Liabilities, Current",
+      "name": "OtherLiabilitiesCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Liabilities, Fair Value Disclosure",
+      "name": "OtherLiabilitiesFairValueDisclosure"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Liabilities, Noncurrent",
+      "name": "OtherLiabilitiesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Noncash Income (Expense)",
+      "name": "OtherNoncashIncomeExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Nonoperating Income",
+      "name": "OtherNonoperatingIncome"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Nonoperating Income (Expense)",
+      "name": "OtherNonoperatingIncomeExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Other Sundry Liabilities, Noncurrent",
+      "name": "OtherSundryLiabilitiesNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payment of Financing and Stock Issuance Costs",
+      "name": "PaymentOfFinancingAndStockIssuanceCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments for Hedge, Financing Activities",
+      "name": "PaymentsForHedgeFinancingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments for (Proceeds from) Hedge, Financing Activities",
+      "name": "PaymentsForProceedsFromHedgeFinancingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments for Repurchase of Warrants",
+      "name": "PaymentsForRepurchaseOfWarrants"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments for Restructuring",
+      "name": "PaymentsForRestructuring"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments of Debt Issuance Costs",
+      "name": "PaymentsOfDebtIssuanceCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments of Financing Costs",
+      "name": "PaymentsOfFinancingCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments of Stock Issuance Costs",
+      "name": "PaymentsOfStockIssuanceCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Assets, Investing Activities",
+      "name": "PaymentsToAcquireAssetsInvestingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Businesses, Net of Cash Acquired",
+      "name": "PaymentsToAcquireBusinessesNetOfCashAcquired"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Intangible Assets",
+      "name": "PaymentsToAcquireIntangibleAssets"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Investments",
+      "name": "PaymentsToAcquireInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Land Held-for-use",
+      "name": "PaymentsToAcquireLandHeldForUse"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Marketable Securities",
+      "name": "PaymentsToAcquireMarketableSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Acquire Property, Plant, and Equipment",
+      "name": "PaymentsToAcquirePropertyPlantAndEquipment"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Payments to Noncontrolling Interests",
+      "name": "PaymentsToMinorityShareholders"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Pledged Assets Separately Reported, Other, on Statement of Financial Position, at Fair Value",
+      "name": "PledgedAssetsSeparatelyReportedOnStatementOfFinancialPositionAtFairValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Preferred Stock, Value, Issued",
+      "name": "PreferredStockValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Prepaid Expense and Other Assets, Current",
+      "name": "PrepaidExpenseAndOtherAssetsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Convertible Debt",
+      "name": "ProceedsFromConvertibleDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Debt, Net of Issuance Costs",
+      "name": "ProceedsFromDebtNetOfIssuanceCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Hedge, Financing Activities",
+      "name": "ProceedsFromHedgeFinancingActivities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance Initial Public Offering",
+      "name": "ProceedsFromIssuanceInitialPublicOffering"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance of Common Stock",
+      "name": "ProceedsFromIssuanceOfCommonStock"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance of Debt",
+      "name": "ProceedsFromIssuanceOfDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance of Long-term Debt",
+      "name": "ProceedsFromIssuanceOfLongTermDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance of Private Placement",
+      "name": "ProceedsFromIssuanceOfPrivatePlacement"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds, Issuance of Shares, Share-based Payment Arrangement, Including Option Exercised",
+      "name": "ProceedsFromIssuanceOfSharesUnderIncentiveAndShareBasedCompensationPlansIncludingStockOptions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Issuance of Warrants",
+      "name": "ProceedsFromIssuanceOfWarrants"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale",
+      "name": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Noncontrolling Interests",
+      "name": "ProceedsFromMinorityShareholders"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from (Repayments of) Long-term Debt and Capital Securities",
+      "name": "ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from (Repayments of) Secured Debt",
+      "name": "ProceedsFromRepaymentsOfSecuredDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Sale and Maturity of Marketable Securities",
+      "name": "ProceedsFromSaleAndMaturityOfMarketableSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Sale, Maturity and Collection of Investments",
+      "name": "ProceedsFromSaleMaturityAndCollectionsOfInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Sale of Short-term Investments",
+      "name": "ProceedsFromSaleOfShortTermInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Proceeds from Secured Notes Payable",
+      "name": "ProceedsFromSecuredNotesPayable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard and Extended Product Warranty Accrual, Additions from Business Acquisition",
+      "name": "ProductWarrantyAccrualAdditionsFromBusinessAcquisition"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Product Warranty Accrual, Current",
+      "name": "ProductWarrantyAccrualClassifiedCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Product Warranty Accrual, Noncurrent",
+      "name": "ProductWarrantyAccrualNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard and Extended Product Warranty Accrual, Increase (Decrease) for Preexisting Warranties",
+      "name": "ProductWarrantyAccrualPreexistingIncreaseDecrease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Product Warranty Expense",
+      "name": "ProductWarrantyExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Net Income (Loss), Including Portion Attributable to Noncontrolling Interest",
+      "name": "ProfitLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Property, Plant and Equipment, Gross",
+      "name": "PropertyPlantAndEquipmentGross"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Property, Plant and Equipment, Net",
+      "name": "PropertyPlantAndEquipmentNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Property Subject to or Available for Operating Lease, Accumulated Depreciation",
+      "name": "PropertySubjectToOrAvailableForOperatingLeaseAccumulatedDepreciation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Property Subject to or Available for Operating Lease, Gross",
+      "name": "PropertySubjectToOrAvailableForOperatingLeaseGross"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Property Subject to or Available for Operating Lease, Net",
+      "name": "PropertySubjectToOrAvailableForOperatingLeaseNet"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Quantifying Misstatement in Current Year Financial Statements, Amount",
+      "name": "QuantifyingMisstatementInCurrentYearFinancialStatementsAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Reclassifications of Temporary to Permanent Equity",
+      "name": "ReclassificationsOfTemporaryToPermanentEquity"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Redeemable Noncontrolling Interest, Equity, Carrying Amount",
+      "name": "RedeemableNoncontrollingInterestEquityCarryingAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Convertible Debt",
+      "name": "RepaymentsOfConvertibleDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Debt",
+      "name": "RepaymentsOfDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Debt and Lease Obligation",
+      "name": "RepaymentsOfDebtAndCapitalLeaseObligations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Long-term Debt",
+      "name": "RepaymentsOfLongTermDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Other Debt",
+      "name": "RepaymentsOfOtherDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Repayments of Related Party Debt",
+      "name": "RepaymentsOfRelatedPartyDebt"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Research and Development Expense",
+      "name": "ResearchAndDevelopmentExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash and Cash Equivalents",
+      "name": "RestrictedCashAndCashEquivalents"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash and Cash Equivalents, Current",
+      "name": "RestrictedCashAndCashEquivalentsAtCarryingValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash and Cash Equivalents, Noncurrent",
+      "name": "RestrictedCashAndCashEquivalentsNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash and Investments, Current",
+      "name": "RestrictedCashAndInvestmentsCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash, Current",
+      "name": "RestrictedCashCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restricted Cash, Noncurrent",
+      "name": "RestrictedCashNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Restructuring Costs",
+      "name": "RestructuringCosts"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Retained Earnings (Accumulated Deficit)",
+      "name": "RetainedEarningsAccumulatedDeficit"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Revenue from Contract with Customer, Excluding Assessed Tax",
+      "name": "RevenueFromContractWithCustomerExcludingAssessedTax"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Revenue, Remaining Performance Obligation, Amount",
+      "name": "RevenueRemainingPerformanceObligation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Revenues",
+      "name": "Revenues"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Right-of-Use Asset Obtained in Exchange for Finance Lease Liability",
+      "name": "RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Right-of-Use Asset Obtained in Exchange for Operating Lease Liability",
+      "name": "RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type and Direct Financing Leases, Lease Receivable, Payments to be Received",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceived"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, Year Five",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedFiveYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, Year Four",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedFourYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, Year One",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedNextTwelveMonths"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, after Year Five",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedThereafter"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, Year Three",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedThreeYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-Type and Direct Financing Leases, Lease Receivable, to be Received, Year Two",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivablePaymentsToBeReceivedTwoYears"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type and Direct Financing Leases, Lease Receivable, Undiscounted Excess Amount",
+      "name": "SalesTypeAndDirectFinancingLeasesLeaseReceivableUndiscountedExcessAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type Lease, Lease Receivable",
+      "name": "SalesTypeLeaseLeaseReceivable"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type Lease, Net Investment in Lease",
+      "name": "SalesTypeLeaseNetInvestmentInLease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales Type Lease Net Investment In Lease After Allowance For Credit Loss",
+      "name": "SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales Type Lease Net Investment In Lease After Allowance For Credit Loss Current",
+      "name": "SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales Type Lease Net Investment In Lease After Allowance For Credit Loss Noncurrent",
+      "name": "SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type Lease, Net Investment in Lease, Allowance for Credit Loss",
+      "name": "SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLoss"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Sales-type Lease, Revenue",
+      "name": "SalesTypeLeaseRevenue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Selling, General and Administrative Expense",
+      "name": "SellingGeneralAndAdministrativeExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Severance Costs",
+      "name": "SeveranceCosts1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Payment Arrangement, Noncash Expense",
+      "name": "ShareBasedCompensation"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Compensation Arrangement by Share-based Payment Award, Options, Exercises in Period, Intrinsic Value",
+      "name": "ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisesInPeriodTotalIntrinsicValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Compensation Arrangement by Share-based Payment Award, Options, Outstanding, Intrinsic Value",
+      "name": "ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Compensation Arrangement by Share-based Payment Award, Options, Vested and Expected to Vest, Outstanding, Aggregate Intrinsic Value",
+      "name": "ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsVestedAndExpectedToVestOutstandingAggregateIntrinsicValue"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Share-based Compensation Arrangement by Share-based Payment Award, Options, Exercisable, Intrinsic Value",
+      "name": "SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableIntrinsicValue1"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Short-term Investments",
+      "name": "ShortTermInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard Product Warranty Accrual",
+      "name": "StandardProductWarrantyAccrual"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard Product Warranty Accrual, Current",
+      "name": "StandardProductWarrantyAccrualCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard Product Warranty Accrual, Noncurrent",
+      "name": "StandardProductWarrantyAccrualNoncurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard Product Warranty Accrual, Decrease for Payments",
+      "name": "StandardProductWarrantyAccrualPayments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Standard Product Warranty Accrual, Increase for Warranties Issued",
+      "name": "StandardProductWarrantyAccrualWarrantiesIssued"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stock Issued During Period, Value, Acquisitions",
+      "name": "StockIssuedDuringPeriodValueAcquisitions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stock Issued During Period, Value, Conversion of Convertible Securities",
+      "name": "StockIssuedDuringPeriodValueConversionOfConvertibleSecurities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stock Issued During Period, Value, Employee Stock Purchase Plan",
+      "name": "StockIssuedDuringPeriodValueEmployeeStockPurchasePlan"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stock Issued During Period, Value, New Issues",
+      "name": "StockIssuedDuringPeriodValueNewIssues"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stock Issued During Period, Value, Stock Options Exercised",
+      "name": "StockIssuedDuringPeriodValueStockOptionsExercised"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stockholders' Equity Attributable to Parent",
+      "name": "StockholdersEquity"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest",
+      "name": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Stockholders' Equity, Other",
+      "name": "StockholdersEquityOther"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Taxes Payable, Current",
+      "name": "TaxesPayableCurrent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Temporary Equity, Carrying Amount, Attributable to Parent",
+      "name": "TemporaryEquityCarryingAmountAttributableToParent"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Temporary Equity, Carrying Amount, Including Portion Attributable to Noncontrolling Interests",
+      "name": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Temporary Equity, Net Income",
+      "name": "TemporaryEquityNetIncome"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unamortized Debt Issuance Expense",
+      "name": "UnamortizedDebtIssuanceExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Undistributed Earnings of Foreign Subsidiaries",
+      "name": "UndistributedEarningsOfForeignSubsidiaries"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrealized Gain (Loss) on Derivatives",
+      "name": "UnrealizedGainLossOnDerivatives"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrealized Gain (Loss) on Investments",
+      "name": "UnrealizedGainLossOnInvestments"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits",
+      "name": "UnrecognizedTaxBenefits"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Decrease Resulting from Prior Period Tax Positions",
+      "name": "UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Decrease Resulting from Settlements with Taxing Authorities",
+      "name": "UnrecognizedTaxBenefitsDecreasesResultingFromSettlementsWithTaxingAuthorities"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued",
+      "name": "UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Expense",
+      "name": "UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestExpense"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Increase Resulting from Acquisition",
+      "name": "UnrecognizedTaxBenefitsIncreasesResultingFromAcquisition"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Increase Resulting from Current Period Tax Positions",
+      "name": "UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Increase Resulting from Prior Period Tax Positions",
+      "name": "UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Period Increase (Decrease)",
+      "name": "UnrecognizedTaxBenefitsPeriodIncreaseDecrease"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
+      "name": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Unrecognized Tax Benefits that Would Impact Effective Tax Rate",
+      "name": "UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Valuation Allowance, Deferred Tax Asset, Increase (Decrease), Amount",
+      "name": "ValuationAllowanceDeferredTaxAssetChangeInAmount"
+    },
+    {
+      "available_units": [
+        "USD"
+      ],
+      "label": "Warehouse Agreement Borrowings",
+      "name": "WarehouseAgreementBorrowings"
+    }
+  ]

@@ -128,10 +128,10 @@ builder.Services.AddScoped<SemanticKernelService>((provider) =>
     }
 
     return new SemanticKernelService(
-            endpoint: azureOpenAIEndpoint03 ?? String.Empty,
+            endpoint: azureOpenAIEndpoint02 ?? String.Empty,
             completionDeploymentName: azureOpenAIModelName02 ?? String.Empty,
             embeddingDeploymentName: azureEmbeddingsModelName03 ?? String.Empty,
-            apiKey: azureOpenAIKey03 ?? String.Empty,
+            apiKey: azureOpenAIKey02 ?? String.Empty,
             endpointPhi: PhiEndpoint,
             apiKeyPhi: PhiKey,
             dimensions: azureEmbeddingsdDimensions,

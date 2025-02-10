@@ -1,0 +1,268 @@
+package main
+
+import (
+	"bufio"
+	"encoding/json"
+	"encoding/xml"
+	"flag"
+	"fmt"
+	"log"
+	"os"
+	"sort"
+	"strings"
+)
+
+type Concept struct {
+	Name           string   `json:"name"`
+	Label          string   `json:"label"`
+	InferredFreq   string   `json:"inferred_freq"`
+	AvailableUnits []string `json:"available_units"`
+}
+
+type Linkbase struct {
+	XMLName          xml.Name           `xml:"linkbase"`
+	Xmlns            string             `xml:"xmlns,attr"`
+	XmlnsLink        string             `xml:"xmlns:link,attr"`
+	XmlnsXlink       string             `xml:"xmlns:xlink,attr"`
+	PresentationLink []PresentationLink `xml:"presentationLink"`
+}
+
+type PresentationLink struct {
+	Role string    `xml:"role,attr"`
+	Loc  []Locator `xml:"loc"`
+	Arcs []Arc     `xml:"presentationArc"`
+}
+
+type Locator struct {
+	Href  string `xml:"href,attr"`
+	Label string `xml:"label,attr"`
+	Type  string `xml:"type,attr"`
+}
+
+type Arc struct {
+	Order   string `xml:"order,attr"`
+	Arcrole string `xml:"arcrole,attr"`
+	From    string `xml:"from,attr"`
+	To      string `xml:"to,attr"`
+	Type    string `xml:"type,attr"`
+}
+
+type Node struct {
+	Label    string
+	Href     string
+	Children []*Node
+	Matched  bool
+	Concept  *Concept
+}
+
+func loadConcepts(filename string) (map[string]Concept, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	conceptMap := make(map[string]Concept)
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
+		var concept Concept
+		if err := json.Unmarshal([]byte(line), &concept); err != nil {
+			continue
+		}
+		conceptMap[concept.Name] = concept
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return conceptMap, nil
+}
+
+func main() {
+	filePath := flag.String("file", "us-gaap-2024/stm/us-gaap-stm-sfp-ucreo-pre-2024.xml", "Path to the XBRL linkbase XML file")
+	jsonPath := flag.String("json", "TSLAconcepts.json", "Path to the concepts JSON file")
+	flag.Parse()
+
+	conceptMap, err := loadConcepts(*jsonPath)
+	if err != nil {
+		log.Fatalf("Error loading concepts: %v", err)
+	}
+
+	xmlFile, err := os.Open(*filePath)
+	if err != nil {
+		log.Fatalf("Error opening file %s: %v", *filePath, err)
+	}
+	defer xmlFile.Close()
+
+	data, err := os.ReadFile(*filePath)
+	if err != nil {
+		log.Fatalf("Error reading file: %v", err)
+	}
+
+	var lb Linkbase
+	err = xml.Unmarshal(data, &lb)
+	if err != nil {
+		log.Fatalf("Error unmarshalling XML: %v", err)
+	}
+
+	locators := make(map[string]Locator)
+	relations := make(map[string][]string)
+
+	for _, pl := range lb.PresentationLink {
+		for _, l := range pl.Loc {
+			locators[l.Label] = l
+		}
+		for _, arc := range pl.Arcs {
+			if arc.Arcrole == "http://www.xbrl.org/2003/arcrole/parent-child" {
+				relations[arc.From] = append(relations[arc.From], arc.To)
+			}
+		}
+	}
+
+	childSet := make(map[string]bool)
+	for _, children := range relations {
+		for _, child := range children {
+			childSet[child] = true
+		}
+	}
+
+	var roots []*Node
+	for label, loc := range locators {
+		if !childSet[label] {
+			cleanedLabel := cleanLabel(loc.Label)
+			concept, matched := conceptMap[cleanedLabel]
+			var conceptPtr *Concept
+			if matched {
+				conceptPtr = &concept
+			}
+			roots = append(roots, &Node{
+				Label:   label,
+				Href:    loc.Href,
+				Matched: matched,
+				Concept: conceptPtr,
+			})
+		}
+	}
+
+	sort.Slice(roots, func(i, j int) bool {
+		return roots[i].Label < roots[j].Label
+	})
+
+	var buildTree func(label string) *Node
+	buildTree = func(label string) *Node {
+		loc, ok := locators[label]
+		if !ok {
+			return nil
+		}
+
+		cleanedLabel := cleanLabel(loc.Label)
+		concept, matched := conceptMap[cleanedLabel]
+		var conceptPtr *Concept
+		if matched {
+			conceptPtr = &concept
+		}
+
+		node := &Node{
+			Label:   label,
+			Href:    loc.Href,
+			Matched: matched,
+			Concept: conceptPtr,
+		}
+
+		if childrenLabels, found := relations[label]; found {
+			sort.Strings(childrenLabels)
+			for _, childLabel := range childrenLabels {
+				childNode := buildTree(childLabel)
+				if childNode != nil {
+					node.Children = append(node.Children, childNode)
+				}
+			}
+		}
+		return node
+	}
+
+	var trees []*Node
+	for _, root := range roots {
+		trees = append(trees, buildTree(root.Label))
+	}
+
+	for _, tree := range trees {
+		printTree(tree, 0)
+	}
+}
+
+func printTreeFull(n *Node, level int) {
+	indent := strings.Repeat("  ", level)
+	cleanedLabel := cleanLabel(n.Label)
+	if n.Matched && n.Concept != nil {
+		fmt.Printf("%s- %s [MATCHED: %s, Freq: %s]\n",
+			indent, cleanedLabel, n.Concept.Label, n.Concept.InferredFreq)
+	} else {
+		fmt.Printf("%s- %s\n", indent, cleanedLabel)
+	}
+	for _, child := range n.Children {
+		printTree(child, level+1)
+	}
+}
+func printTree(n *Node, level int) {
+	indent := strings.Repeat("  ", level)
+	cleanedLabel := cleanLabel(n.Label)
+	hasMatchedChildren := false
+
+	// Check if this node or any of its children are matched
+	if n.Matched && n.Concept != nil {
+		hasMatchedChildren = true
+	} else {
+		for _, child := range n.Children {
+			if hasMatchedDescendant(child) {
+				hasMatchedChildren = true
+				break
+			}
+		}
+	}
+
+	// Only print if this node or its children have matches
+	if hasMatchedChildren {
+		if n.Matched && n.Concept != nil {
+			fmt.Printf("%s- %s : %s, Freq: %s\n",
+				indent, cleanedLabel, n.Concept.Label, n.Concept.InferredFreq)
+		} else {
+			fmt.Printf("%s- %s\n", indent, cleanedLabel)
+		}
+
+		// Print children that have matches
+		for _, child := range n.Children {
+			printTree(child, level+1)
+		}
+	}
+}
+
+func hasMatchedDescendant(n *Node) bool {
+	if n.Matched && n.Concept != nil {
+		return true
+	}
+	for _, child := range n.Children {
+		if hasMatchedDescendant(child) {
+			return true
+		}
+	}
+	return false
+}
+
+func cleanLabel(label string) string {
+	if strings.HasPrefix(label, "loc_") {
+		name := strings.TrimPrefix(label, "loc_")
+		if strings.HasPrefix(name, "us-gaap_") {
+			return strings.TrimPrefix(name, "us-gaap_")
+		}
+		return name
+	}
+	return label
+}

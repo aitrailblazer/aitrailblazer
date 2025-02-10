@@ -26,6 +26,9 @@ namespace AITrailblazer.net.Services
         //public required string GOOGLE_API_ENDPOINT { get; set; }
         //public required string GOOGLE_MODEL_ID { get; set; }
         //public required string GOOGLE_API_KEY { get; set; }
+        public required string AzureOpenAIEndpoint02 { get; set; }
+        public required string AzureOpenAIKey02 { get; set; }
+
         public required string AzureOpenAIEndpoint03 { get; set; }
         public required string AzureOpenAIKey03 { get; set; }
         public required string AzureOpenAIModelName01 { get; set; }

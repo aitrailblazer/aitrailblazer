@@ -463,7 +463,7 @@ Knowledge base context is provided below:
             return ("A critical error occurred. Please contact support.", 0);
         }
     }
-   /// <summary>
+    /// <summary>
     /// Updates the prompty template with the provided input, title, and context.
     /// </summary>
     /// <param name="input">User input.</param>
@@ -552,6 +552,13 @@ Knowledge base context is provided below:
             // Invoke the function with streaming
             await foreach (var partialResponse in knowledgeBaseFunction.InvokeStreamingAsync<string>(kernel, arguments))
             {
+                // *** Skip partialResponse if it contains the skip message ***
+                if (partialResponse.Contains("I could not find an answer in the knowledge base."))
+                {
+                    // Just continue to the next chunk, effectively skipping this one
+                    continue;
+                }
+
                 buffer.Append(partialResponse);
 
                 // Check if the buffer contains a complete sentence or is long enough to display
@@ -566,23 +573,34 @@ Knowledge base context is provided below:
             // Flush any remaining content in the buffer
             if (buffer.Length > 0)
             {
-                responses.Add(buffer.ToString());
-            }
+                // Convert the buffer to string
+                string leftover = buffer.ToString();
 
-            // Extract the page number from the reference link (if applicable)
-            string pageNumber = "";
-            if (contextData.ReferenceLink.Contains("#page="))
-            {
-                var match = Regex.Match(contextData.ReferenceLink, @"#page=(\d+)");
-                if (match.Success)
+                // Check if it contains the skip message
+                if (!leftover.Contains("I could not find an answer in the knowledge base."))
                 {
-                    pageNumber = $" (Page {match.Groups[1].Value})";
+                    responses.Add(leftover);
                 }
             }
 
-            // Append the reference link and page number
-            string formattedReference = $"\n\nReference: [{contextData.ReferenceDescription}]({contextData.ReferenceLink}){pageNumber}";
-            responses.Add(formattedReference);
+            // **Conditionally add the formatted reference only if there are meaningful responses**
+            if (responses.Any())
+            {
+                // Extract the page number from the reference link (if applicable)
+                string pageNumber = "";
+                if (contextData.ReferenceLink.Contains("#page="))
+                {
+                    var match = Regex.Match(contextData.ReferenceLink, @"#page=(\d+)");
+                    if (match.Success)
+                    {
+                        pageNumber = $" (Page {match.Groups[1].Value})";
+                    }
+                }
+
+                // Append the reference link and page number
+                string formattedReference = $"\n\nReference: [{contextData.ReferenceDescription}]({contextData.ReferenceLink}){pageNumber}";
+                responses.Add(formattedReference);
+            }
 
             NotifyStatusUpdate("Streaming execution completed successfully.");
         }

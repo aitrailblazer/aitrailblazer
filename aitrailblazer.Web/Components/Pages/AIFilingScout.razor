@@ -8,6 +8,12 @@
 @using AITrailblazer.net.Services
 @using AITrailblazer.net.Models
 
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Text;
+@using System.Linq;
+@using System.Collections.Generic;
+
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Identity.Web
@@ -15,6 +21,7 @@
 @using aitrailblazer.Web.Models
 @using System.Diagnostics;
 @using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Authorization
 @using Azure.AI.OpenAI;
@@ -28,6 +35,8 @@
 @inject IJSRuntime JSRuntime
 @inject ChatService ChatService
 @inject SECEdgarWSAppService SECEdgarWSAppService
+@inject GoSECEdgarWSAppService GoSECEdgarWSAppService
+
 @inject GotenbergWSAppService GotenbergWSAppService
 
 @inject PluginService PluginService
@@ -49,7 +58,7 @@ else
 {
     <FluentLayout Style="margin-top: 10px;">
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
-            <FluentCard Width="900px" MinimalStyle="true">
+            <FluentCard Width="900px" Height="100%" MinimalStyle="true">
 
                 <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
                 Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
@@ -80,118 +89,292 @@ else
                                 <FluentLabel Typo="Typography.Body">CIK: @CIK</FluentLabel>
                             </FluentStack>
                         }
-                        <FluentToolbar id="toolbar-slotted-label">
-                            <!-- Button to Trigger the Menu -->
-
-                            <FluentButton IconStart="@(new Icons.Filled.Size24.DocumentOnePage())" id="latestFilingsButton"
-                                Appearance="Appearance.Neutral" @onclick="@(() => formOpen = !formOpen)"
-                                disabled="@IsMenuButtonDisabled">
-                                Latest Filings
-                            </FluentButton>
-                            <!-- Menu to Select Available Forms -->
-                            @SelectedForm
-                            <FluentMenu @bind-Open="@formOpen" @onmenuchange="OnFormMenuChange" Width="400px">
-                                @if (AvailableForms != null && AvailableForms.Any())
-                                {
-                                    @foreach (var form in AvailableForms)
-                                    {
-                                        <FluentMenuItem Value="@form">@form</FluentMenuItem>
-                                    }
-                                }
-                                else
-                                {
-                                    <FluentMenuItem Value="NoFormsAvailable" Disabled="true">No Forms Available</FluentMenuItem>
-                                }
-                            </FluentMenu>
-                            <FluentButton IconStart="@(new Icons.Filled.Size24.DocumentOnePageMultiple())"
-                                Appearance="Appearance.Neutral" @onclick="FetchFilings" disabled="@IsButtonDisabled">
-                                All Filings
-                            </FluentButton>
-                            <FluentButton IconStart="@(new Icons.Filled.Size24.DataArea())"
-                                        Appearance="Appearance.Neutral"
-                                        @onclick="FetchXBRLConceptsAsync"
-                                        disabled="@IsButtonDisabled">
-                                Fetch Financial Concepts
-                                @if (AvailableConcepts != null && AvailableConcepts.Any())
-                                {
-                                    <FluentCounterBadge 
-                                        VerticalPosition="120"
-                                        Count="@AvailableConcepts.Count" 
-                                        BackgroundColor="@(AvailableConcepts.Any() ? Color.Accent : Color.Neutral)" 
-                                        Color="Color.Fill">
-                                        <BadgeTemplate>
-                                            @context
-                                        </BadgeTemplate>
-                                    </FluentCounterBadge>
-                                }
-                                else
-                                {
-                                }
-                            </FluentButton>
-
-                            <!-- Streaming Progress Section -->
-                            <div style="max-height: 300px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; padding: 8px;">
-                                <FluentMenu @bind-Open="@conceptMenuOpen" Width="400px">
-                                    @if (IsFetchingStreamingData)
-                                    {
-                                        <!-- Show progress of streaming -->
-                                        @if (AvailableConcepts != null && AvailableConcepts.Any())
-                                        {
-                                            @foreach (var concept in AvailableConcepts)
+                        <!-- Loading State -->
+                        @if (IsLoading)
+                        {
+                            <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px auto;" />
+                            <p>Loading... Please wait.</p>
+                        }
+                        @if (!IsButtonDisabled){
+                            <FluentTabs @bind-ActiveTabId="@activeMainid"  OnTabChange="HandleOnMainTabChange" Class="top-tabs-font-size" Style="width: 800px;">
+                                <FluentTab Id="LatestFilings-id" Icon="@(new Icons.Regular.Size20.Document())">
+                                    <Header>
+                                        Latest Filings
+                                    </Header>
+                                    <Content>
+                                        <!-- Menu to Select Available Forms -->
+                                        <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">@SelectedForm</FluentLabel>
+                                            <FluentCard Width="200px" Height="300px" MinimalStyle="true">
+                                                <div
+                                                    style="max-height: 300px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px;">
+                                                    <FluentMenu @bind-Open="formOpenListFilings" @onmenuchange="OnFormMenuChange" Width="100px" Height="300px">
+                                                        @if (AvailableForms != null && AvailableForms.Any())
+                                                        {
+                                                            foreach (var form in AvailableForms)
+                                                            {
+                                                                <FluentMenuItem Value="@form">@form</FluentMenuItem>
+                                                            }
+                                                        }
+                                                    </FluentMenu>
+                                                </div>
+                                            </FluentCard>
+                                            <!-- Display HTML -->
+                                            @if (!string.IsNullOrEmpty(HTMLContentListFilings))
                                             {
-                                                <FluentMenuItem 
-                                                    @onclick="(() => OnFinancialConceptMenuChange(concept.Name + '|' + concept.Label))" 
-                                                    Label="@GetTruncatedLabel(concept.Label)">
-                                                    <span slot="start">
-                                                        <FluentIcon 
-                                                            Value="@(concept.InferredFreq == true 
-                                                                ? (Icon)new Icons.Filled.Size20.ArrowTrendingSparkle() 
-                                                                : (Icon)new Icons.Regular.Size20.CircleSmall())" 
-                                                            Color="@Color.Neutral" />
-                                                    </span>
-                                                </FluentMenuItem>
+                                                <!-- Vectorize HTML 
+                                                <FluentButton IconStart="@(new Icons.Filled.Size24.LayerDiagonalSparkle())"
+                                                            Appearance="Appearance.Neutral" @onclick="FetchFilings" disabled="@IsButtonDisabled">
+                                                    Vectorize
+                                                </FluentButton>
+                                                -->
+                                                <div style="position: relative; width: 800px; height: 600px; margin: 0 auto;">
+                                                    <!-- Toolbar positioned at the top right of the content container -->
+                                                    <div style="position: absolute; top: 10px; right: 10px; z-index: 10; padding: 10px;">
+                                                        <FluentToolbar id="toolbar-fluent-components-input" 
+                                                                    style="width: 100%; display: flex; justify-content: flex-end;">
+                                                            <!-- Copy to clipboard button -->
+                                                            <FluentButton id="HTMLContentListFilingsToClipboard" 
+                                                                        IconEnd="@(new Icons.Regular.Size20.Copy())" 
+                                                                        Title="Copy to clipboard"
+                                                                        Loading="@loadingInput2"
+                                                                        OnClick="CopyHTMLContentListFilingsToClipboard"
+                                                                        Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                            </FluentButton>
+
+                                                            <!-- Convert HTML to PDF and save button -->
+                                                            <FluentButton IconStart="@(new Icons.Regular.Size24.DocumentPdf())" 
+                                                                        Appearance="Appearance.Neutral" 
+                                                                        Title="Save as PDF"
+                                                                        @onclick="ConvertAndSavePdfContentListFilings"
+                                                                        Loading="@loadingInput3"
+                                                                        Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                            </FluentButton>
+                                                        </FluentToolbar>
+                                                    </div>
+
+                                                    <!-- Content Container -->
+                                                    <div id="contentContainer" style="width: 100%; height: 100%; overflow: auto; padding-top: 60px;">
+                                                        @((MarkupString)HTMLContentListFilings)
+                                                    </div>
+                                                </div>
                                             }
-                                        }
-                                        <FluentMenuItem Disabled="true">Fetching concepts... (@AvailableConcepts.Count)</FluentMenuItem>
-                                    }
-                                    else if (AvailableConcepts != null && AvailableConcepts.Any())
-                                    {
-                                        <!-- Show full list from cache -->
-                                        @foreach (var concept in AvailableConcepts)
+
+                                    </Content>
+                                </FluentTab>
+                                <FluentTab Id="AllFilings-id" Icon="@(new Icons.Regular.Size20.DocumentBulletListMultiple())">
+                                    <Header>
+                                        All Filings
+                                    </Header>
+                                    <Content>
+                                        <!-- Display Filings
+                                        <FluentButton IconStart="@(new Icons.Filled.Size24.DocumentOnePageMultiple())"
+                                            Appearance="Appearance.Neutral" @onclick="FetchFilings" disabled="@IsButtonDisabled">
+                                            All Filings
+                                        </FluentButton>
+                                         -->
+                                         @if (AllFilings != null && AllFilings.Any())
+                                         {
+                                            <FluentCard Width="800px" Height="300px" MinimalStyle="true">
+                                                <div
+                                                    style="max-height: 300px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px;">
+                                                    <FluentAccordion @bind-Expanded="@accordionOpenAllFilings">
+                                                        @foreach (var group in AllFilings.GroupBy(f => f.Form))
+                                                        {
+                                                            <FluentAccordionItem Heading="@group.Key">
+                                                                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
+                                                                    Slot="start" />
+                                                                <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                                                                    <thead>
+                                                                        <tr style="background-color: var(--neutral-fill-hover);">
+                                                                            <th style="padding: 10px; text-align:left;">Filing Date</th>
+                                                                            <th style="padding: 10px; text-align:left;">Accession Number</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var filing in group)
+                                                                        {
+                                                                            <tr style="border-bottom: solid thin var(--neutral-outline-rest);">
+                                                                                <td style="padding:10px;">@filing.FilingDate</td>
+                                                                                <td style="padding:10px;">
+                                                                                    <a href="javascript:void(0);" @onclick="() => ShowPdfPreview(filing)" @onclick:preventDefault>
+                                                                                        @filing.AccessionNumber
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                </tbody>
+                                                            </table>
+                                                        </FluentAccordionItem>
+                                                        }
+                                                    </FluentAccordion>
+                                                </div>
+                                            </FluentCard>                                            
+                                         }
+                                        @if (!string.IsNullOrEmpty(HtmlContentAllFilings))
                                         {
-                                            <FluentMenuItem 
-                                                @onclick="(() => OnFinancialConceptMenuChange(concept.Name + '|' + concept.Label + '|' + concept.InferredFreq))" 
-                                                Label="@concept.Label">
-                                                <span slot="start">
-                                                    <FluentIcon 
-                                                        Value="@(concept.InferredFreq == true 
-                                                            ? (Icon)new Icons.Regular.Size20.ArrowTrendingSparkle() 
-                                                            : (Icon)new Icons.Regular.Size20.CircleSmall())" 
-                                                        Color="@Color.Neutral" />
-                                                </span>
-                                            </FluentMenuItem>
+                                            <div style="position: relative; width: 800px; height: 600px; margin: 0 auto;">
+                                                <!-- Toolbar positioned at the top right of the content container -->
+                                                <div style="position: absolute; top: 10px; right: 0; z-index: 10; padding: 10px;">
+                                                    <FluentToolbar id="toolbar-fluent-components-input" style="display: flex; justify-content: flex-end;">
+                                                        <!-- Copy to clipboard button -->
+                                                        <FluentButton id="HTMLContentAllFilingsToClipboard" 
+                                                                    IconEnd="@(new Icons.Regular.Size20.Copy())" 
+                                                                    Title="Copy to clipboard"
+                                                                    Loading="@loadingInput7"
+                                                                    OnClick="CopyHtmlContentAllFilingsToClipboard"
+                                                                    Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                        </FluentButton>
+
+                                                        <!-- Convert HTML to PDF and save button -->
+                                                        <FluentButton IconStart="@(new Icons.Regular.Size24.DocumentPdf())" 
+                                                                    Appearance="Appearance.Neutral" 
+                                                                    Title="Save as PDF"
+                                                                    @onclick="ConvertAndSavePdfContentAllFilings"
+                                                                    Loading="@loadingInput5"
+                                                                    Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                        </FluentButton>
+                                                    </FluentToolbar>
+                                                </div>
+
+                                                <!-- Content Container -->
+                                                <div id="contentContainer" style="width: 100%; height: 100%; overflow: auto; padding-top: 60px;">
+                                                    @((MarkupString)HtmlContentAllFilings)
+                                                </div>
+                                            </div>
                                         }
-                                    }
-                                    else
-                                    {
-                                        <FluentMenuItem Value="NoConceptsAvailable" Disabled="true">
-                                            No Concepts Available
-                                        </FluentMenuItem>
-                                    }
-                                </FluentMenu>
-                            </div>
-             
-                        </FluentToolbar>
+
+                                    </Content>
+                                </FluentTab>
+                                <FluentTab Id="FinancialConcepts-id" Icon="@(new Icons.Regular.Size20.DocumentData())">
+                                    <Header>
+                                        Financial Concepts
+                                    </Header>
+                                    <Content>
+                                            <!--
+                                            @if (AvailableConceptsItems == null || !AvailableConceptsItems.Any())
+                                            {
+                                                <FluentButton IconStart="@(new Icons.Filled.Size24.DataFunnel())"
+                                                            Appearance="Appearance.Neutral"
+                                                            @onclick="FetchXBRLConceptsAsync"
+                                                            disabled="@IsButtonDisabled">
+                                                    Fetch Financial Concepts
+                                                </FluentButton>
+                                            }
+                                            -->
+                                            @if (AvailableConceptsItems != null && AvailableConceptsItems.Any())
+                                            {
+                                                <FluentTabs @bind-ActiveTabId="@activeid" Class="top-tabs-font-size" Style="width: 800px;">
+                                                    <FluentTab Id="Statements-id" Icon="@(new Icons.Regular.Size20.DataFunnel())">
+                                                        <Header>
+                                                            Available Concepts
+                                                        </Header>
+                                                        <Content>
+                                                            <FluentLabel Typo="Typography.H4">@SelectedAvailableConceptsItem?.Text</FluentLabel>
+                                                            <FluentTreeView  
+                                                                Items="@AvailableConceptsItems" 
+                                                                @bind-SelectedItem="@SelectedAvailableConceptsItem" 
+                                                                LazyLoadItems="false">
+                                                                <ItemTemplate>
+                                                                    @context.Text
+                                                                </ItemTemplate>
+                                                            </FluentTreeView>
+                                                        </Content>
+                                                    </FluentTab>
+                                                    @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64) || !string.IsNullOrEmpty(formattedJson))
+                                                    {
+                                                        <!-- Plots Tab -->
+                                                        @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64))
+                                                        {
+                                                            <FluentTab Id="Plots-id" Icon="@(new Icons.Regular.Size20.DataArea())">
+                                                                <Header>
+                                                                    Plots
+                                                                </Header>
+                                                                <Content>
+                                                                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
+                                                                                Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
+
+                                                                        <!-- Render PlotHtml if available -->
+                                                                        @if (!string.IsNullOrEmpty(PlotHtml))
+                                                                        {
+                                                                            <FluentCard Width="800px" MinimalStyle="true">
+                                                                                <div>@((MarkupString)PlotHtml)</div>
+                                                                            </FluentCard>
+                                                                        }
+
+                                                                        <!-- Render PlotAnomaliesPngBase64 if available -->
+                                                                        @if (!string.IsNullOrEmpty(PlotAnomaliesPngBase64))
+                                                                        {
+                                                                            <FluentCard Width="800px" MinimalStyle="true">
+                                                                                <img src="data:image/png;base64,@PlotAnomaliesPngBase64" 
+                                                                                    alt="Anomalies Plot" 
+                                                                                    style="width: 100%; height: auto;" />
+                                                                            </FluentCard>
+                                                                        }
+                                                                    </FluentStack>
+                                                                </Content>
+                                                            </FluentTab>
+                                                        }
+                                                        @if (!string.IsNullOrEmpty(formattedJson))
+                                                        {
+                                                            <FluentTab Id="Data-id"Icon="@(new Icons.Regular.Size20.DocumentData())">
+                                                                <Header>
+                                                                    Data
+                                                                </Header>
+                                                                <Content>
+                                                                    <FluentToolbar id="toolbar-fluent-components-input" 
+                                                                                style="width:100%; display: flex; justify-content: flex-start; align-items: center; gap: 1rem; padding: 0.5rem 1rem; background: var(--neutral-fill-subtle); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                                                        @if (!string.IsNullOrEmpty(formattedJson))
+                                                                        {
+                                                                            <FluentButton id="CopyFormattedJsonToClipboard" 
+                                                                                        IconEnd="@(new Icons.Regular.Size20.Copy())" 
+                                                                                        Title="Copy formatted JSON to clipboard"
+                                                                                        Loading="@loadingInput1"
+                                                                                        OnClick="CopyFormattedJsonToClipboard"
+                                                                                        Style="min-width: 150px; text-transform: uppercase; font-weight: 500;">
+                                                                            </FluentButton>
+
+                                                                            <FluentButton id="SaveCsvButton" 
+                                                                                        IconEnd="@(new Icons.Regular.Size20.Save())" 
+                                                                                        Title="Save as CSV"
+                                                                                        OnClick="SaveCsv"
+                                                                                        Style="min-width: 150px; text-transform: uppercase; font-weight: 500;">
+                                                                            </FluentButton>
+                                                                        }
+                                                                    </FluentToolbar>
+                                                                    
+                                                                            <div style="display: flex; justify-content: center; align-items: center; padding: 16px;">
+                                                                                <div style="
+                                                                                        max-height: 500px;
+                                                                                        overflow-y: auto;
+                                                                                        font-family: 'Courier New', monospace;
+                                                                                        white-space: pre-wrap;
+                                                                                        word-break: break-word;
+                                                                                        line-height: 1.5;
+                                                                                        text-align: left;
+                                                                                        padding: 16px;
+                                                                                        border: 1px solid var(--neutral-outline-rest);
+                                                                                        border-radius: 8px;
+                                                                                        background-color: #f9f9f9;
+                                                                                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                                                                        ">
+                                                                                    <pre><code class="language-json">@((MarkupString)formattedJson)</code></pre>
+                                                                                </div>
+                                                                            </div>
+
+                                                                </Content>
+                                                            </FluentTab>
+                                                            }
+                                                    }
+                                                </FluentTabs>
+
+                                            }
+                                    </Content>
+                                </FluentTab>
+                            </FluentTabs>
+                        }
+                     
                     </FluentStack>
                     <FluentStack Orientation="Orientation.Vertical" VerticalGap="2">
-
-                    <!-- Loading State -->
-                    @if (IsLoading)
-                    {
-                        <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px auto;" />
-                        <p>Loading... Please wait.</p>
-                    }
-
                     <!-- Error State -->
                     @if (HasError)
                     {
@@ -200,283 +383,218 @@ else
                             <p>@ErrorMessage</p>
                         </FluentCard>
                     }
-
-                    <!-- Display Filings -->
-                    @if (Filings != null && Filings.Any())
-                    {
-                        <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
-                            <div
-                                style="max-height: 400px; overflow-y: auto; border: 1px solid var(--neutral-outline-rest); border-radius: 8px;">
-                                <FluentAccordion>
-                                    @foreach (var group in Filings.GroupBy(f => f.Form))
-                                    {
-                                        <FluentAccordionItem Heading="@group.Key">
-                                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
-                                                Slot="start" />
-                                            <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
-                                                <thead>
-                                                    <tr style="background-color: var(--neutral-fill-hover);">
-                                                        <th style="padding: 10px; text-align:left;">Filing Date</th>
-                                                        <th style="padding: 10px; text-align:left;">Accession Number</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var filing in group)
-                                                    {
-                                                        <tr style="border-bottom: solid thin var(--neutral-outline-rest);">
-                                                            <td style="padding:10px;">@filing.FilingDate</td>
-                                                            <td style="padding:10px;">
-                                                                <a href="javascript:void(0);" @onclick="() => ShowPdfPreview(filing)" @onclick:preventDefault>
-                                                                    @filing.AccessionNumber
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                            </tbody>
-                                        </table>
-                                    </FluentAccordionItem>
-                                    }
-                                            </FluentAccordion>
-                            </div>
-                        </FluentCard>
-                    }
-                    @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64) || !string.IsNullOrEmpty(PDFDataUrl) || !string.IsNullOrEmpty(HTMLContent))
-                    {
-                        <FluentTabs @bind-ActiveTabId="@activeid" Class="top-tabs-font-size">
-                            <!-- Plots Tab -->
-                            @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64))
-                            {
-                                <FluentTab Id="Plots-id" Icon="@(new Icons.Regular.Size20.CircleSmall())">
-                                    <Header>
-                                        Plots
-                                    </Header>
-                                    <Content>
-                                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
-                                                    Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
-
-                                            <!-- Render PlotHtml if available -->
-                                            @if (!string.IsNullOrEmpty(PlotHtml))
-                                            {
-                                                <FluentCard Width="800px" MinimalStyle="true">
-                                                    <div>@((MarkupString)PlotHtml)</div>
-                                                </FluentCard>
-                                            }
-
-                                            <!-- Render PlotAnomaliesPngBase64 if available -->
-                                            @if (!string.IsNullOrEmpty(PlotAnomaliesPngBase64))
-                                            {
-                                                <FluentCard Width="800px" MinimalStyle="true">
-                                                    <img src="data:image/png;base64,@PlotAnomaliesPngBase64" 
-                                                        alt="Anomalies Plot" 
-                                                        style="width: 100%; height: auto;" />
-                                                </FluentCard>
-                                            }
-                                        </FluentStack>
-                                    </Content>
-                                </FluentTab>
-                            }
-                            @if (!string.IsNullOrEmpty(formattedJson))
-                            {
-                                <FluentTab Id="Data-id">
-                                    <Header>
-                                        Data
-                                    </Header>
-                                    <Content>
-                                        <FluentCard Width="100%" MinimalStyle="true" Style="padding: 16px; background-color: var(--neutral-fill-rest);">
-                                            <FluentToolbar id="toolbar-fluent-components-input" style="width:100%">
-                                             @if (!string.IsNullOrEmpty(formattedJson))
-                                            {
-                                                <FluentButton id="CopyFormattedJsonToClipboard" IconEnd="@(new Icons.Regular.Size20.Copy())" Title="Copy to clipboard"
-                                                Loading="@loadingInput1"
-                                                OnClick="CopyFormattedJsonToClipboard" />
-                                            }
-                                            </FluentToolbar>
-                                                <div style="display: flex; justify-content: center; align-items: center; padding: 16px;">
-                                                    <div style="
-                                                            max-height: 500px;
-                                                            overflow-y: auto;
-                                                            font-family: 'Courier New', monospace;
-                                                            white-space: pre-wrap;
-                                                            word-break: break-word;
-                                                            line-height: 1.5;
-                                                            text-align: left;
-                                                            padding: 16px;
-                                                            border: 1px solid var(--neutral-outline-rest);
-                                                            border-radius: 8px;
-                                                            background-color: #f9f9f9;
-                                                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                                                            ">
-                                                        <pre><code class="language-json">@((MarkupString)formattedJson)</code></pre>
-                                                    </div>
-                                                </div>
-
-                                        </FluentCard>
-                                    </Content>
-                                </FluentTab>
-                            }
-                            <!-- PDF or HTML Tab -->
-                            @if (!string.IsNullOrEmpty(PDFDataUrl) || !string.IsNullOrEmpty(HTMLContent))
-                            {
-                                <FluentTab Id="PDF-id" Icon="@(new Icons.Regular.Size20.Document())">
-                                    <Header>
-                                        PDF/HTML
-                                    </Header>
-                                    <Content>
-                                        <!-- Display PDF -->
-                                        @if (!string.IsNullOrEmpty(PDFDataUrl))
-                                        {
-                                            <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
-                                                <object data="@PDFDataUrl" type="application/pdf" width="100%" height="500px">
-                                                    <embed src="@PDFDataUrl" type="application/pdf" />
-                                                </object>
-                                            </FluentCard>
-                                        }
-
-                                        <!-- Display HTML -->
-                                        @if (!string.IsNullOrEmpty(HTMLContent))
-                                        {
-                                            <FluentButton IconStart="@(new Icons.Filled.Size24.LayerDiagonalSparkle())"
-                                                        Appearance="Appearance.Neutral" @onclick="FetchFilings" disabled="@IsButtonDisabled">
-                                                Vectorize
-                                            </FluentButton>
-                                            <div id="contentContainer" style="width: 800px; height: 600px; overflow: auto;">
-                                                @((MarkupString)HTMLContent)
-                                            </div>
-                                        }
-                                    </Content>
-                                </FluentTab>
-                            }
-                        </FluentTabs>
-                    }
                     </FluentStack>
                 </FluentStack>
             </FluentCard>
-            @if (AIAnalysis) {
-                <FluentCard Width="800px" Height="1200px" MinimalStyle="true">
+            @if (AIAnalysis)
+            {            
+                <FluentCard Width="900px" MinimalStyle="true">
 
-                        <!-- Input Section -->
+                <!-- Main container uses flex column layout -->
+                    <!-- Scrollable content section -->
+                    <div style="flex: 1 1 auto; overflow-y: auto; padding: 16px;">
+                        <!-- Header & AI Insights Info -->
                         <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
                             <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
                                 <FluentIcon Value="@(new Icons.Regular.Size24.ChatSparkle())" Color="@Color.Accent" />
                                 <FluentLabel Typo="Typography.H4" Style="color: #347687;">AI Insights</FluentLabel>
                             </FluentStack>
                             <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
-                                <FluentLabel Typo="Typography.Body">@CompanyName | @Ticker</FluentLabel>
+                                @if (!string.IsNullOrEmpty(Ticker))
+                                {
+                                    <FluentLabel Typo="Typography.Body">@CompanyName | @Ticker | @Exchange </FluentLabel>
+                                }
+                                
                                 @if (!string.IsNullOrEmpty(SelectedConceptTitle))
                                 {
-                                    <FluentLabel Typo="Typography.Body">Concept: @SelectedConceptTitle</FluentLabel>
+                                    <FluentCard 
+                                        Width="800px" 
+                                        MinimalStyle="true" 
+                                        >
+                                        <FluentLabel Typo="Typography.H5" 
+                                                    Style="display: block; margin-bottom: 12px; font-weight: bold; text-align: center;">
+                                            Based on the Selected Financial Concept
+                                        </FluentLabel>
+                                        <FluentLabel Typo="Typography.Body" 
+                                                    Style="display: block; margin-bottom: 8px;">
+                                            Concept: @SelectedConceptTitle
+                                        </FluentLabel>
+                                        <FluentLabel Typo="Typography.Body" 
+                                                    Style="display: block;">
+                                            Description: @SelectedConceptDescription
+                                        </FluentLabel>
+                                    </FluentCard>
+                                    @if (SubmittingFinancialConceptsQuestions)
+                                    {
+                                        <!-- Loading State for Questions -->
+                                        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
+                                            <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">Please wait...</FluentLabel>
+                                            <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px 0;" />
+                                        </FluentStack>
+                                    }
                                     
-                                    <!-- Generate buttons for each question based on the template -->
-                                    <div style="max-height: 200px; overflow-y: auto;">
-                                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="2">
-                                            @if (questionsList != null)
+                                    <FluentButton 
+                                        IconStart="@(new Icons.Filled.Size24.TextBulletListSquareSparkle())" 
+                                        id="latestFilingsQuestionsButton"
+                                        Appearance="Appearance.Neutral" 
+                                        Style="white-space: normal; max-width: 200px; margin-top:10px;" 
+                                        @onclick="GenerateQuestions">
+                                        Generate Questions
+                                    </FluentButton>
+                                    <!-- Questions Accordion inside its own card -->
+                                    @if (GroupedQuestions != null && GroupedQuestions.Any())
+                                        {
+                                            <FluentCard 
+                                                Width="800px" Height="300px"
+                                                MinimalStyle="true" 
+                                                >
+                                                <div style="max-height: 300px; overflow-y: auto; padding: 10px;">
+                                                    <FluentAccordion>
+                                                        @foreach (var group in GroupedQuestions)
+                                                        {
+                                                            <FluentAccordionItem Heading="@group.Title">
+                                                                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" 
+                                                                            Color="@Color.Neutral" Slot="start" />
+                                                                @foreach (var content in group.ContentLines)
+                                                                {
+                                                                    <div style="margin-bottom: 15px; padding: 10px; display: flex; align-items: center;
+                                                                                border: 1px solid var(--neutral-outline-hover);
+                                                                                border-radius: 8px; background-color: var(--neutral-fill-rest);
+                                                                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); font-size: 14px; 
+                                                                                line-height: 1.5; text-align: left;">
+                                                                        <div style="flex: 1;">
+                                                                            @(new MarkupString(ParseLineToStyledHtml(content)))
+                                                                        </div>
+                                                                    </div>
+                                                                    <FluentButton IconStart="@(new Icons.Filled.Size20.ArrowCircleUp())" 
+                                                                    Title="Selecting this question will trigger GPT AI"
+                                                                    @onclick="() => SelectQuestion(group.Title, content)"
+                                                                    Style="margin-left: 10px; min-width: 100px; text-transform: uppercase; font-weight: 500;" >
+                                                                    </FluentButton>
+                                                                }
+                                                            </FluentAccordionItem>
+                                                        }
+                                                    </FluentAccordion>
+                                                </div>
+                                            </FluentCard>
+                                        }
+                                    }
+                    
+                                    <!-- Fixed Input Section (always visible at the bottom) -->
+                                    <div style="flex: 0 0 auto; padding: 20px; border-top: 1px">
+                                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="2" Style="text-align: center;">
+                                            @if (Submitting)
                                             {
-                                                @foreach (var question in questionsList)
-                                                {
-                                                    <FluentButton Appearance="Appearance.Neutral" @onclick="(args) => HandleQuestionClick(question)">@question</FluentButton>
-                                                }
+                                                <!-- Loading State for Completion -->
+                                                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
+                                                    <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">Please wait...</FluentLabel>
+                                                    <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px 0;" />
+                                                    <div id="currentLineContainer"
+                                                        style="margin-top: 20px; padding: 15px; border: 1px solid var(--neutral-outline-rest); 
+                                                                background-color: var(--neutral-fill-rest); font-size: 16px; border-radius: 8px;">
+                                                        <strong style="color: #0078D4;">@CurrentLine</strong>
+                                                    </div>
+                                                </FluentStack>
                                             }
+                                                                                         <!-- Question Information -->
+                                                    @if (!string.IsNullOrEmpty(SelectedConceptQuestionTitle))
+                                                    {
+                                                        <div style="margin-bottom: 16px; text-align: left;">
+                                                            <FluentButton IconStart="@(new Icons.Filled.Size20.Delete())"
+                                                                        Title="Clear selected question"
+                                                                        @onclick="ClearSelectedQuestion"
+                                                                        Style="margin-top: 8px; text-transform: uppercase; font-weight: 500;">
+                                                                Clear
+                                                            </FluentButton>
+                                                            <FluentLabel Typo="Typography.H4" 
+                                                                        Style="display: block; margin-bottom: 8px; font-weight: bold;">
+                                                                Question: @SelectedConceptQuestionTitle
+                                                            </FluentLabel>
+                                                            <FluentLabel Typo="Typography.Body" 
+                                                                        Style="display: block; margin-bottom: 16px;">
+                                                                Description: @SelectedConceptQuestionDescription
+                                                            </FluentLabel>
+
+
+                                                        </div>
+                                                    }
+                                                    <FluentStack Orientation="Orientation.Horizontal" VerticalGap="2"
+                                                            Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
+
+                                                        <!-- Textarea for Prompt Input -->
+                                                        <div class="textarea-container" style="width: 100%;">
+                                                            <textarea @bind="PromptTextFinancialConcepts" 
+                                                                    @oninput="HandleInput" 
+                                                                    placeholder="Ask the AI for insights, summaries, key metrics, specific data points, and more." 
+                                                                    maxlength="2500"
+                                                                    id="animatedTextarea"
+                                                                    style="width: 700px; height: 150px; padding: 16px; font-size: 18px; 
+                                                                            border: 1px solid #ccc; border-radius: 8px; resize: vertical; 
+                                                                            transition: border-color 0.3s ease;">
+                                                            </textarea>
+                                                            <div class="char-counter" 
+                                                                style="text-align: right; font-size: 16px; color: #555; margin-top: 8px;">
+                                                                @($"{PromptTextFinancialConcepts.Length}/2500 characters")
+                                                            </div>
+                                                            <!-- Submit Button -->
+                                                            <FluentButton IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" 
+                                                                        Appearance="Appearance.Neutral"
+                                                                        @onclick="FetchCompletion" 
+                                                                        disabled="@IsPromptButtonDisabled"
+                                                                        Style="display: block; margin: 0 auto; min-width: 200px; text-transform: uppercase; font-weight: bold; padding: 12px 24px;">
+                                                            </FluentButton>                  
+                                                        </div>
+                                                    </FluentStack>
+
                                         </FluentStack>
                                     </div>
-                                }
+                                        @if (!string.IsNullOrEmpty(HtmlContentCompletion))
+                                        {
+                                            <div style="position: relative; width: 800px; height: 600px; margin: 0 auto;">
+                                                <!-- Toolbar positioned at the top right of the content container -->
+                                                <div style="position: absolute; top: 10px; right: 10px; z-index: 10; padding: 10px;">
+                                                    <FluentToolbar id="toolbar-fluent-components-input" 
+                                                                style="width: auto; display: flex; justify-content: flex-end;">
+                                                        <!-- Copy to clipboard button -->
+                                                        <FluentButton id="CopyHtmlContentCompletionToClipboard" 
+                                                                    IconEnd="@(new Icons.Regular.Size20.Copy())" 
+                                                                    Title="Copy to clipboard"
+                                                                    Loading="@loadingInput2"
+                                                                    OnClick="CopyHtmlContentCompletionToClipboard"
+                                                                    Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                        </FluentButton>
+
+                                                        <!-- Convert HTML to PDF and save button -->
+                                                        <FluentButton id="ConvertAndSavePdfHtmlContentCompletion" IconStart="@(new Icons.Regular.Size24.DocumentPdf())" 
+                                                                    Appearance="Appearance.Neutral" 
+                                                                    Title="Save as PDF"
+                                                                    @onclick="ConvertAndSavePdfHtmlContentCompletion"
+                                                                    Loading="@loadingInput9"
+                                                                    Style="min-width: 32px; text-transform: uppercase; font-weight: 500;">
+                                                        </FluentButton>
+                                                    </FluentToolbar>
+                                                </div>
+
+                                                <!-- Content Container -->
+                                                <div id="contentContainer" style="width: 100%; height: 100%; overflow: auto; padding-top: 60px;">
+                                                    <div class="markdown-container" 
+                                                        style="padding: 24px; border: 1px solid var(--neutral-outline-rest); border-radius: 12px; 
+                                                                background-color: #ffffff; color: #2d3436; 
+                                                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+                                                                font-family: 'Roboto', Arial, sans-serif; line-height: 1.8; 
+                                                                transition: box-shadow 0.3s ease;">
+                                                        <article style="font-size: 16px; color: #333; text-align: left; 
+                                                                    white-space: normal; word-break: break-word; padding: 10px 0;">
+                                                            @((MarkupString)HtmlContentCompletion)
+                                                        </article>
+                                                    </div>
+                                                </div>
+                                            </div>                                        }
                             </FluentStack>
                         </FluentStack>
-
-                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
-                            Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
-                            <div class="textarea-container" style="width: 100%;">
-                                <textarea @bind="PromptText" @oninput="HandleInput" placeholder="Enter your prompt..." maxlength="500"
-                                    id="animatedTextarea"
-                                    style="width: 100%; height: 150px; padding: 12px; font-size: 16px; border: 1px solid #ccc; 
-                                        border-radius: 8px; resize: vertical; transition: border-color 0.3s ease;">
-                                </textarea>
-                                <div class="char-counter" style="text-align: right; font-size: 14px; color: #555; margin-top: 5px;">
-                                    @($"{PromptText.Length}/500 characters")
-                                </div>
-                            </div>
-                            @if (Submitting)
-                            {
-                                <!-- Loading State -->
-                                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" VerticalGap="2">
-                                    <FluentLabel Typo="Typography.Body" Style="font-size: 16px; color: #555;">Please wait...</FluentLabel>
-                                    <FluentProgress Style="width: 100%; max-width: 300px; margin: 20px 0;" />
-                                    <div id="currentLineContainer"
-                                        style="margin-top: 20px; padding: 15px; border: 1px solid var(--neutral-outline-rest); background-color: var(--neutral-fill-rest); font-size: 16px; border-radius: 8px;">
-                                        <strong style="color: #0078D4;">@CurrentLine</strong>
-                                    </div>
-                                </FluentStack>
-                            }
-                            <!-- Submit Button -->
-                            <FluentButton IconStart="@(new Icons.Filled.Size32.ArrowCircleUp())" Appearance="Appearance.Neutral"
-                                @onclick="FetchCompletion" disabled="@IsPromptButtonDisabled" Style="margin: 15px auto; display: block;">
-                                Submit
-                            </FluentButton>
-                        </FluentStack>
-                    
-                    @if (!string.IsNullOrEmpty(PanelOutput))
-                    {
-                        <FluentCard 
-                            Width="100%" 
-                            MinimalStyle="true" 
-                            Style="padding: 16px; background-color: var(--neutral-fill-rest); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-                            <div 
-                                style="display: flex; justify-content: center; align-items: center; padding: 16px;">
-                                <div 
-                                    class="markdown-container" 
-                                    style="
-                                        max-height: 500px; 
-                                        overflow-y: auto; 
-                                        padding: 24px; 
-                                        border: 1px solid var(--neutral-outline-rest); 
-                                        border-radius: 12px; 
-                                        background-color: #ffffff; 
-                                        color: #2d3436; 
-                                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
-                                        font-family: 'Roboto', Arial, sans-serif; 
-                                        line-height: 1.8;
-                                        transition: box-shadow 0.3s ease;">
-                                    <!-- Render the HTML content -->
-                                    <article style="
-                                        font-size: 16px; 
-                                        color: #333; 
-                                        text-align: left; 
-                                        white-space: normal; 
-                                        word-break: break-word;
-                                        padding: 10px 0;">
-                                        @((MarkupString)HtmlContent)
-                                    </article>
-                                </div>
-                            </div>
-                        </FluentCard>
-                    }
-                    @if (FinalizedGroups.Any())
-                    {
-                        <FluentCard
-                            Style="padding: 20px; max-width: 900px; margin: 40px auto; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);">
-                            <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
-                                <FluentAccordion>
-                        @foreach (var (title, contentLines) in FinalizedGroups)
-                        {
-                            <FluentAccordionItem Heading="@title">
-                                <FluentIcon Value="@(new Icons.Regular.Size20.DocumentOnePageSparkle())" Color="@Color.Neutral"
-                                    Slot="start" />
-                                @foreach (var content in contentLines)
-                                {
-                                <div
-                                    style="margin-bottom: 15px; padding: 10px; border: 1px solid var(--neutral-outline-hover); border-radius: 8px; background-color: var(--neutral-fill-rest); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); font-size: 14px; line-height: 1.5; text-align: left;">
-                                    @(new MarkupString(ParseLineToStyledHtml(content)))
-                                </div>
-                                }
-                            </FluentAccordionItem>
-                        }
-                                </FluentAccordion>
-                            </div>
-                        </FluentCard>
-                    }
-
+                    </div>
                 </FluentCard>
             }
-
         </FluentStack>
 
     </FluentLayout>
@@ -490,17 +608,61 @@ else
     private string TenantId = "1234";
     private string UserId = "5678";
     private string CategoryId = "Document";
-    private string PromptText = string.Empty;
     private double SimilarityScore = 0.7;
 
     private List<(string Title, List<string> ContentLines)> FinalizedGroups = new();
     private string CurrentLine = string.Empty;
     private bool Submitting = false;
     private string CurrentTitle = "Untitled";
-    string? activeid = "Plots-id";
-    private string HtmlContent = string.Empty;
+    string? activeMainid = "";
+    FluentTab? changedMainTabto;
 
-    private bool IsPromptButtonDisabled => string.IsNullOrEmpty(PromptText) || PromptText.Length < 10;
+    private async Task HandleOnMainTabChange(FluentTab tab)
+    {
+        // Save the current tab for later use if needed.
+        changedMainTabto = tab;
+
+        // Use a switch statement (or if/else) to handle different tab Ids.
+        switch (tab.Id)
+        {
+            case "AllFilings-id":
+                // Handle the "All Filings" case.
+                Console.WriteLine("Switched to All Filings tab.");
+                // For example, you might load all filings data or update the UI accordingly.
+                @if (AllFilings == null || !AllFilings.Any())
+                {
+                    await FetchFilings();
+                }
+                break;
+
+            case "FinancialConcepts-id":
+                // Handle the "Financial Concepts" case.
+                Console.WriteLine("Switched to Financial Concepts tab.");
+                if (AvailableConceptsItems == null || !AvailableConceptsItems.Any())
+                {
+                    await FetchXBRLConceptsAsync();
+                }
+                break;
+
+            default:
+                // Handle any other cases if needed.
+                Console.WriteLine($"Switched to an unknown tab: {tab.Id}");
+                break;
+        }
+
+        // Optionally, update the UI.
+        StateHasChanged();
+    }
+
+
+    string? activeid = "Plots-id";
+    string? activeidPlotData = "Statements-id";
+    private string HtmlContentLatestFilings = string.Empty;
+    private string HtmlContentAllFilings = string.Empty;
+    private string HtmlContentCompletion = string.Empty;
+    private string HTMLContentListFilings = string.Empty;
+
+    private bool IsPromptButtonDisabled => string.IsNullOrEmpty(PromptTextFinancialConcepts) || PromptTextFinancialConcepts.Length < 10;
 
     protected override void OnInitialized()
     {
@@ -558,13 +720,15 @@ else
     {
         if (IsPromptButtonDisabled)
         {
-            Logger.LogWarning("PromptText is empty or too short.");
+            Logger.LogWarning("PromptTextFinancialConcepts is empty or too short.");
             return;
         }
 
         Submitting = true;
         FinalizedGroups.Clear();
         CurrentLine = string.Empty;
+        PanelOutput = string.Empty;
+        HtmlContentCompletion = string.Empty;
 
         try
         {
@@ -573,11 +737,15 @@ else
             //string panelInput)
 
             PanelOutput = await azureOpenAIHandler.GenerateAIAletheiaFinancialConceptsInstructionsAsync(
-                PromptText, 
-                DataJson,
+                PromptTextFinancialConcepts, 
+                "",
                 Ticker + "|" + CompanyName,
-                SelectedConceptTitle);
-            HtmlContent = MarkdownRenderer.ConvertMarkdownToHtml(PanelOutput);     
+                SelectedConceptTitle,
+                SelectedConceptDescription,
+                SelectedConceptQuestionTitle,
+                SelectedConceptQuestionDescription,
+                DataJson);
+            HtmlContentCompletion = MarkdownRenderer.ConvertMarkdownToHtml(PanelOutput);     
             // Fetch completion and title from the service
             //var (completion, title) = await ChatService.GetKnowledgeBaseStreamingCompletionAsync(
             //TenantId, UserId, CategoryId, PromptText, SimilarityScore);
@@ -595,7 +763,12 @@ else
             Submitting = false;
         }
     }
-
+    private void ClearSelectedQuestion()
+    {
+        SelectedConceptQuestionTitle = string.Empty;
+        SelectedConceptQuestionDescription = string.Empty;
+        StateHasChanged();
+    }
     private string ParseLineToStyledHtml(string line)
     {
         line = Regex.Replace(line, @"\*\*Title\*\*: (.*?)\n",
@@ -614,76 +787,85 @@ else
 
     private async Task HandleInput(ChangeEventArgs e)
     {
-        PromptText = e.Value?.ToString() ?? string.Empty;
+        PromptTextFinancialConcepts = e.Value?.ToString() ?? string.Empty;
         await JSRuntime.InvokeVoidAsync("adjustTextAreaHeight", "animatedTextarea");
         StateHasChanged();
     }
+    // Generates questions by calling the Azure OpenAI handler and then extracting and grouping them
     private async Task<string> GenerateQuestions()
     {
+        SubmittingFinancialConceptsQuestions = true;
+        // Call your Azure OpenAI Handler to generate the questions
         string FinancialConceptsQuestions = await azureOpenAIHandler.GenerateAIAletheiaFinancialConceptsQuestionsAsync(
-                    PromptText, 
+                    PromptTextFinancialConcepts,
                     "",
                     Ticker,
-                    SelectedConceptTitle);
+                    SelectedConceptTitle,
+                    SelectedConceptDescription);
+
         Console.WriteLine($"FinancialConceptsQuestions: {FinancialConceptsQuestions}");
-        questionsList = ExtractQuestions(FinancialConceptsQuestions);
-        /*
-<startQuestions>
 
-<question>Over what period can we observe data for Accounts and Financing Receivable, after Allowance for Credit Loss for TSLA, and what is the trend during this time? #validated_data</question>
+        // Extract the questions from the generated output
+        List<string> extractedQuestions = ExtractQuestions(FinancialConceptsQuestions);
 
-<question>What has been the general movement (growth or decline) in Accounts and Financing Receivable, after Allowance for Credit Loss for TSLA based on the available data? #assumptions_tested</question>
-
-<question>How does TSLA's Accounts and Financing Receivable, after Allowance for Credit Loss compare with industry standards or competitors in the periods we have data for? #bias_checked</question>
-
-<question>Are there any notable patterns or deviations in TSLA's Accounts and Financing Receivable, after Allowance for Credit Loss across different quarters or fiscal years? #dynamic_update</question>
-
-<question>Within the data range available, are there any anomalies in TSLA's Accounts and Financing Receivable, after Allowance for Credit Loss that stand out? #opposite_thinking</question>
-
-<question>Can you highlight any specific dates or periods where TSLA showed unusual changes in Accounts and Financing Receivable, after Allowance for Credit Loss? #assumptions_tested</question>
-
-<question>What could be the implications for TSLA if the observed trend in Accounts and Financing Receivable, after Allowance for Credit Loss persists into the future? #probabilistic_scenario_framework</question>
-
-<question>How might shifts in Accounts and Financing Receivable, after Allowance for Credit Loss influence TSLA's operational or financial strategies? #asymmetric_wealth_creation</question>
-
-<question>With the data at hand, what projections can we make for TSLA's Accounts and Financing Receivable, after Allowance for Credit Loss in upcoming periods? #dynamic_update</question>
-
-<question>What external or internal factors should be considered that might affect future trends in Accounts and Financing Receivable, after Allowance for Credit Loss for TSLA? #macro_and_micro_alignment</question>
-
-<question>Are there any known external events during the data period that might have affected TSLA's Accounts and Financing Receivable, after Allowance for Credit Loss? #sentiment_reflexivity_and_narrative_analysis</question>
-
-<question>Could changes in the broader market or within TSLA's industry explain movements in Accounts and Financing Receivable, after Allowance for Credit Loss? #cross_asset_interdependencies</question>
-
-<question>What strategic recommendations would you make for TSLA regarding the management of Accounts and Financing Receivable, after Allowance for Credit Loss? #actionable_metrics_and_targets</question>
-
-<question>Based on the data, how can TSLA adapt its policies or practices related to Accounts and Financing Receivable, after Allowance for Credit Loss? #bias_checked</question>
-
-<endQuestions>
-        */
+        // Group the questions based on their titles
+        GroupedQuestions = GroupQuestions(extractedQuestions);
+        SubmittingFinancialConceptsQuestions = false;
+        StateHasChanged(); // Force component to re-render with updated PDF data
         return FinancialConceptsQuestions;
     }
 
-    private List<string> ExtractQuestions(string FinancialConceptsQuestions)
+    // Extracts the content within each <question>...</question> tag and performs any placeholder replacements
+    private List<string> ExtractQuestions(string financialConceptsQuestions)
     {
         List<string> questions = new List<string>();
 
-        // Extract questions between the <question> tags
-        var matches = Regex.Matches(FinancialConceptsQuestions, @"<question>(.*?)</question>", RegexOptions.Singleline);
+        // Use Regex to find all content between <question> and </question> tags
+        var matches = Regex.Matches(financialConceptsQuestions, @"<question>(.*?)</question>", RegexOptions.Singleline);
         foreach (Match match in matches)
         {
-            // Replace placeholders with actual values
-            string question = match.Groups[1].Value
+            string questionContent = match.Groups[1].Value
                 .Replace("Accounts and Financing Receivable, after Allowance for Credit Loss", SelectedConceptTitle)
                 .Replace("TSLA", Ticker);
-
-            questions.Add(question);
+            questions.Add(questionContent);
         }
-
         return questions;
+    }
+
+    // Groups questions into a list of QuestionGroup objects using the <title> and <questionText> tags from each question
+    private List<QuestionGroup> GroupQuestions(List<string> questions)
+    {
+        var groups = new List<QuestionGroup>();
+
+        foreach (var q in questions)
+        {
+            // Extract the title
+            var titleMatch = Regex.Match(q, @"<title>(.*?)</title>", RegexOptions.Singleline);
+            // Extract the question text
+            var questionTextMatch = Regex.Match(q, @"<questionText>(.*?)</questionText>", RegexOptions.Singleline);
+
+            if (titleMatch.Success && questionTextMatch.Success)
+            {
+                string title = titleMatch.Groups[1].Value.Trim();
+                string questionText = questionTextMatch.Groups[1].Value.Trim();
+
+                // Check if a group with this title already exists; if so, add the question text to it.
+                var existingGroup = groups.FirstOrDefault(g => g.Title == title);
+                if (existingGroup != null)
+                {
+                    existingGroup.ContentLines.Add(questionText);
+                }
+                else
+                {
+                    groups.Add(new QuestionGroup { Title = title, ContentLines = new List<string> { questionText } });
+                }
+            }
+        }
+        return groups;
     }
     private async Task HandleQuestionClick(string question)
     {
-        PromptText = question; // Set the prompt text to the question
+        PromptTextFinancialConcepts = question; // Set the prompt text to the question
         await HandleInput(new ChangeEventArgs { Value = question }); // Simulate input to adjust textarea
         await FetchCompletion(null); // Submit the form
     }
@@ -695,16 +877,16 @@ else
     private bool IsLoading = false;
     private bool HasError = false;
     private string ErrorMessage = string.Empty;
-    private List<Filing>? Filings = null;
+    private List<Filing>? AllFilings = null;
 
     private string? CIK;
     private string? CompanyName;
     private string? Exchange;
 
     private string? FilingsJson;
-    private string? PDFDataUrl;
+    private string? PDFDataUrlContentListFilings;
     // Property to store the HTML content
-    private string? HTMLContent { get; set; }
+    //private string? HTMLContent { get; set; }
 
     // Computed property to disable buttons
     private bool IsButtonDisabled => string.IsNullOrEmpty(Ticker) || Ticker.Length < 1;
@@ -723,7 +905,6 @@ else
         StateHasChanged(); // Trigger UI update
     }
 
-
     /// <summary>
     /// Fetches the CIK for the given ticker.
     /// </summary>
@@ -737,9 +918,11 @@ else
 
             CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
             FilingsJson = null; // Clear filings data when fetching new CIK
-            Filings = null;
-            PDFDataUrl = null; // Clear PDF preview when fetching new CIK
-            HTMLContent = null; // Clear HTML preview when fetching new CIK
+            AllFilings = null;
+            PDFDataUrlContentListFilings = null; // Clear PDF preview when fetching new CIK
+            HtmlContentLatestFilings = null; // Clear HTML preview when fetching new CIK
+            HtmlContentAllFilings = null; // Clear HTML preview when fetching new CIK
+            HtmlContentCompletion = null; // Clear HTML preview when fetching new CIK
             PlotAnomaliesPngBase64 = null;
 
         }
@@ -754,6 +937,7 @@ else
             IsLoading = false;
         }
     }
+    /*
     private async Task ShowPdfPreview1(Filing filing)
     {
         try
@@ -780,14 +964,15 @@ else
             IsLoading = false;
         }
     }
-//   https://www.sec.gov/Archives/edgar/data/0001318605/000177134025000001/xslF345X05/edgardoc.xml
+    */
+    //   https://www.sec.gov/Archives/edgar/data/0001318605/000177134025000001/xslF345X05/edgardoc.xml
     private async Task ShowPdfPreview(Filing filing)
     {
         try
         {
             IsLoading = true;
-            FilingsJson = null; // Clear previous filings data
-            Filings = null; // Clear previous filings
+            //FilingsJson = null; // Clear previous filings data
+            //Filings = null; // Clear previous filings
 
             // Log the start of the process
             Console.WriteLine("Starting PDF preview generation...");
@@ -797,7 +982,7 @@ else
             if (string.IsNullOrWhiteSpace(paddedCik))
             {
                 Console.WriteLine("Error: CIK is null or empty.");
-                PDFDataUrl = null; // Clear PDF preview on error
+                PDFDataUrlContentListFilings = null; // Clear PDF preview on error
                 return;
             }
 
@@ -805,13 +990,13 @@ else
             if (string.IsNullOrWhiteSpace(filing.AccessionNumber))
             {
                 Console.WriteLine("Error: Accession number is null or empty.");
-                PDFDataUrl = null; // Clear PDF preview on error
+                PDFDataUrlContentListFilings = null; // Clear PDF preview on error
                 return;
             }
             if (string.IsNullOrWhiteSpace(filing.PrimaryDocument))
             {
                 Console.WriteLine("Error: Primary document is null or empty.");
-                PDFDataUrl = null; // Clear PDF preview on error
+                PDFDataUrlContentListFilings = null; // Clear PDF preview on error
                 return;
             }
 
@@ -823,11 +1008,12 @@ else
             // Fetch the HTML content
             var htmlContent = await SECEdgarWSAppService.DownloadHtmlContentAsync(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
             //Logger.LogInformation($"htmlContent: {htmlContent}");
-            HTMLContent = htmlContent;
-            PDFDataUrl = null;
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
-            await File.WriteAllTextAsync(filePath, HTMLContent);
-            Console.WriteLine($"HTML saved to: {filePath}");
+            HtmlContentAllFilings = htmlContent;
+            accordionOpenAllFilings = true;
+            PDFDataUrlContentListFilings = null;
+            //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
+            //await File.WriteAllTextAsync(filePath, HtmlContentAllFilings);
+            //Console.WriteLine($"HTML saved to: {filePath}");
 
             Console.WriteLine("Successfully fetched HTML content. Converting to PDF...");
 
@@ -840,7 +1026,7 @@ else
         {
             // Log unexpected errors and clear the PDF preview
             Console.WriteLine($"Unexpected error: {ex.Message}");
-            PDFDataUrl = null;
+            PDFDataUrlContentListFilings = null;
         }
         finally
         {
@@ -866,7 +1052,7 @@ else
             if (string.IsNullOrWhiteSpace(CIK))
             {
                 Console.WriteLine($"No CIK found for ticker {Ticker}. Skipping filings fetch.");
-                Filings = new List<Filing>(); // Initialize with an empty list
+                AllFilings = new List<Filing>(); // Initialize with an empty list
                 return;
             }
 
@@ -879,18 +1065,18 @@ else
             {
                 try
                 {
-                    Filings = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Filing>>(FilingsJson) ?? new List<Filing>();
+                    AllFilings = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Filing>>(FilingsJson) ?? new List<Filing>();
                 }
                 catch (Newtonsoft.Json.JsonException jsonEx)
                 {
                     Console.WriteLine($"Error deserializing FilingsJson: {jsonEx.Message}");
-                    Filings = new List<Filing>(); // Fallback to an empty list if deserialization fails
+                    AllFilings = new List<Filing>(); // Fallback to an empty list if deserialization fails
                 }
             }
             else
             {
                 Console.WriteLine($"FilingsJson is empty or null for ticker {Ticker}.");
-                Filings = new List<Filing>(); // Initialize with an empty list
+                AllFilings = new List<Filing>(); // Initialize with an empty list
             }
         }
         catch (HttpRequestException httpEx)
@@ -922,7 +1108,6 @@ else
         public string? PdfDataUrl { get; set; } // New property for PDF data URL
     }
 
-    // GotenbergWSAppService.ConvertUrlToPdfAsync
     private string ConstructFilingUrl(string cik, string accessionNumber, string primaryDocument)
     {
         // Ensure the CIK is padded to 10 digits (SEC EDGAR requirement)
@@ -1211,8 +1396,6 @@ else
         NavigationManager.NavigateTo($"/MicrosoftIdentity/Account/SignIn?returnUrl={uri}", forceLoad: true);
     }
     private bool open = false;
-    private string SelectedConcept { get; set; } = "";
-    private string SelectedConceptTitle { get; set; } = "";
 
     private async Task OnFinancialConceptMenuChange(string conceptName)
     {
@@ -1258,9 +1441,87 @@ else
     private string? PlotAnomaliesPngBase64 { get; set; }
     private string? DataJson { get; set; } // Store JSON data
     private string? formattedJson { get; set; } // Store formatted JSON data
+    private string? csvData { get; set; } // Store formatted JSON data
     private string? PanelOutput { get; set; } // Store JSON data
+    public static class JsonToCsvConverter
+    {
+        /// <summary>
+        /// Converts a JSON array (as a string) into a CSV formatted string.
+        /// </summary>
+        /// <param name="json">A JSON string representing an array of objects.</param>
+        /// <returns>A CSV string with headers representing the union of all object keys.</returns>
+        public static string ConvertJsonToCsv(string json)
+        {
+            // Parse the JSON string into a JArray.
+            JArray jsonArray = JArray.Parse(json);
+            if (jsonArray.Count == 0)
+            {
+                return string.Empty;
+            }
 
-     private async Task FetchXBRLPlot()
+            // Determine the union of all keys used in the objects.
+            HashSet<string> columnSet = new HashSet<string>();
+            foreach (JObject obj in jsonArray)
+            {
+                foreach (var prop in obj.Properties())
+                {
+                    columnSet.Add(prop.Name);
+                }
+            }
+
+            // Convert the set to a list. Sorting here is optional—
+            // it provides a consistent order but may not match the original JSON order.
+            List<string> columns = columnSet.ToList();
+            columns.Sort();
+
+            // Build the CSV output.
+            StringBuilder csvBuilder = new StringBuilder();
+
+            // Write the header row.
+            csvBuilder.AppendLine(string.Join(",", columns.Select(EscapeCsvValue)));
+
+            // Write each row.
+            foreach (JObject obj in jsonArray)
+            {
+                List<string> row = new List<string>();
+                foreach (string column in columns)
+                {
+                    // Try to get the token; if the property doesn't exist, use an empty string.
+                    JToken token;
+                    string value = obj.TryGetValue(column, out token) && token != null ? token.ToString() : string.Empty;
+                    row.Add(EscapeCsvValue(value));
+                }
+                csvBuilder.AppendLine(string.Join(",", row));
+            }
+
+            return csvBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Escapes a CSV value by wrapping it in quotes if necessary and doubling any quotes inside the value.
+        /// </summary>
+        private static string EscapeCsvValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return "";
+            }
+
+            // Replace any quotes with double quotes.
+            if (value.Contains("\""))
+            {
+                value = value.Replace("\"", "\"\"");
+            }
+
+            // If the value contains commas, newlines, or quotes, wrap it in quotes.
+            if (value.Contains(",") || value.Contains("\n") || value.Contains("\r"))
+            {
+                value = $"\"{value}\"";
+            }
+            return value;
+        }
+    }
+    private async Task FetchXBRLPlot()
     {
         try
         {
@@ -1268,48 +1529,229 @@ else
             HasError = false;
             ErrorMessage = string.Empty;
 
-            // Clear previous data
-            ClearPreviousData();
+            // Log the start of the fetch process.
+            Console.WriteLine($"Fetching full XBRL concept for Ticker: {Ticker}, Concept: {SelectedConcept}, Unit: {Unit}");
 
-            // Log the start of the fetch process
-            Console.WriteLine($"Fetching XBRL plot for Ticker: {Ticker}, Concept: {SelectedConcept}, Unit: {Unit}");
+            // Retrieve the full XBRL concept data.
+            var conceptFull = await GoSECEdgarWSAppService.GetXBRLConceptFullAsync(Ticker, SelectedConcept);
 
-            // Fetch Plot HTML and JSON data
-            var (plotHtml, dataJson) = await SECEdgarWSAppService.GetPlotHtmlWithFallbackAsync(Ticker, SelectedConcept, Unit);
+            if (conceptFull != null)
+            {
+                // Define the required parameters for forecasting.
+                string unit = "USD";
+                int horizon = 12;
+                string inferred_freq = "Q";
+                bool forecast = false;
+                
+                // Serialize the conceptFull.Data (List<Dictionary<string, object>>) to a JSON string.
+                DataJson = JsonConvert.SerializeObject(conceptFull.Data);
 
-            // Fetch anomalies plot in Base64 format
-            // PlotAnomaliesPngBase64 = await SECEdgarWSAppService.GetXBRLAnomaliesPlotPngAsync(Ticker, SelectedConcept, Unit);
+                // Call the forecast plot service using all required parameters.
+                var forecastResult = await SECEdgarWSAppService.GetForecastPlotHtmlAsync(
+                    Ticker, 
+                    CIK,
+                    CompanyName,
+                    Exchange,
+                    SelectedConcept, 
+                    DataJson, 
+                    unit,
+                    horizon,
+                    inferred_freq,
+                    forecast);
 
-            // Assign the results
-            PlotHtml = plotHtml;
-            DataJson = dataJson;
-            formattedJson = Newtonsoft.Json.JsonConvert.SerializeObject(
-                                                            Newtonsoft.Json.JsonConvert.DeserializeObject<object>(DataJson),
-                                                            Newtonsoft.Json.Formatting.Indented
-                                                        );
-            // Log and check results
-            LogFetchResults();
+                // Check if the forecast plot HTML is non-empty.
+                if (forecastResult.IsSuccess && !string.IsNullOrWhiteSpace(forecastResult.PlotHtml))
+                {
+                    // Clear any previous content.
+                    formattedJson = string.Empty;
+                    PlotHtml = string.Empty;
+                    DataJson = string.Empty;
+                    await Task.Delay(1000);
+
+                    // Attempt to remove an extra layer of JSON encoding using JToken.
+                    try
+                    {
+                        // First, deserialize the CombinedDataJson as a string to remove outer quotes and escapes.
+                        string innerJson = JsonConvert.DeserializeObject<string>(forecastResult.CombinedDataJson);
+                        
+                        // Then, parse the inner JSON into a JToken.
+                        var token = JToken.Parse(innerJson);
+                        // If the token is an array, remove the unwanted columns from each JSON object.
+                        if (token is JArray array)
+                        {
+                            foreach (JObject obj in array.Children<JObject>())
+                            {
+                                obj.Remove("change_percent");
+                                obj.Remove("forecast_comment");
+                                obj.Remove("forecast_confidence");
+                                obj.Remove("forecastedvalue");
+                                obj.Remove("Reporting Period");
+                                obj.Remove("trend");
+                            }
+                        }
+                    
+                        // Serialize it again with indentation.
+                        formattedJson = token.ToString(Formatting.Indented);
+                        // Assuming 'formattedJson' is your JSON string (an array of objects)
+                        csvData = JsonToCsvConverter.ConvertJsonToCsv(formattedJson);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Double decoding failed: {ex.Message}. Attempting direct parsing.");
+                        // If the above fails, try to parse the JSON directly.
+                        try
+                        {
+                            var token = JToken.Parse(forecastResult.CombinedDataJson);
+                            formattedJson = token.ToString(Formatting.Indented);
+                        }
+                        catch (Exception innerEx)
+                        {
+                            HasError = true;
+                            ErrorMessage = $"Error parsing JSON: {innerEx.Message}";
+                            Console.WriteLine($"Error parsing CombinedDataJson: {innerEx}");
+                        }
+                    }
+
+                    PlotHtml = forecastResult.PlotHtml;
+                    Console.WriteLine("Successfully fetched XBRL concept plot HTML.");
+                }
+                else
+                {
+                    HasError = true;
+                    ErrorMessage = "Failed to fetch XBRL concept plot HTML.";
+                    Console.WriteLine("Forecast plot HTML is empty or the service call was unsuccessful.");
+                }
+
+                // Optionally, add a delay to show loading state.
+                await Task.Delay(1000);
+                IsLoading = false;
+                StateHasChanged();
+            }
+            else
+            {
+                HasError = true;
+                ErrorMessage = "Failed to fetch full XBRL concept data.";
+                Console.WriteLine("Concept full data retrieval returned null.");
+            }
+
+            IsLoading = false;
+            StateHasChanged();
+            Console.WriteLine("XBRL concept full data fetch completed.");
         }
         catch (Exception ex)
         {
-            // Handle and log errors
             HasError = true;
-            ErrorMessage = $"An error occurred while fetching the plot: {ex.Message}";
+            ErrorMessage = $"An error occurred while fetching the concept data: {ex.Message}";
             Console.WriteLine($"Error in FetchXBRLPlot: {ex}");
-            ClearPreviousData();
         }
         finally
         {
-            // Ensure loading state is reset
             IsLoading = false;
+            StateHasChanged();
             Console.WriteLine("FetchXBRLPlot process completed.");
+        }
+    }
+    
+
+    private async Task FetchXBRLPlotForecast()
+    {
+        try
+        {
+            IsLoading = true;
+            HasError = false;
+            ErrorMessage = string.Empty;
+
+            // Log the start of the fetch process.
+            Console.WriteLine($"Fetching full XBRL concept for Ticker: {Ticker}, Concept: {SelectedConcept}, Unit: {Unit}");
+
+            // Retrieve the full XBRL concept data.
+            var conceptFull = await GoSECEdgarWSAppService.GetXBRLConceptFullAsync(Ticker, SelectedConcept);
+
+            if (conceptFull != null)
+            {
+                // Define the required parameters for forecasting.
+                string unit = "USD";
+                int horizon = 12;
+                string inferred_freq = "Q"; 
+                bool forecast = true;
+                
+                // Serialize the conceptFull.Data (List<Dictionary<string, object>>) to a JSON string.
+                DataJson = Newtonsoft.Json.JsonConvert.SerializeObject(conceptFull.Data);
+
+                // Call the forecast plot service using all required parameters.
+                var forecastResult = await SECEdgarWSAppService.GetForecastPlotHtmlAsync(
+                    Ticker, 
+                    CIK,
+                    CompanyName,
+                    Exchange,
+                    SelectedConcept, 
+                    DataJson, 
+                    unit,
+                    horizon,
+                    inferred_freq,
+                    forecast);
+
+                // Check if the forecast plot HTML is non-empty.
+                if (forecastResult.IsSuccess && !string.IsNullOrWhiteSpace(forecastResult.PlotHtml))
+                {
+                    formattedJson = string.Empty;
+                    PlotHtml = string.Empty;
+                    DataJson = string.Empty;
+                    await Task.Delay(1000);
+
+                    // Serialize the returned concept object to indented JSON for display.
+                    DataJson = Newtonsoft.Json.JsonConvert.SerializeObject(
+                        forecastResult.CombinedDataJson, 
+                        Newtonsoft.Json.Formatting.Indented);
+
+                    formattedJson = DataJson;
+
+                    PlotHtml = forecastResult.PlotHtml;
+                    //ForecastPlotHtml = forecastResult.ForecastPlotHtml;
+                    Console.WriteLine("Successfully fetched XBRL concept plot HTML.");
+                }
+                else
+                {
+                    HasError = true;
+                    ErrorMessage = "Failed to fetch XBRL concept plot HTML.";
+                    Console.WriteLine("Forecast plot HTML is empty or the service call was unsuccessful.");
+                }
+
+                // Optionally, add a delay to show loading state.
+                await Task.Delay(1000);
+                IsLoading = false;
+                StateHasChanged();
+            }
+            else
+            {
+                HasError = true;
+                ErrorMessage = "Failed to fetch full XBRL concept data.";
+                Console.WriteLine("Concept full data retrieval returned null.");
+            }
+
+            IsLoading = false;
+            StateHasChanged();
+            Console.WriteLine("XBRL concept full data fetch completed.");
+        }
+        catch (Exception ex)
+        {
+            HasError = true;
+            ErrorMessage = $"An error occurred while fetching the concept data: {ex.Message}";
+            Console.WriteLine($"Error in FetchXBRLPlotForecast: {ex}");
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+            Console.WriteLine("FetchXBRLPlotForecast process completed.");
         }
     }
 
     private void ClearPreviousData()
     {
         PlotHtml = null;
-        DataJson = null;
+        //DataJson = null;
         formattedJson = null;
         PlotAnomaliesPngBase64 = null;
     }
@@ -1348,13 +1790,16 @@ else
 
 @code {
 
-    private List<string> AvailableForms = new();
+    private List<string> AvailableForms { get; set; } = new List<string>();
     private string SelectedForm { get; set; } = string.Empty;
-    private bool formOpen = false;
+    private bool accordionOpenAllFilings = true;
+    private bool formOpenListFilings = true;
 
     private bool IsMenuButtonDisabled => string.IsNullOrEmpty(Ticker) || IsLoading;
 
-     private async Task FetchAvailableForms()
+    private static readonly Regex TickerRegex = new Regex(@"^[A-Za-z0-9]+$", RegexOptions.Compiled);
+
+    private async Task FetchAvailableForms()
     {
         try
         {
@@ -1363,45 +1808,40 @@ else
             ErrorMessage = string.Empty;
 
             // Validate ticker format
-            if (string.IsNullOrWhiteSpace(Ticker) || !Regex.IsMatch(Ticker, @"^[A-Za-z0-9]+$"))
+            if (string.IsNullOrWhiteSpace(Ticker) || !TickerRegex.IsMatch(Ticker))
             {
                 Logger.LogWarning("Invalid ticker format provided. Skipping processing.");
                 return;
             }
 
-            // Fetch the CIK for the ticker
+            // Fetch the CIK for the ticker.
             CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
-
-            // If CIK is not found, log the info and stop processing
             if (string.IsNullOrEmpty(CIK))
             {
-                Logger.LogInformation($"No CIK found for ticker {Ticker}. Skipping further processing.");
+                Logger.LogInformation($"No CIK found for ticker '{Ticker}'. Skipping further processing.");
                 return;
             }
 
-            // Fetch the company name
+            // Fetch the company name.
             CompanyName = await SECEdgarWSAppService.GetNameAsync(Ticker);
-
-            // If no name is found, log the info but continue
             if (string.IsNullOrEmpty(CompanyName))
             {
-                Logger.LogInformation($"No company name found for ticker {Ticker}. Skipping further processing.");
+                Logger.LogInformation($"No company name found for ticker '{Ticker}'. Skipping further processing.");
                 return;
             }
 
+            // Fetch the exchange.
             Exchange = await SECEdgarWSAppService.GetExchangeAsync(Ticker);
-
-            // If no name is found, log the info but continue
             if (string.IsNullOrEmpty(Exchange))
             {
-                Logger.LogInformation($"No Exchange found for ticker {Ticker}. Skipping further processing.");
+                Logger.LogInformation($"No Exchange found for ticker '{Ticker}'. Skipping further processing.");
                 return;
             }
 
-            // Fetch available forms
+            // Fetch available forms.
             var forms = await SECEdgarWSAppService.GetAvailableFormsAsync(Ticker);
 
-            // Process and filter forms
+            // Process, filter, and sort forms.
             AvailableForms = forms?
                 .Select(f => f.Trim())
                 .Where(f => !string.IsNullOrWhiteSpace(f))
@@ -1409,31 +1849,29 @@ else
                 .OrderBy(f => f)
                 .ToList() ?? new List<string>();
 
-            // Log available forms
             if (AvailableForms.Any())
             {
-                Logger.LogInformation($"Available forms for ticker {Ticker}: {string.Join(", ", AvailableForms)}");
+                Logger.LogInformation($"Available forms for ticker '{Ticker}': {string.Join(", ", AvailableForms)}");
             }
             else
             {
-                Logger.LogInformation($"No forms available for ticker {Ticker}. Forms list will remain empty.");
+                Logger.LogInformation($"No forms available for ticker '{Ticker}'. Forms list will remain empty.");
             }
         }
         catch (HttpRequestException httpEx)
         {
-            Logger.LogWarning(httpEx, $"Network issue while fetching data for ticker {Ticker}. Skipping processing.");
+            Logger.LogWarning(httpEx, $"Network issue while fetching data for ticker '{Ticker}'. Skipping processing.");
         }
         catch (Exception ex)
         {
-            Logger.LogWarning(ex, $"Unexpected issue occurred while fetching data for ticker {Ticker}. Skipping processing.");
+            Logger.LogWarning(ex, $"Unexpected issue occurred while fetching data for ticker '{Ticker}'. Skipping processing.");
         }
         finally
         {
             IsLoading = false;
-            StateHasChanged(); // Trigger UI update
+            await InvokeAsync(StateHasChanged);
         }
     }
-
     /*The U.S. Securities and Exchange Commission (SEC) requires companies to submit various forms to ensure transparency
     and protect investors. Here's a summary of some common SEC forms:
 
@@ -1486,8 +1924,9 @@ else
         if (args?.Value is not null)
         {
             SelectedForm = args.Value;
-            Logger.LogInformation($"Selected form: {SelectedForm}");
+            Logger.LogInformation($"OnFormMenuChange Selected form: {SelectedForm}");
             await DownloadSelectedFormPdf();
+            formOpenListFilings = true;
         }
     }
     private async Task DownloadSelectedFormPdf()
@@ -1501,12 +1940,14 @@ else
             // Fetch HTML content as a string
             var htmlContent = await SECEdgarWSAppService.DownloadLatestFilingHtmlAsync(Ticker, SelectedForm);
             //Logger.LogInformation($"htmlContent: {htmlContent}");
-            HTMLContent = htmlContent;
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
-            await File.WriteAllTextAsync(filePath, HTMLContent);
-            Console.WriteLine($"HTML saved to: {filePath}");
+            HTMLContentListFilings = htmlContent;
+            Logger.LogInformation($"DownloadSelectedFormPdf HTMLContentListFilings: {HTMLContentListFilings}");
 
-            PDFDataUrl = null;
+            //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Ticker}_{SelectedForm}_Test.html");
+            //await File.WriteAllTextAsync(filePath, HTMLContent);
+            //Console.WriteLine($"HTML saved to: {filePath}");
+
+            PDFDataUrlContentListFilings = null;
             // Convert HTML to PDF using the new method that expects Gotenberg to handle pagination
             //var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(htmlContent);
             // Save PDF locally for testing
@@ -1517,16 +1958,16 @@ else
             //PDFDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
 
             //Console.WriteLine("HTML successfully downloaded and converted to PDF.");
-            CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
+            //CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
 
             FilingsJson = null; // Clear filings data when fetching new CIK
-            Filings = null;
+            AllFilings = null;
         }
         catch (Exception ex)
         {
             HasError = true;
             ErrorMessage = $"An error occurred while downloading and converting the HTML for {Ticker}: {ex.Message}";
-            PDFDataUrl = null;
+            PDFDataUrlContentListFilings = null;
             PlotHtml = null;
         }
         finally
@@ -1534,6 +1975,98 @@ else
             IsLoading = false;
         }
     }
+    bool loadingInput3 = false;
+    private async Task ConvertAndSavePdfContentListFilings()
+    {
+        if (!string.IsNullOrEmpty(HTMLContentListFilings))
+        {
+            loadingInput3 = true;
+            
+            // Convert the HTML to PDF bytes using your Gotenberg service.
+            var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(HTMLContentListFilings);
+            
+            // Create an informative filename using Ticker, SelectedForm, and current date/time.
+            string fileName = $"{Ticker}_{SelectedForm}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            
+            // (Optional) Save the PDF locally for testing.
+            // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+            // await File.WriteAllBytesAsync(filePath, pdfBytes);
+
+            // Convert the PDF bytes to a Base64 string.
+            string base64Pdf = Convert.ToBase64String(pdfBytes);
+            
+            // Use JS interop to trigger the file download.
+            // The fourth parameter 'true' indicates the content is Base64 encoded.
+            await jsRuntime.InvokeVoidAsync("downloadFileWithMime", fileName, base64Pdf, "application/pdf", true);
+            
+            loadingInput3 = false;
+        }
+    }
+    bool loadingInput5 = false;
+    private async Task ConvertAndSavePdfContentAllFilings()
+    {
+        if (!string.IsNullOrEmpty(HtmlContentAllFilings))
+        {
+            loadingInput5 = true;
+            
+            // Convert the HTML to PDF bytes using your Gotenberg service.
+            var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(HtmlContentAllFilings);
+            
+            // Create an informative filename using Ticker, SelectedForm, and current date/time.
+            string fileName = $"{Ticker}_{SelectedForm}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            
+            // (Optional) Save the PDF locally for testing.
+            // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+            // await File.WriteAllBytesAsync(filePath, pdfBytes);
+
+            // Convert the PDF bytes to a Base64 string.
+            string base64Pdf = Convert.ToBase64String(pdfBytes);
+            
+            // Use JS interop to trigger the file download.
+            // The fourth parameter 'true' indicates the content is Base64 encoded.
+            await jsRuntime.InvokeVoidAsync("downloadFileWithMime", fileName, base64Pdf, "application/pdf", true);
+            
+            loadingInput5 = false;
+        }
+    }
+   bool loadingInput9 = false;
+    private async Task ConvertAndSavePdfHtmlContentCompletion()
+    {
+        if (!string.IsNullOrEmpty(HtmlContentCompletion))
+        {
+            loadingInput9 = true;
+            
+            // Convert the HTML to PDF bytes using your Gotenberg service.
+            var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(HtmlContentCompletion);
+            
+            // Create an informative filename using Ticker, SelectedForm, and current date/time.
+            string fileName = $"{Ticker}_{SelectedConceptTitle}_FilingScoutAI_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            
+            // (Optional) Save the PDF locally for testing.
+            // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+            // await File.WriteAllBytesAsync(filePath, pdfBytes);
+
+            // Convert the PDF bytes to a Base64 string.
+            string base64Pdf = Convert.ToBase64String(pdfBytes);
+            
+            // Use JS interop to trigger the file download.
+            // The fourth parameter 'true' indicates the content is Base64 encoded.
+            await jsRuntime.InvokeVoidAsync("downloadFileWithMime", fileName, base64Pdf, "application/pdf", true);
+            
+            loadingInput9 = false;
+        }
+    }
+    private async Task<string> ConvertHtmlToPdfDataUrlAsync(string htmlContent)
+    {
+        // Call the service method to get the PDF as a byte array.
+        var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(htmlContent);
+        
+        // Convert the PDF bytes to a Base64 string and prepend the data URL header.
+        string pdfDataUrl = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
+        
+        return pdfDataUrl;
+    }
+
 }
 @code
 {
@@ -1560,91 +2093,268 @@ else
             // If JSON content has changed, re-highlight
             await JSRuntime.InvokeVoidAsync("highlightSyntax");
         }
-        if (firstRender && !string.IsNullOrEmpty(HTMLContent))
+        if (firstRender && 
+            (!string.IsNullOrEmpty(HtmlContentCompletion) || 
+            !string.IsNullOrEmpty(HtmlContentLatestFilings) || 
+            !string.IsNullOrEmpty(HtmlContentAllFilings)))
         {
             await JSRuntime.InvokeVoidAsync("initializeAnchorNavigation", "contentContainer");
-            await JSRuntime.InvokeVoidAsync("setImageFromBase64", "anomalyImage", PlotAnomaliesPngBase64);
         }
+        // await JSRuntime.InvokeVoidAsync("setImageFromBase64", "anomalyImage", PlotAnomaliesPngBase64);
+
     }
 }
 
 @code {
     private Dictionary<string, string> XBRLConceptCache = new(); // In-memory cache
     private List<XbrlConcept> AvailableConcepts { get; set; } = new();
+    private List<XBRLConcept> AvailableConceptTree { get; set; } = new();
+    private bool SubmittingFinancialConceptsQuestions = false;
+
     private bool conceptMenuOpen = false; // Default value is closed
+    // Cached tree view items.
+    private IEnumerable<ITreeViewItem>? _availableConceptsItems = null;
+    public IEnumerable<ITreeViewItem>? AvailableConceptsItems
+    {
+        get
+        {
+            if (_availableConceptsItems == null && AvailableConceptsTree != null)
+            {
+                // Use AvailableConceptsTree (the fetched tree) to populate the dictionary.
+                PopulateConceptDescriptions(AvailableConceptsTree);
 
+                // Cache the converted tree item.
+                _availableConceptsItems = new List<ITreeViewItem>
+                {
+                    ConvertXBRLNodeToTreeViewItem(AvailableConceptsTree)
+                };
+            }
+            return _availableConceptsItems;
+        }
+    }
+        // --- 2. Converting XBRL Nodes to TreeView Items ---
+    private TreeViewItem ConvertXBRLNodeToTreeViewItem(XBRLNode node)
+    {
+        if (node == null)
+            return null;
+
+        bool hasConcept = node.Concept != null && !string.IsNullOrWhiteSpace(node.Concept.Label);
+        string displayText;
+        string id;
+
+        if (hasConcept)
+        {
+            displayText = node.Concept.Label;
+            id = node.Concept.Name;
+        }
+        else
+        {
+            string labelText = node.Label.Replace("[G]", "");
+            if (labelText == "loc_StatementLineItems")
+            {
+                labelText = "Statement Items";
+            }
+            displayText = labelText;
+            id = string.Empty;
+        }
+
+        StateHasChanged();
+
+        var iconForConcept = new Icons.Regular.Size20.ChartMultiple(); // Replace with your desired icon.
+        var treeItem = new TreeViewItem
+        {
+            Text = displayText,
+            IconCollapsed = hasConcept ? iconForConcept : null,
+            IconExpanded = hasConcept ? iconForConcept : null,
+            Expanded = false,
+            Items = (node.Children != null && node.Children.Any())
+                        ? node.Children.ConvertAll(child => ConvertXBRLNodeToTreeViewItem(child))
+                        : null
+        };
+
+        if (hasConcept)
+        {
+            treeItem.Id = id;
+        }
+
+        StateHasChanged();
+        return treeItem;
+    }
+ // --- 3. Handling Selection Changes ---
+    private async void OnSelectedAvailableConceptsItemChanged(ITreeViewItem value)
+    {
+        if (value == null)
+        {
+            Console.WriteLine("SelectedAvailableConceptsItem set to null.");
+            SelectedConcept = string.Empty;
+            SelectedConceptTitle = string.Empty;
+            SelectedConceptDescription = string.Empty;
+            GroupedQuestions = new List<QuestionGroup>();
+        }
+        else
+        {
+            Console.WriteLine($"SelectedAvailableConceptsItem updated: Id: {value.Id ?? "null"}, Text: {value.Text}");
+
+            SelectedConcept = value.Id ?? string.Empty;
+            SelectedConceptTitle = value.Text ?? string.Empty;
+
+            if (!string.IsNullOrEmpty(SelectedConcept) &&
+                _conceptDescriptions.TryGetValue(SelectedConcept, out var conceptDesc))
+            {
+                SelectedConceptDescription = conceptDesc;
+            }
+            else
+            {
+                SelectedConceptDescription = string.Empty;
+            }
+
+            Console.WriteLine($"SelectedConceptDescription: {SelectedConceptDescription}");
+            StateHasChanged();
+
+            await FetchXBRLPlot();
+        }
+    }
+
+        // In-memory lookup: maps concept ID to description.
+    private Dictionary<string, string> _conceptDescriptions = new Dictionary<string, string>();
+
+    private XBRLNode _availableConceptsTree;
+    public XBRLNode AvailableConceptsTree
+    {
+        get => _availableConceptsTree;
+        set
+        {
+            if (_availableConceptsTree != value)
+            {
+                _availableConceptsTree = value;
+                InvalidateTreeItems();
+            }
+        }
+    }
+
+    private void InvalidateTreeItems()
+    {
+        _availableConceptsItems = null;
+        StateHasChanged();
+    }
+
+    // Model representing a group of questions
+    public class QuestionGroup
+    {
+        public string Title { get; set; }
+        public List<string> ContentLines { get; set; }
+    }
+
+    // This will hold our grouped questions for the accordion
+    private List<QuestionGroup> GroupedQuestions { get; set; } = new List<QuestionGroup>();
+
+     // Selected concept properties.
+    public string SelectedConcept { get; set; } = string.Empty;
+    public string SelectedConceptTitle { get; set; } = string.Empty;
+    public string SelectedConceptDescription { get; set; } = string.Empty;
+    
+    public string SelectedConceptQuestionTitle { get; set; } = string.Empty;
+    public string SelectedConceptQuestionDescription { get; set; } = string.Empty;
+    private async Task SelectQuestion(string title, string content)
+    {
+        SelectedConceptQuestionTitle = title;
+        SelectedConceptQuestionDescription = content;
+        Submitting = true;
+                   PanelOutput = await azureOpenAIHandler.GenerateAIAletheiaFinancialConceptsInstructionsAsync(
+                PromptTextFinancialConcepts, 
+                "",
+                Ticker + "|" + CompanyName,
+                SelectedConceptTitle,
+                SelectedConceptDescription,
+                SelectedConceptQuestionTitle,
+                SelectedConceptQuestionDescription,
+                DataJson);
+            HtmlContentCompletion = MarkdownRenderer.ConvertMarkdownToHtml(PanelOutput);     
+        Submitting = false;
+
+        StateHasChanged();
+    }
+    public string PromptTextFinancialConcepts { get; set; } = "";
+
+    private ITreeViewItem? _selectedAvailableConceptsItem = null;
+    private ITreeViewItem? SelectedAvailableConceptsItem
+    {
+        get => _selectedAvailableConceptsItem;
+        set
+        {
+            if (_selectedAvailableConceptsItem != value) // Detect changes.
+            {
+                _selectedAvailableConceptsItem = value;
+                OnSelectedAvailableConceptsItemChanged(value);
+            }
+        }
+    }
+    // --- 1. Populating the Dictionary ---
+    private void PopulateConceptDescriptions(XBRLNode node)
+    {
+        if (node == null)
+            return;
+
+        if (node.Matched && node.Concept != null && !string.IsNullOrWhiteSpace(node.Concept.Name))
+        {
+            _conceptDescriptions[node.Concept.Name] = node.Concept.Description;
+        }
+
+        if (node.Children != null)
+        {
+            foreach (var child in node.Children)
+            {
+                PopulateConceptDescriptions(child);
+            }
+        }
+    }
+    
     private bool IsFetchingStreamingData = false;
-
     private async Task FetchXBRLConceptsAsync()
     {
         try
         {
-            // Toggle the menu open/closed
-            if (conceptMenuOpen)
+            IsLoading = true;
+            HasError = false;
+            ErrorMessage = string.Empty;
+            //ClearPreviousPlotData();
+
+            if (XBRLConceptCache.TryGetValue(Ticker, out var cachedResponse))
             {
-                conceptMenuOpen = false;
+                Console.WriteLine($"Using cached XBRL concepts for ticker {Ticker}.");
+                var cachedTree = JsonConvert.DeserializeObject<XBRLNode>(cachedResponse);
+                if (cachedTree != null)
+                {
+                    AvailableConceptsTree = cachedTree;
+                }
+                StateHasChanged();
                 return;
             }
 
-            conceptMenuOpen = true; // Ensure the menu is open when streaming starts
-            IsFetchingStreamingData = true;
-            HasError = false;
-            ErrorMessage = string.Empty;
-
-            AvailableConcepts.Clear(); // Clear previous concepts
-            questionsList.Clear();
-
-            // Check for cached data
-            if (XBRLConceptCache.TryGetValue(Ticker, out var cachedResponse))
+            int limit = 25;
+            XBRLNode tree = await GoSECEdgarWSAppService.listXBRLConceptsAsJSON(Ticker, limit);
+            if (tree != null)
             {
-                Logger.LogInformation($"Using cached XBRL concepts for ticker {Ticker}.");
-                ProcessXBRLConceptsJson(cachedResponse);
+                AvailableConceptsTree = tree;
             }
             else
             {
-                // Fetch streaming data from the service
-                var jsonResponseStream = SECEdgarWSAppService.GetXBRLConceptsAsStreamAsync(Ticker);
-
-                // Read and process each streamed line
-                await foreach (var line in jsonResponseStream)
-                {
-                    try
-                    {
-                        Logger.LogInformation($"Processing streamed line: {line}");
-
-                        // Deserialize the JSON line into an XbrlConcept object
-                        var concept = JsonConvert.DeserializeObject<XbrlConcept>(line);
-                        if (concept != null && !string.IsNullOrEmpty(concept.Name))
-                        {
-                            AvailableConcepts.Add(concept); // Add the concept to the list
-                            StateHasChanged(); // Dynamically update the UI
-                        }
-                    }
-                    catch (JsonSerializationException jsonEx)
-                    {
-                        Logger.LogWarning($"Failed to deserialize line: {line}. Error: {jsonEx.Message}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Unexpected error processing line: {line}. Error: {ex.Message}");
-                    }
-                }
-
-                // Cache the final response
-                XBRLConceptCache[Ticker] = JsonConvert.SerializeObject(AvailableConcepts);
-                Logger.LogInformation($"Fetched and cached {AvailableConcepts.Count} XBRL concepts for ticker {Ticker}.");
+                Console.WriteLine($"Received a null concept tree for ticker {Ticker}.");
             }
+
+            XBRLConceptCache[Ticker] = JsonConvert.SerializeObject(AvailableConceptsTree);
+            IsLoading = false;
+            StateHasChanged();
         }
         catch (Exception ex)
         {
             HasError = true;
-            ErrorMessage = $"Error fetching XBRL concepts: {ex.Message}";
-            Logger.LogError(ex, "Error fetching XBRL concepts.");
+            ErrorMessage = "An error occurred while fetching XBRL concepts.";
+            Console.WriteLine($"Error fetching XBRL concepts for ticker {Ticker}: {ex.Message}");
         }
         finally
         {
-            IsFetchingStreamingData = false;
-            StateHasChanged(); // Ensure UI reflects the changes
+            IsLoading = false;
         }
     }
     /// <summary>
@@ -1721,6 +2431,18 @@ else
 
         return html;
     }
+    private async Task SaveCsv()
+    {
+        // Create an informative file name using Ticker, SelectedConcept, and the current date/time.
+        string fileName = $"{Ticker}_{SelectedConcept}_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        
+        // Convert the JSON to CSV using our helper.
+        string csvData = JsonToCsvConverter.ConvertJsonToCsv(formattedJson);
+
+        // Call the generic JavaScript function to download the file,
+        // passing the CSV MIME type.
+        await jsRuntime.InvokeVoidAsync("downloadFileWithMime", fileName, csvData, "text/csv;charset=utf-8;");
+    }
     private bool loadingInput1 = false;
 
     private async Task CopyFormattedJsonToClipboard()
@@ -1736,6 +2458,60 @@ else
         await Task.Delay(2000);
 
         loadingInput1 = false;
+        StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
+    }
+    private bool loadingInput2 = false;
+
+    private async Task CopyHTMLContentListFilingsToClipboard()
+    {
+        if (!string.IsNullOrEmpty(HTMLContentListFilings))
+
+        loadingInput2 = true;
+        StateHasChanged(); // Notify Blazor to re-render the UI with the loading state
+
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", HTMLContentListFilings);
+
+        // Wait for 2000 milliseconds (2 seconds)
+        await Task.Delay(2000);
+
+        loadingInput2 = false;
+        StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
+    }
+
+    private bool loadingInput7 = false;
+
+    private async Task CopyHtmlContentAllFilingsToClipboard()
+    {
+        if (!string.IsNullOrEmpty(HtmlContentAllFilings))
+
+        loadingInput7 = true;
+        StateHasChanged(); // Notify Blazor to re-render the UI with the loading state
+
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", HtmlContentAllFilings);
+
+        // Wait for 2000 milliseconds (2 seconds)
+        await Task.Delay(2000);
+
+        loadingInput7 = false;
+        StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
+    }
+
+
+    private bool loadingInput8 = false;
+
+    private async Task CopyHtmlContentCompletionToClipboard()
+    {
+        if (!string.IsNullOrEmpty(HtmlContentCompletion))
+
+        loadingInput8 = true;
+        StateHasChanged(); // Notify Blazor to re-render the UI with the loading state
+
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", HtmlContentCompletion);
+
+        // Wait for 2000 milliseconds (2 seconds)
+        await Task.Delay(2000);
+
+        loadingInput8 = false;
         StateHasChanged(); // Notify Blazor to re-render the UI after loading is complete
     }
 }

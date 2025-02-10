@@ -24,7 +24,7 @@ class SECFilings:
         logger.info(f"Fetching SEC filings for CIK: {cik}")
         logger.info(f"Request URL: {url}")
         logger.info(f"Request Headers: {self.headers}")
-
+     
         response = requests.get(url, headers=self.headers)
 
         # Log response status and content

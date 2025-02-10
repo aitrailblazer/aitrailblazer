@@ -2751,7 +2751,7 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
 }
 @code {
     [Parameter] public string CurrentModelFeatureName { get; set; } = "DynamicModels";
-    [Parameter] public string SelectedModel { get; set; } = "Cohere-Command-R+"; // Default model selection
+    [Parameter] public string SelectedModel { get; set; } = "GPT-4o"; // Default model selection
 
     private async Task HandleModelSelectionChange(string selectedModel)
     {
@@ -2772,10 +2772,10 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     {
         return modelId switch
         {
-            "gpt-4o" => OpenAiLogoUrl,
-            "gpt-4o-mini" => OpenAiLogoUrl,
-            "Phi-4" => MicrosoftLogoUrl,
-            "Phi-3-medium-128k-instruct" => MicrosoftLogoUrl,
+            "GPT-4o" => OpenAiLogoUrl,
+            //"o1-mini" => OpenAiLogoUrl,
+            //"Phi-4" => MicrosoftLogoUrl,
+            //"Phi-3-medium-128k-instruct" => MicrosoftLogoUrl,
             "Cohere-command-r-08-2024" => CohereLogoUrl,
             _ => AITLogoUrl // Default to AIT logo if no match
         };
@@ -2789,9 +2789,9 @@ private string GenerateSubSectionContent(SubSection subSection, Section section,
     {
         return modelId switch
         {
-            "gpt-4o" => "GPT-4o is a high-performance AI model optimized for reasoning and creativity.",
-            "gpt-4o-mini" => "GPT-4o-mini is a smaller variant optimized for lightweight tasks.",
-            "Phi-4" => "Phi-4 is a Microsoft AI model designed for large-scale reasoning tasks.",
+            "GPT-4o" => "GPT-4o is a high-performance AI model optimized for reasoning and creativity.",
+            //"o1-mini" => "o1-mini is a smaller variant optimized for lightweight tasks.",
+            //"Phi-4" => "Phi-4 is a Microsoft AI model designed for large-scale reasoning tasks.",
             "Cohere-command-r-08-2024" => "Cohere-command-r-08-2024 is designed for processing medium-sized datasets with high efficiency.",
             _ => "Default AI model used for general-purpose tasks."
         };
