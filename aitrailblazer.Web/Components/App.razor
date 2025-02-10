@@ -136,6 +136,48 @@
             URL.revokeObjectURL(url);
         };
     </script>
+    <script>
+        window.destroyPlotlyInstance = function (wrapperId, containerId) {
+            // Try to purge the Plotly chart if it exists
+            var container = document.getElementById(containerId);
+            if (container && window.Plotly) {
+                try {
+                    Plotly.purge(container);
+                    console.log("Plotly chart purged from container:", containerId);
+                } catch (e) {
+                    console.error("Error during Plotly purge:", e);
+                }
+            }
+            // Clear the wrapper’s content completely
+            var wrapper = document.getElementById(wrapperId);
+            if (wrapper) {
+                wrapper.innerHTML = "";
+                console.log("Chart wrapper cleared:", wrapperId);
+            }
+        };
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.destroyPlotlyInstanceDelayed = function (wrapperId, containerId, delayMs) {
+                setTimeout(function () {
+                    var container = document.getElementById(containerId);
+                    if (container && window.Plotly) {
+                        try {
+                            Plotly.purge(container);
+                            console.log("Plotly chart purged after delay from:", containerId);
+                        } catch (e) {
+                            console.error("Error during Plotly purge:", e);
+                        }
+                    }
+                    var wrapper = document.getElementById(wrapperId);
+                    if (wrapper) {
+                        wrapper.innerHTML = "";
+                        console.log("Chart wrapper cleared after delay:", wrapperId);
+                    }
+                }, delayMs);
+            };
+        });
+    </script>
 </body>
 
 </html>

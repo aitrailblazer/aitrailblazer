@@ -1095,7 +1095,7 @@ async def forecast_xbrl_data_plot(request: Request):
         # 7. Export combined data as CSV.
         combined_data_csv = combined_df.to_csv(index=False)
         combined_data_json = json.dumps(combined_data_json, indent=4)
-        logger.info(f"combined_data_json: {combined_data_json}")
+        # logger.info(f"combined_data_json: {combined_data_json}")
 
         # --- Return JSON with both plot HTML snippets and data outputs ---
         response_data = {

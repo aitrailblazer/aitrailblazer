@@ -283,7 +283,7 @@ else
                                                     @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64) || !string.IsNullOrEmpty(formattedJson))
                                                     {
                                                         <!-- Plots Tab -->
-                                                        @if (!string.IsNullOrEmpty(PlotHtml) || !string.IsNullOrEmpty(PlotAnomaliesPngBase64))
+                                                        @if (!string.IsNullOrEmpty(PlotHtml))
                                                         {
                                                             <FluentTab Id="Plots-id" Icon="@(new Icons.Regular.Size20.DataArea())">
                                                                 <Header>
@@ -292,31 +292,25 @@ else
                                                                 <Content>
                                                                     <FluentStack Orientation="Orientation.Vertical" VerticalGap="2"
                                                                                 Style="padding: 20px; border: 1px solid var(--neutral-outline-rest); border-radius: 8px; background-color: var(--neutral-fill-rest); text-align: center;">
-
-                                                                        <!-- Render PlotHtml if available -->
-                                                                        @if (!string.IsNullOrEmpty(PlotHtml))
-                                                                        {
-                                                                            <FluentCard Width="800px" MinimalStyle="true">
-                                                                                <div>@((MarkupString)PlotHtml)</div>
-                                                                            </FluentCard>
-                                                                        }
-
-                                                                        <!-- Render PlotAnomaliesPngBase64 if available -->
-                                                                        @if (!string.IsNullOrEmpty(PlotAnomaliesPngBase64))
-                                                                        {
-                                                                            <FluentCard Width="800px" MinimalStyle="true">
-                                                                                <img src="data:image/png;base64,@PlotAnomaliesPngBase64" 
-                                                                                    alt="Anomalies Plot" 
-                                                                                    style="width: 100%; height: auto;" />
-                                                                            </FluentCard>
-                                                                        }
+                                                                        <div id="chart-wrapper">
+                                                                            @if (ShowChart && !string.IsNullOrEmpty(PlotHtml))
+                                                                            {
+                                                                                <FluentCard Width="800px" MinimalStyle="true">
+                                                                                    <!-- Use a dynamic key so that when chartKey changes the container is re-rendered -->
+                                                                                    <div id="plot-container" @key="chartKey">
+                                                                                        @((MarkupString)PlotHtml)
+                                                                                    </div>
+                                                                                </FluentCard>
+                                                                            }
+                                                                        </div>
                                                                     </FluentStack>
                                                                 </Content>
                                                             </FluentTab>
                                                         }
+
                                                         @if (!string.IsNullOrEmpty(formattedJson))
                                                         {
-                                                            <FluentTab Id="Data-id"Icon="@(new Icons.Regular.Size20.DocumentData())">
+                                                            <FluentTab Id="Data-id" Icon="@(new Icons.Regular.Size20.DocumentData())">
                                                                 <Header>
                                                                     Data
                                                                 </Header>
@@ -341,29 +335,27 @@ else
                                                                             </FluentButton>
                                                                         }
                                                                     </FluentToolbar>
-                                                                    
-                                                                            <div style="display: flex; justify-content: center; align-items: center; padding: 16px;">
-                                                                                <div style="
-                                                                                        max-height: 500px;
-                                                                                        overflow-y: auto;
-                                                                                        font-family: 'Courier New', monospace;
-                                                                                        white-space: pre-wrap;
-                                                                                        word-break: break-word;
-                                                                                        line-height: 1.5;
-                                                                                        text-align: left;
-                                                                                        padding: 16px;
-                                                                                        border: 1px solid var(--neutral-outline-rest);
-                                                                                        border-radius: 8px;
-                                                                                        background-color: #f9f9f9;
-                                                                                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                                                                                        ">
-                                                                                    <pre><code class="language-json">@((MarkupString)formattedJson)</code></pre>
-                                                                                </div>
-                                                                            </div>
-
+                                                                    <div style="display: flex; justify-content: center; align-items: center; padding: 16px;">
+                                                                        <div style="
+                                                                                max-height: 500px;
+                                                                                overflow-y: auto;
+                                                                                font-family: 'Courier New', monospace;
+                                                                                white-space: pre-wrap;
+                                                                                word-break: break-word;
+                                                                                line-height: 1.5;
+                                                                                text-align: left;
+                                                                                padding: 16px;
+                                                                                border: 1px solid var(--neutral-outline-rest);
+                                                                                border-radius: 8px;
+                                                                                background-color: #f9f9f9;
+                                                                                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                                                                ">
+                                                                            <pre><code class="language-json">@((MarkupString)formattedJson)</code></pre>
+                                                                        </div>
+                                                                    </div>
                                                                 </Content>
                                                             </FluentTab>
-                                                            }
+                                                        }
                                                     }
                                                 </FluentTabs>
 
@@ -917,6 +909,7 @@ else
             ErrorMessage = string.Empty;
 
             CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
+            CIK = CIK?.PadLeft(10, '0');
             FilingsJson = null; // Clear filings data when fetching new CIK
             AllFilings = null;
             PDFDataUrlContentListFilings = null; // Clear PDF preview when fetching new CIK
@@ -978,8 +971,8 @@ else
             Console.WriteLine("Starting PDF preview generation...");
 
             // Ensure the CIK is padded to 10 digits (SEC EDGAR requirement)
-            var paddedCik = CIK?.PadLeft(10, '0');
-            if (string.IsNullOrWhiteSpace(paddedCik))
+            //var paddedCik = CIK?.PadLeft(10, '0');
+            if (string.IsNullOrWhiteSpace(CIK))
             {
                 Console.WriteLine("Error: CIK is null or empty.");
                 PDFDataUrlContentListFilings = null; // Clear PDF preview on error
@@ -999,14 +992,16 @@ else
                 PDFDataUrlContentListFilings = null; // Clear PDF preview on error
                 return;
             }
+            FilingAccessionNumber = filing.AccessionNumber;
+            FilingPrimaryDocument = filing.PrimaryDocument;
 
-            Console.WriteLine($"Fetching HTML content for CIK: {paddedCik}, Accession Number: {filing.AccessionNumber}, Primary Document: {filing.PrimaryDocument}");
-            string filingUrl = ConstructFilingUrl(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
+            Console.WriteLine($"Fetching HTML content for CIK: {CIK}, Accession Number: {FilingAccessionNumber}, Primary Document: {FilingPrimaryDocument}");
+            string filingUrl = ConstructFilingUrl(CIK, FilingAccessionNumber, FilingPrimaryDocument);
             Console.WriteLine($"filingUrl: {filingUrl}");
             //var accessionNumberWithoutDashes = filing.AccessionNumber.Replace("-", "");
 
             // Fetch the HTML content
-            var htmlContent = await SECEdgarWSAppService.DownloadHtmlContentAsync(paddedCik, filing.AccessionNumber, filing.PrimaryDocument);
+            var htmlContent = await SECEdgarWSAppService.DownloadHtmlContentAsync(CIK, FilingAccessionNumber, FilingPrimaryDocument);
             //Logger.LogInformation($"htmlContent: {htmlContent}");
             HtmlContentAllFilings = htmlContent;
             accordionOpenAllFilings = true;
@@ -1048,6 +1043,7 @@ else
 
             // Fetch the CIK for the provided ticker
             CIK = await SECEdgarWSAppService.GetCIKAsync(Ticker);
+            CIK = CIK?.PadLeft(10, '0');
 
             if (string.IsNullOrWhiteSpace(CIK))
             {
@@ -1111,13 +1107,13 @@ else
     private string ConstructFilingUrl(string cik, string accessionNumber, string primaryDocument)
     {
         // Ensure the CIK is padded to 10 digits (SEC EDGAR requirement)
-        var paddedCik = cik.PadLeft(10, '0');
+        //var paddedCik = cik.PadLeft(10, '0');
 
         // Remove dashes from the accession number
         var accessionNumberWithoutDashes = accessionNumber.Replace("-", "");
 
         // Construct the SEC EDGAR URL
-        return $"https://www.sec.gov/Archives/edgar/data/{paddedCik}/{accessionNumberWithoutDashes}/{primaryDocument}";
+        return $"https://www.sec.gov/Archives/edgar/data/{cik}/{accessionNumberWithoutDashes}/{primaryDocument}";
     }
 }
 @code {
@@ -1521,62 +1517,59 @@ else
             return value;
         }
     }
+    private bool ShowChart = true;
+    private Guid chartKey { get; set; } = Guid.NewGuid();
+
+ 
     private async Task FetchXBRLPlot()
     {
         try
         {
+            // --- Clear any existing chart first ---
+            await ClearExistingChartAsync();
+
+            // --- Proceed with fetching new data ---
             IsLoading = true;
             HasError = false;
             ErrorMessage = string.Empty;
-
-            // Log the start of the fetch process.
             Console.WriteLine($"Fetching full XBRL concept for Ticker: {Ticker}, Concept: {SelectedConcept}, Unit: {Unit}");
 
-            // Retrieve the full XBRL concept data.
             var conceptFull = await GoSECEdgarWSAppService.GetXBRLConceptFullAsync(Ticker, SelectedConcept);
-
             if (conceptFull != null)
             {
-                // Define the required parameters for forecasting.
+                // Reset variables
+                PlotHtml = string.Empty;
+                DataJson = string.Empty;
                 string unit = "USD";
                 int horizon = 12;
                 string inferred_freq = "Q";
                 bool forecast = false;
-                
-                // Serialize the conceptFull.Data (List<Dictionary<string, object>>) to a JSON string.
                 DataJson = JsonConvert.SerializeObject(conceptFull.Data);
 
-                // Call the forecast plot service using all required parameters.
                 var forecastResult = await SECEdgarWSAppService.GetForecastPlotHtmlAsync(
-                    Ticker, 
+                    Ticker,
                     CIK,
                     CompanyName,
                     Exchange,
-                    SelectedConcept, 
-                    DataJson, 
+                    SelectedConcept,
+                    DataJson,
                     unit,
                     horizon,
                     inferred_freq,
                     forecast);
 
-                // Check if the forecast plot HTML is non-empty.
                 if (forecastResult.IsSuccess && !string.IsNullOrWhiteSpace(forecastResult.PlotHtml))
                 {
-                    // Clear any previous content.
                     formattedJson = string.Empty;
                     PlotHtml = string.Empty;
                     DataJson = string.Empty;
                     await Task.Delay(1000);
 
-                    // Attempt to remove an extra layer of JSON encoding using JToken.
                     try
                     {
-                        // First, deserialize the CombinedDataJson as a string to remove outer quotes and escapes.
+                        // Remove outer JSON encoding.
                         string innerJson = JsonConvert.DeserializeObject<string>(forecastResult.CombinedDataJson);
-                        
-                        // Then, parse the inner JSON into a JToken.
                         var token = JToken.Parse(innerJson);
-                        // If the token is an array, remove the unwanted columns from each JSON object.
                         if (token is JArray array)
                         {
                             foreach (JObject obj in array.Children<JObject>())
@@ -1589,17 +1582,12 @@ else
                                 obj.Remove("trend");
                             }
                         }
-                    
-                        // Serialize it again with indentation.
                         formattedJson = token.ToString(Formatting.Indented);
-                        // Assuming 'formattedJson' is your JSON string (an array of objects)
                         csvData = JsonToCsvConverter.ConvertJsonToCsv(formattedJson);
-
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Double decoding failed: {ex.Message}. Attempting direct parsing.");
-                        // If the above fails, try to parse the JSON directly.
                         try
                         {
                             var token = JToken.Parse(forecastResult.CombinedDataJson);
@@ -1613,7 +1601,14 @@ else
                         }
                     }
 
+                    // --- Set new chart HTML ---
                     PlotHtml = forecastResult.PlotHtml;
+
+                    // --- Force Re-render: Re-add the container by updating the dynamic key and flag ---
+                    chartKey = Guid.NewGuid(); // new key forces Blazor to re-create the DOM element
+                    ShowChart = true;
+                    StateHasChanged();
+
                     Console.WriteLine("Successfully fetched XBRL concept plot HTML.");
                 }
                 else
@@ -1622,8 +1617,6 @@ else
                     ErrorMessage = "Failed to fetch XBRL concept plot HTML.";
                     Console.WriteLine("Forecast plot HTML is empty or the service call was unsuccessful.");
                 }
-
-                // Optionally, add a delay to show loading state.
                 await Task.Delay(1000);
                 IsLoading = false;
                 StateHasChanged();
@@ -1634,7 +1627,6 @@ else
                 ErrorMessage = "Failed to fetch full XBRL concept data.";
                 Console.WriteLine("Concept full data retrieval returned null.");
             }
-
             IsLoading = false;
             StateHasChanged();
             Console.WriteLine("XBRL concept full data fetch completed.");
@@ -1652,9 +1644,30 @@ else
             Console.WriteLine("FetchXBRLPlot process completed.");
         }
     }
-    
+    private async Task ClearExistingChartAsync()
+    {
+        // Remove the chart by clearing the container and forcing a re-render.
+        PlotHtml = "";
+        chartKey = Guid.NewGuid();
+        ShowChart = false;
+        StateHasChanged();
+        await Task.Delay(300); // Wait for the DOM to update
 
-    private async Task FetchXBRLPlotForecast()
+        // Call the JS cleanup function
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("destroyPlotlyInstanceDelayed", "chart-wrapper", "plot-container", 200);
+        }
+        catch (JSDisconnectedException jsex)
+        {
+            Console.WriteLine("JS interop call aborted: " + jsex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error during JS cleanup: " + ex.Message);
+        }
+    }
+     private async Task FetchXBRLPlotForecast()
     {
         try
         {
@@ -1792,6 +1805,9 @@ else
 
     private List<string> AvailableForms { get; set; } = new List<string>();
     private string SelectedForm { get; set; } = string.Empty;
+    private string FilingAccessionNumber { get; set; } = string.Empty;
+    private string FilingPrimaryDocument { get; set; } = string.Empty;
+
     private bool accordionOpenAllFilings = true;
     private bool formOpenListFilings = true;
 
@@ -1821,6 +1837,7 @@ else
                 Logger.LogInformation($"No CIK found for ticker '{Ticker}'. Skipping further processing.");
                 return;
             }
+            CIK = CIK?.PadLeft(10, '0');
 
             // Fetch the company name.
             CompanyName = await SECEdgarWSAppService.GetNameAsync(Ticker);
@@ -2013,7 +2030,7 @@ else
             var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(HtmlContentAllFilings);
             
             // Create an informative filename using Ticker, SelectedForm, and current date/time.
-            string fileName = $"{Ticker}_{SelectedForm}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            string fileName = $"{Ticker}_{FilingAccessionNumber}_{FilingPrimaryDocument}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
             
             // (Optional) Save the PDF locally for testing.
             // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
