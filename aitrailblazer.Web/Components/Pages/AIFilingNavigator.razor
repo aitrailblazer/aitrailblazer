@@ -31,7 +31,7 @@
 @using Markdig;
 @using Microsoft.AspNetCore.Components.Web
 @using VectorStoreRAG
-@inject ILogger<AIFilingScout> Logger
+@inject ILogger<AIFilingNavigator> Logger
 @inject IJSRuntime JSRuntime
 @inject ChatService ChatService
 @inject SECEdgarWSAppService SECEdgarWSAppService
@@ -48,7 +48,7 @@
 @inject UserIDsService UserIDsService
 @inject RAGChatService<string> RagChatService
 
-<PageTitle>Filing Scout AI</PageTitle>
+<PageTitle>Filing Navigator AI</PageTitle>
 
 @if (currentUserIdentityID == null)
 {
@@ -2057,7 +2057,7 @@ else
             var pdfBytes = await GotenbergWSAppService.ConvertFullHtmlToPdfAsync(HtmlContentCompletion);
             
             // Create an informative filename using Ticker, SelectedForm, and current date/time.
-            string fileName = $"{Ticker}_{SelectedConceptTitle}_FilingScoutAI_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            string fileName = $"{Ticker}_{SelectedConceptTitle}_FilingNavigatorAI_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
             
             // (Optional) Save the PDF locally for testing.
             // string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);

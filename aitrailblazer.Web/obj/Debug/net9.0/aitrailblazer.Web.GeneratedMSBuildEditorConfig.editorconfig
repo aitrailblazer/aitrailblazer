@@ -44,8 +44,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BSUNvbnRlbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/AIFilingScout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BSUZpbGluZ1Njb3V0LnJhem9y
+[/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/AIFilingNavigator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9BSUZpbGluZ05hdmlnYXRvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/constantinevassilev02/MyLocalDocuments/go-projects/aitrailblazer/aitrailblazer.Web/Components/Pages/ChatPaneSplitter.razor]
