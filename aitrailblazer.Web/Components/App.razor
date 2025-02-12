@@ -178,6 +178,35 @@
             };
         });
     </script>
+        <!-- New: Inject HTML with embedded scripts (e.g., Plotly code generated externally) -->
+    <script>
+        function injectHtmlWithScripts(containerId, htmlString) {
+            var container = document.getElementById(containerId);
+            if (!container) {
+                console.error("Container not found:", containerId);
+                return;
+            }
+            // Set the container's innerHTML to the provided HTML string.
+            container.innerHTML = htmlString;
+            // Find and re-run any script tags embedded in the HTML.
+            var scripts = container.getElementsByTagName("script");
+            // Convert the live NodeList to an array because it is live.
+            var scriptsArray = Array.from(scripts);
+            scriptsArray.forEach(function (oldScript) {
+                var newScript = document.createElement("script");
+                // Copy attributes (for example, src, type)
+                for (var i = 0; i < oldScript.attributes.length; i++) {
+                    newScript.setAttribute(oldScript.attributes[i].name, oldScript.attributes[i].value);
+                }
+                // Copy the script content.
+                newScript.text = oldScript.innerHTML;
+                // Append the new script to the document body to force execution.
+                document.body.appendChild(newScript);
+            });
+        }
+        // Make the function available globally
+        window.injectHtmlWithScripts = injectHtmlWithScripts;
+    </script>
 </body>
 
 </html>

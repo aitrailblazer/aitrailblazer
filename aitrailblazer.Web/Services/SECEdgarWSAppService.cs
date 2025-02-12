@@ -440,6 +440,7 @@ public class SECEdgarWSAppService
            string CompanyName,
            string Exchange,
            string concept,
+           string conceptTitle,
            string dataJson,
            string unit,
            int horizon,
@@ -467,14 +468,7 @@ public class SECEdgarWSAppService
 
             // Split the concept string by the pipe '|' if present.
             string conceptValue = concept;
-            string conceptTitleValue = concept;
-            if (concept.Contains("|"))
-            {
-                string[] parts = concept.Split('|');
-                conceptValue = parts[0].Trim();
-                // If a second part exists, use it; otherwise, fallback to the first part.
-                conceptTitleValue = parts.Length > 1 ? parts[1].Trim() : conceptValue;
-            }
+            string conceptTitleValue = conceptTitle;
             // NOTE: We now use the provided 'horizon' value rather than reassigning it.
 
             // Construct the endpoint URL (adjust the base URL as needed).
