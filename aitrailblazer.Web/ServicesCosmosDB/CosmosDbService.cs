@@ -249,7 +249,10 @@ public class CosmosDbService
 
         PartitionKey partitionKey = GetPK(tenantId, userId);
 
-        QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.type = @type")
+        // The ORDER BY clause is modified to use DESC to get the latest threads first.
+        string queryText = "SELECT * FROM c WHERE c.type = @type ORDER BY c.timeStamp DESC";
+
+        QueryDefinition query = new QueryDefinition(queryText)
             .WithParameter("@type", nameof(ThreadChat));
 
         FeedIterator<ThreadChat> response = _chatContainer.GetItemQueryIterator<ThreadChat>(
@@ -285,8 +288,10 @@ public class CosmosDbService
         _logger.LogInformation("Retrieving messages for thread ID: {threadId}", threadId);
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
-        QueryDefinition query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.threadId = @threadId AND c.type = @type")
+        // Define the query string with ORDER BY clause in descending order.
+        string queryText = "SELECT * FROM c WHERE c.threadId = @threadId AND c.type = @type ORDER BY c.timeStamp DESC";
+
+        QueryDefinition query = new QueryDefinition(queryText)
             .WithParameter("@threadId", threadId)
             .WithParameter("@type", nameof(Message));
 

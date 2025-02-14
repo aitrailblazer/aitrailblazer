@@ -244,17 +244,14 @@ public class CosmosDbService
     public async Task<List<ThreadChat>> GetThreadsAsync(string tenantId, string userId)
     {
         _logger.LogInformation("Retrieving threads for Tenant ID: {TenantId}, User ID: {UserId}", tenantId, userId);
-
         PartitionKey partitionKey = GetPK(tenantId, userId);
-
-        QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.type = @type")
+        string queryText = "SELECT * FROM c WHERE c.type = @type ORDER BY c.timeStamp DESC";
+        QueryDefinition query = new QueryDefinition(queryText)
             .WithParameter("@type", nameof(ThreadChat));
-
         FeedIterator<ThreadChat> response = _chatContainer.GetItemQueryIterator<ThreadChat>(
             query,
             requestOptions: new QueryRequestOptions { PartitionKey = partitionKey }
         );
-
         List<ThreadChat> output = new();
         while (response.HasMoreResults)
         {
@@ -262,7 +259,6 @@ public class CosmosDbService
             output.AddRange(results);
             _logger.LogInformation("Retrieved {Count} threads in current batch.", results.Count);
         }
-
         _logger.LogInformation("Total threads retrieved: {TotalCount}", output.Count);
         return output;
     }
@@ -283,8 +279,10 @@ public class CosmosDbService
         _logger.LogInformation("Retrieving messages for thread ID: {threadId}", threadId);
         PartitionKey partitionKey = GetPK(tenantId, userId, threadId);
 
-        QueryDefinition query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.threadId = @threadId AND c.type = @type")
+        // Updated query to order messages with the latest ones first.
+        string queryText = "SELECT * FROM c WHERE c.threadId = @threadId AND c.type = @type ORDER BY c.timeStamp DESC";
+
+        QueryDefinition query = new QueryDefinition(queryText)
             .WithParameter("@threadId", threadId)
             .WithParameter("@type", nameof(Message));
 
